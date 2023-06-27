@@ -1,0 +1,319 @@
+<link rel="stylesheet" href="../assets/css/admin/accurent.css">
+<div class="__included__ accurent">
+    <div class="_head flex h-sb v-ct">
+        <div class="inLeft">
+            <h1>Conta corrente</h1>
+        </div>
+
+        <div class="inRight flex v-ct">
+            <div class="masterSearch">
+                <input type="search" placeholder="Pesquise aqui..." id="searchAAccurent">
+                <svg x="0px" y="0px" viewBox="0 0 118.783 118.783" style="enable-background:new 0 0 118.783 118.783;"
+                    xml:space="preserve">
+                    <g>
+                        <path d="M115.97,101.597L88.661,74.286c4.64-7.387,7.333-16.118,7.333-25.488c0-26.509-21.49-47.996-47.998-47.996
+				S0,22.289,0,48.798c0,26.51,21.487,47.995,47.996,47.995c10.197,0,19.642-3.188,27.414-8.605l26.984,26.986
+				c1.875,1.873,4.333,2.806,6.788,2.806c2.458,0,4.913-0.933,6.791-2.806C119.72,111.423,119.72,105.347,115.97,101.597z
+				 M47.996,81.243c-17.917,0-32.443-14.525-32.443-32.443s14.526-32.444,32.443-32.444c17.918,0,32.443,14.526,32.443,32.444
+				S65.914,81.243,47.996,81.243z"></path>
+                    </g>
+                </svg>
+            </div>
+        </div>
+    </div>
+    <div class="_body">
+        <div class="sums">
+            <section class="debit">
+                <p>Débito</p>
+                <small class="see-data">Ver débito</small>
+                <h4>***.***,**</h4>
+            </section>
+            <section class="credit">
+                <p>Crédito</p>
+                <small class="see-data">Ver crédito</small>
+                <h4>***.***,**</h4>
+            </section>
+            <section class="saldo">
+                <p>Saldo</p>
+                <h4 id="contacorrente_saldo"></h4>
+            </section>
+            <section class="clients">
+                <p>Clientes Registados</p>
+                <h4 id="contacorrente_clientes_registados"></h4>
+                <svg viewBox="0 0 512 512">
+                    <path
+                        d="m471.386719 325.011719c-16.96875-14.910157-37.546875-27.792969-61.167969-38.289063-10.097656-4.484375-21.914062.0625-26.398438 10.15625-4.484374 10.09375.0625 21.910156 10.15625 26.398438 19.917969 8.851562 37.082032 19.542968 51.007813 31.78125 17.167969 15.085937 27.015625 36.929687 27.015625 59.941406v37c0 11.027344-8.972656 20-20 20h-392c-11.027344 0-20-8.972656-20-20v-37c0-23.011719 9.847656-44.855469 27.015625-59.941406 20.207031-17.757813 79.082031-59.058594 188.984375-59.058594 81.605469 0 148-66.394531 148-148s-66.394531-148-148-148-148 66.394531-148 148c0 47.707031 22.695312 90.207031 57.851562 117.289062-64.328124 14.140626-104.34375 41.359376-125.238281 59.722657-25.808593 22.675781-40.613281 55.472656-40.613281 89.988281v37c0 33.085938 26.914062 60 60 60h392c33.085938 0 60-26.914062 60-60v-37c0-34.515625-14.804688-67.3125-40.613281-89.988281zm-323.386719-177.011719c0-59.550781 48.449219-108 108-108s108 48.449219 108 108-48.449219 108-108 108-108-48.449219-108-108zm0 0" />
+                </svg>
+            </section>
+        </div>
+        <div class="x-table hovered grow-1">
+            <div class="xheader">
+                <ul class="flex">
+                    <li grow="1">NIF</li>
+                    <li grow="3">Nome</li>
+                    <li grow="2">Contacto</li>
+                    <li grow="2">Saldo</li>
+                    <li grow="2"></li>
+                </ul>
+            </div>
+            <div class="xbody" id="xbodyClientesContaCorrente">
+                <!--<ul class=" showTarget" target="AbtAccFrmID">
+                    <li>109000000</li>
+                    <li>Name Comes Here</li>
+                    <li>+2399913621</li>
+                    <li class="flex v-ct">
+                        <span class="flex v-ct j-stp showTarget" target="xModalMakePayment">
+                            <svg enable-background="new 0 0 512 512" viewBox="0 0 512 512"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <g>
+                                    <path
+                                        d="m256 512c-68.38 0-132.668-26.628-181.02-74.98s-74.98-112.64-74.98-181.02 26.629-132.667 74.98-181.02 112.64-74.98 181.02-74.98 132.668 26.628 181.02 74.98 74.98 112.64 74.98 181.02-26.629 132.667-74.98 181.02-112.64 74.98-181.02 74.98zm0-480c-123.514 0-224 100.486-224 224s100.486 224 224 224 224-100.486 224-224-100.486-224-224-224z" />
+                                    <path
+                                        d="m256 240c-22.056 0-40-17.944-40-40s17.944-40 40-40 40 17.944 40 40c0 8.836 7.163 16 16 16s16-7.164 16-16c0-34.201-23.978-62.888-56-70.186v-17.814c0-8.836-7.163-16-16-16s-16 7.164-16 16v17.814c-32.022 7.298-56 35.985-56 70.186 0 39.701 32.299 72 72 72 22.056 0 40 17.944 40 40s-17.944 40-40 40-40-17.944-40-40c0-8.836-7.163-16-16-16s-16 7.164-16 16c0 34.201 23.978 62.888 56 70.186v17.814c0 8.836 7.163 16 16 16s16-7.164 16-16v-17.814c32.022-7.298 56-35.985 56-70.186 0-39.701-32.299-72-72-72z" />
+                                </g>
+                            </svg>
+                            <a>Efetuar pagamento</a>
+                        </span>
+                    </li>
+                </ul>-->
+            </div>
+        </div>
+
+        <div id="AbtAccFrmID" class="aboutAccountFrame">
+            <div class="tHead flex v-ct h-sb">
+                <div class="lft flex v-ct">
+                    <span class="goBack flex v-ct h-ct hideTarget" target="AbtAccFrmID">
+                        <svg x="0px" y="0px" viewBox="0 0 240.823 240.823"
+                            style="enable-background:new 0 0 240.823 240.823;" xml:space="preserve">
+                            <path
+                                d="M57.633,129.007L165.93,237.268c4.752,4.74,12.451,4.74,17.215,0c4.752-4.74,4.752-12.439,0-17.179 l-99.707-99.671l99.695-99.671c4.752-4.74,4.752-12.439,0-17.191c-4.752-4.74-12.463-4.74-17.215,0L57.621,111.816 C52.942,116.507,52.942,124.327,57.633,129.007z" />
+                        </svg>
+                    </span>
+                    <div class="jkl">
+                        <b id="accurentCustomer"></b>
+                        <p class="credit" id="accurentCustomerValue"></p>
+                    </div>
+                </div>
+                <div class="rgt flex v-ct">
+                    <button class="xbtn showTarget" target="xModalOutrosLancamentos">Lançamento</button>
+                    <button class="xbtn showTarget" target="xModalMakePayment">Efetuar pagamento</button>
+                </div>
+            </div>
+            <div class="theBody">
+                <div class="x-table selectable grow-1">
+                    <div class="xheader">
+                        <ul header-report-list class="flex">
+                            <li grow="1">Data</li>
+                            <li grow="5">Descrição</li>
+                            <li grow="1">Débito</li>
+                            <li grow="1">Crédito</li>
+                            <li grow="1">Saldo</li>
+                            <li grow="1"></li>
+                        </ul>
+                    </div>
+                    <div class="xbody" id="xbodyHistoricoContaCliente">
+                       <!-- <ul>
+                            <li>12-08-2021</li>
+                            <li>Description Comes Here</li>
+                            <li>254,00</li>
+                            <li>0,00</li>
+                            <li>0,00</li>
+                            <li>12-08-2021</li>
+                        </ul>-->
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- MODALS -->
+    <div id="xModalMakePayment" class="x-mobdal XM-makePayment flex v-ct h-ct" target="xModalMakePayment">
+        <div class="modal-frame">
+            <h3>Efetuar pagamento</h3>
+            <div class="inn xform">
+                <div class="xselect flutuate w100">
+                    <input type="text" readonly>
+                    <label>Tipo de pagamento</label>
+                    <ul id="contacorrente_tipo_pagamento">
+                        <li tipo_id="1" tipo_desc="cash">Cash</li>
+                        <li tipo_id="4" tipo_desc="cheque">Cheque</li>
+                        <li tipo_id="2" tipo_desc="depósito">Depósito</li>
+                        <li tipo_id="3" tipo_desc="transferência">Transferência</li>
+                    </ul>
+                </div>
+                <div class="xselect flutuate w100">
+                    <input type="text" readonly>
+                    <label>Moeda</label>
+                    <ul id="contacorrente_moeda">
+                    </ul>
+                </div>
+                <div class="xinput w100">
+                    <input type="text" placeholder="_" class="double formatNumber" id="contacorrente_montante">
+                    <label for="contacorrente_montante">Montante</label>
+                </div>
+                <div class="xinput w100" id="contacorrente_estrutura_troco">
+                    <input type="text" placeholder="_" class="double formatNumber" _noObrigatory="true" id="contacorrente_troco">
+                    <label for="contacorrente_troco">Troco em STN</label>
+                </div>
+                <div class="xinput w100">
+                    <input data-inputmask-alias="dd-mm-yyyy" data-val="true" type="text" placeholder="_" id="contacorrente_datapagamento">
+                    <label for="contacorrente_datapagamento">Data de pagamento</label>
+                </div>
+                <div class="xinput w100" id="contacorrente_estrutura_numero_documento">
+                    <input type="text" placeholder="_" id="contacorrente_codigo_operacao">
+                    <label for="contacorrente_codigo_operacao">Código de operação</label>
+                </div>
+                <div class="xinput w100">
+                    <textarea placeholder="_" _noObrigatory="true" id="contacorrente_descricao"></textarea>
+                    <label for="contacorrente_descricao">Descrição</label>
+                </div>
+            </div>
+            <div class="master-btn-right flex">
+                <span class="hideTarget" target="xModalMakePayment">cancelar</span>
+                <span class="flex v-ct" pagar_contacorrente>
+                    concluir
+                    <svg class="spinner" viewBox="0 0 50 50">
+                        <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
+                    </svg>
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <div id="xModalPrintAdminModel" class="x-mobdal XM-PrintModel flex v-ct h-ct"
+         target="xModalPrintAdminModel">
+        <div class="modal-frame">
+            <h3>Impressão</h3>
+            <div class="inn">
+                <p>Escolha o tipo de impressão.</p>
+                <div class="flex h-ct v-ct">
+                    <div class="waves-effect account active tgl" type="talao">
+                        <div class="flex v-ct h-ct">
+                            <svg x="0px" y="0px" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve">
+								<g>
+									<g>
+										<path d="M442.702,0.03c-0.2-0.008-0.397-0.03-0.599-0.03H134.768c-25.992,0-47.139,21.146-47.139,47.139v374.524H38.352
+											c-8.284,0-15,6.716-15,15v28.199c0,25.592,20.505,46.472,45.946,47.108c0.2,0.008,0.397,0.03,0.599,0.03h307.335
+											c25.992,0,47.139-21.146,47.139-47.139V90.337h49.277c8.284,0,15-6.716,15-15V47.139C488.648,21.546,468.144,0.667,442.702,0.03z
+											 M70.49,482.001c-9.45,0-17.139-7.688-17.139-17.139v-13.199h0.001h276.507v13.199c0,6.045,1.156,11.823,3.239,17.139H70.49z
+											 M394.371,464.861c0,9.45-7.688,17.139-17.139,17.139h-0.235c-9.45,0-17.139-7.688-17.139-17.139v-28.199c0-8.284-6.716-15-15-15
+											h-227.23V47.139c0-9.45,7.688-17.139,17.139-17.139H397.61c-2.083,5.316-3.239,11.093-3.239,17.139L394.371,464.861
+											L394.371,464.861z M458.649,60.337h-0.001h-34.277V47.139c0-9.45,7.688-17.139,17.139-17.139c9.451,0,17.139,7.688,17.139,17.139
+											V60.337z"/>
+									</g>
+								</g>
+                                <g>
+									<g>
+										<path d="M344.859,97.908H159.724c-8.284,0-15,6.716-15,15s6.716,15,15,15h185.135c8.284,0,15-6.716,15-15
+											S353.143,97.908,344.859,97.908z"/>
+									</g>
+								</g>
+                                <g>
+									<g>
+										<path d="M344.859,173.301H159.724c-8.284,0-15,6.716-15,15s6.716,15,15,15h185.135c8.284,0,15-6.716,15-15
+											S353.143,173.301,344.859,173.301z"/>
+									</g>
+								</g>
+                                <g>
+									<g>
+										<path d="M344.859,248.695H159.724c-8.284,0-15,6.716-15,15s6.716,15,15,15h185.135c8.284,0,15-6.716,15-15
+											S353.143,248.695,344.859,248.695z"/>
+									</g>
+								</g>
+                                <g>
+									<g>
+										<path d="M344.859,324.088H159.724c-8.284,0-15,6.716-15,15s6.716,15,15,15h185.135c8.284,0,15-6.716,15-15
+											S353.143,324.088,344.859,324.088z"/>
+									</g>
+								</g>
+								</svg>
+
+                        </div>
+                        <p>Talão</p>
+                    </div>
+                    <div class="waves-effect account tgl" type="pdf">
+                        <div class="flex v-ct h-ct">
+                            <svg x="0px" y="0px" viewBox="0 0 470.586 470.586"
+                                 style="enable-background:new 0 0 470.586 470.586;" xml:space="preserve">
+								<g>
+									<path d="M327.081,0H90.234C74.331,0,61.381,12.959,61.381,28.859v412.863c0,15.924,12.95,28.863,28.853,28.863H380.35
+										c15.917,0,28.855-12.939,28.855-28.863V89.234L327.081,0z M333.891,43.184l35.996,39.121h-35.996V43.184z M384.972,441.723
+										c0,2.542-2.081,4.629-4.635,4.629H90.234c-2.55,0-4.619-2.087-4.619-4.629V28.859c0-2.548,2.069-4.613,4.619-4.613h219.411v70.181
+										c0,6.682,5.443,12.099,12.129,12.099h63.198V441.723z M128.364,128.89H334.15c5.013,0,9.079,4.066,9.079,9.079
+										c0,5.013-4.066,9.079-9.079,9.079H128.364c-5.012,0-9.079-4.066-9.079-9.079C119.285,132.957,123.352,128.89,128.364,128.89z
+										M343.229,198.98c0,5.012-4.066,9.079-9.079,9.079H128.364c-5.012,0-9.079-4.066-9.079-9.079s4.067-9.079,9.079-9.079H334.15
+										C339.163,189.901,343.229,193.968,343.229,198.98z M343.229,257.993c0,5.013-4.066,9.079-9.079,9.079H128.364
+										c-5.012,0-9.079-4.066-9.079-9.079s4.067-9.079,9.079-9.079H334.15C339.163,248.914,343.229,252.98,343.229,257.993z
+										M343.229,318.011c0,5.013-4.066,9.079-9.079,9.079H128.364c-5.012,0-9.079-4.066-9.079-9.079s4.067-9.079,9.079-9.079H334.15
+										C339.163,308.932,343.229,312.998,343.229,318.011z" />
+								</g>
+							</svg>
+                        </div>
+                        <p>A4 (pdf)</p>
+                    </div>
+                </div>
+            </div>
+            <div class="master-btn-right flex">
+                <span class="hideTarget waves-effect" target="xModalPrintAdminModel">cancelar</span>
+                <span class="flex v-ct waves-effect" printDocument>
+					IMPRIMIR
+					<svg class="spinner" viewBox="0 0 50 50">
+						<circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
+					</svg>
+				</span>
+            </div>
+        </div>
+    </div>
+    <div id="xModalOutrosLancamentos" class="x-mobdal XM-makePayment flex v-ct h-ct" target="xModalOutrosLancamentos">
+        <div class="modal-frame">
+            <h3>Efetuar lançamento</h3>
+            <div class="inn xform">
+                <div class="xselect flutuate w100">
+                    <input type="text" readonly>
+                    <label>Tipo de lançamento</label>
+                    <ul id="lancamento_tipo">
+                        <li class="tgl" tipo="1" operacao="1">Depósito</li>
+                        <li class="tgl" tipo="2" operacao="-1">Fatura</li>
+                        <li class="tgl" tipo="3" operacao="0">Outros lançamentos</li>
+                    </ul>
+                </div>
+                <div class="xselect flutuate w100">
+                    <input type="text" readonly id="lancamento_operacao_descricao">
+                    <label>Tipo de operação</label>
+                    <ul id="lancamento_operacao">
+                        <li class="tgl" tipo="1">Credito</li>
+                        <li class="tgl" tipo="-1">Debito</li>
+                    </ul>
+                </div>
+                <div class="xinput w100">
+                    <input type="text" placeholder="_" class="double formatNumber" id="lancamento_valor">
+                    <label for="lancamento_valor">Valor em STN</label>
+                </div>
+                <div class="xinput w100">
+                    <input type="text" placeholder="_" data-inputmask-alias="dd-mm-yyyy" data-val="true" type="text" id="lancamento_data">
+                    <label for="lancamento_data">Data</label>
+                </div>
+                <div class="xinput w100">
+                    <input type="text" placeholder="_" _noObrigatory="true" id="lancamento_documento">
+                    <label for="lancamento_documento">Documento </label>
+                </div>
+                <div class="xinput w100">
+                    <textarea placeholder="_"  id="lancamento_descricao"></textarea>
+                    <label for="lancamento_descricao">Descrição</label>
+                </div>
+            </div>
+            <div class="master-btn-right flex">
+                <span class="hideTarget" target="xModalOutrosLancamentos">cancelar</span>
+                <span class="flex v-ct" bt_lancamento>
+                    concluir
+                    <svg class="spinner" viewBox="0 0 50 50">
+                        <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
+                    </svg>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/js/admin/contacorrente.js"></script>

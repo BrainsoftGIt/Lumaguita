@@ -1,0 +1,1 @@
+"C:\Program Files\Bat To Exe Converter\Bat_To_Exe_Converter.exe" %*

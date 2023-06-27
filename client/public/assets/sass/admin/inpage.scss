@@ -1,0 +1,22 @@
+@import "vars";
+.__included__.inpage{
+    .inMenus{
+        ul li{
+            margin-left: 2rem;
+            font-weight: 500;
+            line-height: 2;
+            border-bottom: 3px solid transparent;
+            cursor: pointer;
+            &.active{
+                border-bottom-color: $blue;
+                color: $blue;
+            }
+            &:hover{
+                color: $blue;
+            }
+        }
+        + *{
+            margin-left: 2.5rem;
+        }
+    }
+}

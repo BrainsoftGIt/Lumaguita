@@ -1,0 +1,22 @@
+if [ "$1" == "LUMA" ]; then
+   mode="prod"
+   app="LUMA"
+   domain=luma.brainsoftstp.com
+elif [ "$1" == "MAGUITA" ]; then
+   mode="test"
+   app="MAGUITA"
+   domain=maguita.test.brainsoftstp.com
+else
+   mode="dev"
+   app="MAGUITA-DEV"
+fi
+
+sock_file="$(pwd)/${mode}.sock"
+if [ -f "${sock_file}" ]; then
+  echo "${app} is running... Stop first for continue";
+  echo "srv/stop ${app}"
+else
+  nohup node server/launcher/root --appMode $mode --app $app --webDomain $domain &
+fi;
+
+

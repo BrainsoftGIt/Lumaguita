@@ -1,0 +1,242 @@
+.__included__.settings ._head .inRight svg {
+  width: 25px;
+  fill: #1A73E8;
+  display: none;
+}
+.__included__.settings ._body {
+  position: relative;
+}
+.__included__.settings ._body .sett1 {
+  padding-top: 1.5rem;
+}
+.__included__.settings ._body .sett1 .tit {
+  border-bottom: 1px solid #cde6ff;
+  padding-bottom: 1rem;
+  margin-bottom: 1rem;
+}
+.__included__.settings ._body .sett1 h2 {
+  color: #1A73E8;
+  font-size: 0.9rem;
+}
+.__included__.settings ._body .sett1 .group {
+  margin-bottom: 3rem;
+}
+.__included__.settings ._body .sett1 .group:last-child {
+  margin-bottom: 0;
+}
+.__included__.settings ._body .sett1 .group a.showTarget {
+  -webkit-transform: translateY(3px);
+      -ms-transform: translateY(3px);
+          transform: translateY(3px);
+}
+.__included__.settings ._body .sett1 .group.postos ._listTbl li {
+  width: 20%;
+}
+.__included__.settings ._body .sett1 .group.armazens ._listTbl li, .__included__.settings ._body .sett1 .group.impressao ._listTbl li {
+  width: 25%;
+}
+.__included__.settings ._body .sett1 .group.efatura ._listTbl li {
+  width: 33.33%;
+}
+.__included__.settings ._body .sett2 {
+  padding-top: 1.5rem;
+  width: 100%;
+  max-width: 380px;
+  border-left: 1px solid #ddeeff;
+  background: #eef7ff;
+  -ms-flex-negative: 0;
+      flex-shrink: 0;
+  margin-left: 5%;
+  padding-left: 3%;
+}
+.__included__.settings ._body .sett2 .listinfos {
+  padding-right: 8%;
+}
+.__included__.settings ._body .sett2 .tit ~ .tit {
+  margin-top: 2rem;
+  padding-top: 1.8rem;
+  margin-bottom: 1rem;
+  border-top: 1px solid #c3e1ff;
+}
+.__included__.settings ._body .sett2 * {
+  font-size: 0.85rem;
+}
+.__included__.settings ._body .sett2 h3 {
+  color: #1A73E8;
+  font-weight: 600;
+}
+.__included__.settings ._body .sett2 svg {
+  width: 22px;
+}
+.__included__.settings ._body .sett2 svg:hover {
+  cursor: pointer;
+  fill: #1A73E8;
+}
+.__included__.settings ._body .sett2 .intro {
+  margin-bottom: 1rem;
+}
+.__included__.settings ._body .sett2 .intro .img-container {
+  width: 60px;
+  height: 60px;
+  background-color: #4300c9;
+  margin-right: 1rem;
+}
+.__included__.settings ._body .sett2 .intro h3 {
+  font-size: 1rem;
+}
+.__included__.settings ._body .sett2 .intro p {
+  margin-top: 7px;
+}
+.__included__.settings ._body .sett2 ul.uno span:last-child:before {
+  content: ":";
+  font-weight: 700;
+  margin-right: 5px;
+}
+.__included__.settings ._body .sett2 ul.dos span:nth-child(2) {
+  margin: 0 6px;
+}
+.__included__.settings ._body .sett2 ul li {
+  line-height: 3;
+}
+.__included__.settings ._body .sett2 ul li b {
+  min-width: 120px;
+}
+
+.x-mobdal .xform {
+  max-width: 480px;
+}
+
+.XM-settPOS .intt {
+  font-size: 0.88rem;
+}
+.XM-settPOS .xcheck {
+  margin-top: 1rem;
+}
+
+.XM-printSett.haveKuchen .kuchenPrint {
+  display: -webkit-box !important;
+  display: -ms-flexbox !important;
+  display: flex !important;
+}
+.XM-printSett .listSettings {
+  padding: 1rem 1.5rem;
+  margin-left: 2.5rem;
+  background: #f6fbff;
+}
+.XM-printSett .listSettings h4 {
+  font-size: 0.9rem;
+  color: #4300c9;
+  margin-bottom: 1rem;
+}
+.XM-printSett .listSettings ul li {
+  padding: 14px 1rem;
+  position: relative;
+  background: #fff;
+  min-width: 320px;
+  border: 1px solid #e2f0ff;
+  border-radius: 5px;
+  -webkit-box-shadow: 0 15px 45px -20px #d2e9ff;
+          box-shadow: 0 15px 45px -20px #d2e9ff;
+  background-color: #fff;
+  margin-bottom: 12px;
+}
+.XM-printSett .listSettings ul li:hover {
+  -webkit-box-shadow: 0 15px 45px -5px #d2e9ff;
+          box-shadow: 0 15px 45px -5px #d2e9ff;
+}
+.XM-printSett .listSettings ul li:hover .ctrl {
+  right: 17px;
+  opacity: 1;
+  visibility: visible;
+}
+.XM-printSett .listSettings ul li * {
+  font-size: 0.85rem;
+  line-height: 1.8;
+}
+.XM-printSett .listSettings ul li b {
+  font-weight: 500;
+}
+.XM-printSett .listSettings ul li small {
+  opacity: 0.7;
+}
+.XM-printSett .listSettings ul li small:last-child {
+  margin-left: 2rem;
+}
+.XM-printSett .listSettings ul .ctrl {
+  position: absolute;
+  top: 12px;
+  background: #fff;
+  right: 10px;
+  opacity: 0;
+  visibility: hidden;
+}
+.XM-printSett .listSettings ul .ctrl svg {
+  width: 20px;
+  cursor: pointer;
+  margin-left: 5px;
+  fill: #1A73E8;
+}
+.XM-printSett .xform {
+  max-width: 360px;
+  -ms-flex-line-pack: start;
+      align-content: flex-start;
+}
+.XM-printSett .xform.kuchenPrint {
+  width: 100%;
+  max-width: 100%;
+  display: none;
+}
+.XM-printSett .xform h3 {
+  font-size: 0.9rem;
+  color: #4300c9;
+  margin-top: 12px;
+}
+.XM-printSett .xform .xcheck b {
+  display: block;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+  margin-top: 1.2rem;
+}
+.XM-printSett .xform button {
+  margin-top: 1rem;
+}
+.XM-printSett .kuchen {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #d2e9ff;
+}
+.XM-printSett .kuchen b {
+  display: block;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+  color: #4300c9;
+}
+
+@media only screen and (max-width: 1200px) {
+  .__included__.settings ._head .inRight svg {
+    display: block;
+    cursor: pointer;
+  }
+  .__included__.settings ._body .sett2 {
+    position: absolute;
+    z-index: 10;
+    background: #FFF;
+    right: -8px;
+    height: calc(100% - 80px);
+    top: 80px;
+    overflow: auto;
+    max-width: 480px;
+    -webkit-box-shadow: -10px 5px 30px -10px #aad4ff;
+            box-shadow: -10px 5px 30px -10px #aad4ff;
+    opacity: 0;
+    visibility: hidden;
+    -webkit-transition: all 0.25s;
+    -o-transition: all 0.25s;
+    transition: all 0.25s;
+  }
+  .__included__.settings ._body .sett2.show {
+    opacity: 1;
+    visibility: visible;
+    right: 0;
+  }
+}

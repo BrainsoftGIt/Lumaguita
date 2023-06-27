@@ -1,0 +1,739 @@
+<link rel="stylesheet" href="../assets/css/admin/settings.css">
+<div class="__included__ settings">
+	<div class="_head flex h-sb v-ct">
+		<div class="inLeft">
+			<h1>Definições</h1>
+		</div>
+		<div class="inRight">
+			<span class="toggleTarget" target="sett2ID">
+				<svg viewBox="0 0 24 24" fill="#000000"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M11 7h2v2h-2zm0 4h2v6h-2zm1-9C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg>
+
+			</span>
+		</div>
+	</div>
+	<div class="_body">
+		<div class="comfort flex">
+			<div class="sett1 grow-1">
+				<div class="group postos">
+					<div class="flex h-sb v-ct tit">
+						<h2>Postos</h2>
+						<button class="xbtn showTarget" target="xModalCtrlPosto" tTitle="Adicionar Posto">Adicionar
+							novo</button>
+					</div>
+					<div class="list-postos _listTbl">
+						<!--<ul class="flex">
+							<li class="flex column">
+								<span>Designação</span>
+								<span>Posto 0</span>
+							</li>
+							<li class="flex column">
+								<span>Tipo</span>
+								<span>Posto 0</span>
+							</li>
+							<li class="flex column">
+								<span>Armazém</span>
+								<span>Posto 0</span>
+							</li>
+							<li class="flex column">
+								<span>Valor arrecadado</span>
+								<span>STN 10 000</span>
+							</li>
+							<li class="flex column">
+								<span class="noLabel"></span>
+								<span class="flex v-ct">
+									<a class="showTarget" target="xModalCtrlPosto" tTitle="Editar Posto">
+										<svg class="edit showTarget" viewBox="0 0 512 512"><path d="m368 511.957031h-309.332031c-32.363281 0-58.667969-26.304687-58.667969-58.667969v-309.332031c0-32.363281 26.304688-58.667969 58.667969-58.667969h181.332031c8.832031 0 16 7.167969 16 16 0 8.832032-7.167969 16-16 16h-181.332031c-14.699219 0-26.667969 11.96875-26.667969 26.667969v309.332031c0 14.699219 11.96875 26.667969 26.667969 26.667969h309.332031c14.699219 0 26.667969-11.96875 26.667969-26.667969v-181.332031c0-8.832031 7.167969-16 16-16s16 7.148438 16 16v181.332031c0 32.363282-26.304688 58.667969-58.667969 58.667969zm0 0"/><path d="m187.136719 340.820312c-4.203125 0-8.300781-1.664062-11.308594-4.691406-3.796875-3.777344-5.417969-9.21875-4.371094-14.445312l15.082031-75.433594c.617188-3.113281 2.152344-5.953125 4.371094-8.171875l220.953125-220.925781c22.867188-22.871094 60.074219-22.871094 82.964844 0 11.070313 11.070312 17.171875 25.792968 17.171875 41.472656s-6.101562 30.398438-17.195312 41.472656l-220.925782 220.949219c-2.21875 2.238281-5.078125 3.753906-8.171875 4.371094l-75.414062 15.082031c-1.046875.214844-2.113281.320312-3.15625.320312zm75.433593-31.082031h.214844zm-45.609374-52.457031-9.410157 47.144531 47.125-9.429687 217.515625-217.511719c5.035156-5.058594 7.808594-11.734375 7.808594-18.859375s-2.773438-13.804688-7.808594-18.859375c-10.367187-10.390625-27.285156-10.390625-37.714844 0zm0 0"/><path d="m453.332031 134.976562c-4.09375 0-8.191406-1.558593-11.304687-4.695312l-60.332032-60.351562c-6.25-6.25-6.25-16.382813 0-22.632813s16.382813-6.25 22.636719 0l60.328125 60.351563c6.25 6.25 6.25 16.382812 0 22.632812-3.136718 3.117188-7.230468 4.695312-11.328125 4.695312zm0 0"/></svg>
+									</a>
+									<svg class="delete" viewBox="-40 0 427 427.00131"><path d="m232.398438 154.703125c-5.523438 0-10 4.476563-10 10v189c0 5.519531 4.476562 10 10 10 5.523437 0 10-4.480469 10-10v-189c0-5.523437-4.476563-10-10-10zm0 0"/><path d="m114.398438 154.703125c-5.523438 0-10 4.476563-10 10v189c0 5.519531 4.476562 10 10 10 5.523437 0 10-4.480469 10-10v-189c0-5.523437-4.476563-10-10-10zm0 0"/><path d="m28.398438 127.121094v246.378906c0 14.5625 5.339843 28.238281 14.667968 38.050781 9.285156 9.839844 22.207032 15.425781 35.730469 15.449219h189.203125c13.527344-.023438 26.449219-5.609375 35.730469-15.449219 9.328125-9.8125 14.667969-23.488281 14.667969-38.050781v-246.378906c18.542968-4.921875 30.558593-22.835938 28.078124-41.863282-2.484374-19.023437-18.691406-33.253906-37.878906-33.257812h-51.199218v-12.5c.058593-10.511719-4.097657-20.605469-11.539063-28.03125-7.441406-7.421875-17.550781-11.5546875-28.0625-11.46875h-88.796875c-10.511719-.0859375-20.621094 4.046875-28.0625 11.46875-7.441406 7.425781-11.597656 17.519531-11.539062 28.03125v12.5h-51.199219c-19.1875.003906-35.394531 14.234375-37.878907 33.257812-2.480468 19.027344 9.535157 36.941407 28.078126 41.863282zm239.601562 279.878906h-189.203125c-17.097656 0-30.398437-14.6875-30.398437-33.5v-245.5h250v245.5c0 18.8125-13.300782 33.5-30.398438 33.5zm-158.601562-367.5c-.066407-5.207031 1.980468-10.21875 5.675781-13.894531 3.691406-3.675781 8.714843-5.695313 13.925781-5.605469h88.796875c5.210937-.089844 10.234375 1.929688 13.925781 5.605469 3.695313 3.671875 5.742188 8.6875 5.675782 13.894531v12.5h-128zm-71.199219 32.5h270.398437c9.941406 0 18 8.058594 18 18s-8.058594 18-18 18h-270.398437c-9.941407 0-18-8.058594-18-18s8.058593-18 18-18zm0 0"/><path d="m173.398438 154.703125c-5.523438 0-10 4.476563-10 10v189c0 5.519531 4.476562 10 10 10 5.523437 0 10-4.480469 10-10v-189c0-5.523437-4.476563-10-10-10zm0 0"/></svg>
+								</span>
+							</li>
+						</ul>-->
+					</div>
+				</div>
+				<div class="group armazens">
+					<div class="flex h-sb v-ct tit">
+						<h2>Armazéns</h2>
+						<button class="xbtn" novoArmazem>Adicionar
+							novo</button>
+
+					</div>
+					<div class="list-armazens _listTbl">
+						<!--<ul class="flex">
+							<li class="flex column">
+								<span>Designação</span>
+								<span>Armazém X</span>
+							</li>
+							<li class="flex column">
+								<span>Tipo</span>
+								<span>Tipo X</span>
+							</li>
+							<li class="flex column">
+								<span>Em stock</span>
+								<span>120</span>
+							</li>
+							<li class="flex column">
+								<span class="noLabel"></span>
+								<span class="flex v-ct">
+									<a class="showTarget" target="xModalCtrlArmazem" tTitle="Editar Armazém">
+										<svg class="edit showTarget" viewBox="0 0 512 512"><path d="m368 511.957031h-309.332031c-32.363281 0-58.667969-26.304687-58.667969-58.667969v-309.332031c0-32.363281 26.304688-58.667969 58.667969-58.667969h181.332031c8.832031 0 16 7.167969 16 16 0 8.832032-7.167969 16-16 16h-181.332031c-14.699219 0-26.667969 11.96875-26.667969 26.667969v309.332031c0 14.699219 11.96875 26.667969 26.667969 26.667969h309.332031c14.699219 0 26.667969-11.96875 26.667969-26.667969v-181.332031c0-8.832031 7.167969-16 16-16s16 7.148438 16 16v181.332031c0 32.363282-26.304688 58.667969-58.667969 58.667969zm0 0"/><path d="m187.136719 340.820312c-4.203125 0-8.300781-1.664062-11.308594-4.691406-3.796875-3.777344-5.417969-9.21875-4.371094-14.445312l15.082031-75.433594c.617188-3.113281 2.152344-5.953125 4.371094-8.171875l220.953125-220.925781c22.867188-22.871094 60.074219-22.871094 82.964844 0 11.070313 11.070312 17.171875 25.792968 17.171875 41.472656s-6.101562 30.398438-17.195312 41.472656l-220.925782 220.949219c-2.21875 2.238281-5.078125 3.753906-8.171875 4.371094l-75.414062 15.082031c-1.046875.214844-2.113281.320312-3.15625.320312zm75.433593-31.082031h.214844zm-45.609374-52.457031-9.410157 47.144531 47.125-9.429687 217.515625-217.511719c5.035156-5.058594 7.808594-11.734375 7.808594-18.859375s-2.773438-13.804688-7.808594-18.859375c-10.367187-10.390625-27.285156-10.390625-37.714844 0zm0 0"/><path d="m453.332031 134.976562c-4.09375 0-8.191406-1.558593-11.304687-4.695312l-60.332032-60.351562c-6.25-6.25-6.25-16.382813 0-22.632813s16.382813-6.25 22.636719 0l60.328125 60.351563c6.25 6.25 6.25 16.382812 0 22.632812-3.136718 3.117188-7.230468 4.695312-11.328125 4.695312zm0 0"/></svg>
+									</a>
+									<svg class="delete" viewBox="-40 0 427 427.00131"><path d="m232.398438 154.703125c-5.523438 0-10 4.476563-10 10v189c0 5.519531 4.476562 10 10 10 5.523437 0 10-4.480469 10-10v-189c0-5.523437-4.476563-10-10-10zm0 0"/><path d="m114.398438 154.703125c-5.523438 0-10 4.476563-10 10v189c0 5.519531 4.476562 10 10 10 5.523437 0 10-4.480469 10-10v-189c0-5.523437-4.476563-10-10-10zm0 0"/><path d="m28.398438 127.121094v246.378906c0 14.5625 5.339843 28.238281 14.667968 38.050781 9.285156 9.839844 22.207032 15.425781 35.730469 15.449219h189.203125c13.527344-.023438 26.449219-5.609375 35.730469-15.449219 9.328125-9.8125 14.667969-23.488281 14.667969-38.050781v-246.378906c18.542968-4.921875 30.558593-22.835938 28.078124-41.863282-2.484374-19.023437-18.691406-33.253906-37.878906-33.257812h-51.199218v-12.5c.058593-10.511719-4.097657-20.605469-11.539063-28.03125-7.441406-7.421875-17.550781-11.5546875-28.0625-11.46875h-88.796875c-10.511719-.0859375-20.621094 4.046875-28.0625 11.46875-7.441406 7.425781-11.597656 17.519531-11.539062 28.03125v12.5h-51.199219c-19.1875.003906-35.394531 14.234375-37.878907 33.257812-2.480468 19.027344 9.535157 36.941407 28.078126 41.863282zm239.601562 279.878906h-189.203125c-17.097656 0-30.398437-14.6875-30.398437-33.5v-245.5h250v245.5c0 18.8125-13.300782 33.5-30.398438 33.5zm-158.601562-367.5c-.066407-5.207031 1.980468-10.21875 5.675781-13.894531 3.691406-3.675781 8.714843-5.695313 13.925781-5.605469h88.796875c5.210937-.089844 10.234375 1.929688 13.925781 5.605469 3.695313 3.671875 5.742188 8.6875 5.675782 13.894531v12.5h-128zm-71.199219 32.5h270.398437c9.941406 0 18 8.058594 18 18s-8.058594 18-18 18h-270.398437c-9.941407 0-18-8.058594-18-18s8.058593-18 18-18zm0 0"/><path d="m173.398438 154.703125c-5.523438 0-10 4.476563-10 10v189c0 5.519531 4.476562 10 10 10 5.523437 0 10-4.480469 10-10v-189c0-5.523437-4.476563-10-10-10zm0 0"/></svg>
+								</span>
+							</li>
+						</ul>-->
+					</div>
+				</div>
+				<div class="group impressao">
+					<div class="flex h-sb v-ct tit">
+						<h2>Configurações de Impressão</h2>
+						<button class="xbtn" newPrinter>Adicionar nova</button>
+
+					</div>
+					<div class="list-prints _listTbl" id="listPrinters">
+						<!--<ul class="flex">
+							<li class="flex column">
+								<span>Operação</span>
+								<span>Impressora X</span>
+							</li>
+							<li class="flex column">
+								<span>Tipos de impressão</span>
+								<span>Principal</span>
+							</li>
+							<li class="flex column">
+								<span>Impressoras</span>
+								<span>192.168.1.25</span>
+							</li>
+							<li class="flex column">
+								<span class="noLabel"></span>
+								<span class="flex v-ct">
+									<a class="showTarget" target="xModalPrintSett" tTitle="Editar impressora">
+										<svg class="edit showTarget" viewBox="0 0 512 512"><path d="m368 511.957031h-309.332031c-32.363281 0-58.667969-26.304687-58.667969-58.667969v-309.332031c0-32.363281 26.304688-58.667969 58.667969-58.667969h181.332031c8.832031 0 16 7.167969 16 16 0 8.832032-7.167969 16-16 16h-181.332031c-14.699219 0-26.667969 11.96875-26.667969 26.667969v309.332031c0 14.699219 11.96875 26.667969 26.667969 26.667969h309.332031c14.699219 0 26.667969-11.96875 26.667969-26.667969v-181.332031c0-8.832031 7.167969-16 16-16s16 7.148438 16 16v181.332031c0 32.363282-26.304688 58.667969-58.667969 58.667969zm0 0"/><path d="m187.136719 340.820312c-4.203125 0-8.300781-1.664062-11.308594-4.691406-3.796875-3.777344-5.417969-9.21875-4.371094-14.445312l15.082031-75.433594c.617188-3.113281 2.152344-5.953125 4.371094-8.171875l220.953125-220.925781c22.867188-22.871094 60.074219-22.871094 82.964844 0 11.070313 11.070312 17.171875 25.792968 17.171875 41.472656s-6.101562 30.398438-17.195312 41.472656l-220.925782 220.949219c-2.21875 2.238281-5.078125 3.753906-8.171875 4.371094l-75.414062 15.082031c-1.046875.214844-2.113281.320312-3.15625.320312zm75.433593-31.082031h.214844zm-45.609374-52.457031-9.410157 47.144531 47.125-9.429687 217.515625-217.511719c5.035156-5.058594 7.808594-11.734375 7.808594-18.859375s-2.773438-13.804688-7.808594-18.859375c-10.367187-10.390625-27.285156-10.390625-37.714844 0zm0 0"/><path d="m453.332031 134.976562c-4.09375 0-8.191406-1.558593-11.304687-4.695312l-60.332032-60.351562c-6.25-6.25-6.25-16.382813 0-22.632813s16.382813-6.25 22.636719 0l60.328125 60.351563c6.25 6.25 6.25 16.382812 0 22.632812-3.136718 3.117188-7.230468 4.695312-11.328125 4.695312zm0 0"/></svg>
+									</a>
+									<svg class="delete" viewBox="-40 0 427 427.00131"><path d="m232.398438 154.703125c-5.523438 0-10 4.476563-10 10v189c0 5.519531 4.476562 10 10 10 5.523437 0 10-4.480469 10-10v-189c0-5.523437-4.476563-10-10-10zm0 0"/><path d="m114.398438 154.703125c-5.523438 0-10 4.476563-10 10v189c0 5.519531 4.476562 10 10 10 5.523437 0 10-4.480469 10-10v-189c0-5.523437-4.476563-10-10-10zm0 0"/><path d="m28.398438 127.121094v246.378906c0 14.5625 5.339843 28.238281 14.667968 38.050781 9.285156 9.839844 22.207032 15.425781 35.730469 15.449219h189.203125c13.527344-.023438 26.449219-5.609375 35.730469-15.449219 9.328125-9.8125 14.667969-23.488281 14.667969-38.050781v-246.378906c18.542968-4.921875 30.558593-22.835938 28.078124-41.863282-2.484374-19.023437-18.691406-33.253906-37.878906-33.257812h-51.199218v-12.5c.058593-10.511719-4.097657-20.605469-11.539063-28.03125-7.441406-7.421875-17.550781-11.5546875-28.0625-11.46875h-88.796875c-10.511719-.0859375-20.621094 4.046875-28.0625 11.46875-7.441406 7.425781-11.597656 17.519531-11.539062 28.03125v12.5h-51.199219c-19.1875.003906-35.394531 14.234375-37.878907 33.257812-2.480468 19.027344 9.535157 36.941407 28.078126 41.863282zm239.601562 279.878906h-189.203125c-17.097656 0-30.398437-14.6875-30.398437-33.5v-245.5h250v245.5c0 18.8125-13.300782 33.5-30.398438 33.5zm-158.601562-367.5c-.066407-5.207031 1.980468-10.21875 5.675781-13.894531 3.691406-3.675781 8.714843-5.695313 13.925781-5.605469h88.796875c5.210937-.089844 10.234375 1.929688 13.925781 5.605469 3.695313 3.671875 5.742188 8.6875 5.675782 13.894531v12.5h-128zm-71.199219 32.5h270.398437c9.941406 0 18 8.058594 18 18s-8.058594 18-18 18h-270.398437c-9.941407 0-18-8.058594-18-18s8.058593-18 18-18zm0 0"/><path d="m173.398438 154.703125c-5.523438 0-10 4.476563-10 10v189c0 5.519531 4.476562 10 10 10 5.523437 0 10-4.480469 10-10v-189c0-5.523437-4.476563-10-10-10zm0 0"/></svg>
+								</span>
+							</li>
+						</ul>-->
+					</div>
+				</div>
+				<div class="group efatura">
+					<div class="flex h-sb v-ct tit">
+						<h2>Séries</h2>
+						<button class="xbtn" novaSerieEfatura>Adicionar nova</button>
+					</div>
+					<div class="list-prints _listTbl" id="series_efatura">
+						<!--<ul class="flex">
+							<li class="flex column">
+								<span>Designação</span>
+								<span>iugiuy</span>
+							</li>
+							<li class="flex column">
+								<span>Tipo</span>
+								<span>FR</span>
+							</li>
+							<li class="flex column">
+								<span>Série</span>
+								<span>45</span>
+							</li>
+							<li class="flex h-sb">
+								<div class="flex column">
+									<span>Quantidade</span>
+									<span>2</span>
+								</div>
+								<div class="flex column">
+									<span class="noLabel"></span>
+									<span class="switch" tooltip="Ativar/Desativar" flow="up">
+										<label class="xSwitch">
+											<input type="checkbox" checked>
+											<span class="slider round"></span>
+										</label>
+									</span>
+								</div>
+							</li>
+						</ul>-->
+					</div>
+				</div>
+				<div class="group armazens">
+					<div class="flex h-sb v-ct tit">
+						<h2>Impostos</h2>
+						<button class="xbtn" novoImposto>Adicionar novo</button>
+					</div>
+					<div class="_listTbl" id="lista_tipos_impostos">
+					</div>
+				</div>
+			</div>
+			<div id="sett2ID" class="sett2">
+				<div class="listinfos">
+
+					<div class="flex v-ct h-sb tit">
+						<div class="intro flex">
+							<div class="img-container round noPhoto" logo_empresa></div>
+							<div>
+								<h3 nome_empresa></h3>
+								<p nif_empresa></p>
+							</div>
+						</div>
+						<a class="showTarget" target="xModalAboutEnterprise">
+							<svg class="edit showTarget" viewBox="0 0 512 512">
+								<path
+									d="m368 511.957031h-309.332031c-32.363281 0-58.667969-26.304687-58.667969-58.667969v-309.332031c0-32.363281 26.304688-58.667969 58.667969-58.667969h181.332031c8.832031 0 16 7.167969 16 16 0 8.832032-7.167969 16-16 16h-181.332031c-14.699219 0-26.667969 11.96875-26.667969 26.667969v309.332031c0 14.699219 11.96875 26.667969 26.667969 26.667969h309.332031c14.699219 0 26.667969-11.96875 26.667969-26.667969v-181.332031c0-8.832031 7.167969-16 16-16s16 7.148438 16 16v181.332031c0 32.363282-26.304688 58.667969-58.667969 58.667969zm0 0" />
+								<path
+									d="m187.136719 340.820312c-4.203125 0-8.300781-1.664062-11.308594-4.691406-3.796875-3.777344-5.417969-9.21875-4.371094-14.445312l15.082031-75.433594c.617188-3.113281 2.152344-5.953125 4.371094-8.171875l220.953125-220.925781c22.867188-22.871094 60.074219-22.871094 82.964844 0 11.070313 11.070312 17.171875 25.792968 17.171875 41.472656s-6.101562 30.398438-17.195312 41.472656l-220.925782 220.949219c-2.21875 2.238281-5.078125 3.753906-8.171875 4.371094l-75.414062 15.082031c-1.046875.214844-2.113281.320312-3.15625.320312zm75.433593-31.082031h.214844zm-45.609374-52.457031-9.410157 47.144531 47.125-9.429687 217.515625-217.511719c5.035156-5.058594 7.808594-11.734375 7.808594-18.859375s-2.773438-13.804688-7.808594-18.859375c-10.367187-10.390625-27.285156-10.390625-37.714844 0zm0 0" />
+								<path
+									d="m453.332031 134.976562c-4.09375 0-8.191406-1.558593-11.304687-4.695312l-60.332032-60.351562c-6.25-6.25-6.25-16.382813 0-22.632813s16.382813-6.25 22.636719 0l60.328125 60.351563c6.25 6.25 6.25 16.382812 0 22.632812-3.136718 3.117188-7.230468 4.695312-11.328125 4.695312zm0 0" />
+							</svg>
+						</a>
+					</div>
+					<ul class="uno">
+						<li class="flex">
+							<b>Email</b>
+							<span email_empresa></span>
+						</li>
+						<li class="flex">
+							<b>Telefone</b>
+							<span telef_empresa></span>
+						</li>
+						<li class="flex">
+							<b>Endereço</b>
+							<span endereco_empresa></span>
+						</li>
+						<li class="flex">
+							<b>Gerente</b>
+							<span gerente_empresa></span>
+						</li>
+						<li class="flex">
+							<b>Número de certificado</b>
+							<span certification_empresa></span>
+						</li>
+						<li class="flex">
+							<b>Logotipo no talão</b>
+							<span logo_talao></span>
+						</li>
+					</ul>
+					<div class="flex v-ct h-sb tit">
+						<h3>Câmbio do dia</h3>
+						<svg id="editarCambio" class="edit" viewBox="0 0 512 512">
+							<path
+								d="m368 511.957031h-309.332031c-32.363281 0-58.667969-26.304687-58.667969-58.667969v-309.332031c0-32.363281 26.304688-58.667969 58.667969-58.667969h181.332031c8.832031 0 16 7.167969 16 16 0 8.832032-7.167969 16-16 16h-181.332031c-14.699219 0-26.667969 11.96875-26.667969 26.667969v309.332031c0 14.699219 11.96875 26.667969 26.667969 26.667969h309.332031c14.699219 0 26.667969-11.96875 26.667969-26.667969v-181.332031c0-8.832031 7.167969-16 16-16s16 7.148438 16 16v181.332031c0 32.363282-26.304688 58.667969-58.667969 58.667969zm0 0" />
+							<path
+								d="m187.136719 340.820312c-4.203125 0-8.300781-1.664062-11.308594-4.691406-3.796875-3.777344-5.417969-9.21875-4.371094-14.445312l15.082031-75.433594c.617188-3.113281 2.152344-5.953125 4.371094-8.171875l220.953125-220.925781c22.867188-22.871094 60.074219-22.871094 82.964844 0 11.070313 11.070312 17.171875 25.792968 17.171875 41.472656s-6.101562 30.398438-17.195312 41.472656l-220.925782 220.949219c-2.21875 2.238281-5.078125 3.753906-8.171875 4.371094l-75.414062 15.082031c-1.046875.214844-2.113281.320312-3.15625.320312zm75.433593-31.082031h.214844zm-45.609374-52.457031-9.410157 47.144531 47.125-9.429687 217.515625-217.511719c5.035156-5.058594 7.808594-11.734375 7.808594-18.859375s-2.773438-13.804688-7.808594-18.859375c-10.367187-10.390625-27.285156-10.390625-37.714844 0zm0 0" />
+							<path
+								d="m453.332031 134.976562c-4.09375 0-8.191406-1.558593-11.304687-4.695312l-60.332032-60.351562c-6.25-6.25-6.25-16.382813 0-22.632813s16.382813-6.25 22.636719 0l60.328125 60.351563c6.25 6.25 6.25 16.382812 0 22.632812-3.136718 3.117188-7.230468 4.695312-11.328125 4.695312zm0 0" />
+						</svg>
+					</div>
+					<ul class="dos" cambios>
+						<!--<li class="flex">
+							<span>1 EUR</span>
+							<span>=</span>
+							<span>0,00 STN</span>
+						</li>
+						<li class="flex">
+							<span>1 USD</span>
+							<span>=</span>
+							<span>0,00 STN</span>
+						</li>
+						<li class="flex">
+							<span>1 XAF</span>
+							<span>=</span>
+							<span>0,00 STN</span>
+						</li>
+						<li class="flex">
+							<span>1 STN</span>
+							<span>=</span>
+							<span>0,00 STN</span>
+						</li>-->
+					</ul>
+				</div>
+
+			</div>
+		</div>
+	</div>
+	<!-- MODALS -->
+
+	<div id="xModalAboutEnterprise" class="x-mobdal XM-aboutEnterprise flex v-ct h-ct hideTarget"
+		target="xModalAboutEnterprise">
+		<div class="modal-frame j-stp">
+			<h3>Atualizar dados da empresa</h3>
+			<div class="xform">
+				<div class="xinput grow-1 w100">
+					<input type="file" id="empresa_logo" accept=".png, .jpg, .jpeg">
+					<label for="empresa_logo" lab="Logotipo"><small id="empresa_logo_nome"></small></label>
+				</div>
+				<div class="xinput grow-1 w100">
+					<input type="file" id="empresa_cabecalho" accept=".png, .jpg, .jpeg" _noObrigatory="true">
+					<label for="empresa_cabecalho" lab="Cabeçalho"><small id="empresa_cabecalho_nome"></small></label>
+				</div>
+				<div class="xinput grow-1 w100">
+					<input type="text" id="empresa_nome">
+					<label for="empresa_nome">Nome</label>
+				</div>
+				<div class="xinput grow-1 w100">
+					<input type="text" id="empresa_nif" class="integer" maxlength="9">
+					<label for="empresa_nif">NIF</label>
+				</div>
+				<div class="xinput grow-1 w100">
+					<input type="text" placeholder="_" id="empresa_email">
+					<label for="empresa_email">Email</label>
+				</div>
+				<div class="xinput grow-1 w100">
+					<input type="text" placeholder="_" id="empresa_telef" class="integer">
+					<label for="empresa_telef">Telefone</label>
+				</div>
+				<div class="xinput grow-1 w100">
+					<input type="text" placeholder="_" id="empresa_endereco">
+					<label for="empresa_endereco">Endereço</label>
+				</div>
+				<div class="xinput grow-1 w100">
+					<input type="text"  id="empresa_certificacao" _noObrigatory="true" class="_noObrigatory">
+					<label for="empresa_certificacao">Número de certificação</label>
+				</div>
+				<div class="xinput grow-1 w100">
+					<input type="text" class="_noObrigatory" id="empresa_gerente" _noObrigatory="true">
+					<label for="empresa_gerente">Nome do Gerente</label>
+				</div>
+				<div class="xcheck multiple">
+					<ul>
+						<li class="stgl" id="remove_header">Remover cabeçalho</li>
+						<li class="stgl" id="mostrarLogoTalao">Apresentar logotipo na impressão de talão</li>
+					</ul>
+				</div>
+			</div>
+			<div class="master-btn-right flex">
+				<span class="hideTarget" target="xModalAboutEnterprise">CANCELAR</span>
+				<span class="flex v-ct" bt_empresa>
+					CONCLUIR
+					<svg class="spinner" viewBox="0 0 50 50">
+						<circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
+					</svg>
+				</span>
+			</div>
+		</div>
+	</div>
+	<div id="xModalCtrlPosto" class="x-mobdal XM-ctrlPosto flex v-ct h-ct hideTarget" target="xModalCtrlPosto">
+		<div class="modal-frame j-stp">
+			<h3 targetTitle>Adicionar Posto</h3>
+			<div class="xform">
+				<div class="xselect w100">
+					<input type="text" readonly id="postoCodigoDesc">
+					<label>Código</label>
+					<ul codigos_posto>
+					</ul>
+				</div>
+				<div class="xselect w100">
+					<input type="text" readonly _noObrigatory="true" id="postoAssociarDesc">
+					<label>Associar posto</label>
+					<ul postos_criados>
+					</ul>
+				</div>
+				<div class="xinput grow-1 w100">
+					<input type="text" id="posto_designacao">
+					<label for="posto_designacao">Designação</label>
+				</div>
+				<div class="xselect w100">
+					<input type="text" readonly id="postoTipoDesc">
+					<label>Tipo de posto</label>
+					<ul tipoPosto>
+						<li id="1">Pedido</li>
+						<li id="2">Pedido e cobrança</li>
+					</ul>
+				</div>
+				<div class="xselect w100">
+					<input type="text" readonly id="tipoCaixaDesc">
+					<label>Tipo de caixa</label>
+					<ul tipoCaixa>
+						<li class="tgl" tipo="1">Por pessoa</li>
+						<li class="tgl" tipo="2">Por armazém</li>
+						<li class="tgl" tipo="3">Por posto</li>
+					</ul>
+				</div>
+				<div class="xselect w100">
+					<input type="text" readonly id="tipoAuthPOS">
+					<label>PIN de autenticação POS</label>
+					<ul pinAuthPOS>
+						<li class="tgl" tipo="1">Pedir sempre</li>
+						<li class="tgl" tipo="2">Pedir uma única vez</li>
+					</ul>
+				</div>
+				<div class="xcheck multiple">
+					<ul>
+						<li class="stgl" id="posto_varias_caixas_abertas">Pode ter várias caixas abertas</li>
+					</ul>
+				</div>
+				<p>Selecione os armazéns nos quais este posto estará associado.</p>
+				<div class="xcheck multiple">
+					<ul armazens_posto>
+					</ul>
+				</div>
+			</div>
+			<div class="master-btn-right flex">
+				<span class="hideTarget" target="xModalCtrlPosto">CANCELAR</span>
+				<span class="flex v-ct" bt_posto>
+					CONCLUIR
+					<svg class="spinner" viewBox="0 0 50 50">
+						<circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
+					</svg>
+				</span>
+			</div>
+		</div>
+	</div>
+	<div id="xModalCtrlEditPosto" class="x-mobdal XM-ctrlPosto flex v-ct h-ct hideTarget" target="xModalCtrlEditPosto">
+		<div class="modal-frame j-stp">
+			<h3 targetTitle>Editar Posto</h3>
+			<div class="xform">
+				<div class="xinput grow-1 w100">
+					<input type="text" postoDesignacao>
+					<label>Designação</label>
+				</div>
+				<div class="xselect w100">
+					<input type="text" readonly postoTipoDesc>
+					<label>Tipo</label>
+					<ul tipoPostoEdit>
+						<li tipo_id="1">Venda</li>
+						<li tipo_id="2">Cobrança</li>
+					</ul>
+				</div>
+				<div class="xselect w100">
+					<input type="text" readonly id="tipoCaixaDescEdit">
+					<label>Tipo de caixa</label>
+					<ul tipoCaixaEdit>
+						<li class="tgl" tipo="1">Por pessoa</li>
+						<li class="tgl" tipo="2">Por armazém</li>
+						<li class="tgl" tipo="3">Por posto</li>
+					</ul>
+				</div>
+				<div class="xselect w100">
+					<input type="text" readonly id="pinAuthDescEdit">
+					<label>PIN de autenticação POS</label>
+					<ul pinAuthEdit>
+						<li class="tgl" tipo="1">Pedir sempre</li>
+						<li class="tgl" tipo="2">Pedir uma única vez</li>
+					</ul>
+				</div>
+				<div class="xcheck multiple">
+					<ul>
+						<li class="stgl" id="posto_varias_caixas_abertas_edit">Ter várias caixas abertas</li>
+					</ul>
+				</div>
+				<p>Selecione os armazéns nos quais este posto estará associado.</p>
+				<div class="xcheck multiple">
+					<ul armazens_posto_edit>
+					</ul>
+				</div>
+			</div>
+			<div class="master-btn-right flex">
+				<span class="hideTarget" target="xModalCtrlEditPosto">CANCELAR</span>
+				<span class="flex v-ct" bt_edit_posto>
+					CONCLUIR
+					<svg class="spinner" viewBox="0 0 50 50">
+						<circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
+					</svg>
+				</span>
+			</div>
+		</div>
+	</div>
+	<div id="xModalCtrlArmazem" class="x-mobdal XM-ctrlArmazem flex v-ct h-ct hideTarget" target="xModalCtrlArmazem">
+		<div class="modal-frame j-stp">
+			<h3 targetTitle>Adicionar Armazém</h3>
+			<div class="xform">
+				<div class="xinput grow-1 w100">
+					<input type="text" id="armazem_designacao">
+					<label for="armazem_designacao">Designação</label>
+				</div>
+				<div class="xselect flutuate w100">
+					<input type="text" readonly>
+					<label>Núcleo</label>
+					<ul id="cluster_armazem">
+						<li class="tgl"></li>
+					</ul>
+				</div>
+				<div class="xselect w100">
+					<input type="text" readonly _noObrigatory="true" >
+					<label>Posto alocado</label>
+					<ul id="postos_espaco">
+					</ul>
+				</div>
+				<div class="xcheck multiple">
+					<ul>
+						<li class="stgl" id="armazem_fatura_independente">Gerar fatura independente</li>
+						<li class="stgl" id="armazem_config_independente">Configuração independente</li>
+					</ul>
+				</div>
+			</div>
+			<div class="master-btn-right flex">
+				<span class="hideTarget" target="xModalCtrlArmazem">CANCELAR</span>
+				<span class="flex v-ct" bt_armazem>
+					CONCLUIR
+					<svg class="spinner" viewBox="0 0 50 50">
+						<circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
+					</svg>
+				</span>
+			</div>
+		</div>
+	</div>
+	<div id="xModalPrintSett" class="x-mobdal XM-printSett flex v-ct h-ct hideTarget" target="xModalPrintSett">
+		<div class="modal-frame j-stp">
+			<h3>Definições de impressão</h3>
+			<div class="inn flex">
+
+				<div class="xform">
+					<div class="xselect flutuate w100">
+						<input type="text" readonly  placeholder="_">
+						<label>Operação</label>
+						<ul id="printOperations">
+							<li operation="fatura_recibo">Fatura/Recibo</li>
+							<li operation="fatura_recibo_2_via">Fatura/Recibo (2ª via)</li>
+							<li operation="fatura">Fatura</li>
+							<li operation="conta">Conta</li>
+							<li operation="caixa">Fecho de caixa</li>
+						</ul>
+					</div>
+					<div class="xinput grow-1 w100">
+						<input type="text" id="impressora_designacao" placeholder="_" _noObrigatory="true">
+						<label for="impressora_designacao">Nome da impressora</label>
+					</div>
+					<div class="xinput grow-1 w100">
+						<input type="text" id="impressora_ip" placeholder="_" _noObrigatory="true">
+						<label for="impressora_ip">Endereço IP da impressora</label>
+					</div>
+					<div class="xcheck multiple w100">
+						<b>Tipo de impressão</b>
+						<ul id="typePrinter">
+							<li class="stgl" tipo="talao">Talão</li>
+							<li class="stgl" tipo="pdf">A4 (PDF)</li>
+						</ul>
+					</div>
+					<button class="xbtn" btAddPrinter>Adicionar</button>
+
+				</div>
+				<div class="listSettings">
+					<h4>Configurações</h4>
+					<ul id="printersConfigured">
+						<!--<li class="active">
+							<span class="flex h-sb">
+								<b>Recibo POS</b>
+								<small>A4</small>
+							</span>
+							<span class="flex h-sb">
+								<small>Impressora name</small>
+								<small>192.168.1.0</small>
+							</span>
+							<span class="ctrl">
+								<svg class="edit showTarget" viewBox="0 0 512 512">
+									<path
+										d="m368 511.957031h-309.332031c-32.363281 0-58.667969-26.304687-58.667969-58.667969v-309.332031c0-32.363281 26.304688-58.667969 58.667969-58.667969h181.332031c8.832031 0 16 7.167969 16 16 0 8.832032-7.167969 16-16 16h-181.332031c-14.699219 0-26.667969 11.96875-26.667969 26.667969v309.332031c0 14.699219 11.96875 26.667969 26.667969 26.667969h309.332031c14.699219 0 26.667969-11.96875 26.667969-26.667969v-181.332031c0-8.832031 7.167969-16 16-16s16 7.148438 16 16v181.332031c0 32.363282-26.304688 58.667969-58.667969 58.667969zm0 0" />
+									<path
+										d="m187.136719 340.820312c-4.203125 0-8.300781-1.664062-11.308594-4.691406-3.796875-3.777344-5.417969-9.21875-4.371094-14.445312l15.082031-75.433594c.617188-3.113281 2.152344-5.953125 4.371094-8.171875l220.953125-220.925781c22.867188-22.871094 60.074219-22.871094 82.964844 0 11.070313 11.070312 17.171875 25.792968 17.171875 41.472656s-6.101562 30.398438-17.195312 41.472656l-220.925782 220.949219c-2.21875 2.238281-5.078125 3.753906-8.171875 4.371094l-75.414062 15.082031c-1.046875.214844-2.113281.320312-3.15625.320312zm75.433593-31.082031h.214844zm-45.609374-52.457031-9.410157 47.144531 47.125-9.429687 217.515625-217.511719c5.035156-5.058594 7.808594-11.734375 7.808594-18.859375s-2.773438-13.804688-7.808594-18.859375c-10.367187-10.390625-27.285156-10.390625-37.714844 0zm0 0" />
+									<path
+										d="m453.332031 134.976562c-4.09375 0-8.191406-1.558593-11.304687-4.695312l-60.332032-60.351562c-6.25-6.25-6.25-16.382813 0-22.632813s16.382813-6.25 22.636719 0l60.328125 60.351563c6.25 6.25 6.25 16.382812 0 22.632812-3.136718 3.117188-7.230468 4.695312-11.328125 4.695312zm0 0" />
+								</svg>
+								<svg class="delete" viewBox="-40 0 427 427.00131">
+									<path
+										d="m232.398438 154.703125c-5.523438 0-10 4.476563-10 10v189c0 5.519531 4.476562 10 10 10 5.523437 0 10-4.480469 10-10v-189c0-5.523437-4.476563-10-10-10zm0 0" />
+									<path
+										d="m114.398438 154.703125c-5.523438 0-10 4.476563-10 10v189c0 5.519531 4.476562 10 10 10 5.523437 0 10-4.480469 10-10v-189c0-5.523437-4.476563-10-10-10zm0 0" />
+									<path
+										d="m28.398438 127.121094v246.378906c0 14.5625 5.339843 28.238281 14.667968 38.050781 9.285156 9.839844 22.207032 15.425781 35.730469 15.449219h189.203125c13.527344-.023438 26.449219-5.609375 35.730469-15.449219 9.328125-9.8125 14.667969-23.488281 14.667969-38.050781v-246.378906c18.542968-4.921875 30.558593-22.835938 28.078124-41.863282-2.484374-19.023437-18.691406-33.253906-37.878906-33.257812h-51.199218v-12.5c.058593-10.511719-4.097657-20.605469-11.539063-28.03125-7.441406-7.421875-17.550781-11.5546875-28.0625-11.46875h-88.796875c-10.511719-.0859375-20.621094 4.046875-28.0625 11.46875-7.441406 7.425781-11.597656 17.519531-11.539062 28.03125v12.5h-51.199219c-19.1875.003906-35.394531 14.234375-37.878907 33.257812-2.480468 19.027344 9.535157 36.941407 28.078126 41.863282zm239.601562 279.878906h-189.203125c-17.097656 0-30.398437-14.6875-30.398437-33.5v-245.5h250v245.5c0 18.8125-13.300782 33.5-30.398438 33.5zm-158.601562-367.5c-.066407-5.207031 1.980468-10.21875 5.675781-13.894531 3.691406-3.675781 8.714843-5.695313 13.925781-5.605469h88.796875c5.210937-.089844 10.234375 1.929688 13.925781 5.605469 3.695313 3.671875 5.742188 8.6875 5.675782 13.894531v12.5h-128zm-71.199219 32.5h270.398437c9.941406 0 18 8.058594 18 18s-8.058594 18-18 18h-270.398437c-9.941407 0-18-8.058594-18-18s8.058593-18 18-18zm0 0" />
+									<path
+										d="m173.398438 154.703125c-5.523438 0-10 4.476563-10 10v189c0 5.519531 4.476562 10 10 10 5.523437 0 10-4.480469 10-10v-189c0-5.523437-4.476563-10-10-10zm0 0" />
+								</svg>
+							</span>
+						</li>-->
+					</ul>
+				</div>
+			</div>
+			<div class="kuchen" id="cookPrinterConfiguration">
+				<b>Outras definições</b>
+				<div class="xcheck multiple">
+					<ul >
+						<li id="hasKuchen">Configurar impressora de cozinha</li>
+					</ul>
+				</div>
+				<div class="kuchenPrint xform">
+					<div class="xinput grow-1 w50 mr1">
+						<input type="text" id="nome_impressora_cozinha" placeholder="_" _noObrigatory="true">
+						<label for="nome_impressora_cozinha">Nome da impressora</label>
+					</div>
+					<div class="xinput grow-1 w50">
+						<input type="text" id="ip_impressora_cozinha" placeholder="_" _noObrigatory="true">
+						<label for="ip_impressora_cozinha">Endereço IP da impressora</label>
+					</div>
+				</div>
+			</div>
+			<div class="master-btn-right flex">
+				<span class="hideTarget" target="xModalPrintSett">CANCELAR</span>
+				<span class="flex v-ct" bt_impressora>
+					CONCLUIR
+					<svg class="spinner" viewBox="0 0 50 50">
+						<circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
+					</svg>
+				</span>
+			</div>
+		</div>
+	</div>
+	<div id="xModalEfatura" class="x-mobdal XM-Efatura flex v-ct h-ct hideTarget" target="xModalEfatura">
+		<div class="modal-frame j-stp">
+			<h3 targetTitle></h3>
+			<div class="xform">
+				<div class="xselect w100">
+					<input type="text" readonly>
+					<label>Tipos de série</label>
+					<ul id="tipo_serie_efatura">
+						<li class="tgl" tipo_id="1" tipo_sigla="FT-">Fatura</li>
+						<li class="tgl" tipo_id="2" tipo_sigla="FR-">Fatura Recibo</li>
+						<li class="tgl" tipo_id="3" tipo_sigla="RE-">Recibo</li>
+					</ul>
+				</div>
+				<div class="xselect w100">
+					<input type="text" readonly>
+					<label>Armazém</label>
+					<ul id="armazem_efatura">
+					</ul>
+				</div>
+				<div class="xinput grow-1 w100">
+					<input type="text" id="designacao_serie_efatura">
+					<label for="designacao_serie_efatura">Designação</label>
+				</div>
+				<div class="xinput grow-1 w100">
+					<input type="text" id="numero_serie_efatura" class="integer" maxlength="10" disabled>
+					<label for="numero_serie_efatura">Número de série</label>
+				</div>
+				<div class="xinput grow-1 w100">
+					<input type="text" id="quantidade_serie_efatura" class="integer">
+					<label for="quantidade_serie_efatura">Quantidade</label>
+				</div>
+				<div class="xinput grow-1 w100">
+					<input type="text" id="numero_autorizacao_serie" class="integer">
+					<label for="numero_autorizacao_serie">Número de autorização</label>
+				</div>
+			</div>
+			<div class="master-btn-right flex">
+				<span class="hideTarget" target="xModalEfatura">CANCELAR</span>
+				<span class="flex v-ct" bt_efatura>
+					CONCLUIR
+					<svg class="spinner" viewBox="0 0 50 50">
+						<circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
+					</svg>
+				</span>
+			</div>
+		</div>
+	</div>
+	<div id="xModalCtrlCambio" class="x-mobdal XM-ctrlPosto flex v-ct h-ct hideTarget" target="xModalCtrlCambio">
+		<div class="modal-frame j-stp">
+			<h3 targetTitle></h3>
+			<div class="xform">
+				<div class="xinput grow-1 w100">
+					<input type="text" id="cambio_stn" code="stn" currency="" readonly>
+					<label for="cambio_stn">STN</label>
+				</div>
+				<div class="xinput grow-1 w100">
+					<input type="text" id="cambio_euro" code="eur" currency="" class="double">
+					<label for="cambio_euro">EUR</label>
+				</div>
+				<div class="xinput grow-1 w100">
+					<input type="text" id="cambio_usd" code="usd" currency="" class="double">
+					<label for="cambio_usd">USD</label>
+				</div>
+				<div class="xinput grow-1 w100">
+					<input type="text" id="cambio_xaf" code="xaf" currency="" class="double">
+					<label for="cambio_xaf">XAF</label>
+				</div>
+			</div>
+			<div class="master-btn-right flex">
+				<span class="hideTarget" target="xModalCtrlCambio">CANCELAR</span>
+				<span class="flex v-ct" bt_cambio>
+					CONCLUIR
+					<svg class="spinner" viewBox="0 0 50 50">
+						<circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
+					</svg>
+				</span>
+			</div>
+		</div>
+	</div>
+	<div id="xModalDeletePrinter" class="x-mobdal XM-confirmActivity flex v-ct h-ct hideTarget"
+		target="xModalDeletePrinter">
+		<div class="modal-frame">
+			<h3 targetTitle></h3>
+			<p>Tem certeza de que pretende executar esta operação?</p>
+			<div class="master-btn-right flex">
+				<span class="hideTarget" target="xModalDeletePrinter">Não</span>
+				<span remove_printer>SIM</span>
+			</div>
+		</div>
+	</div>
+	<div id="xModalMigrateSpaceToAnother" class="x-mobdal flex v-ct h-ct hideTarget" target="xModalMigrateSpaceToAnother">
+		<div class="modal-frame j-stp">
+			<h3 targetTitle></h3>
+			<div class="xform">
+				<div class="xselect w100">
+					<input type="text" readonly>
+					<label>Armazém de migração</label>
+					<ul armazem_migracao>
+					</ul>
+				</div>
+			</div>
+			<div class="master-btn-right flex">
+				<span class="hideTarget" target="xModalMigrateSpaceToAnother">CANCELAR</span>
+				<span class="flex v-ct" migrate_space>
+					CONCLUIR
+					<svg class="spinner" viewBox="0 0 50 50">
+						<circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
+					</svg>
+				</span>
+			</div>
+		</div>
+	</div>
+	<div id="xModalImposto" class="x-mobdal flex v-ct h-ct hideTarget" target="xModalImposto">
+		<div class="modal-frame j-stp">
+			<h3 targetTitle></h3>
+			<div class="xform">
+				<div class="xinput grow-1 w100">
+					<input type="text" id="imposto_codigo">
+					<label for="imposto_codigo">Código</label>
+				</div>
+				<div class="xinput grow-1 w100">
+					<input type="text" id="imposto_nome">
+					<label for="imposto_nome">Nome</label>
+				</div>
+				<div class="xselect flutuate w100">
+					<input type="text" readonly id="imposto_tipo_acrescimo_desc">
+					<label>Tipo de acréscimo</label>
+					<ul id="imposto_tipo_acrescimo">
+						<li class="tgl" tipo="value">Por valor</li>
+						<li class="tgl" tipo="percentage">Por percentagem</li>
+					</ul>
+				</div>
+				<div class="xinput grow-1 w100">
+					<input type="text" id="imposto_acrescimo" class="double formatNumber" disabled>
+					<label for="imposto_acrescimo">Acréscimo</label>
+				</div>
+				<p>Selecione os armazéns nos quais este imposto estará aplicado.</p>
+				<div class="xcheck multiple">
+					<ul id="imposto_espacos">
+					</ul>
+				</div>
+			</div>
+			<div class="master-btn-right flex">
+				<span class="hideTarget" target="xModalImposto">CANCELAR</span>
+				<span class="flex v-ct" bt_imposto>
+					CONCLUIR
+					<svg class="spinner" viewBox="0 0 50 50">
+						<circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
+					</svg>
+				</span>
+			</div>
+		</div>
+	</div>
+	<div id="xModalStatusPost" class="x-mobdal XM-confirmActivity flex v-ct h-ct hideTarget" target="xModalStatusPost">
+		<div class="modal-frame">
+			<h3 targetTitle></h3>
+			<p>Tem certeza de que pretende executar esta operação?</p>
+			<div class="master-btn-right flex">
+				<span class="hideTarget" target="xModalStatusPost">Não</span>
+				<span changeStatusPost>SIM</span>
+			</div>
+		</div>
+	</div>
+</div>
+<script src="../assets/js/admin/settings.js"></script>
+<script src="../assets/js/admin/printers.js"></script>
+<script src="../assets/js/admin/efatura.js"></script>
+<script src="../assets/js/admin/tax.js"></script>

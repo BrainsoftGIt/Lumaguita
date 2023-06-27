@@ -1,0 +1,181 @@
+@charset "UTF-8";
+.__included__.colabs ._body .list-colaborators {
+  padding: 2rem 0;
+  display: -ms-grid;
+  display: grid;
+  grid-gap: 14px;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+}
+.__included__.colabs ._body .list-colaborators section {
+  background: #fff;
+  padding: 1rem;
+  -webkit-box-shadow: 0 5px 15px -5px #ddd;
+          box-shadow: 0 5px 15px -5px #ddd;
+  padding-bottom: 0;
+  border-radius: 4px;
+  position: relative;
+  cursor: pointer;
+}
+.__included__.colabs ._body .list-colaborators section * {
+  font-size: 0.85rem;
+}
+.__included__.colabs ._body .list-colaborators section.public:after {
+  content: "Público";
+  position: absolute;
+  background-color: #f88250;
+  color: #fff;
+  padding: 1px 8px 2px;
+  border-radius: 0 0 0 8px;
+  font-size: 0.8rem;
+  top: 0;
+  right: 0;
+}
+.__included__.colabs ._body .list-colaborators section:hover .sep div {
+  opacity: 1;
+}
+.__included__.colabs ._body .list-colaborators section .userPhoto {
+  width: 45px;
+  height: 45px;
+  margin-right: 1rem;
+  font-weight: 600;
+  font-size: 1.1rem;
+  opacity: 0.6;
+  color: #1A73E8;
+}
+.__included__.colabs ._body .list-colaborators section .userPhoto.noPhoto {
+  background: #ddeeff;
+}
+.__included__.colabs ._body .list-colaborators section b {
+  font-weight: 700;
+  opacity: 0.8;
+  display: block;
+  margin-bottom: 6px;
+}
+.__included__.colabs ._body .list-colaborators section .nif {
+  margin-top: 18px;
+}
+.__included__.colabs ._body .list-colaborators section .sep {
+  border-top: 1px solid #eee;
+  padding: 10px 0;
+  margin-top: 12px;
+  cursor: default;
+}
+.__included__.colabs ._body .list-colaborators section .sep div {
+  opacity: 0.4;
+}
+.__included__.colabs ._body .list-colaborators section .sep div span {
+  cursor: pointer;
+}
+.__included__.colabs ._body .list-colaborators section .sep small {
+  opacity: 0.7;
+  font-size: 0.75rem;
+}
+.__included__.colabs ._body .list-colaborators section .sep .edit {
+  margin-right: 1rem;
+  color: #1A73E8;
+  cursor: pointer;
+}
+.__included__.colabs ._body .list-colaborators section .sep svg {
+  width: 20px;
+}
+.__included__.colabs ._body .list-colaborators section .sep svg:hover {
+  fill: #1A73E8;
+}
+.__included__.colabs ._body .list-colaborators section .sep .xSwitch {
+  -webkit-transform: scale(0.75);
+      -ms-transform: scale(0.75);
+          transform: scale(0.75);
+}
+
+.XM-createColab .inputs {
+  max-width: 440px;
+  -ms-flex-line-pack: start;
+      align-content: flex-start;
+}
+.XM-createColab .inputs .first {
+  margin-top: 0;
+}
+.XM-createColab .inputs p {
+  font-size: 0.85rem;
+  margin: 1rem 0;
+}
+.XM-createColab .control-access {
+  margin-left: 2%;
+  padding-left: 2rem;
+}
+.XM-createColab .control-access * {
+  font-size: 0.85rem;
+}
+.XM-createColab .control-access b {
+  display: block;
+  margin-bottom: 1rem;
+}
+.XM-createColab .control-access .xcheck {
+  border-radius: 6px;
+  min-width: 300px;
+  background-color: #f5f8f8;
+  margin-bottom: 8px;
+}
+.XM-createColab .control-access .xcheck.opened {
+  padding-bottom: 10px;
+}
+.XM-createColab .control-access .xcheck.opened .tit {
+  margin-bottom: 15px;
+  padding-bottom: 5px;
+}
+.XM-createColab .control-access .xcheck.opened ul {
+  max-height: 100vh;
+  padding-left: 3rem;
+}
+.XM-createColab .control-access .xcheck .tit {
+  padding: 1rem;
+  position: relative;
+  cursor: pointer;
+  font-weight: 500;
+}
+.XM-createColab .control-access .xcheck .tit:after {
+  content: "";
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-right: 2px #222 solid;
+  border-bottom: 2px #222 solid;
+  -webkit-transform: rotate(45deg);
+      -ms-transform: rotate(45deg);
+          transform: rotate(45deg);
+  right: 1rem;
+  top: 25px;
+}
+.XM-createColab .control-access .xcheck .tit .fkcheck {
+  width: 22px;
+  height: 22px;
+  border-radius: 4px;
+  margin-right: 1rem;
+  border: 2px #222 solid;
+}
+.XM-createColab .control-access .xcheck .tit .fkcheck.full {
+  border-color: #1A73E8;
+  background-color: #1A73E8;
+}
+.XM-createColab .control-access .xcheck .tit .fkcheck.full:after {
+  content: "✔";
+  color: #FFF;
+  margin-left: 2px;
+}
+.XM-createColab .control-access .xcheck .tit .fkcheck.parcial {
+  border-color: #1A73E8;
+  background-color: #1A73E8;
+  padding: 4px;
+  background-clip: content-box;
+}
+.XM-createColab .control-access .xcheck ul {
+  max-height: 0;
+  overflow: hidden;
+}
+.XM-createColab .maps {
+  width: 560px;
+  height: 440px;
+  border-radius: 6px;
+  background-color: #f5f8f8;
+  margin-left: 2%;
+}

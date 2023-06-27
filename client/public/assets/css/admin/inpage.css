@@ -1,0 +1,17 @@
+.__included__.inpage .inMenus ul li {
+  margin-left: 2rem;
+  font-weight: 500;
+  line-height: 2;
+  border-bottom: 3px solid transparent;
+  cursor: pointer;
+}
+.__included__.inpage .inMenus ul li.active {
+  border-bottom-color: #1A73E8;
+  color: #1A73E8;
+}
+.__included__.inpage .inMenus ul li:hover {
+  color: #1A73E8;
+}
+.__included__.inpage .inMenus + * {
+  margin-left: 2.5rem;
+}

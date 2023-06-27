@@ -1,0 +1,162 @@
+.x-mobdal .modal-frame h3 {
+  font-size: 1.2rem;
+  margin: 1rem 0 2rem;
+}
+.x-mobdal .modal-frame .master-btn-right span {
+  font-size: 1rem;
+}
+
+body.dark .x-table .xheader ul li {
+  color: #d0c9e4;
+}
+body.dark .x-table .xbody ul {
+  background: #2d2448;
+}
+body.dark .x-table .xbody ul li, body.dark .x-table .xbody ul li span, body.dark .x-table .xbody ul li i {
+  color: #FFF !important;
+}
+body.dark .x-mobdal .modal-frame {
+  background: #292141;
+}
+body.dark .x-mobdal .modal-frame h3 {
+  color: #c1b8dc;
+}
+body.dark .x-mobdal .modal-frame p, body.dark .x-mobdal .modal-frame b, body.dark .x-mobdal .modal-frame h4, body.dark .x-mobdal .modal-frame h6 {
+  color: #dfdaed !important;
+}
+body.dark .x-mobdal .modal-frame .master-btn-right span {
+  color: #d0c9e4;
+}
+body.dark .x-mobdal .modal-frame .master-btn-right span:last-child {
+  color: #FFF;
+}
+body.dark input, body.dark textarea {
+  color: #FFF;
+}
+body.dark input:focus, body.dark textarea:focus {
+  border-bottom: 1px solid #d0c9e4 !important;
+  -webkit-box-shadow: 0 1px 0 0 #d0c9e4 !important;
+          box-shadow: 0 1px 0 0 #d0c9e4 !important;
+}
+body.dark input:focus + label, body.dark textarea:focus + label {
+  color: #dfdaed !important;
+}
+body.dark input:disabled + label, body.dark textarea:disabled + label {
+  color: rgba(255, 255, 255, 0.4) !important;
+}
+body.dark .is-money-field span {
+  color: #FFF;
+  opacity: 0.8;
+}
+body.dark .select-wrapper svg {
+  fill: #FFF !important;
+}
+body.dark .dropdown-content {
+  background: #534385;
+}
+body.dark .dropdown-content li {
+  color: #9485c2;
+}
+body.dark .dropdown-content li.selected span {
+  color: #FFF;
+}
+body.dark .XM-ChooseArmazene .account,
+body.dark .XM-PrintTypeAccount .account {
+  background: #382c59;
+}
+body.dark .XM-ChooseArmazene .account.active,
+body.dark .XM-PrintTypeAccount .account.active {
+  border-color: #d0c9e4;
+  background: #3e3263;
+}
+body.dark .XM-ChooseArmazene .account.active:after,
+body.dark .XM-PrintTypeAccount .account.active:after {
+  background: #dfdaed;
+  color: #1E1830;
+}
+body.dark .XM-ChooseArmazene .account.active svg,
+body.dark .XM-PrintTypeAccount .account.active svg {
+  fill: #dfdaed;
+}
+body.dark .XM-ChooseArmazene .account small,
+body.dark .XM-PrintTypeAccount .account small {
+  color: rgba(255, 255, 255, 0.7);
+}
+body.dark .XM-makePayment .modal-frame h4 {
+  color: #FFF !important;
+}
+body.dark .XM-makePayment .modal-frame .pay-modes ul li.active {
+  background-color: #534385 !important;
+}
+body.dark .XM-makePayment .modal-frame .pay-modes ul li.active span {
+  color: #FFF;
+}
+body.dark .XM-makePayment .modal-frame .pay-modes ul li span {
+  color: #dfdaed;
+}
+body.dark .XM-makePayment .modal-frame .make-payment {
+  border-color: #493a74;
+}
+body.dark .XM-makePayment .modal-frame .calculate .is-money-text {
+  color: #FFF;
+}
+body.dark .XM-makePayment .modal-frame .list-consum {
+  background-color: #403366;
+  border-bottom: none;
+}
+body.dark .XM-makePayment .modal-frame .list-consum ul li {
+  background-color: #493a74;
+}
+body.dark .XM-makePayment .modal-frame .list-consum ul li.active {
+  -webkit-box-shadow: 0 10px 25px -10px #1E1830;
+          box-shadow: 0 10px 25px -10px #1E1830;
+  background-color: #5e4b96;
+}
+
+.is-money-text {
+  cursor: pointer;
+}
+.is-money-text[coin=EUR]:after {
+  content: " EUR";
+}
+.is-money-text[coin=STN]:after {
+  content: " STN";
+}
+.is-money-text[coin=USD]:after {
+  content: " USD";
+}
+.is-money-text[coin=XAF]:after {
+  content: " XAF";
+}
+
+.is-money-field {
+  position: relative;
+}
+.is-money-field[coin=EUR] span:after {
+  content: "EUR";
+}
+.is-money-field[coin=STN] span:after {
+  content: "STN";
+}
+.is-money-field[coin=USD] span:after {
+  content: "USD";
+}
+.is-money-field[coin=XAF] span:after {
+  content: "XAF";
+}
+.is-money-field span {
+  display: block;
+  position: absolute;
+  right: 0;
+  bottom: 18px;
+  font-weight: 600;
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+.is-money-field input {
+  text-align: right;
+  width: calc(100% - 2.5rem) !important;
+  padding-right: 2.5rem !important;
+  text-indent: 2.2rem;
+  font-weight: 600;
+}

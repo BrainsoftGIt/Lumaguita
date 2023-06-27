@@ -1,0 +1,53 @@
+@import "./pattern/variable";
+.datepicker-modal{
+	transition: none;
+}
+.master-page-include.report{
+	background: #E9EBEE;
+
+	.lefilter{
+		padding: 1.2rem 2rem;
+		background: #f7f7f7;
+		width: 320px;
+		flex-shrink: 0;
+		.input-field{
+			margin-bottom: 2rem;
+		}
+		h5{
+			font-size: 1rem;
+			font-weight: 500;
+		}
+
+	}
+	.table-reservs{
+		.x-table{
+			padding-left: 1rem;
+			max-height: calc(100vh - 114px);
+		}
+	}
+	.order-opts{
+		padding: 0 3rem 0 1rem;
+		border-bottom: 1px solid #cfcfcf;
+		.print{
+			margin-left: 2.5rem;
+			font-weight: 600;
+			color: $primary-color-dark;
+			i{
+				margin-right: 7px;
+			}
+		}
+	}
+	
+}
+
+
+.xm-more-details{
+	.llist{
+		b{
+			margin-left: 2rem;
+			&:before{
+				content: " : ";
+			}
+		}
+	}
+}

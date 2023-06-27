@@ -1,0 +1,796 @@
+<link rel="stylesheet" href="../assets/css/admin/artigos.css">
+<div class="__included__ artigos">
+	<div class="_head flex h-sb v-ct">
+		<div class="inLeft">
+			<div class="flex v-ct">
+				<h1 total="" id="totalArticles">Artigos</h1>
+				<div class="fltCat">
+					<span class="j-stp showTarget spn" target="_idFltCat">Todas categorias</span>
+					<div id="_idFltCat" class="listAllCat">
+						<ul id="filtro_categorias">
+							<!--<li class="flex h-sb v-ct">
+								<a>Cate comes here</a>
+								<div class="flex v-ct opts j-stp">
+									<a class="showTarget" target="" tTitle="Editar item extra">
+										<svg class="edit showTarget" viewBox="0 0 512 512">
+											<path
+												d="m368 511.957031h-309.332031c-32.363281 0-58.667969-26.304687-58.667969-58.667969v-309.332031c0-32.363281 26.304688-58.667969 58.667969-58.667969h181.332031c8.832031 0 16 7.167969 16 16 0 8.832032-7.167969 16-16 16h-181.332031c-14.699219 0-26.667969 11.96875-26.667969 26.667969v309.332031c0 14.699219 11.96875 26.667969 26.667969 26.667969h309.332031c14.699219 0 26.667969-11.96875 26.667969-26.667969v-181.332031c0-8.832031 7.167969-16 16-16s16 7.148438 16 16v181.332031c0 32.363282-26.304688 58.667969-58.667969 58.667969zm0 0" />
+											<path
+												d="m187.136719 340.820312c-4.203125 0-8.300781-1.664062-11.308594-4.691406-3.796875-3.777344-5.417969-9.21875-4.371094-14.445312l15.082031-75.433594c.617188-3.113281 2.152344-5.953125 4.371094-8.171875l220.953125-220.925781c22.867188-22.871094 60.074219-22.871094 82.964844 0 11.070313 11.070312 17.171875 25.792968 17.171875 41.472656s-6.101562 30.398438-17.195312 41.472656l-220.925782 220.949219c-2.21875 2.238281-5.078125 3.753906-8.171875 4.371094l-75.414062 15.082031c-1.046875.214844-2.113281.320312-3.15625.320312zm75.433593-31.082031h.214844zm-45.609374-52.457031-9.410157 47.144531 47.125-9.429687 217.515625-217.511719c5.035156-5.058594 7.808594-11.734375 7.808594-18.859375s-2.773438-13.804688-7.808594-18.859375c-10.367187-10.390625-27.285156-10.390625-37.714844 0zm0 0" />
+											<path
+												d="m453.332031 134.976562c-4.09375 0-8.191406-1.558593-11.304687-4.695312l-60.332032-60.351562c-6.25-6.25-6.25-16.382813 0-22.632813s16.382813-6.25 22.636719 0l60.328125 60.351563c6.25 6.25 6.25 16.382812 0 22.632812-3.136718 3.117188-7.230468 4.695312-11.328125 4.695312zm0 0" />
+										</svg>
+									</a>
+									<label class="xSwitch">
+										<input type="checkbox" checked>
+										<span class="slider round"></span>
+									</label>
+								</div>
+							</li>-->
+							<!--							<li></li>-->
+						</ul>
+						<div class=" addCat showTarget" target="xModalCtrlCategory" tTitle="Adicionar Categoria">
+							Adicionar Categoria</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+		<div class="inRight flex v-ct">
+			<div class="artOpts flex">
+				<div class="requireSelection flex">
+					<span tooltip="Acertar stock" flow="left" class="theOpt flex v-ct h-ct" novoAcertoStock
+						style="cursor: pointer;">
+						<svg x="0px" y="0px" viewBox="0 0 477.867 477.867"
+							style="enable-background:new 0 0 477.867 477.867;" xml:space="preserve">
+							<g>
+								<g>
+									<path d="M460.8,221.867H185.31c-9.255-36.364-46.237-58.34-82.602-49.085c-24.116,6.138-42.947,24.969-49.085,49.085H17.067
+								C7.641,221.867,0,229.508,0,238.934S7.641,256,17.067,256h36.557c9.255,36.364,46.237,58.34,82.602,49.085
+								c24.116-6.138,42.947-24.969,49.085-49.085H460.8c9.426,0,17.067-7.641,17.067-17.067S470.226,221.867,460.8,221.867z
+								 M119.467,273.067c-18.851,0-34.133-15.282-34.133-34.133c0-18.851,15.282-34.133,34.133-34.133s34.133,15.282,34.133,34.133
+								C153.6,257.785,138.318,273.067,119.467,273.067z" />
+								</g>
+							</g>
+							<g>
+								<g>
+									<path
+										d="M460.8,51.2h-53.623c-9.255-36.364-46.237-58.34-82.602-49.085C300.459,8.253,281.628,27.084,275.49,51.2H17.067
+							C7.641,51.2,0,58.841,0,68.267s7.641,17.067,17.067,17.067H275.49c9.255,36.364,46.237,58.34,82.602,49.085
+							c24.116-6.138,42.947-24.969,49.085-49.085H460.8c9.426,0,17.067-7.641,17.067-17.067S470.226,51.2,460.8,51.2z M341.334,102.4
+							c-18.851,0-34.133-15.282-34.133-34.133s15.282-34.133,34.133-34.133s34.133,15.282,34.133,34.133S360.185,102.4,341.334,102.4z" />
+								</g>
+							</g>
+							<g>
+								<g>
+									<path d="M460.8,392.534h-87.757c-9.255-36.364-46.237-58.34-82.602-49.085c-24.116,6.138-42.947,24.969-49.085,49.085H17.067
+							C7.641,392.534,0,400.175,0,409.6s7.641,17.067,17.067,17.067h224.29c9.255,36.364,46.237,58.34,82.602,49.085
+							c24.116-6.138,42.947-24.969,49.085-49.085H460.8c9.426,0,17.067-7.641,17.067-17.067S470.226,392.534,460.8,392.534z
+								M307.2,443.734c-18.851,0-34.133-15.282-34.133-34.133s15.282-34.133,34.133-34.133c18.851,0,34.133,15.282,34.133,34.133
+							S326.052,443.734,307.2,443.734z" />
+								</g>
+							</g>
+						</svg>
+					</span>
+				</div>
+
+				<!--<span tooltip="Filtrar" flow="left" class=" flex v-ct h-ct showTarget theOpt" target="xModalFilterBy"
+					tTitle="">
+					<svg x="0px" y="0px" viewBox="0 0 971.986 971.986"
+						style="enable-background:new 0 0 971.986 971.986;" xml:space="preserve">
+						<g>
+							<path
+								d="M370.216,459.3c10.2,11.1,15.8,25.6,15.8,40.6v442c0,26.601,32.1,40.101,51.1,21.4l123.3-141.3 c16.5-19.8,25.6-29.601,25.6-49.2V500c0-15,5.7-29.5,15.8-40.601L955.615,75.5c26.5-28.8,6.101-75.5-33.1-75.5h-873 c-39.2,0-59.7,46.6-33.1,75.5L370.216,459.3z" />
+						</g>
+					</svg>
+				</span>-->
+			</div>
+
+			<div class="masterSearch">
+				<input type="search" placeholder="Pesquise aqui..." id="searchArticles">
+				<svg x="0px" y="0px" viewBox="0 0 118.783 118.783" style="enable-background:new 0 0 118.783 118.783;"
+					xml:space="preserve">
+					<g>
+						<path d="M115.97,101.597L88.661,74.286c4.64-7.387,7.333-16.118,7.333-25.488c0-26.509-21.49-47.996-47.998-47.996
+				S0,22.289,0,48.798c0,26.51,21.487,47.995,47.996,47.995c10.197,0,19.642-3.188,27.414-8.605l26.984,26.986
+				c1.875,1.873,4.333,2.806,6.788,2.806c2.458,0,4.913-0.933,6.791-2.806C119.72,111.423,119.72,105.347,115.97,101.597z
+				 M47.996,81.243c-17.917,0-32.443-14.525-32.443-32.443s14.526-32.444,32.443-32.444c17.918,0,32.443,14.526,32.443,32.444
+				S65.914,81.243,47.996,81.243z"></path>
+					</g>
+				</svg>
+			</div>
+			<div class="alwaysV flex">
+				<button class="xbtn" novoArtigo>artigo</button>
+			</div>
+			<div class="eximport">
+				<span tooltip="Importar/Exportar" flow="left" class=" flex v-ct h-ct showTarget"
+					target="xModalExImportArt">
+					<svg x="0px" y="0px" class="excel" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;"
+						xml:space="preserve">
+						<path style="fill:#ECEFF1;" d="M496,432.011H272c-8.832,0-16-7.168-16-16s0-311.168,0-320s7.168-16,16-16h224
+						c8.832,0,16,7.168,16,16v320C512,424.843,504.832,432.011,496,432.011z" />
+						<g>
+							<path style="fill:#388E3C;" d="M336,176.011h-64c-8.832,0-16-7.168-16-16s7.168-16,16-16h64c8.832,0,16,7.168,16,16
+							S344.832,176.011,336,176.011z" />
+							<path style="fill:#388E3C;" d="M336,240.011h-64c-8.832,0-16-7.168-16-16s7.168-16,16-16h64c8.832,0,16,7.168,16,16
+							S344.832,240.011,336,240.011z" />
+							<path style="fill:#388E3C;" d="M336,304.011h-64c-8.832,0-16-7.168-16-16s7.168-16,16-16h64c8.832,0,16,7.168,16,16
+							S344.832,304.011,336,304.011z" />
+							<path style="fill:#388E3C;" d="M336,368.011h-64c-8.832,0-16-7.168-16-16s7.168-16,16-16h64c8.832,0,16,7.168,16,16
+							S344.832,368.011,336,368.011z" />
+							<path style="fill:#388E3C;" d="M432,176.011h-32c-8.832,0-16-7.168-16-16s7.168-16,16-16h32c8.832,0,16,7.168,16,16
+							S440.832,176.011,432,176.011z" />
+							<path style="fill:#388E3C;" d="M432,240.011h-32c-8.832,0-16-7.168-16-16s7.168-16,16-16h32c8.832,0,16,7.168,16,16
+							S440.832,240.011,432,240.011z" />
+							<path style="fill:#388E3C;" d="M432,304.011h-32c-8.832,0-16-7.168-16-16s7.168-16,16-16h32c8.832,0,16,7.168,16,16
+							S440.832,304.011,432,304.011z" />
+							<path style="fill:#388E3C;" d="M432,368.011h-32c-8.832,0-16-7.168-16-16s7.168-16,16-16h32c8.832,0,16,7.168,16,16
+							S440.832,368.011,432,368.011z" />
+						</g>
+						<path style="fill:#2E7D32;" d="M282.208,19.691c-3.648-3.04-8.544-4.352-13.152-3.392l-256,48C5.472,65.707,0,72.299,0,80.011v352
+						c0,7.68,5.472,14.304,13.056,15.712l256,48c0.96,0.192,1.952,0.288,2.944,0.288c3.712,0,7.328-1.28,10.208-3.68
+						c3.68-3.04,5.792-7.584,5.792-12.32v-448C288,27.243,285.888,22.731,282.208,19.691z" />
+						<path style="fill:#FAFAFA;"
+							d="M220.032,309.483l-50.592-57.824l51.168-65.792c5.44-6.976,4.16-17.024-2.784-22.464
+						c-6.944-5.44-16.992-4.16-22.464,2.784l-47.392,60.928l-39.936-45.632c-5.856-6.72-15.968-7.328-22.56-1.504
+						c-6.656,5.824-7.328,15.936-1.504,22.56l44,50.304L83.36,310.187c-5.44,6.976-4.16,17.024,2.784,22.464
+						c2.944,2.272,6.432,3.36,9.856,3.36c4.768,0,9.472-2.112,12.64-6.176l40.8-52.48l46.528,53.152
+						c3.168,3.648,7.584,5.504,12.032,5.504c3.744,0,7.488-1.312,10.528-3.968C225.184,326.219,225.856,316.107,220.032,309.483z" />
+					</svg>
+
+				</span>
+			</div>
+
+		</div>
+	</div>
+	<div class="_body">
+		<div class="comfort">
+			<div class="list-articles" id="list_articles_categories">
+				<!-- OBS: Use a classe "off" na section para artigos que atingiram stock mínimo -->
+				<!--<section class="waves-effect have-extra isArtigo">
+					<div class="img-container empty-artigo">
+						<span class="instock">24</span>
+					</div>
+					<h4>Product name 1 here!</h4>
+					<div class="inb flex h-sb">
+						<p class="top is-money-text" coin="STN">452,00</p>
+						<span class="j-stp select stgl"></span>
+					</div>
+					<a tooltip="Editar" flow="top" class="showTarget" target="xModalCtrlArtigo"
+						tTitle="Editar item extra">
+						<svg class="edit showTarget" viewBox="0 0 512 512">
+							<path
+								d="m368 511.957031h-309.332031c-32.363281 0-58.667969-26.304687-58.667969-58.667969v-309.332031c0-32.363281 26.304688-58.667969 58.667969-58.667969h181.332031c8.832031 0 16 7.167969 16 16 0 8.832032-7.167969 16-16 16h-181.332031c-14.699219 0-26.667969 11.96875-26.667969 26.667969v309.332031c0 14.699219 11.96875 26.667969 26.667969 26.667969h309.332031c14.699219 0 26.667969-11.96875 26.667969-26.667969v-181.332031c0-8.832031 7.167969-16 16-16s16 7.148438 16 16v181.332031c0 32.363282-26.304688 58.667969-58.667969 58.667969zm0 0" />
+							<path
+								d="m187.136719 340.820312c-4.203125 0-8.300781-1.664062-11.308594-4.691406-3.796875-3.777344-5.417969-9.21875-4.371094-14.445312l15.082031-75.433594c.617188-3.113281 2.152344-5.953125 4.371094-8.171875l220.953125-220.925781c22.867188-22.871094 60.074219-22.871094 82.964844 0 11.070313 11.070312 17.171875 25.792968 17.171875 41.472656s-6.101562 30.398438-17.195312 41.472656l-220.925782 220.949219c-2.21875 2.238281-5.078125 3.753906-8.171875 4.371094l-75.414062 15.082031c-1.046875.214844-2.113281.320312-3.15625.320312zm75.433593-31.082031h.214844zm-45.609374-52.457031-9.410157 47.144531 47.125-9.429687 217.515625-217.511719c5.035156-5.058594 7.808594-11.734375 7.808594-18.859375s-2.773438-13.804688-7.808594-18.859375c-10.367187-10.390625-27.285156-10.390625-37.714844 0zm0 0" />
+							<path
+								d="m453.332031 134.976562c-4.09375 0-8.191406-1.558593-11.304687-4.695312l-60.332032-60.351562c-6.25-6.25-6.25-16.382813 0-22.632813s16.382813-6.25 22.636719 0l60.328125 60.351563c6.25 6.25 6.25 16.382812 0 22.632812-3.136718 3.117188-7.230468 4.695312-11.328125 4.695312zm0 0" />
+						</svg>
+					</a>
+					<label class="xSwitch">
+						<input type="checkbox" checked>
+						<span class="slider round"></span>
+					</label>
+				</section>-->
+
+			</div>
+		</div>
+	</div>
+
+	<!-- MODALS -->
+
+	<!-- Filter By -->
+	<div id="xModalFilterBy" class="x-mobdal XM-artFilterBy flex v-ct h-ct" target="xModalFilterBy">
+		<div class="modal-frame j-stp">
+			<h3>Filtrar artigos</h3>
+			<p>Escolha as opções abaixo</p>
+			<div class="xcheck multiple">
+				<ul>
+					<li class="stgl">Abaixo do stock mínimo</li>
+					<div class="flex h-sb">
+						<li class="stgl">Por quantidade em stock</li>
+						<span class="flex v-ct qtField">
+							<input type="text" title="Quantidade" placeholder="Qtd.">
+						</span>
+					</div>
+				</ul>
+			</div>
+			<div class="master-btn-right flex">
+				<span class="hideTarget" target="xModalFilterBy">CANCELAR</span>
+				<span class="flex v-ct" bt_categoria>
+					CONCLUIR
+					<svg class="spinner" viewBox="0 0 50 50">
+						<circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
+					</svg>
+				</span>
+			</div>
+		</div>
+	</div>
+
+	<!-- Add category -->
+	<div id="xModalCtrlCategory" class="x-mobdal XM-ctrlCategory flex v-ct h-ct" target="xModalCtrlCategory">
+		<div class="modal-frame j-stp">
+			<h3 targetTitle>Adicionar Categoria</h3>
+			<div class="xform">
+				<div class="xinput grow-1 w100">
+					<input type="file" id="categoria_foto" _noObrigatory="true" accept=".png, .jpg, .jpeg">
+					<label for="categoria_foto" lab="FOTO">.jpg, .png, .jpeg</label>
+				</div>
+				<div class="xinput grow-1 w100">
+					<input type="text" id="categoria_nome">
+					<label for="categoria_nome">Designação</label>
+				</div>
+				<p>Selecione os armazéns nos quais esta categoria estará alocada.</p>
+				<div class="xcheck multiple">
+					<ul id="categoria_armazens">
+					</ul>
+				</div>
+			</div>
+			<div class="master-btn-right flex">
+				<span class="hideTarget" target="xModalCtrlCategory">CANCELAR</span>
+				<span class="flex v-ct" bt_categoria>
+					CONCLUIR
+					<svg class="spinner" viewBox="0 0 50 50">
+						<circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
+					</svg>
+				</span>
+			</div>
+		</div>
+	</div>
+
+
+	<!-- Add category -->
+	<div id="xModalExImportArt" class="x-mobdal XM-ExImportArt flex v-ct h-ct" target="xModalExImportArt">
+		<div class="modal-frame j-stp">
+			<div class="flex h-sb">
+				<h3>Importar/Exportar artigo</h3>
+				<span class="model" id="baixarModeloArtigos">Baixar modelo</span>
+			</div>
+			<div class="inn">
+				<div class="flex h-ct v-ct">
+					<div class="waves-effect account active tgl" tipo="conta">
+						<div class="flex v-ct h-ct">
+							<svg viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve">
+								<g>
+									<g>
+										<path d="M339.093,246.464c-3.627-7.232-11.008-11.797-19.093-11.797h-42.667V21.333C277.333,9.557,267.797,0,256,0
+											s-21.333,9.557-21.333,21.333v213.333H192c-8.085,0-15.467,4.565-19.093,11.797c-3.584,7.232-2.816,15.872,2.027,22.336l64,85.333
+											c0.277,0.363,0.704,0.491,1.003,0.832c1.408,1.664,3.072,2.944,4.928,4.117c0.768,0.469,1.365,1.088,2.197,1.472
+											c2.731,1.28,5.717,2.112,8.939,2.112s6.208-0.832,8.96-2.112c0.811-0.384,1.429-1.003,2.176-1.472
+											c1.856-1.173,3.52-2.453,4.928-4.117c0.277-0.341,0.725-0.469,1.003-0.832l64-85.333
+											C341.931,262.336,342.699,253.696,339.093,246.464z" />
+									</g>
+								</g>
+								<g>
+									<g>
+										<path d="M490.667,320c-11.797,0-21.333,9.557-21.333,21.333v64c0,35.285-28.715,64-64,64H106.667c-35.285,0-64-28.715-64-64v-64
+											c0-11.776-9.536-21.333-21.333-21.333C9.536,320,0,329.557,0,341.333v64C0,464.149,47.851,512,106.667,512h298.667
+											C464.149,512,512,464.149,512,405.333v-64C512,329.557,502.464,320,490.667,320z" />
+									</g>
+								</g>
+							</svg>
+						</div>
+						<p>exportar artigos</p>
+					</div>
+					<label class="waves-effect account tgl" for="artigoImportIpt">
+						<input type="file" id="artigoImportIpt" accept=".xlsx">
+						<div class="flex v-ct h-ct">
+							<svg viewBox="0 0 512.056 512.056" style="enable-background:new 0 0 512.056 512.056;"
+								xml:space="preserve">
+								<g>
+									<g>
+										<g>
+											<path d="M426.635,188.224C402.969,93.946,307.358,36.704,213.08,60.37C139.404,78.865,85.907,142.542,80.395,218.303
+												C28.082,226.93-7.333,276.331,1.294,328.644c7.669,46.507,47.967,80.566,95.101,80.379h80v-32h-80c-35.346,0-64-28.654-64-64
+												c0-35.346,28.654-64,64-64c8.837,0,16-7.163,16-16c-0.08-79.529,64.327-144.065,143.856-144.144
+												c68.844-0.069,128.107,48.601,141.424,116.144c1.315,6.744,6.788,11.896,13.6,12.8c43.742,6.229,74.151,46.738,67.923,90.479
+												c-5.593,39.278-39.129,68.523-78.803,68.721h-64v32h64c61.856-0.187,111.848-50.483,111.66-112.339
+												C511.899,245.194,476.655,200.443,426.635,188.224z" />
+											<path d="M245.035,253.664l-64,64l22.56,22.56l36.8-36.64v153.44h32v-153.44l36.64,36.64l22.56-22.56l-64-64
+												C261.354,247.46,251.276,247.46,245.035,253.664z" />
+										</g>
+									</g>
+								</g>
+
+							</svg>
+						</div>
+						<p>IMPORTAR artigos</p>
+					</label>
+				</div>
+				<p class="ps"><b>Obs:</b> A importação e exportação de artigos são realizados no ficheiro em formato
+					.XLSX</p>
+			</div>
+			<div class="master-btn-right flex">
+				<span class="hideTarget" target="xModalExImportArt">CANCELAR</span>
+				<span class="flex v-ct" bt_categoria>
+					CONCLUIR
+					<svg class="spinner" viewBox="0 0 50 50">
+						<circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
+					</svg>
+				</span>
+			</div>
+		</div>
+	</div>
+	<!-- Add Artigo  -->
+
+	<div id="xModalCtrlArtigo" class="x-mobdal XM-ctrlArtigo flex v-ct h-ct" target="xModalCtrlArtigo">
+		<div class="modal-frame j-stp">
+			<div class="flex h-sb mstHead">
+				<h3 targetTitle>Adicionar Artigo</h3>
+				<div class="flex catSlct">
+					<b id="categoria_artigo"></b>
+					<a tooltip="Editar" flow="top" class="showTarget" target="allCategoriesView"
+						title="Escolher a categoria">
+						<svg class="edit showTarget" viewBox="0 0 512 512">
+							<path
+								d="m368 511.957031h-309.332031c-32.363281 0-58.667969-26.304687-58.667969-58.667969v-309.332031c0-32.363281 26.304688-58.667969 58.667969-58.667969h181.332031c8.832031 0 16 7.167969 16 16 0 8.832032-7.167969 16-16 16h-181.332031c-14.699219 0-26.667969 11.96875-26.667969 26.667969v309.332031c0 14.699219 11.96875 26.667969 26.667969 26.667969h309.332031c14.699219 0 26.667969-11.96875 26.667969-26.667969v-181.332031c0-8.832031 7.167969-16 16-16s16 7.148438 16 16v181.332031c0 32.363282-26.304688 58.667969-58.667969 58.667969zm0 0" />
+							<path
+								d="m187.136719 340.820312c-4.203125 0-8.300781-1.664062-11.308594-4.691406-3.796875-3.777344-5.417969-9.21875-4.371094-14.445312l15.082031-75.433594c.617188-3.113281 2.152344-5.953125 4.371094-8.171875l220.953125-220.925781c22.867188-22.871094 60.074219-22.871094 82.964844 0 11.070313 11.070312 17.171875 25.792968 17.171875 41.472656s-6.101562 30.398438-17.195312 41.472656l-220.925782 220.949219c-2.21875 2.238281-5.078125 3.753906-8.171875 4.371094l-75.414062 15.082031c-1.046875.214844-2.113281.320312-3.15625.320312zm75.433593-31.082031h.214844zm-45.609374-52.457031-9.410157 47.144531 47.125-9.429687 217.515625-217.511719c5.035156-5.058594 7.808594-11.734375 7.808594-18.859375s-2.773438-13.804688-7.808594-18.859375c-10.367187-10.390625-27.285156-10.390625-37.714844 0zm0 0" />
+							<path
+								d="m453.332031 134.976562c-4.09375 0-8.191406-1.558593-11.304687-4.695312l-60.332032-60.351562c-6.25-6.25-6.25-16.382813 0-22.632813s16.382813-6.25 22.636719 0l60.328125 60.351563c6.25 6.25 6.25 16.382812 0 22.632812-3.136718 3.117188-7.230468 4.695312-11.328125 4.695312zm0 0" />
+						</svg>
+					</a>
+				</div>
+			</div>
+			<div class="theCtn">
+				<div class="block show" target="article01" id="article01">
+					<div class="flex">
+						<div class="theArtg">
+							<!--					 <p class="info" selectedCategory>Este artigo será adicionado à categoria <span>Cat here</span></p>-->
+							<div class="xform">
+								<div class="xinput grow-1 w100 first">
+									<input type="file" id="artigo_foto" _noObrigatory="true" accept=".png, .jpg, .jpeg">
+									<label for="artigo_foto" lab="FOTO" class="artigo">.jpg, .png</label>
+								</div>
+								<div class="grow-1 w100 xchip flex wrap v-ct">
+									<ul class="flex wrap">
+										<!--<li class="flex">
+											<span>item</span>
+											<span class="rm"></span>
+										</li>-->
+									</ul>
+									<input placeholder="EAN" type="text" id="artigo_ean" _noObrigatory="true">
+								</div>
+								<div class="xinput grow-1 w100">
+									<input type="text" id="artigo_codigo" placeholder="_" _noObrigatory="true">
+									<label for="artigo_codigo">Código</label>
+								</div>
+								<div class="xinput grow-1 w100">
+									<input type="text" id="artigo_nome" placeholder="_">
+									<label for="artigo_nome">Nome</label>
+								</div>
+								<div class="xselect flutuate w100">
+									<input type="text" readonly _noObrigatory="true" id="artigo_impostos_desc">
+									<label for="artigo_impostos_desc">Impostos</label>
+									<ul id="artigo_impostos">
+									</ul>
+								</div>
+								<div class="xselect flutuate w100">
+									<input type="text" readonly _noObrigatory="true" id="aplicacao_impostos_desc">
+									<label for="aplicacao_impostos_desc">Forma de aplicação de imposto</label>
+									<ul id="artigo_aplicacao_imposto">
+									</ul>
+								</div>
+								<div class="xinput grow-1 w100">
+									<textarea id="artigo_observacao" _noObrigatory="true" placeholder="_"></textarea>
+									<label for="artigo_observacao">Observação</label>
+								</div>
+								<div class="armzenes xcheck multiple w100">
+									<b>Preços</b>
+									<ul id="armazens_artigos">
+										<div class="flex h-sb">
+											<li class="stgl">Armazém Y</li>
+											<span class="flex v-ct">
+												<b>STN</b>
+												<input type="text" title="Stock preço" placeholder="Preço">
+												<input type="text" title="Stock mínimo" placeholder="Stock mín.">
+											</span>
+										</div>
+									</ul>
+								</div>
+							</div>
+						</div>
+						<div class="options" id="modalArticleOptions">
+							<b>Opções</b>
+							<div class="xcheck multiple">
+								<ul>
+									<li class="stgl" id="artigo_stock_negativo">Permitir stock negativo</li>
+									<li id="artigo_composto">Este artigo é composto</li>
+									<li class="stgl" id="artigo_confecionado">Este artigo será confecionado</li>
+									<li id="hasExtraItem">Este artigo contém itens extra</li>
+								</ul>
+							</div>
+						</div>
+						<div id="allCategoriesView" class="allCatsView">
+							<h5>Categorias</h5>
+							<p class="txtChoice">Escolha uma categoria abaixo.</p>
+							<div class="listCats">
+								<!--<div class="flex inList tgl active">
+									<div class="img-container empty-artigo"></div>
+									<div class="minDet grow-1">
+										<p>Name comes here</p>
+										<small>24 artigos</small>
+									</div>
+								</div>-->
+							</div>
+							<div class="master-btn-right flex">
+								<span class="hideTarget" target="allCategoriesView">VOLTAR</span>
+								<span class="flex v-ct hideTarget" target="allCategoriesView">
+									Continuar
+								</span>
+							</div>
+						</div>
+					</div>
+					<div class="master-btn-right flex">
+						<span class="hideTarget" target="xModalCtrlArtigo">CANCELAR</span>
+						<span class="flex v-ct" bt_artigo>
+							CONCLUIR
+							<svg class="spinner" viewBox="0 0 50 50">
+								<circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
+							</svg>
+						</span>
+					</div>
+				</div>
+				<div class="block artigoComposto" target="article02" id="article02">
+					<b class="bTit">Definições do artigo composto</b>
+					<div class="xform">
+						<div class="xselect flutuate w100">
+							<input type="text" readonly id="artigoBaseDescricao">
+							<label>Artigo base</label>
+							<ul id="artigos_base">
+							</ul>
+						</div>
+						<div class="xinput grow-1 w100">
+							<input type="text" id="artigo_quantidade_composto" class="double formatNumber">
+							<label for="artigo_quantidade_composto">Valor do composto</label>
+						</div>
+					</div>
+					<div class="master-btn-right flex">
+						<span class="hideTarget" target="xModalCtrlArtigo">CANCELAR</span>
+						<span class="showTarget" target="article01" tab="true">VOLTAR</span>
+						<span class="flex v-ct" bt_artigo>
+							CONCLUIR
+							<svg class="spinner" viewBox="0 0 50 50">
+								<circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
+							</svg>
+						</span>
+					</div>
+				</div>
+				<div class="block extrasItems" target="article03" id="article03">
+					<div class="xtraHead flex h-sb v-ct">
+						<h5>Itens extra</h5>
+						<b class="showTarget" target="addEditExtraItem" tTitle="Adicionar item extra">Adicionar</b>
+					</div>
+					<div class="searcher">
+						<input type="text" placeholder="Procure aqui..." id="searchExtraItems">
+						<svg x="0px" y="0px" viewBox="0 0 118.783 118.783"
+							style="enable-background:new 0 0 118.783 118.783;" xml:space="preserve">
+							<g>
+								<path d="M115.97,101.597L88.661,74.286c4.64-7.387,7.333-16.118,7.333-25.488c0-26.509-21.49-47.996-47.998-47.996
+						S0,22.289,0,48.798c0,26.51,21.487,47.995,47.996,47.995c10.197,0,19.642-3.188,27.414-8.605l26.984,26.986
+						c1.875,1.873,4.333,2.806,6.788,2.806c2.458,0,4.913-0.933,6.791-2.806C119.72,111.423,119.72,105.347,115.97,101.597z
+						 M47.996,81.243c-17.917,0-32.443-14.525-32.443-32.443s14.526-32.444,32.443-32.444c17.918,0,32.443,14.526,32.443,32.444
+						S65.914,81.243,47.996,81.243z"></path>
+							</g>
+						</svg>
+					</div>
+					<div class="listExtras">
+						<ul id="extraItemsArticle">
+							<li class="flex h-sb v-ct stgl active">
+								<p>Extra name</p>
+								<div class="flex v-ct">
+									<b class="is-money-text">50,00</b>
+									<a tooltip="Editar" flow="top" class="showTarget" target="addEditExtraItem"
+										tTitle="Editar item extra">
+										<svg class="edit showTarget" viewBox="0 0 512 512">
+											<path
+												d="m368 511.957031h-309.332031c-32.363281 0-58.667969-26.304687-58.667969-58.667969v-309.332031c0-32.363281 26.304688-58.667969 58.667969-58.667969h181.332031c8.832031 0 16 7.167969 16 16 0 8.832032-7.167969 16-16 16h-181.332031c-14.699219 0-26.667969 11.96875-26.667969 26.667969v309.332031c0 14.699219 11.96875 26.667969 26.667969 26.667969h309.332031c14.699219 0 26.667969-11.96875 26.667969-26.667969v-181.332031c0-8.832031 7.167969-16 16-16s16 7.148438 16 16v181.332031c0 32.363282-26.304688 58.667969-58.667969 58.667969zm0 0" />
+											<path
+												d="m187.136719 340.820312c-4.203125 0-8.300781-1.664062-11.308594-4.691406-3.796875-3.777344-5.417969-9.21875-4.371094-14.445312l15.082031-75.433594c.617188-3.113281 2.152344-5.953125 4.371094-8.171875l220.953125-220.925781c22.867188-22.871094 60.074219-22.871094 82.964844 0 11.070313 11.070312 17.171875 25.792968 17.171875 41.472656s-6.101562 30.398438-17.195312 41.472656l-220.925782 220.949219c-2.21875 2.238281-5.078125 3.753906-8.171875 4.371094l-75.414062 15.082031c-1.046875.214844-2.113281.320312-3.15625.320312zm75.433593-31.082031h.214844zm-45.609374-52.457031-9.410157 47.144531 47.125-9.429687 217.515625-217.511719c5.035156-5.058594 7.808594-11.734375 7.808594-18.859375s-2.773438-13.804688-7.808594-18.859375c-10.367187-10.390625-27.285156-10.390625-37.714844 0zm0 0" />
+											<path
+												d="m453.332031 134.976562c-4.09375 0-8.191406-1.558593-11.304687-4.695312l-60.332032-60.351562c-6.25-6.25-6.25-16.382813 0-22.632813s16.382813-6.25 22.636719 0l60.328125 60.351563c6.25 6.25 6.25 16.382812 0 22.632812-3.136718 3.117188-7.230468 4.695312-11.328125 4.695312zm0 0" />
+										</svg>
+									</a>
+									<a tooltip="Eliminar" flow="top">
+										<svg class="delete" viewBox="-40 0 427 427.00131">
+											<path
+												d="m232.398438 154.703125c-5.523438 0-10 4.476563-10 10v189c0 5.519531 4.476562 10 10 10 5.523437 0 10-4.480469 10-10v-189c0-5.523437-4.476563-10-10-10zm0 0" />
+											<path
+												d="m114.398438 154.703125c-5.523438 0-10 4.476563-10 10v189c0 5.519531 4.476562 10 10 10 5.523437 0 10-4.480469 10-10v-189c0-5.523437-4.476563-10-10-10zm0 0" />
+											<path
+												d="m28.398438 127.121094v246.378906c0 14.5625 5.339843 28.238281 14.667968 38.050781 9.285156 9.839844 22.207032 15.425781 35.730469 15.449219h189.203125c13.527344-.023438 26.449219-5.609375 35.730469-15.449219 9.328125-9.8125 14.667969-23.488281 14.667969-38.050781v-246.378906c18.542968-4.921875 30.558593-22.835938 28.078124-41.863282-2.484374-19.023437-18.691406-33.253906-37.878906-33.257812h-51.199218v-12.5c.058593-10.511719-4.097657-20.605469-11.539063-28.03125-7.441406-7.421875-17.550781-11.5546875-28.0625-11.46875h-88.796875c-10.511719-.0859375-20.621094 4.046875-28.0625 11.46875-7.441406 7.425781-11.597656 17.519531-11.539062 28.03125v12.5h-51.199219c-19.1875.003906-35.394531 14.234375-37.878907 33.257812-2.480468 19.027344 9.535157 36.941407 28.078126 41.863282zm239.601562 279.878906h-189.203125c-17.097656 0-30.398437-14.6875-30.398437-33.5v-245.5h250v245.5c0 18.8125-13.300782 33.5-30.398438 33.5zm-158.601562-367.5c-.066407-5.207031 1.980468-10.21875 5.675781-13.894531 3.691406-3.675781 8.714843-5.695313 13.925781-5.605469h88.796875c5.210937-.089844 10.234375 1.929688 13.925781 5.605469 3.695313 3.671875 5.742188 8.6875 5.675782 13.894531v12.5h-128zm-71.199219 32.5h270.398437c9.941406 0 18 8.058594 18 18s-8.058594 18-18 18h-270.398437c-9.941407 0-18-8.058594-18-18s8.058593-18 18-18zm0 0" />
+											<path
+												d="m173.398438 154.703125c-5.523438 0-10 4.476563-10 10v189c0 5.519531 4.476562 10 10 10 5.523437 0 10-4.480469 10-10v-189c0-5.523437-4.476563-10-10-10zm0 0" />
+										</svg>
+									</a>
+								</div>
+							</li>
+						</ul>
+					</div>
+					<div id="addEditExtraItem" class="addEditExtraItem">
+						<div class="head">
+							<span class="goBack flex v-ct hideTarget" target="addEditExtraItem">
+								<svg x="0px" y="0px" viewBox="0 0 240.823 240.823"
+									style="enable-background:new 0 0 240.823 240.823;" xml:space="preserve">
+									<path
+										d="M57.633,129.007L165.93,237.268c4.752,4.74,12.451,4.74,17.215,0c4.752-4.74,4.752-12.439,0-17.179 l-99.707-99.671l99.695-99.671c4.752-4.74,4.752-12.439,0-17.191c-4.752-4.74-12.463-4.74-17.215,0L57.621,111.816 C52.942,116.507,52.942,124.327,57.633,129.007z" />
+								</svg>
+								<h5>Voltar</h5>
+							</span>
+						</div>
+						<b targetTitle>Adicionar item extra</b>
+						<div class="xform">
+							<div class="xinput grow-1 w100">
+								<input type="text" id="extraName">
+								<label for="extraName">Nome</label>
+							</div>
+							<div class="xinput grow-1 w100">
+								<input type="text" class="double formatNumber" id="extraPrice">
+								<label for="extraPrice">Preço</label>
+							</div>
+
+						</div>
+						<button class="xbtn" id="btExtra">Adicionar</button>
+					</div>
+					<div class="master-btn-right flex">
+						<span class="hideTarget" target="xModalCtrlArtigo">CANCELAR</span>
+						<span voltarItemExtra>VOLTAR</span>
+						<span class="flex v-ct" bt_artigo>
+							CONCLUIR
+							<svg class="spinner" viewBox="0 0 50 50">
+								<circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
+							</svg>
+						</span>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+
+
+	<!-- Transfer Artigo  -->
+	<div id="xModalAcertoStockArtigos" class="x-mobdal XM-acertarStockArtigos flex v-ct h-ct"
+		target="xModalAcertoStockArtigos">
+		<div class="modal-frame j-stp">
+			<h3>Acertar stock</h3>
+			<div class="transfers flex">
+				<div class="listSelectedsArts fromAcert">
+					<div class="xselect flutuate w50">
+						<input type="text" readonly>
+						<label>Escolha o armazém</label>
+						<ul id="armazens_acertoStock">
+						</ul>
+					</div>
+					<p class="pFromAcert">Insira a quantidade real em stock</p>
+					<ul id="artigosAcertoStock">
+						<!--<li class="flex h-sb v-ct">
+							<div>
+								<b>Artigo name</b>
+								<p>24 artigos</p>
+							</div>
+							<div class="crtlQtt flex">
+								<span>-</span>
+								<input type="number">
+								<span>+</span>
+							</div>
+						</li>-->
+					</ul>
+				</div>
+			</div>
+			<div class="master-btn-right flex">
+				<span class="hideTarget" target="xModalAcertoStockArtigos">CANCELAR</span>
+				<span class="flex v-ct" bt_acertostock>
+					concluir
+					<svg class="spinner" viewBox="0 0 50 50">
+						<circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
+					</svg>
+				</span>
+			</div>
+		</div>
+	</div>
+	<div id="xModalRemoveCategory" class="x-mobdal XM-resetColabPass flex v-ct h-ct" target="xModalRemoveCategory">
+		<div class="modal-frame">
+			<h3 targetTitle></h3>
+			<p>Tem certeza de que pretende executar esta operação?</p>
+			<div class="master-btn-right flex">
+				<span class="hideTarget" target="xModalRemoveCategory">NÃO</span>
+				<span class="flex v-ct" removeCategory>
+					SIM
+					<svg class="spinner" viewBox="0 0 50 50">
+						<circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
+					</svg>
+				</span>
+			</div>
+		</div>
+	</div>
+	<div id="xModalArticleStatus" class="x-mobdal XM-resetColabPass flex v-ct h-ct" target="xModalArticleStatus">
+		<div class="modal-frame">
+			<h3 targetTitle></h3>
+			<p>Tem certeza de que pretende executar esta operação?</p>
+			<div class="master-btn-right flex">
+				<span class="hideTarget" target="xModalArticleStatus">NÃO</span>
+				<span class="flex v-ct" articleStatus>
+					SIM
+					<svg class="spinner" viewBox="0 0 50 50">
+						<circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
+					</svg>
+				</span>
+			</div>
+		</div>
+	</div>
+	<div id="xModalRemoveExtra" class="x-mobdal XM-resetColabPass flex v-ct h-ct" target="xModalRemoveExtra">
+		<div class="modal-frame">
+			<h3 targetTitle></h3>
+			<p>Tem certeza de que pretende executar esta operação?</p>
+			<div class="master-btn-right flex">
+				<span class="hideTarget" target="xModalRemoveExtra">NÃO</span>
+				<span class="flex v-ct" removeExtra>
+					SIM
+					<svg class="spinner" viewBox="0 0 50 50">
+						<circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
+					</svg>
+				</span>
+			</div>
+		</div>
+	</div>
+	<div id="xModalArmazensImportarArtigos" class="x-mobdal flex v-ct h-ct" target="xModalArmazensImportarArtigos">
+		<div class="modal-frame j-stp">
+<!--			<h3 targetTitle>Adicionar Armazém</h3>-->
+			<div class="xform">
+				<p>Selecione os armazéns nos quais os artigos estarão alocados!</p>
+				<div class="xcheck multiple">
+					<ul armazens_importar_artigos>
+					</ul>
+				</div>
+			</div>
+			<div class="master-btn-right flex">
+				<span class="hideTarget" target="xModalArmazensImportarArtigos">CANCELAR</span>
+				<span class="flex v-ct" btExportarModelo>
+					CONCLUIR
+					<svg class="spinner" viewBox="0 0 50 50">
+						<circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
+					</svg>
+				</span>
+			</div>
+		</div>
+	</div>
+	<div id="xModalImportArtErrors" class="x-mobdal XM-ExImporArtErrors flex v-ct h-ct" target="xModalImportArtErrors">
+		<div class="modal-frame">
+			<h3 targetTitle></h3>
+			<ul id="erros_importar_artigos">
+
+			</ul>
+			<div class="master-btn-right flex">
+				<span class="hideTarget" target="xModalImportArtErrors">Fechar</span>
+			</div>
+		</div>
+	</div>
+	<div id="xModalAllAboutArtigo" class="x-mobdal XM-AboutArtigos flex v-ct h-ct" target="xModalAllAboutArtigo">
+		<div class="modal-frame">
+			<div class="flex h-sb hhd">
+				<h3></h3>
+				<div class="opt flex v-ct">
+					<a tooltip="Editar" flow="top" title="Editar" style="cursor: pointer;">
+						<svg class="edit" viewBox="0 0 512 512">
+							<path
+								d="m368 511.957031h-309.332031c-32.363281 0-58.667969-26.304687-58.667969-58.667969v-309.332031c0-32.363281 26.304688-58.667969 58.667969-58.667969h181.332031c8.832031 0 16 7.167969 16 16 0 8.832032-7.167969 16-16 16h-181.332031c-14.699219 0-26.667969 11.96875-26.667969 26.667969v309.332031c0 14.699219 11.96875 26.667969 26.667969 26.667969h309.332031c14.699219 0 26.667969-11.96875 26.667969-26.667969v-181.332031c0-8.832031 7.167969-16 16-16s16 7.148438 16 16v181.332031c0 32.363282-26.304688 58.667969-58.667969 58.667969zm0 0" />
+							<path
+								d="m187.136719 340.820312c-4.203125 0-8.300781-1.664062-11.308594-4.691406-3.796875-3.777344-5.417969-9.21875-4.371094-14.445312l15.082031-75.433594c.617188-3.113281 2.152344-5.953125 4.371094-8.171875l220.953125-220.925781c22.867188-22.871094 60.074219-22.871094 82.964844 0 11.070313 11.070312 17.171875 25.792968 17.171875 41.472656s-6.101562 30.398438-17.195312 41.472656l-220.925782 220.949219c-2.21875 2.238281-5.078125 3.753906-8.171875 4.371094l-75.414062 15.082031c-1.046875.214844-2.113281.320312-3.15625.320312zm75.433593-31.082031h.214844zm-45.609374-52.457031-9.410157 47.144531 47.125-9.429687 217.515625-217.511719c5.035156-5.058594 7.808594-11.734375 7.808594-18.859375s-2.773438-13.804688-7.808594-18.859375c-10.367187-10.390625-27.285156-10.390625-37.714844 0zm0 0" />
+							<path
+								d="m453.332031 134.976562c-4.09375 0-8.191406-1.558593-11.304687-4.695312l-60.332032-60.351562c-6.25-6.25-6.25-16.382813 0-22.632813s16.382813-6.25 22.636719 0l60.328125 60.351563c6.25 6.25 6.25 16.382812 0 22.632812-3.136718 3.117188-7.230468 4.695312-11.328125 4.695312zm0 0" />
+						</svg>
+					</a>
+					<label class="xSwitch">
+						<input type="checkbox">
+						<span class="slider round"></span>
+					</label>
+				</div>
+			</div>
+			<div class="flex impera">
+				<div class="prima">
+					<div class="infos">
+						<ul>
+							<li class="flex h-sb">
+								<span>EAN</span>
+								<span detalhes_ean_artigo></span>
+							</li>
+							<li class="flex h-sb">
+								<span>Código</span>
+								<span detalhes_codigo_artigo></span>
+							</li>
+							<li class="flex h-sb">
+								<span>Nome</span>
+								<span detalhes_nome_artigo></span>
+							</li>
+							<li class="flex h-sb">
+								<span>Categoria</span>
+								<span detalhes_categoria_artigo></span>
+							</li>
+							<li class="flex h-sb">
+								<span>Imposto</span>
+								<span detalhes_imposto_artigo></span>
+							</li>
+							<li class="flex h-sb">
+								<span>Forma de utilização de imposto</span>
+								<span detalhes_aplicacao_imposto_artigo></span>
+							</li>
+							<li class="noH">
+								<span>Observação</span>
+								<p detalhes_obs_artigo></p>
+							</li>
+						</ul>
+					</div>
+					<div class="prices">
+						<h6>Preço</h6>
+						<ul>
+							<!--<li class="flex h-sb">
+								<span>Armazém Y</span>
+								<span class="is-money-text">254</span>
+							</li>-->
+						</ul>
+					</div>
+					<div class="composal">
+						<h6>Artigo composto</h6>
+						<ul>
+							<li class="flex h-sb">
+								<span>Artigo base</span>
+								<span></span>
+							</li>
+							<li class="flex h-sb">
+								<span>Valor do composto</span>
+								<span class="is-money-text"></span>
+							</li>
+						</ul>
+					</div>
+
+				</div>
+				<div class="rgt">
+					<div class="img-container empty-artigo">
+					</div>
+					<div class="btm">
+						<div class="yesNOpts">
+							<ul>
+								<li class="flex h-sb">
+									<span>Permitir stock negativo</span>
+									<span detalhes_artigo_stock_negativo></span>
+								</li>
+								<li class="flex h-sb">
+									<span>Este artigo é composto</span>
+									<span detalhes_artigo_composto></span>
+								</li>
+								<li class="flex h-sb">
+									<span>Este artigo contém itens extra</span>
+									<span detalhes_artigo_tem_extra></span>
+								</li>
+								<li class="flex h-sb">
+									<span>Este artigo será confecionado</span>
+									<span detalhes_artigo_confecionado></span>
+								</li>
+							</ul>
+						</div>
+						<div class="extras">
+							<h6>Itens extra / acompanhamentos</h6>
+							<ul>
+								<!--<li class="flex h-sb">
+									<span>Extra comes here...</span>
+									<span class="is-money-text">15</span>
+								</li>-->
+							</ul>
+						</div>
+					</div>
+
+				</div>
+			</div>
+			<div class="master-btn-right flex">
+				<span class="hideTarget" target="xModalAllAboutArtigo">FECHAR</span>
+			</div>
+		</div>
+	</div>
+</div>
+<script src="../assets/js/admin/articles.js"></script>
+<script src="../assets/js/admin/categories.js"></script>
+<script src="../assets/js/admin/provider.js"></script>
+<script src="../assets/js/admin/entranceTransfer.js"></script>
+<script src="../assets/js/admin/exportImportArticles.js"></script>

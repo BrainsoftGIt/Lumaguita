@@ -1,0 +1,79 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Luma | Login</title>
+        <link rel="stylesheet" type="text/css" href="">
+        <link rel="shortcut icon" href="../assets/img/luma.png" />
+        <link rel="stylesheet" type="text/css" href="../assets/css/admin/login.css">
+        <link rel="stylesheet" href="../assets/css/main.css">
+        <link rel="stylesheet" href="../assets/css/admin/home.css">
+        <script src="../assets/js/jquery.js"></script>
+        <script src="../assets/js/admin/postIdentifier.js"></script>
+    </head>
+    <body>
+        <div class="login-page">
+            <div class="login-form">
+                <img class="logo" src="../assets/img/luma.png" alt="">
+                <h3>Login</h3>
+                <div>
+                    <section>
+                        <span><input type="text" id="login_email" placeholder="Email" autofocus="autofocus"><i class="icon-user"></i></span>
+                        <span><input type="password" id="login_password" placeholder="Palavra-passe"><i class="icon-key2"></i></span>
+                    </section>
+                    <button id="login_submit">
+                        <svg class="unlock" viewBox="-64 0 512 512" xmlns="http://www.w3.org/2000/svg"><path d="m336 512h-288c-26.453125 0-48-21.523438-48-48v-224c0-26.476562 21.546875-48 48-48h288c26.453125 0 48 21.523438 48 48v224c0 26.476562-21.546875 48-48 48zm-288-288c-8.8125 0-16 7.167969-16 16v224c0 8.832031 7.1875 16 16 16h288c8.8125 0 16-7.167969 16-16v-224c0-8.832031-7.1875-16-16-16zm0 0"/><path d="m80 224c-8.832031 0-16-7.167969-16-16v-80c0-70.59375 57.40625-128 128-128s128 57.40625 128 128c0 8.832031-7.167969 16-16 16s-16-7.167969-16-16c0-52.929688-43.070312-96-96-96s-96 43.070312-96 96v80c0 8.832031-7.167969 16-16 16zm0 0"/></svg>
+                        <svg class="spinner" viewBox="0 0 50 50">
+                            <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="xModalActivate" class="x-mobdal XM-activateAccount flex v-ct h-ct hideTarget" target="xModalActivate">
+            <div class="modal-frame j-stp">
+                <h3 targetTitle></h3>
+                <p class="introTxt">Verificamos que esta é a sua primeira vez a aceder ao sistema ou a sua conta foi reativada. <br> Por razões de segurança, é obrigatório que altere sua palavra-passe e o PIN.</p>
+                <div class="xform">
+                    <div class="xinput grow-1 w100">
+                        <input type="password" id="activateAccountPassword">
+                        <label for="activateAccountPassword">Palavra-passe</label>
+                    </div>
+                    <div class="xinput grow-1 w100">
+                        <input type="password" id="activateAccountConfirmPassword">
+                        <label for="activateAccountConfirmPassword">Confirme a palavra-passe</label>
+                    </div>
+                    <div class="xinput grow-1 w100">
+                        <input type="password" id="activateAccountPIN" maxlength="4" class="integer">
+                        <label for="activateAccountPIN">PIN</label>
+                    </div>
+                    <div class="xinput grow-1 w100" >
+                        <input type="password" id="activateAccountConfirmPIN" maxlength="4" class="integer">
+                        <label for="activateAccountConfirmPIN">Confirme o PIN</label>
+                    </div>
+                </div>
+                <div class="master-btn-right flex">
+                    <span class="hideTarget" target="xModalActivate">CANCELAR</span>
+                    <span class="flex v-ct" bt_activate_account>
+					CONCLUIR
+					<svg class="spinner" viewBox="0 0 50 50">
+						<circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
+					</svg>
+				</span>
+                </div>
+            </div>
+        </div>
+        <div class="xAlertContainer">
+        </div>
+        <footer>
+            <div>
+                <span>Copyright © <script>document.write(new Date().getFullYear())</script>&nbsp;<a href="https://www.brainsoftstp.com" target="_blank" style="font-size: 0.8rem;">| Desenvolvido por Brainsoft</a></span>
+            </div>
+        </footer>
+    </body>
+
+    <script src="../assets/js/admin/home.js"></script>
+    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/admin/login.js"></script>
+    <script src="../assets/js/geral.js"></script>
+</html>

@@ -1,0 +1,53 @@
+{
+  "identifier": "remesa.docs",
+  "title": "Quia de remesa",
+  "format": "A4|landscape",
+  "operation": [ "fecho.venda", "proforma" ],
+  "extras": [
+    { "key": "destino", "format": "text", "title": "Destino de Fatura" },
+    { "key": "outDate", "format": "date", "title": "Data de guia de fatura" },
+    { "key": "guiNumber", "format": "text", "title": "Nº de Guia de Saida" },
+    { "key": "payStatus", "format": "date", "title": "Situação de Pagamento" }
+  ],
+  "documents":[
+    {
+      "type": "header",
+      "left": { "ref": "@REF", "size": 10 },
+      "center": { "ref": "@REF", "size": 20 },
+      "right": { "ref": "@REF", "size": 70 }
+    },
+    {
+      "type": "info",
+      "left": [
+        { "title": "Destino de Fatura", "source": "form", "value": "destino", "format": "" },
+        { "title": "Data de guia de fatura", "source": "form", "value": "outDate", "format": "" }
+      ],
+
+      "right": [
+        { "title": "Nº de Guia de Saida", "source": "db", "value": "payStatus" },
+        { "title": "Situação de Pagamento", "source": "db", "value": "colaborador_nome" }
+      ]
+    }, {
+      "type": "table",
+      "columns": [
+        { "title": "Código", "value": "artigo_codigo", "format":"",  "size":  20},
+        { "title": "Qt", "value": "venda_quantidade", "format": "", "size": 10 },
+        { "title": "Descrição", "value": "artigo_descricao", "format": "", "size": 30 },
+        { "title": "Qt/Emb", "value": "artigo_quantidadecomposicao", "format": "", "size": 10 },
+        { "title": "P.Unitario", "value": "venda_custoquantidade", "format": "", "size": 10 },
+        { "title": "Valor", "value": "venda_montante", "format": "", "size": 20 }
+      ]
+    }, {
+      "type": "info",
+      "right": [
+        { "title": "Total", "source": "db", "value": "conta_montante", "format": "" }
+      ]
+    }, {
+      "type": "field",
+      "fields": [
+        { "title": "Recebi", "size": 50 },
+        { "title": "Entreguei", "size": 50 }
+      ]
+    }
+  ]
+}

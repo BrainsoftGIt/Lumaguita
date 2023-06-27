@@ -1,0 +1,169 @@
+@import "vars";
+
+.__included__.report {
+    ._head {
+        .inLeft {
+            h1 {
+                position: relative;
+                &:before {
+                    content: "";
+                    width: 6px;
+                    height: 6px;
+                    border-radius: 8px;
+                    background-color: #aaa;
+                    position: absolute;
+                    top: 9px;
+                    right: -20px;
+                }
+                &:after {
+                    content: attr(found);
+                    position: absolute;
+                    white-space: nowrap;
+                    font-weight: 500;
+                    font-size: 0.8rem;
+                    color: #666;
+                    top: 3px;
+                    left: 140%;
+                }
+            }
+        }
+        .filterMst {
+            position: relative;
+            margin-left: 2rem;
+            .flt-fire {
+                // background: #ff7407;
+                border: 2px $blue solid;
+                padding: 12px 16px;
+                border-radius: 3px;
+                svg {
+                    width: 18px;
+                    fill: $blue;
+                }
+                span {
+                    font-size: 0.8rem;
+                    margin-left: 8px;
+                    font-weight: 600;
+                    color: $blue;
+                }
+            }
+        }
+        .eximport {
+            margin-left: 1rem;
+            display: flex;
+            span {
+                position: relative;
+                width: 41px;
+                height: 41px;
+                border-radius: 5px;
+                cursor: pointer;
+                margin-left: 1.2rem;
+                transition: all 0.25s;
+                &.excel {
+                    background: lighten($green, 56%);
+                    border: 2px lighten($green, 10%) solid;
+                }
+                &.pdf {
+                    background: lighten(tomato, 34%);
+                    border: 2px lighten(tomato, 15%) solid;
+                }
+                &:hover {
+                    background: #fff;
+                }
+                svg {
+                    width: 20px;
+                }
+                a{
+                    font-size: 0.7rem;
+                    font-weight: 700;
+                    color: tomato;
+                }
+            }
+        }
+    }
+    ._body {
+        overflow-y: hidden;
+        .x-table {
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+            height: calc(100% - 5rem);
+        }
+    }
+}
+
+// MODALS
+.XM-masterFilter {
+    * {
+        font-size: 0.9rem;
+    }
+    p {
+        margin-bottom: 1.8rem;
+    }
+    b {
+        font-weight: 600;
+        display: block;
+        margin-bottom: 1rem;
+        white-space: nowrap;
+        font-size: 0.85rem;
+    }
+    .types {
+        // padding-top: 1.5rem;
+        margin-right: 5%;
+        ul {
+            li {
+                white-space: nowrap;
+            }
+        }
+    }
+    .options {
+        padding: 0 12px;
+        border-radius: 5px;
+        margin-right: 2rem;
+        b {
+            padding-left: 1rem;
+        }
+        ul {
+            // min-height: 50vh;
+            min-width: 280px;
+            background-color: $background;
+            padding: 12px 0;
+            li {
+                line-height: 2.4;
+                font-size: 0.85rem;
+                cursor: pointer;
+                padding: 0 1rem;
+                &:hover {
+                    background-color: darken($background, 4%);
+                    color: $blue;
+                }
+            }
+        }
+    }
+    .inputs {
+        // padding-top: 1.5rem;
+        max-width: 360px;
+        align-content: flex-start;
+        .xinput:hover .delete {
+            visibility: visible;
+            opacity: 1;
+        }
+        .delete {
+            position: absolute;
+            top: -9px;
+            right: -9px;
+            cursor: pointer;
+            visibility: hidden;
+            opacity: 0;
+            &:after {
+                content: "\2715";
+                color: tomato;
+                width: 22px;
+                height: 22px;
+                line-height: 22px;
+                text-align: center;
+                border-radius: 50%;
+                background-color: #fff;
+                display: inline-block;
+            }
+        }
+    }
+}

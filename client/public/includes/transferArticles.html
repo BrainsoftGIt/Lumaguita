@@ -1,0 +1,83 @@
+<link rel="stylesheet" href="../assets/css/admin/tableAdmin.css">
+<div class="__included__ colabs">
+  <div class="_head flex h-sb v-ct">
+    <div class="inLeft">
+      <h1>Transferência de artigos</h1>
+    </div>
+  </div>
+  <datalist id="transfArtigos" artigos>
+  </datalist>
+  <div class="_body" id="transferArticlesBody">
+    <div class="modal-frame j-stp">
+      <h3></h3>
+      <div class="flex">
+        <div class="inputs flex xform">
+          <div class="xinput w15">
+            <input type="text" placeholder="Código de armazém de saída" _noObrigatory="true" codigo_armazens id="codigo_armazem_saida">
+            <label>Cód. de armazém de saída</label>
+          </div>
+          <div class="xselect flutuate w15">
+            <input type="text" readonly>
+            <label>Escolha o armazém de saída</label>
+            <ul armazens_transferencia id="armazem_saida">
+            </ul>
+          </div>
+          <div class="xinput w15">
+            <input type="text" placeholder="Código de armazém de entrada" _noObrigatory="true" codigo_armazens id="codigo_armazem_entrada">
+            <label>Cód. de armazém de entrada</label>
+          </div>
+          <div class="xselect flutuate w15">
+            <input type="text" readonly>
+            <label>Escolha o armazém de entrada</label>
+            <ul armazens_transferencia id="armazem_entrada">
+            </ul>
+          </div>
+          <div class="xinput w15">
+            <input type="text" placeholder="Data da transferência" id="transferencia_data" data-inputmask-alias="dd-mm-yyyy" data-val="true" _noObrigatory="true">
+            <label>Data da transferência</label>
+          </div>
+          <div class="xinput w15">
+            <input type="text" placeholder="Número de documento" id="transferencia_documento" _noObrigatory="true">
+            <label for="transferencia_documento">Número de documento</label>
+          </div>
+          <div class="xinput w100">
+            <textarea placeholder="_" _noObrigatory="true" id="transferencia_obs" _noObrigatory="true"></textarea>
+            <label for="transferencia_obs">Observação</label>
+          </div>
+          <div class="xinput w50">
+            <input type="text" placeholder="Pesquisar artigo" search_article list="transfArtigos" >
+            <label>Pesquisar artigo</label>
+          </div>
+          <div class="xinput w33">
+            <input type="text" placeholder="Descrição"  description_article>
+            <label>Descrição</label>
+          </div>
+          <div class="xinput" style="width: 6rem">
+            <input type="text" placeholder="Quantidade" class="double" amount_article>
+            <label>Qtd</label>
+          </div>
+          <div class="flex h-sb v-ct">
+            <button class="xbtn" addArticleTable>Lançar</button>
+          </div>
+          <div class="x-table hovered grow-1">
+            <div class="xheader">
+              <ul class="flex">
+                <li grow="2">Cód. Artigo</li>
+                <li grow="5">Descrição</li>
+                <li grow="1">Quantidade</li>
+                <li grow="1"></li>
+              </ul>
+            </div>
+            <div class="xbody" tableDocumentArticles>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="flex h-sb v-ct" style="float: right;">
+        <button class="xbtn" id="finalizar_transferencia">Finalizar transferência</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="../assets/js/admin/articlesDocuments.js"></script>
+<script src="../assets/js/admin/transferencia.js"></script>

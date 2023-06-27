@@ -1,0 +1,369 @@
+import {app} from '../../../service/web.service';
+import fs from "fs";
+import path from "path";
+import {clusterServer} from "../../../service/cluster.service";
+import {folders} from "../../../global/project";
+
+app.get("/api/categorias", async (req, res) =>{
+    const {functLoadCategories} = require("../db/call-function-article");
+    const response = await functLoadCategories({arg_espaco_auth: req.session.auth_data.auth.armazem_atual});
+    res.json({categs: response.rows});
+});
+app.get("/api/article/warehouses", async (req, res) =>{
+    const {functLoadArmazensColaboradorAlocar} = require("../db/call-function-colaborador");
+    const response = await functLoadArmazensColaboradorAlocar({arg_espaco_auth: req.session.auth_data.auth.armazem_atual});
+    res.json({armazens: response.rows});
+});
+app.get("/api/fornecedores", async (req, res) =>{
+    const {functLoadProviders} = require("../db/call-function-article");
+    const response = await functLoadProviders({arg_espaco_auth: req.session.auth_data.auth.armazem_atual});
+    res.json({provds: response.rows});
+});
+app.post("/api/provider", async (req, res) =>{
+    const {functSetProvider} = require("../db/call-function-article");
+    req.body.arg_colaborador_id = req.session.auth_data.auth.colaborador_id;
+    req.body.arg_espaco_auth = req.session.auth_data.auth.armazem_atual;
+    let before =  await clusterServer.service.loadLocalCluster();
+    const response = await functSetProvider(req.body);
+    let after = await clusterServer.service.loadLocalCluster();
+    res.json({result: response.row.result, message: response.row.message.text});
+    if(response.row.result && before.cluster_version < after.cluster_version){
+        clusterServer.notifyLocalChange({
+            event: "APROVIDER",
+            extras: null,
+            message: "Registo e atualização de fornecedor"
+        });
+    }
+});
+app.post("/api/articles/load", async (req, res) =>{
+    const {functLoadArticles} = require("../db/call-function-article");
+    req.body.arg_espaco_auth = req.session.auth_data.auth.armazem_atual;
+    console.log( req.body );
+    const response = await functLoadArticles(req.body) ;
+    res.json({artcls: response.rows});
+});
+app.post("/api/categoria", async (req, res) =>{
+    const {functRegCategory} = require("../db/call-function-article");
+    let data = JSON.parse(req.body.data);
+    let before =  await clusterServer.service.loadLocalCluster();
+
+    data.arg_espaco_auth = req.session.auth_data.auth.armazem_atual;
+    data.arg_colaborador_id = req.session.auth_data.auth.colaborador_id;
+    if(req.file){
+        clusterServer.res.create({resource_subpath: "cloud/data/files", resource_name: req.file.originalname,
+            resource_metadata: {_branch_uid: req.session.auth_data.auth.branch_uuid }
+        }).then(async value => {
+            data.classe_foto = value.resource_url+";"+req.file.originalname;
+            const response = await functRegCategory(data);
+            let after = await clusterServer.service.loadLocalCluster();
+            res.json({result: response.row.result, message: response.row.message.text});
+
+            if(response.row.result){
+                if(before.cluster_version < after.cluster_version){
+                    clusterServer.notifyLocalChange({event: "ADD_UPDATE:CATEGORY", extras: null, message: "Registao edicção de categoria"});
+                }
+                fs.rename(req.file.path, value.resolve, function (err) {
+                    if (err) console.log(err);
+                    else clusterServer.notifyLocalChange({event: "NEW RESOURCE FILES"});
+                });
+            }
+        });
+    }
+    else{
+        const response = await functRegCategory(data);
+        let after = await clusterServer.service.loadLocalCluster();
+        res.json({result: response.row.result, message: response.row.message.text});
+        if(response.row.result && before.cluster_version < after.cluster_version){
+            clusterServer.notifyLocalChange({event: "ADD_UPDATE:CATEGORY", extras: null, message: "Registo ou edição de categoria"});
+        }
+    }
+});
+app.post("/api/artigo", async (req, res) =>{
+    const {functRegArticle} = require("../db/call-function-article");
+    let before =  await clusterServer.service.loadLocalCluster();
+    let data = JSON.parse(req.body.data);
+
+    data.arg_espaco_auth = req.session.auth_data.auth.armazem_atual;
+    data.arg_colaborador_id = req.session.auth_data.auth.colaborador_id;
+    if(req.file){
+        clusterServer.res.create({resource_subpath: "cloud/data/files", resource_name: req.file.originalname,
+            resource_metadata: {_branch_uid: req.session.auth_data.auth.branch_uuid }
+        }).then(async value => {
+            data.artigo_foto = value.resource_url+";"+req.file.originalname;
+            const response = await functRegArticle(data);
+            let after = await clusterServer.service.loadLocalCluster();
+
+            res.json({result: response.row.result, message: response.row.message.text});
+            if(response.row.result){
+                if(before.cluster_version < after.cluster_version)
+                    clusterServer.notifyLocalChange({event: "ADD_UPDATE:ARTICLE", extras: null, message: "Registo ou alteração de artigo"});
+
+                fs.rename(req.file.path, value.resolve, function (err) {
+                    if (err) console.log(err);
+                    else clusterServer.notifyLocalChange({event: "NEW RESOURCE FILES"});
+                });
+            }
+        });
+    }
+    else{
+        const response = await functRegArticle(data);
+        let after = await clusterServer.service.loadLocalCluster();
+        res.json({result: response.row.result, message: response.row.message.text});
+        if(response.row.result && before.cluster_version < after.cluster_version){
+            clusterServer.notifyLocalChange({event: "ADD_UPDATE:ARTICLE", extras: null, message: "Registo ou alteração de artigo"});
+        }
+    }
+});
+app.post("/api/extraItems/load", async (req, res) =>{
+    const {functLoadArticles} = require("../db/call-function-article");
+    const response = await functLoadArticles({arg_artigo_estado: 1, arg_classe_id: "00000000-0000-0000-0000-000000000001", arg_espaco_auth: req.session.auth_data.auth.armazem_atual}) ;
+    res.json({items: response.rows});
+});
+app.post("/api/article/extra", async (req, res) =>{
+    const {functRegItem} = require("../db/call-function-article");
+    req.body.arg_espaco_auth = req.session.auth_data.auth.armazem_atual;
+    req.body.arg_colaborador_id = req.session.auth_data.auth.colaborador_id;
+    let before =  await clusterServer.service.loadLocalCluster();
+    const response = await functRegItem(req.body) ;
+    let after = await clusterServer.service.loadLocalCluster();
+    res.json({result: response.row.result, message: response.row.message.text});
+    if(response.row.result && before.cluster_version < after.cluster_version){
+        clusterServer.notifyLocalChange({
+            event: "ADD_UPDATE:ITEM",
+            extras: null,
+            message: (req.body.artigo_id === null ? "Item "+req.body.artigo_nome+" foi registado." : "Item "+req.body.artigo_nome+" foi editado.")
+        });
+    }
+});
+app.post("/api/category/remove", async (req, res) =>{
+    const {functDisableCategory} = require("../db/call-function-article");
+    req.body.arg_colaborador_id = req.session.auth_data.auth.colaborador_id;
+    req.body.arg_espaco_auth = req.session.auth_data.auth.armazem_atual;
+    let before =  await clusterServer.service.loadLocalCluster();
+    const response = await functDisableCategory(req.body);
+    let after = await clusterServer.service.loadLocalCluster();
+    res.json({result: response.row.result, message: response.row.message.text});
+    if(response.row.result && before.cluster_version < after.cluster_version){
+        clusterServer.notifyLocalChange({
+            event: "REMOVE:CATEGORY",
+            extras: null,
+            message: "Categoria foi removida."
+        });
+    }
+});
+app.post("/api/artigo/estado", async (req, res) =>{
+    const {functDisableArticle} = require("../db/call-function-article");
+    req.body.arg_colaborador_id = req.session.auth_data.auth.colaborador_id;
+    req.body.arg_espaco_auth = req.session.auth_data.auth.armazem_atual;
+    let before =  await clusterServer.service.loadLocalCluster();
+    const response = await functDisableArticle(req.body);
+    let after = await clusterServer.service.loadLocalCluster();
+    res.json({result: response.row.result, message: response.row.message.text});
+    if(response.row.result && before.cluster_version < after.cluster_version){
+        clusterServer.notifyLocalChange({
+            event: "CHANGE_STATUS:ARTICLE",
+            extras: null,
+            message: "Estado de artigo foi alterado."
+        });
+    }
+});
+app.post("/api/provider/remove", async (req, res) =>{
+    let before =  await clusterServer.service.loadLocalCluster();
+    const {functRemoveFornecedor} = require("../db/call-function-article");
+    req.body.arg_colaborador_id = req.session.auth_data.auth.colaborador_id;
+    const  response = await functRemoveFornecedor(req.body);
+    let after = await clusterServer.service.loadLocalCluster();
+    res.json({result: response.row.result, message: response.row.message.text});
+    if(response.row.result && before.cluster_version < after.cluster_version){
+        clusterServer.notifyLocalChange({
+            event: "REMOVE:PROVIDER",
+            extras: null,
+            message: "Fornecedor foi removido."
+        });
+    }
+});
+app.post("/api/artigos/entrada", async (req, res) =>{
+    const {functRegEntrada} = require("../db/call-function-article");
+    let before =  await clusterServer.service.loadLocalCluster();
+    req.body.arg_colaborador_id = req.session.auth_data.auth.colaborador_id;
+    req.body.arg_espaco_auth = req.session.auth_data.auth.armazem_atual;
+    const  response = await functRegEntrada(req.body);
+    let after = await clusterServer.service.loadLocalCluster();
+    res.json({result: response.row.result, message: response.row.message.text, guia_uuid: response.row.message.guia.guia_uid});
+    if(response.row.result && before.cluster_version < after.cluster_version){
+        clusterServer.notifyLocalChange({
+            event: "ENTRANCE:ARTICLES",
+            extras: null,
+            message: "Foi registado entrada de artigos num armazém."
+        });
+    }
+});
+app.post("/api/artigos/transferir", async (req, res) =>{
+    const {functRegTransferencia} = require("../db/call-function-article");
+    let before =  await clusterServer.service.loadLocalCluster();
+    req.body.arg_colaborador_id = req.session.auth_data.auth.colaborador_id;
+    req.body.arg_espaco_auth = req.session.auth_data.auth.armazem_atual;
+    const  response = await functRegTransferencia(req.body);
+    let after = await clusterServer.service.loadLocalCluster();
+    res.json({result: response.row.result, message: response.row.message});
+
+    if(response.row.result){
+        if(before.cluster_version < after.cluster_version){
+            req.session.transference_data = req.body;
+            req.session.save();
+            clusterServer.notifyLocalChange({
+                event: "TRANSFER:ARTICLES",
+                extras: null,
+                message: "Foi registado transferencia de artigos."
+            });
+        }
+    }
+});
+app.post("/api/extra/remove", async (req, res) =>{
+    const {functDisableArticle} = require("../db/call-function-article");
+    req.body.arg_colaborador_id = req.session.auth_data.auth.colaborador_id;
+    req.body.arg_espaco_auth = req.session.auth_data.auth.armazem_atual;
+    let before =  await clusterServer.service.loadLocalCluster();
+    const response = await functDisableArticle(req.body);
+    let after = await clusterServer.service.loadLocalCluster();
+    res.json({result: response.row.result, message: response.row.message.text});
+    if(response.row.result && before.cluster_version < after.cluster_version){
+        clusterServer.notifyLocalChange({
+            event: "REMOVE:ITEM",
+            extras: null,
+            message: "Item extra / acompanhamento foi removido."
+        });
+    }
+});
+app.post("/api/artigo/data", async (req, res) =>{
+    const {functLoadArticleData} = require("../db/call-function-article");
+    req.body.arg_espaco_auth = req.session.auth_data.auth.armazem_atual;
+    req.body.arg_colaborador_id = req.session.auth_data.auth.colaborador_id;
+    const response = await functLoadArticleData(req.body);
+    res.json({data: response.rows});
+});
+app.post("/api/base/articles", async (req, res) =>{
+    const {funct_load_base_article} = require("../db/call-function-article");
+    req.body.arg_espaco_auth = req.session.auth_data.auth.armazem_atual;
+    req.body.arg_colaborador_id = req.session.auth_data.auth.colaborador_id;
+    const response = await funct_load_base_article(req.body);
+    res.json({articles: response.rows});
+});
+app.post("/api/artigos/acertoStock", async (req, res) =>{
+    const {functChangeAmountInStock} = require("../db/call-function-article");
+    let before =  await clusterServer.service.loadLocalCluster();
+    req.body.arg_colaborador_id = req.session.auth_data.auth.colaborador_id;
+    req.body.arg_espaco_auth = req.session.auth_data.auth.armazem_atual;
+    const  response = await functChangeAmountInStock(req.body);
+    let after = await clusterServer.service.loadLocalCluster();
+    res.json({result: response.row.result, message: response.row.message.text});
+    if(response.row.result && before.cluster_version < after.cluster_version){
+        clusterServer.notifyLocalChange({
+            event: "ACERT:STOCK",
+            extras: null,
+            message: "Foi realizado o acerto de stock de um artigo."
+        });
+    }
+});
+app.post("/api/artigo/stocks", async (req, res) =>{
+    const {functLoadArticleStock} = require("../db/call-function-article");
+    req.body.arg_espaco_auth = req.session.auth_data.auth.armazem_atual;
+    req.body.arg_colaborador_id = req.session.auth_data.auth.colaborador_id;
+    const response = await functLoadArticleStock(req.body);
+    res.json({stocks: response.rows});
+});
+app.get("/api/exportar/modelo/artigos/:dados", async (req, res) =>{
+    const excel = require("exceljs");
+    let file_name = "Luma - modelo de importação de artigos.xlsx";
+
+    let data = JSON.parse(req.params.dados);
+    let fileData = fs.readFileSync(path.join(folders.temp, data.file));
+
+    let dados = JSON.parse(fileData.toString());
+    let workBook = new excel.Workbook();
+    let workSheet = workBook.addWorksheet("Modelo de artigos");
+    let workSheetSpaces = workBook.addWorksheet("Armazéns");
+
+    workBook.views = [
+        {
+            x: 0, y: 0, width: 10000, height: 20000,
+            firstSheet: 0, activeTab: 0, visibility: 'visible'
+        }
+    ]
+    workSheet.columns = [
+        {header: "EAN", key: "ean", width: 30, alignment: "center" },
+        {header: "Código", key: "codigo", width: 30, alignment: "center" },
+        {header: "Nome", key: "nome", width: 70, alignment: "center" },
+        {header: "Categoria", key: "cat", width: 45},
+        {header: "Imposto", key: "imp", width: 45},
+        {header: "Aplicação de imposto", key: "aplic_imp", width: 45},
+        {header: "Stock negativo (S/N)", key: "stock", width: 25},
+        {header: "Quantidade", key: "quant", width: 20},
+        ...(()=>{
+            return dados.spaces.map((sp) =>{
+                return  {header: "Preço no(a) "+sp.espaco_nome, width: 45, key: sp.espaco_nome};
+            });
+        })()
+    ];
+    workSheetSpaces.columns = [
+        ...(()=>{
+            return dados.spaces.map((sp) =>{
+                return  {header: sp.espaco_id, width: 45, key: sp.espaco_nome, alignment: "center"};
+            });
+        })()
+    ]
+    workSheetSpaces.state = 'hidden';
+    workSheet.getRow(1).font = {family: 2, size: 13, bold: true };
+    workSheet.getRow(1).alignment = { vertical: 'middle', horizontal: 'center' };
+    let categorias = dados.categs.filter((_v, index) => index < 15).map((cat) =>{
+        return cat.classe_nome;
+    }).join(",");
+    let impostos = dados.taxs.map((imp) =>{
+        return imp.data.tipoimposto_nome;
+    }).join(",");
+    let aplicacaoImposto = dados.aplicImposto.map((ap) =>{
+        return ap.taplicar_descricao;
+    }).join(",");
+    for(let i=2;i<=900;i++){
+        workSheet.getCell(`D${i}`).dataValidation = {
+            type: 'list',
+            allowBlank: false,
+            formulae: ['"'+categorias+ '"'],
+            tooltip: "Clique para selecionar a categoria"
+        };
+        workSheet.getCell(`E${i}`).dataValidation = {
+            type: 'list',
+            allowBlank: false,
+            formulae: ['"'+impostos+ '"'],
+            tooltip: "Clique para selecionar o imposto"
+        };
+        workSheet.getCell(`F${i}`).dataValidation = {
+            type: 'list',
+            allowBlank: false,
+            formulae: ['"'+aplicacaoImposto+ '"'],
+            tooltip: "Clique para selecionar a forma de aplicar o imposto"
+        };
+    }
+
+    fs.mkdirSync(path.join(folders.temp, 'multer'), {recursive: true});
+    await workBook.xlsx.writeFile(path.join(folders.temp, 'multer/'+file_name)).then(() =>{
+        res.download(path.join(folders.temp, 'multer')+"/"+file_name, file_name, function () {
+            fs.unlinkSync(path.join(folders.temp, 'multer')+"/"+file_name);
+        });
+    });
+});
+app.post("/api/search/provider", async (req, res) =>{
+    const {functSearchProvider} = require("../db/call-function-article");
+    req.body.arg_espaco_auth = req.session.auth_data.auth.armazem_atual;
+    req.body.arg_colaborador_id = req.session.auth_data.auth.colaborador_id;
+    const response = await functSearchProvider(req.body);
+    res.json({data: response.rows});
+});
+app.post("/api/search/article/code", async (req, res) =>{
+    const {functSearchArticleByCode} = require("../db/call-function-article");
+    req.body.arg_espaco_auth = req.session.auth_data.auth.armazem_atual;
+    req.body.arg_colaborador_id = req.session.auth_data.auth.colaborador_id;
+    const response = await functSearchArticleByCode(req.body);
+    res.json({data: response.rows});
+});
+

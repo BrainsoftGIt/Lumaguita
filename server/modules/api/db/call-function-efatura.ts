@@ -1,0 +1,24 @@
+import { catchAll, catchLast, Templates } from "zoo.pg";
+import {  factory } from "../../../service/database.service";
+import {args} from "../../../global/args";
+
+
+export function functLoadSeries(args) {
+    const {sql} = factory.create(Templates.PARAMETERIZED);
+    return catchAll(
+        sql `select * from tweeks.funct_load_serie(${args}) data`
+    );
+}
+
+export function functLoadSeriesAvailable(args) {
+    const {sql} = factory.create(Templates.PARAMETERIZED);
+    return catchAll(
+        sql `select * from tweeks.funct_load_serie_available(${args}) data`
+    );
+}
+export function functRegSerie(paramn) {
+    const { sql } = factory.create(Templates.PARAMETERIZED);
+    return catchLast(
+        sql `select * from tweeks.main( 'tweeks.funct_sets_serie', ${paramn}, ${  args.appMode})`
+    );
+}

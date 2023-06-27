@@ -1,0 +1,87 @@
+@import "pattern/variable";
+.x-modal .x-container{
+	margin-bottom: 1rem;
+  }
+.master-page-include{
+	h2{
+		margin: 0;
+		font-size: 1.2rem;
+		color: $primary-color-dark;
+		font-weight: 600;
+	}
+	h4{
+		font-size: 1.4rem;
+		margin: 0;
+	}
+	.in--top{
+		padding: 0 2rem;
+		background: #eee;
+		flex-shrink: 0;
+		.filter-master{
+			position: relative;
+			min-width: 260px;
+			ul{
+				position: absolute;
+				width: 100%;
+				background: #FFF;
+				box-shadow: 0 2px 2px 0 rgba(#aaa, .14), 0 3px 1px -2px rgba(#aaa, .12), 0 1px 5px 0 rgba(#aaa, .2);
+				max-width: 500px;
+				visibility: hidden;
+				opacity: 0;
+				top: 95%;
+				z-index: 200;
+				&.show{
+					top: 100%;
+					visibility: visible;
+					opacity: 1;
+					max-height: calc(100vh - 140px);
+					overflow: auto;
+				}
+			}
+			li{
+				margin-right: 1.5rem;
+				font-size: .98rem;
+				transition: all .3s;
+				cursor: pointer;
+				width: 100%;
+				padding-left: 1rem;
+				line-height: 3;
+				border-bottom: 2px transparent solid;
+				&:hover{
+					background: #f5f5f5;
+				}
+				&.active{
+					color: $primary-color-dark;
+					background: #f5f5f5;
+				}
+			}
+			span.selected-category{
+				font-size: 1rem;
+				line-height: 4rem;
+				&:before{
+					content: attr(label) " : ";
+				}
+			}
+		}
+		.btn{
+			margin-left: 1rem;;
+		}
+	}
+}
+.xm-user-profile{
+	.list-my-details{
+		ul{
+			margin-bottom: 2rem;
+			li{
+				line-height: 3.5rem;;
+				b{
+					margin-left: 100px;
+					opacity: .75;
+				}
+			}
+		}
+		p{
+			opacity: .8;
+		}
+	}
+}

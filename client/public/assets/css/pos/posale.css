@@ -1,0 +1,1315 @@
+@charset "UTF-8";
+body.dark header {
+  background: #1E1830;
+  border-color: #3e3263 !important;
+}
+body.dark header .searcher {
+  background: #332952 !important;
+}
+body.dark header .searcher input {
+  color: #FFF;
+}
+body.dark header .changeBox svg {
+  fill: #bcd6f8 !important;
+}
+body.dark header .m-m b {
+  color: rgba(255, 255, 255, 0.7);
+}
+body.dark header .keyboard {
+  background: #332952 !important;
+}
+body.dark header .keyboard ul {
+  border-color: transparent !important;
+}
+body.dark header .keyboard ul.numbers {
+  background: #382c59 !important;
+}
+body.dark header .keyboard ul li {
+  border-color: transparent !important;
+  color: #b2a7d3 !important;
+}
+body.dark .fk-body {
+  background: #09070e !important;
+}
+body.dark .fk-body .ttop-back span, body.dark .fk-body .ttop-back i {
+  color: #d0c9e4 !important;
+}
+body.dark .fk-body .list-articles section {
+  background-color: #3c3060 !important;
+}
+body.dark .fk-body .list-articles section .img-container.empty-artigo {
+  background-color: #31274f;
+}
+body.dark .fk-body .list-articles section .img-container.empty-artigo:after {
+  opacity: 0.2;
+}
+body.dark .fk-body .list-articles section span.instock {
+  background: rgba(255, 255, 255, 0.2) !important;
+  color: rgba(255, 255, 255, 0.7) !important;
+}
+body.dark .fk-body .list-articles section span.top.is-money-text {
+  background-color: #1E1830;
+  color: #41f0f4 !important;
+}
+body.dark .fk-body .list-articles section h4 {
+  color: #FFF !important;
+}
+body.dark .fk-body div.give-me-extras {
+  background: rgba(0, 0, 0, 0.6);
+}
+body.dark .fk-body div.give-me-extras .my-extras-fr {
+  background: #241d3a;
+  border-left: none;
+  -webkit-box-shadow: -30px 0px 30px -20px rgba(0, 0, 0, 0.5);
+          box-shadow: -30px 0px 30px -20px rgba(0, 0, 0, 0.5);
+}
+body.dark .fk-body div.give-me-extras .my-extras-fr .i-close-it {
+  color: #c1b8dc !important;
+  cursor: pointer;
+}
+body.dark .fk-body div.give-me-extras .my-extras-fr h6 {
+  color: rgba(255, 255, 255, 0.85);
+}
+body.dark .fk-body div.give-me-extras .my-extras-fr .itensExtra li.active div span {
+  color: #FFF;
+}
+body.dark .fk-body div.give-me-extras .my-extras-fr .itensExtra li div span {
+  color: #d0c9e4;
+}
+body.dark .fk-body div.give-me-extras .my-extras-fr .itensExtra li i {
+  color: #FFF;
+}
+body.dark .fk-body div.give-me-extras .my-extras-fr a.btn {
+  background-color: #1A73E8;
+  color: #FFF;
+  font-weight: 600;
+}
+body.dark aside {
+  border-color: #3e3263 !important;
+  background: #1E1830;
+}
+body.dark aside .table-num {
+  color: #bcd6f8 !important;
+}
+body.dark aside .table-num + h6 i {
+  color: rgba(255, 255, 255, 0.6);
+}
+body.dark aside #total_articles_cart {
+  color: #FFF;
+}
+body.dark aside .sum {
+  border-color: #3e3263 !important;
+}
+body.dark aside .sum ul li *:first-child {
+  color: #d0c9e4 !important;
+}
+body.dark aside .list-selecteds-articles ul li {
+  background: #241d3a;
+  border-color: #44376d;
+}
+body.dark aside .list-selecteds-articles ul li b {
+  color: #FFF;
+}
+body.dark aside .list-selecteds-articles ul li i {
+  background-color: #44376d !important;
+  color: #eeebf5;
+}
+body.dark aside .list-selecteds-articles ul li span {
+  border-color: #5e4b96 !important;
+  color: #FFF;
+  border-radius: 2px !important;
+}
+body.dark aside .list-selecteds-articles ul li .extra {
+  color: rgba(255, 255, 255, 0.8);
+}
+body.dark .slctAccWoutLgn {
+  background: #1E1830 !important;
+}
+body.dark .slctAccWoutLgn .head .goBack {
+  border-color: #493a74 !important;
+  background: #3e3263 !important;
+}
+body.dark .slctAccWoutLgn .head .goBack svg {
+  fill: #c1b8dc !important;
+}
+body.dark .slctAccWoutLgn .head h1 {
+  color: #c1b8dc !important;
+}
+
+.make-a-sale {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  -webkit-transform: scale(1.3);
+      -ms-transform: scale(1.3);
+          transform: scale(1.3);
+  visibility: hidden;
+  opacity: 0;
+  background: #fff;
+  z-index: 100;
+}
+.make-a-sale, .make-a-sale * {
+  -webkit-transition: all 0.25s;
+  -o-transition: all 0.25s;
+  transition: all 0.25s;
+}
+.make-a-sale:target {
+  z-index: 60;
+  -webkit-transform: scale(1);
+      -ms-transform: scale(1);
+          transform: scale(1);
+  visibility: visible;
+  opacity: 1;
+}
+.make-a-sale article .h-fk-aside,
+.make-a-sale article .fk-aside {
+  width: 260px;
+}
+.make-a-sale article .h-fk-article {
+  padding: 12px 1.5rem;
+}
+.make-a-sale article header {
+  border-bottom: 1px #ddd solid;
+  -ms-flex-negative: 0;
+      flex-shrink: 0;
+  position: relative;
+}
+.make-a-sale article header .h-fk-aside {
+  padding-left: 2rem;
+}
+.make-a-sale article header .h-fk-aside .back-to-table {
+  padding: 1rem;
+  padding-left: 10px;
+  margin-left: -12px;
+  margin-right: 1rem;
+  text-transform: uppercase;
+  color: #4300c9;
+  font-weight: 500;
+}
+.make-a-sale article header .h-fk-aside .m-m {
+  padding: 12px 0;
+}
+.make-a-sale article header .h-fk-aside .m-m b {
+  cursor: default;
+}
+.make-a-sale article header .h-fk-aside .menu-1200 {
+  display: none;
+  margin-right: 5px;
+}
+.make-a-sale article header .h-fk-article .searcher {
+  background: #ecf5ff;
+  border-radius: 2px;
+  padding: 0 1rem 0 1.5rem;
+  position: relative;
+}
+.make-a-sale article header .h-fk-article .searcher i {
+  display: none;
+}
+.make-a-sale article header .h-fk-article .searcher input,
+.make-a-sale article header .h-fk-article .searcher input:focus {
+  border: none;
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  margin: 0;
+}
+.make-a-sale article header .h-fk-article .searcher label {
+  margin-left: 10px;
+  cursor: pointer;
+  font-size: 1.8rem;
+}
+.make-a-sale article header .h-fk-article .searcher .keyboard {
+  position: absolute;
+  width: 100%;
+  top: 130%;
+  left: 0;
+  background: #fff;
+  z-index: 100;
+  -webkit-box-shadow: 0 15px 35px rgba(0, 0, 0, 0.09);
+          box-shadow: 0 15px 35px rgba(0, 0, 0, 0.09);
+  opacity: 0;
+  visibility: hidden;
+}
+.make-a-sale article header .h-fk-article .searcher .keyboard.show {
+  top: 100%;
+  opacity: 1;
+  visibility: visible;
+}
+.make-a-sale article header .h-fk-article .searcher .keyboard ul {
+  border-top: 1px solid #f1f1f1;
+}
+.make-a-sale article header .h-fk-article .searcher .keyboard ul.numbers {
+  background: #fafafa;
+}
+.make-a-sale article header .h-fk-article .searcher .keyboard ul li {
+  width: 66px;
+  text-align: center;
+  border-left: 1px #f3f3f3 solid;
+  line-height: 3.6;
+  font-weight: 500;
+  color: #888;
+}
+.make-a-sale article header .h-fk-article .searcher .keyboard ul li.search-btn {
+  width: auto;
+  padding: 0 10px;
+  color: #1A73E8;
+}
+.make-a-sale article header .h-fk-article .exit-app {
+  font-size: 2rem;
+  color: tomato;
+  line-height: 40px;
+  width: 50px;
+  text-align: center;
+  margin-right: -20px;
+  display: none;
+}
+.make-a-sale article header .changeBox {
+  margin-right: 1rem;
+}
+.make-a-sale article header .changeBox svg {
+  width: 27px;
+  fill: #1A73E8;
+  cursor: pointer;
+}
+.make-a-sale article .fk-body {
+  position: relative;
+  background: #f1f8ff;
+}
+.make-a-sale article .fk-body.loading:after {
+  content: "Carregando...";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  font-size: 2rem;
+  opacity: 0.7;
+  -webkit-transform: translate(-50%, -50%);
+      -ms-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+}
+.make-a-sale article .fk-body.loading .progress {
+  opacity: 1;
+  visibility: visible;
+  margin: 0;
+}
+.make-a-sale article .fk-body .progress {
+  opacity: 0;
+  visibility: hidden;
+  position: absolute;
+  width: 100%;
+  left: 0;
+  top: 0;
+}
+.make-a-sale article .fk-body .ttop-back {
+  padding: 1em 2rem;
+  color: #4300c9;
+  -ms-flex-negative: 0;
+      flex-shrink: 0;
+}
+.make-a-sale article .fk-body .ttop-back i, .make-a-sale article .fk-body .ttop-back span {
+  cursor: pointer;
+}
+.make-a-sale article .fk-body .ttop-back i {
+  margin-right: 5px;
+}
+.make-a-sale article .fk-body .ttop-back span {
+  font-weight: 500;
+}
+.make-a-sale article .fk-body .ttop-back .histBack i {
+  font-size: 1.2rem;
+  margin-left: 8px;
+  line-height: 1.4;
+  opacity: 0.7;
+}
+.make-a-sale article .fk-body .ttop-back .histBack i:last-child {
+  display: none;
+}
+.make-a-sale article .fk-body .list-articles {
+  padding: 1rem;
+  -ms-flex-line-pack: start;
+      align-content: flex-start;
+  max-height: calc(100vh - 70px);
+  overflow: auto;
+  display: -ms-grid;
+  display: grid;
+  grid-gap: 8px;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+}
+.make-a-sale article .fk-body .list-articles section {
+  background: #fff;
+  -webkit-box-shadow: 0 15px 35px rgba(0, 0, 0, 0.09);
+          box-shadow: 0 15px 35px rgba(0, 0, 0, 0.09);
+  cursor: pointer;
+  border-radius: 4px;
+  margin-bottom: 12px;
+}
+.make-a-sale article .fk-body .list-articles section.isCategoria .img-container.empty-artigo {
+  background-color: #1a004f;
+}
+.make-a-sale article .fk-body .list-articles section.isCategoria .top {
+  display: none;
+}
+.make-a-sale article .fk-body .list-articles section.off:after {
+  content: "ESGOTANDO";
+  position: absolute;
+  -webkit-transform: rotate(-40deg);
+      -ms-transform: rotate(-40deg);
+          transform: rotate(-40deg);
+  top: 19px;
+  padding: 3px 40px;
+  left: -40px;
+  background: tomato;
+  font-weight: 500;
+  color: #fff;
+  border: none;
+  z-index: 10;
+  font-size: 0.84rem;
+}
+.make-a-sale article .fk-body .list-articles section.off .instock {
+  color: red;
+}
+.make-a-sale article .fk-body .list-articles section .instock {
+  min-width: 30px;
+  height: 30px;
+  line-height: 30px;
+  border-radius: 5px;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.6) !important;
+  padding-left: 8px;
+  padding-right: 8px;
+  font-size: 0.91rem;
+}
+.make-a-sale article .fk-body .list-articles section .img-container {
+  border-radius: 4px;
+  height: 140px;
+  position: relative;
+}
+.make-a-sale article .fk-body .list-articles section .img-container span {
+  position: absolute;
+  right: 1rem;
+  padding: 0 10px;
+  border-radius: 20px;
+  background: #fff;
+  color: black;
+  line-height: 24px;
+  height: 25px;
+  font-weight: 500;
+}
+.make-a-sale article .fk-body .list-articles section .img-container span.top {
+  font-size: 1rem;
+  top: 10px;
+}
+.make-a-sale article .fk-body .list-articles section .img-container span.top.is-money-text {
+  color: #1e8449;
+}
+.make-a-sale article .fk-body .list-articles section .img-container span.top.is-money-text:before {
+  font-size: 0.9rem;
+}
+.make-a-sale article .fk-body .list-articles section .img-container span.instock {
+  bottom: 1rem;
+}
+.make-a-sale article .fk-body .list-articles section h4 {
+  font-size: 1rem;
+  margin: 0;
+  padding: 1rem;
+  font-weight: 500;
+}
+.make-a-sale article .fk-body .give-me-extras {
+  position: absolute;
+  width: 100%;
+  height: calc(100vh - 67px);
+  background: rgba(255, 255, 255, 0.5);
+  top: 0;
+  left: 0;
+  z-index: 100;
+  visibility: hidden;
+  opacity: 0;
+}
+.make-a-sale article .fk-body .give-me-extras * {
+  -ms-flex-negative: 0;
+      flex-shrink: 0;
+}
+.make-a-sale article .fk-body .give-me-extras.show {
+  visibility: visible;
+  opacity: 1;
+}
+.make-a-sale article .fk-body .give-me-extras.show .my-extras-fr {
+  right: 0;
+}
+.make-a-sale article .fk-body .give-me-extras .my-extras-fr {
+  position: absolute;
+  width: 100%;
+  max-width: 420px;
+  height: 100%;
+  right: -50px;
+  top: 0;
+  background: #fff;
+  border-left: 1px solid #eaeaea;
+  padding-bottom: 10px;
+  -webkit-box-shadow: -30px 0px 30px -30px rgba(0, 0, 0, 0.2);
+          box-shadow: -30px 0px 30px -30px rgba(0, 0, 0, 0.2);
+}
+.make-a-sale article .fk-body .give-me-extras .my-extras-fr > * {
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+.make-a-sale article .fk-body .give-me-extras .my-extras-fr h4 {
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: #4300c9;
+}
+.make-a-sale article .fk-body .give-me-extras .my-extras-fr h6 {
+  margin-bottom: 0;
+  font-weight: 400;
+  opacity: 0.8;
+  margin-top: 2rem;
+}
+.make-a-sale article .fk-body .give-me-extras .my-extras-fr .scroll-body {
+  margin-top: 1.5rem;
+  overflow: auto;
+  max-height: calc(100% - 180px);
+}
+.make-a-sale article .fk-body .give-me-extras .my-extras-fr .scroll-body ul li {
+  line-height: 3.5rem;
+  font-weight: 500;
+}
+.make-a-sale article .fk-body .give-me-extras .my-extras-fr .scroll-body ul li.active {
+  color: #4300c9;
+}
+.make-a-sale article .fk-body .give-me-extras .my-extras-fr .scroll-body ul li.active div i {
+  margin-right: 8px;
+  max-width: 65px;
+}
+.make-a-sale article .fk-body .give-me-extras .my-extras-fr .scroll-body ul li div i {
+  max-width: 0;
+  overflow: hidden;
+}
+.make-a-sale article .fk-body .give-me-extras .my-extras-fr .scroll-body ul li .is-money-text {
+  color: #27AE60;
+}
+.make-a-sale article .fk-body .give-me-extras .my-extras-fr .ttl {
+  margin-top: 2.2rem;
+}
+.make-a-sale article .fk-body .give-me-extras .my-extras-fr .btn {
+  -ms-flex-negative: 0;
+      flex-shrink: 0;
+  width: calc(100% - 4rem);
+  margin: auto;
+  margin-bottom: 10px;
+  color: #fff;
+  height: 3rem;
+  line-height: 3rem;
+}
+.make-a-sale aside {
+  width: 390px;
+  -ms-flex-negative: 0;
+      flex-shrink: 0;
+  border-left: 1px #ddd solid;
+  position: relative;
+}
+.make-a-sale aside .close-me-mob {
+  display: none;
+  color: tomato;
+}
+.make-a-sale aside.isProforma:after {
+  content: "PROFORMA";
+  position: absolute;
+  background: #ff0046;
+  color: #FFF;
+  font-weight: 600;
+  right: 65px;
+  font-size: 0.94rem;
+  top: 22px;
+  padding: 3px 8px 2px;
+  border-radius: 3px;
+}
+.make-a-sale aside.is-pay-moment .list-selecteds-articles > ul {
+  max-height: calc(100vh - 268px);
+}
+.make-a-sale aside.is-pay-moment .list-selecteds-articles .make-payment-frame {
+  opacity: 1;
+  visibility: visible;
+  right: 0;
+}
+.make-a-sale aside.is-pay-moment .sum {
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  border-top: 1px #ddd solid;
+}
+.make-a-sale aside.is-pay-moment .sum .troco {
+  max-height: 100px;
+}
+.make-a-sale aside.is-pay-moment .sum .btns-actions a {
+  max-width: 0;
+  overflow: hidden;
+  padding: 0;
+  margin: 0;
+}
+.make-a-sale aside.is-pay-moment .sum .btns-actions a.truement-pay {
+  max-width: 100%;
+  width: 100%;
+  padding: initial;
+  font-weight: 500;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+.make-a-sale aside.is-just-sale .sum .btns-actions a {
+  display: none;
+}
+.make-a-sale aside.is-just-sale .sum .btns-actions a.fake-pay, .make-a-sale aside.is-just-sale .sum .btns-actions a.cancel {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 100%;
+}
+.make-a-sale aside.is-just-sale .sum .btns-actions a.fake-pay {
+  margin-right: 0;
+}
+.make-a-sale aside header {
+  padding: 12px 1.5rem;
+  border-bottom: 1px #ddd solid;
+  height: 70px;
+  -ms-flex-negative: 0;
+      flex-shrink: 0;
+}
+.make-a-sale aside header h6 {
+  font-weight: 500;
+}
+.make-a-sale aside header h6 i {
+  font-size: 1.4rem;
+  margin: 0 5px;
+}
+.make-a-sale aside header .exit-app {
+  font-size: 2rem;
+  color: tomato;
+  line-height: 60px;
+  width: 50px;
+  text-align: center;
+  margin-right: -20px;
+}
+.make-a-sale aside header .exit-app:last-child {
+  display: none;
+}
+.make-a-sale aside header .table-num {
+  text-transform: uppercase;
+  color: #1A73E8;
+  line-height: 3;
+  padding: 0 5px;
+}
+.make-a-sale aside .list-selecteds-articles {
+  position: relative;
+}
+.make-a-sale aside .list-selecteds-articles > ul {
+  overflow: auto;
+  max-height: calc(100vh - 230px);
+}
+.make-a-sale aside .list-selecteds-articles > ul li {
+  padding: 10px 1rem;
+  border-bottom: 1px #cee4ff solid;
+  background: #fbfdff;
+  position: relative;
+  margin-bottom: 1px;
+}
+.make-a-sale aside .list-selecteds-articles > ul li.sended:before {
+  content: "";
+  position: absolute;
+  height: 100%;
+  width: 3px;
+  top: 0;
+  left: 0;
+  background: orange;
+}
+.make-a-sale aside .list-selecteds-articles > ul li:hover .delete-me {
+  opacity: 1;
+}
+.make-a-sale aside .list-selecteds-articles > ul li .fll {
+  width: 100%;
+}
+.make-a-sale aside .list-selecteds-articles > ul li .is-money-text {
+  font-weight: 500;
+  color: #27AE60;
+  margin-top: 8px;
+}
+.make-a-sale aside .list-selecteds-articles > ul li .extras b {
+  font-size: 0.9rem;
+  color: #4300c9;
+  font-weight: 500;
+}
+.make-a-sale aside .list-selecteds-articles > ul li .delete-me {
+  margin-right: 5px;
+  font-size: 1.45rem !important;
+}
+.make-a-sale aside .list-selecteds-articles > ul li .counter {
+  -ms-flex-item-align: start;
+      align-self: flex-start;
+}
+.make-a-sale aside .list-selecteds-articles > ul li .counter i {
+  width: 40px;
+  line-height: 40px;
+  text-align: center;
+  opacity: 0.7;
+  background: #ddecff;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+.make-a-sale aside .list-selecteds-articles > ul li .counter i:hover {
+  opacity: 1;
+  color: #4300c9;
+}
+.make-a-sale aside .list-selecteds-articles > ul li .counter span {
+  min-width: 38px;
+  text-align: center;
+  border-radius: 6px;
+  margin: 0 4px;
+  line-height: 40px;
+  height: 40px;
+  font-weight: 500;
+  font-size: 1.1rem;
+  border: 1px #ddd solid;
+}
+.make-a-sale aside .list-selecteds-articles .make-payment-frame {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: #fff;
+  right: -50px;
+  opacity: 0;
+  visibility: hidden;
+  z-index: 50;
+}
+.make-a-sale aside .list-selecteds-articles .make-payment-frame .payment-inputs {
+  padding: 1.5rem;
+  overflow: auto;
+}
+.make-a-sale aside .list-selecteds-articles .make-payment-frame .payheader {
+  -ms-flex-negative: 0;
+      flex-shrink: 0;
+  padding: 1rem 1.5rem 0;
+}
+.make-a-sale aside .list-selecteds-articles .make-payment-frame .payheader h6 {
+  color: #4300c9;
+  font-weight: 500;
+}
+.make-a-sale aside .list-selecteds-articles .make-payment-frame .payheader .close-pay-frame {
+  color: tomato;
+}
+.make-a-sale aside .sum {
+  -ms-flex-negative: 0;
+      flex-shrink: 0;
+  padding: 0 1rem;
+  border-top: 1px #eee solid;
+  -webkit-box-shadow: 7px -2px 25px 1px rgba(0, 0, 0, 0.1);
+          box-shadow: 7px -2px 25px 1px rgba(0, 0, 0, 0.1);
+  position: relative;
+  z-index: 10;
+}
+.make-a-sale aside .sum ul li {
+  line-height: 3rem;
+}
+.make-a-sale aside .sum ul li b:first-child {
+  font-weight: 500;
+}
+.make-a-sale aside .sum ul li *:last-child {
+  color: #27AE60;
+  font-weight: 600;
+}
+.make-a-sale aside .sum ul li *:last-child:before {
+  content: "STN ";
+}
+.make-a-sale aside .sum h6 {
+  font-weight: 500;
+  text-transform: uppercase;
+}
+.make-a-sale aside .sum .troco {
+  max-height: 0;
+  overflow: hidden;
+}
+.make-a-sale aside .sum .troco h6 {
+  text-transform: capitalize;
+}
+.make-a-sale aside .sum .btns-actions {
+  margin-top: 1rem;
+  padding-bottom: 10px;
+  -ms-flex-negative: 0;
+      flex-shrink: 0;
+}
+.make-a-sale aside .sum .btns-actions a {
+  margin-right: 8px;
+}
+.make-a-sale aside .sum .btns-actions a i {
+  font-size: 2rem;
+}
+.make-a-sale aside .sum .btns-actions a.cancel {
+  background: tomato !important;
+}
+.make-a-sale aside .sum .btns-actions a.done {
+  background: orange;
+}
+.make-a-sale aside .sum .btns-actions a.recibo {
+  background: #27AE60;
+}
+.make-a-sale aside .sum .btns-actions a.faturate {
+  margin-right: 0;
+  width: 50%;
+  background: #4300c9;
+  font-weight: 500;
+}
+.make-a-sale aside .sum .btns-actions a.truement-pay {
+  max-width: 0;
+  overflow: hidden;
+  padding: 0;
+  margin: 0;
+}
+.make-a-sale .slctAccWoutLgn {
+  position: absolute;
+  width: 100%;
+  height: calc(100% - 72px);
+  background: #e8f4fe;
+  bottom: -10px;
+  opacity: 0;
+  visibility: hidden;
+  left: 0;
+  z-index: 10;
+}
+.make-a-sale .slctAccWoutLgn.show {
+  opacity: 1;
+  visibility: visible;
+  bottom: 0;
+}
+.make-a-sale .slctAccWoutLgn .head {
+  height: 80px;
+  padding: 1rem 2rem;
+}
+.make-a-sale .slctAccWoutLgn .head svg {
+  width: 16px;
+}
+.make-a-sale .slctAccWoutLgn .head h1 {
+  font-size: 1.3rem;
+  margin: 0;
+  font-weight: 500;
+  color: #4300c9;
+}
+.make-a-sale .slctAccWoutLgn .head .goBack {
+  padding: 12px 14px;
+  border-radius: 5px;
+  background: #fff;
+  color: #1A73E8;
+  margin-right: 1rem;
+  cursor: pointer;
+  border: 2px #b9dcff solid;
+}
+.make-a-sale .slctAccWoutLgn .head .goBack svg {
+  fill: #1A73E8;
+}
+.make-a-sale .slctAccWoutLgn .inBottom {
+  height: calc(100% - 80px);
+  padding: 1rem 2rem;
+  overflow: auto;
+}
+
+.XM-makePayment.registerNewClient .allInner,
+.XM-allRegisteredClients.registerNewClient .allInner {
+  max-width: 480px;
+}
+.XM-makePayment.registerNewClient .treesep, .XM-makePayment.registerNewClient .finish, .XM-makePayment.registerNewClient .ctnSelectClient,
+.XM-allRegisteredClients.registerNewClient .treesep,
+.XM-allRegisteredClients.registerNewClient .finish,
+.XM-allRegisteredClients.registerNewClient .ctnSelectClient {
+  display: none;
+}
+.XM-makePayment.registerNewClient .ctnRegisterClient,
+.XM-allRegisteredClients.registerNewClient .ctnRegisterClient {
+  display: block;
+}
+.XM-makePayment.selectNewClient .ctnRegisterClient, .XM-makePayment.selectNewClient .treesep, .XM-makePayment.selectNewClient .list-consum, .XM-makePayment.selectNewClient .finish,
+.XM-allRegisteredClients.selectNewClient .ctnRegisterClient,
+.XM-allRegisteredClients.selectNewClient .treesep,
+.XM-allRegisteredClients.selectNewClient .list-consum,
+.XM-allRegisteredClients.selectNewClient .finish {
+  display: none;
+}
+.XM-makePayment.selectNewClient .ctnSelectClient,
+.XM-allRegisteredClients.selectNewClient .ctnSelectClient {
+  display: block;
+}
+.XM-makePayment .allInner,
+.XM-allRegisteredClients .allInner {
+  padding-top: 0 !important;
+}
+.XM-makePayment .list-consum,
+.XM-allRegisteredClients .list-consum {
+  border-bottom: 1px solid #ddd;
+  background: #f3f3f3;
+  width: calc(100% + 4rem);
+  border-radius: 3px;
+  margin-left: -2rem;
+  padding: 1rem 2rem 0;
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  margin-bottom: 0;
+}
+.XM-makePayment .list-consum.showit,
+.XM-allRegisteredClients .list-consum.showit {
+  margin-bottom: 10px;
+  max-height: 60vh;
+  opacity: 1;
+  overflow: auto;
+}
+.XM-makePayment .list-consum ul li,
+.XM-allRegisteredClients .list-consum ul li {
+  width: 32.3%;
+  cursor: pointer;
+  margin-right: 1.5%;
+  background: #fff;
+  margin-bottom: 1rem;
+  padding: 1rem;
+  border-radius: 4px;
+  -webkit-box-shadow: 0 15px 35px rgba(0, 0, 0, 0.09);
+          box-shadow: 0 15px 35px rgba(0, 0, 0, 0.09);
+}
+.XM-makePayment .list-consum ul li.active,
+.XM-allRegisteredClients .list-consum ul li.active {
+  background: #1A73E8;
+  color: #fff;
+}
+.XM-makePayment .list-consum ul li:nth-child(3n),
+.XM-allRegisteredClients .list-consum ul li:nth-child(3n) {
+  margin-right: 0;
+}
+.XM-makePayment .list-consum ul li *,
+.XM-allRegisteredClients .list-consum ul li * {
+  -webkit-transition: none;
+  -o-transition: none;
+  transition: none;
+}
+.XM-makePayment .list-consum ul li span,
+.XM-allRegisteredClients .list-consum ul li span {
+  font-weight: 500;
+}
+.XM-makePayment .treesep h4,
+.XM-makePayment .treesep h5,
+.XM-allRegisteredClients .treesep h4,
+.XM-allRegisteredClients .treesep h5 {
+  font-size: 1rem;
+  margin: 10px 0 2rem;
+  font-weight: 500;
+  color: #4300c9;
+}
+.XM-makePayment .treesep h5,
+.XM-allRegisteredClients .treesep h5 {
+  padding: 8px 0.8rem;
+  cursor: pointer;
+  font-weight: normal;
+  font-size: 1rem;
+  border-radius: 3px;
+  color: #000;
+  font-weight: 500;
+  background: #ddd;
+  -webkit-box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 7px 0 rgba(0, 0, 0, 0.09), 0 3px 1px -1px rgba(0, 0, 0, 0.1);
+          box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 7px 0 rgba(0, 0, 0, 0.09), 0 3px 1px -1px rgba(0, 0, 0, 0.1);
+}
+.XM-makePayment .treesep h5.active,
+.XM-allRegisteredClients .treesep h5.active {
+  background: #1A73E8;
+  color: #fff;
+}
+.XM-makePayment .treesep [dvSelectClient], .XM-makePayment .treesep [dvSelectClient] input,
+.XM-allRegisteredClients .treesep [dvSelectClient],
+.XM-allRegisteredClients .treesep [dvSelectClient] input {
+  cursor: pointer;
+}
+.XM-makePayment .treesep .pay-modes ul li,
+.XM-allRegisteredClients .treesep .pay-modes ul li {
+  padding: 5px 2.5rem 5px 0;
+  margin: 16px 0;
+  position: relative;
+}
+.XM-makePayment .treesep .pay-modes ul li.active,
+.XM-allRegisteredClients .treesep .pay-modes ul li.active {
+  background: #1A73E8;
+  color: #fff;
+  padding-left: 1rem;
+}
+.XM-makePayment .treesep .pay-modes ul li.active:after,
+.XM-allRegisteredClients .treesep .pay-modes ul li.active:after {
+  content: "✔";
+  position: absolute;
+  font-size: 1.2rem;
+  right: 10px;
+}
+.XM-makePayment .treesep .pay-modes img,
+.XM-allRegisteredClients .treesep .pay-modes img {
+  width: 30px;
+  margin-right: 0.7rem;
+}
+.XM-makePayment .treesep .pay-modes span,
+.XM-allRegisteredClients .treesep .pay-modes span {
+  font-weight: 500;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+}
+.XM-makePayment .treesep .make-payment,
+.XM-allRegisteredClients .treesep .make-payment {
+  padding: 0 2.5rem;
+  margin: 0 1.5rem;
+  min-width: 300px;
+  border-left: 1px #eee solid;
+  border-right: 1px #eee solid;
+}
+.XM-makePayment .treesep .make-payment.isNotRegistered .btRegClient,
+.XM-makePayment .treesep .make-payment.isNotRegistered .pNotRegistered,
+.XM-allRegisteredClients .treesep .make-payment.isNotRegistered .btRegClient,
+.XM-allRegisteredClients .treesep .make-payment.isNotRegistered .pNotRegistered {
+  display: block;
+}
+.XM-makePayment .treesep .make-payment .btRegClient,
+.XM-makePayment .treesep .make-payment .pNotRegistered,
+.XM-allRegisteredClients .treesep .make-payment .btRegClient,
+.XM-allRegisteredClients .treesep .make-payment .pNotRegistered {
+  display: none;
+}
+.XM-makePayment .treesep .make-payment .pNotRegistered,
+.XM-allRegisteredClients .treesep .make-payment .pNotRegistered {
+  margin-bottom: 2rem;
+  -webkit-transform: translateY(-1rem);
+      -ms-transform: translateY(-1rem);
+          transform: translateY(-1rem);
+  color: red;
+}
+.XM-makePayment .treesep .make-payment .is-money-field input,
+.XM-allRegisteredClients .treesep .make-payment .is-money-field input {
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+.XM-makePayment .treesep .calculate,
+.XM-allRegisteredClients .treesep .calculate {
+  min-width: 260px;
+}
+.XM-makePayment .treesep .calculate ul li,
+.XM-allRegisteredClients .treesep .calculate ul li {
+  margin-bottom: 1rem;
+}
+.XM-makePayment .treesep .calculate b,
+.XM-allRegisteredClients .treesep .calculate b {
+  text-transform: uppercase;
+  opacity: 0.7;
+  font-size: 0.95rem;
+}
+.XM-makePayment .treesep .calculate span,
+.XM-allRegisteredClients .treesep .calculate span {
+  font-size: 1rem;
+  font-weight: 500;
+}
+.XM-makePayment .treesep .calculate span:after,
+.XM-allRegisteredClients .treesep .calculate span:after {
+  opacity: 0.6;
+}
+.XM-makePayment .finish,
+.XM-allRegisteredClients .finish {
+  margin-top: 1rem;
+}
+.XM-makePayment .finish a,
+.XM-allRegisteredClients .finish a {
+  font-weight: 600;
+}
+.XM-makePayment .finish .hideTarget,
+.XM-allRegisteredClients .finish .hideTarget {
+  background-color: tomato;
+}
+.XM-makePayment .finish .truement-pay,
+.XM-allRegisteredClients .finish .truement-pay {
+  margin-left: 2rem;
+  background: #27AE60;
+}
+.XM-makePayment .ctnRegisterClient,
+.XM-allRegisteredClients .ctnRegisterClient {
+  display: none;
+}
+.XM-makePayment .ctnRegisterClient h4,
+.XM-allRegisteredClients .ctnRegisterClient h4 {
+  font-size: 1.2rem;
+  color: #4300c9;
+  font-weight: 500;
+  margin-top: 0;
+  margin-bottom: 3rem;
+}
+.XM-makePayment .ctnSelectClient,
+.XM-allRegisteredClients .ctnSelectClient {
+  display: none;
+  width: 400px;
+  position: relative;
+  overflow: hidden;
+}
+.XM-makePayment .ctnSelectClient.singular,
+.XM-allRegisteredClients .ctnSelectClient.singular {
+  display: block;
+}
+.XM-makePayment .ctnSelectClient *,
+.XM-allRegisteredClients .ctnSelectClient * {
+  font-size: 0.85rem;
+}
+.XM-makePayment .ctnSelectClient .cltHead h5,
+.XM-allRegisteredClients .ctnSelectClient .cltHead h5 {
+  color: #4300c9;
+  font-size: 1.05rem;
+  font-weight: 500;
+}
+.XM-makePayment .ctnSelectClient .cltHead b,
+.XM-allRegisteredClients .ctnSelectClient .cltHead b {
+  border-radius: 6px;
+  padding: 10px 1rem;
+  background: #e7f3ff;
+  border: 1px solid #d8ebff;
+  color: #1A73E8;
+  cursor: pointer;
+  font-size: 1rem;
+}
+.XM-makePayment .ctnSelectClient .searcher,
+.XM-allRegisteredClients .ctnSelectClient .searcher {
+  position: relative;
+  margin-top: 1.5rem;
+}
+.XM-makePayment .ctnSelectClient .searcher input,
+.XM-allRegisteredClients .ctnSelectClient .searcher input {
+  width: 100%;
+  height: 44px;
+  border-radius: 40px;
+  background: #f7f8f9;
+  border: 1px solid #f3f4f5;
+  text-indent: 3.5rem;
+  font-size: 0.95rem;
+  -webkit-box-shadow: none;
+          box-shadow: none;
+}
+.XM-makePayment .ctnSelectClient .searcher input:focus,
+.XM-allRegisteredClients .ctnSelectClient .searcher input:focus {
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  border-color: #f3f4f5;
+}
+.XM-makePayment .ctnSelectClient .searcher svg,
+.XM-allRegisteredClients .ctnSelectClient .searcher svg {
+  fill: #67b3ff;
+  width: 18px;
+  position: absolute;
+  left: 18px;
+  top: 14px;
+}
+.XM-makePayment .ctnSelectClient .listCustomers,
+.XM-allRegisteredClients .ctnSelectClient .listCustomers {
+  margin-top: 1rem;
+  min-height: 280px;
+  max-height: 50vh;
+  overflow: auto;
+}
+.XM-makePayment .ctnSelectClient .listCustomers li,
+.XM-allRegisteredClients .ctnSelectClient .listCustomers li {
+  padding: 12px 0;
+  border-radius: 5px;
+  position: relative;
+  margin-bottom: 5px;
+  cursor: pointer;
+}
+.XM-makePayment .ctnSelectClient .listCustomers li:before,
+.XM-allRegisteredClients .ctnSelectClient .listCustomers li:before {
+  content: "";
+  font-size: 0.75rem;
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  line-height: 16px;
+  text-align: center;
+  content: "✔";
+  position: absolute;
+  color: #fff;
+  left: 8px;
+  border: 2px #90c8ff solid;
+  top: 32%;
+  opacity: 0;
+}
+.XM-makePayment .ctnSelectClient .listCustomers li:hover,
+.XM-allRegisteredClients .ctnSelectClient .listCustomers li:hover {
+  background-color: #ecf5ff;
+  padding-left: 1.8rem;
+  padding-right: 12px;
+}
+.XM-makePayment .ctnSelectClient .listCustomers li:hover:before,
+.XM-allRegisteredClients .ctnSelectClient .listCustomers li:hover:before {
+  opacity: 1;
+}
+.XM-makePayment .ctnSelectClient .listCustomers li:hover a,
+.XM-allRegisteredClients .ctnSelectClient .listCustomers li:hover a {
+  max-width: 35px;
+}
+.XM-makePayment .ctnSelectClient .listCustomers li.active,
+.XM-allRegisteredClients .ctnSelectClient .listCustomers li.active {
+  padding-left: 1.8rem;
+  background-color: #ecf5ff;
+}
+.XM-makePayment .ctnSelectClient .listCustomers li.active:before,
+.XM-allRegisteredClients .ctnSelectClient .listCustomers li.active:before {
+  background-color: #1A73E8;
+  border-color: #1A73E8;
+  content: "✔";
+  opacity: 1;
+  font-size: 0.75rem;
+  position: absolute;
+  color: #fff;
+}
+.XM-makePayment .ctnSelectClient .listCustomers li a,
+.XM-allRegisteredClients .ctnSelectClient .listCustomers li a {
+  max-width: 0;
+  overflow: hidden;
+}
+.XM-makePayment .ctnSelectClient .listCustomers li svg,
+.XM-allRegisteredClients .ctnSelectClient .listCustomers li svg {
+  width: 20px;
+  margin-left: 10px;
+  cursor: pointer;
+}
+.XM-makePayment .ctnSelectClient .listCustomers li p,
+.XM-allRegisteredClients .ctnSelectClient .listCustomers li p {
+  font-size: 0.95rem;
+  margin-left: 10px;
+}
+
+.XM-PrintTypeAccount .inn.armz .account div,
+.XM-ChooseArmazene .inn.armz .account div,
+.XM-PrintModel .inn.armz .account div {
+  height: 145px;
+}
+.XM-PrintTypeAccount .inn.armz .account p,
+.XM-ChooseArmazene .inn.armz .account p,
+.XM-PrintModel .inn.armz .account p {
+  text-transform: initial;
+}
+.XM-PrintTypeAccount .inn.armz .account small,
+.XM-ChooseArmazene .inn.armz .account small,
+.XM-PrintModel .inn.armz .account small {
+  font-size: 0.8rem;
+  font-weight: 500;
+  opacity: 0.7;
+}
+.XM-PrintTypeAccount .inn > p,
+.XM-ChooseArmazene .inn > p,
+.XM-PrintModel .inn > p {
+  font-size: 1.2rem;
+  margin: 1rem 0 3rem;
+  text-align: center;
+}
+.XM-PrintTypeAccount .inn .account,
+.XM-ChooseArmazene .inn .account,
+.XM-PrintModel .inn .account {
+  text-align: center;
+  cursor: pointer;
+  border-radius: 6px;
+  border: 2px transparent solid;
+  padding-bottom: 2rem;
+  background: #e7f2ff;
+  position: relative;
+  margin-right: 2rem;
+}
+.XM-PrintTypeAccount .inn .account div,
+.XM-ChooseArmazene .inn .account div,
+.XM-PrintModel .inn .account div {
+  width: 180px;
+  height: 170px;
+}
+.XM-PrintTypeAccount .inn .account:last-child,
+.XM-ChooseArmazene .inn .account:last-child,
+.XM-PrintModel .inn .account:last-child {
+  margin-right: 0;
+}
+.XM-PrintTypeAccount .inn .account.active,
+.XM-ChooseArmazene .inn .account.active,
+.XM-PrintModel .inn .account.active {
+  border-color: #1A73E8;
+}
+.XM-PrintTypeAccount .inn .account.active:after,
+.XM-ChooseArmazene .inn .account.active:after,
+.XM-PrintModel .inn .account.active:after {
+  content: "✔";
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 19px;
+  height: 19px;
+  line-height: 19px;
+  border-radius: 50%;
+  color: #fff;
+  background: #1A73E8;
+  z-index: 10;
+}
+.XM-PrintTypeAccount .inn .account.active p,
+.XM-ChooseArmazene .inn .account.active p,
+.XM-PrintModel .inn .account.active p {
+  color: #000;
+}
+.XM-PrintTypeAccount .inn .account.active svg,
+.XM-ChooseArmazene .inn .account.active svg,
+.XM-PrintModel .inn .account.active svg {
+  fill: #1A73E8;
+}
+.XM-PrintTypeAccount .inn .account svg,
+.XM-ChooseArmazene .inn .account svg,
+.XM-PrintModel .inn .account svg {
+  fill: #8ebaf4;
+  width: 80px;
+}
+.XM-PrintTypeAccount .inn .account p,
+.XM-ChooseArmazene .inn .account p,
+.XM-PrintModel .inn .account p {
+  text-transform: uppercase;
+  font-weight: 600;
+  font-size: 1rem;
+  color: rgba(0, 0, 0, 0.7);
+}
+.XM-PrintTypeAccount .inn .button,
+.XM-ChooseArmazene .inn .button,
+.XM-PrintModel .inn .button {
+  margin-top: 3rem;
+  width: 100%;
+  font-weight: 600;
+}
+.XM-PrintTypeAccount .inn .more-info-proforma,
+.XM-ChooseArmazene .inn .more-info-proforma,
+.XM-PrintModel .inn .more-info-proforma {
+  margin-top: 40px;
+  border-top: 1px #ddd solid;
+  padding-top: 25px;
+}
+.XM-PrintTypeAccount .inn .more-info-proforma p,
+.XM-ChooseArmazene .inn .more-info-proforma p,
+.XM-PrintModel .inn .more-info-proforma p {
+  margin-top: 12px;
+}
+
+@media only screen and (max-width: 1540px) {
+  .make-a-sale article header,
+.make-a-sale aside header {
+    height: 60px;
+  }
+  .make-a-sale article header h6,
+.make-a-sale aside header h6 {
+    font-size: 1rem;
+  }
+  .make-a-sale aside {
+    width: 360px;
+  }
+  .make-a-sale aside ul li b, .make-a-sale aside ul li p {
+    font-size: 0.9rem;
+  }
+  .make-a-sale aside ul li i.material-icons {
+    font-size: 1rem !important;
+    width: 37px !important;
+    height: 37px !important;
+  }
+  .make-a-sale aside ul li i.material-icons.delete-me {
+    font-size: 1.3rem !important;
+  }
+  .make-a-sale aside .sum h6 {
+    font-size: 1rem;
+  }
+}

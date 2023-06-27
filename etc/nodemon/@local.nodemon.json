@@ -1,0 +1,6 @@
+{
+    "watch": [ "build" ],
+    "ext": "js",
+    "ignore": [ "./*.spec.js" ],
+    "exec": "node build/kconst --mode local"
+}

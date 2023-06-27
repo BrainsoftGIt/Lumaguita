@@ -1,0 +1,434 @@
+@import "./pattern/variable";
+.master-page-include.stock{
+  .searchup{
+    position: relative;
+    i{
+      position: absolute;
+      left: 15px;
+      opacity: .7;
+    }
+    input{
+      background: #dfdfdf;
+      min-width: 230px;
+      border-bottom: none;
+      border-radius: 20px;
+      margin-bottom: 0;
+    text-indent: 44px;
+      &:focus{
+        border-bottom: none;
+        box-shadow: none;
+      }
+    }
+  }
+  .list-artigos{
+    padding-top: 2rem;
+    section{
+      padding: 0;
+      border-radius: 5px;
+      &:hover{
+        .artigo-img{
+          .opts{
+            max-height: 50px;
+            opacity: 1;
+            bottom: 0;
+          }
+        }
+      }
+      .artigo-img{
+        height: 150px;
+        border-radius: 5px 5px 0 0;
+        position: relative;
+        .price{
+          color: #FFF;
+          font-size: 1rem;
+          position: absolute;
+          left: 14px;
+          top: 10px;
+        }
+        .instock{
+          position: absolute;
+          color: #FFF;
+          // font-size: 1.25rem;
+          font-weight: 400;
+          right: 14px;
+          top: 10px;
+        }
+        .opts{
+          position: absolute;
+          bottom: -1rem;
+          color: #999;
+          padding-top: 0;
+          max-height: 0;
+          opacity: 0;
+          overflow: hidden;
+          transition: all .3s ease;
+          i{
+            line-height: 2.8rem;
+            color: #FFF;
+            margin-left: 10px;
+            cursor: pointer;
+            transition: all .3s;
+
+          }
+        }
+      }
+      h6{
+        margin-bottom: 1.2rem;
+        font-weight: 600;
+      }
+      .infos{
+        padding: 1rem;
+
+        .if-1{
+          margin-bottom: 12px;
+          b{
+            color: $primary-color-dark;
+          }
+          .is-money-text{
+            font-size: .98rem;
+            color: $green-color;
+          }
+        }
+        
+      }
+    }
+  }
+  .xfr-cc-add-new{
+    &.explode-scroll{
+      .list-extra-items.show .search-extra{
+        position: fixed;
+        z-index: 100;
+        top: 50px;
+        width: 100%;
+        max-width: 420px;
+        right: 47px;
+        background: #FFF;
+        padding: 1rem 0;
+        i{
+          bottom: 2rem;
+        }
+      }
+    }
+    .is-select{
+      margin-bottom: 1.7rem;;
+    }
+    .gotokuchen,
+    .negativite{
+      position: relative;
+      display: block;
+      margin-bottom: 12px;
+    }
+    .open-hide-extra{
+      max-width: 640px;
+      margin: 1.5rem 0;
+      background: $primary-color;
+      color: #FFF;
+      padding: 10px 1rem;
+      font-size: 1rem;
+
+    }
+    .list-extra-items{
+      max-width: 640px;
+      display: none;
+      &.show{
+        display: block;
+      }
+      .search-extra{
+        position: relative;
+        i{
+          position: absolute;
+          right: 0;
+          bottom: 1.2rem;
+        }
+      }
+      ul{
+        li{
+          padding: 5px 0;
+          &.add-new-extra{
+            color: $primary-color;
+            margin-left: -5px;
+            span{
+              margin-left: 1rem;
+              font-size: 1rem;
+            }
+        }
+        label{
+          position: relative;
+        }
+      }
+      .is-money-text{
+        color: $green-color;
+        font-size: 1rem;
+        font-weight: 500;
+      }
+
+      }
+    }
+  }
+}
+.master-page-include.stock{
+  .admin-add-new-new{
+    h6{
+      margin-bottom: 3rem;
+      color: $primary-color-dark;
+      &:before{
+        content: "Artigo: ";
+        font-weight: 500;
+      }
+    }
+  }
+}
+
+
+.xfr-m-info{
+  .prima-info{
+    h6{
+      color: $primary-color-dark;
+      margin-bottom: 2rem;
+    }
+    h3{
+      font-size: 2rem;
+      color: $green-color;
+    }
+    .artigo-img{
+      width: 200px;
+      height: 150px;
+    }
+  }
+  .secinfo{
+    margin-top: 3rem;
+
+    h5{
+      margin-bottom: 1.5rem;
+    }
+    ul{
+      li{
+        margin-bottom: 12px;
+        i{
+          color: #aaa;
+          font-size: 1.1rem;
+          margin-right: 8px;
+        }
+      }
+    }
+  }
+}
+
+.xm-add-new-caterory{
+  &.eddiat-mode{
+    .list-categories{
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+    }
+    .add-category-frame{
+      max-height:400px ;
+      overflow: hidden;
+      opacity: 1;
+      
+    }
+  }
+  .list-categories{
+    min-width: 320px;
+    transition: none;
+    .add-new-cat{
+      margin: .5rem 0 1rem ;
+      position: relative;
+      font-weight: 500;
+      color: $primary-color-dark;
+      left: 100%;
+      transform: translateX(-100%);
+      text-transform: uppercase;
+
+      &:before{
+        line-height: 1.7;
+        content: "+";
+        font-weight: 600;
+        font-size: 1.3rem;
+        margin-right: 5px;
+      }
+  
+    }
+    ul{
+      span i{
+        display: none;
+      }
+      ul{
+        margin-left: 1.8rem;
+        span i{
+          display: block;
+        }
+        // border-left: 1px solid #000;
+      }
+    }
+    li{
+      // line-height: 1;
+       > ul{
+        max-height: 0;
+        overflow: hidden;
+        &.opened{
+          max-height: 1000px;
+        }
+      }
+      margin-bottom: 5px;
+      
+      div{
+        cursor: pointer;
+        border-radius: 3px;
+        &.active{
+          padding: 0 5px 0 1rem;
+          background: $primary-color;
+          color: #FFF;
+          i, i:hover{
+            color: #FFF;
+          }
+        }
+        a i{
+          opacity: 0;
+          cursor: pointer;
+          margin-left: 7px;
+          font-size: 1.4rem;
+          &:hover{
+            color: $primary-color;
+          }
+        }
+        &:hover{
+          > a i{
+            opacity: 1;
+          }
+        }
+        span{
+          i{
+            font-size: 1.4rem;
+            margin-right: 5px;
+          }
+        }
+
+      }
+    }
+  }
+  .add-category-frame{
+    max-height: 0;
+    overflow: hidden;
+    transition: none;
+    .back-to{
+      cursor: pointer;
+      margin-top: 10px;
+      margin-bottom: 1.5rem;
+      color: $primary-color-dark;
+      font-weight: 500;
+      i{
+        font-size: 1.4rem;
+      }
+      span{
+        font-size: .97rem;
+        margin-left: 5px;
+      }
+    }
+    b{
+      color: $primary-color;
+      font-size: 1rem;
+      font-weight: 500;
+      display: block;
+      margin: 2.5rem 0 1.5rem;
+    }
+    a{
+      position: relative;
+      left: 100%;
+      transform: translateX(-100%);
+    }
+  }
+}
+
+.xm-add-extra-item,
+.xm-add-fornecedor{
+  .bblocks{
+    h6{
+      margin-bottom: 2rem;
+    }
+    > div{
+      min-width: 320px;
+    }
+    .ipts{
+      .btn{
+        margin: 2rem 0 0;
+      }
+    }
+    .list-pensao,
+    .list-category,
+    .list-fornecedor{
+      margin-left: 2rem;
+      padding-left: 1rem;
+      border-left: 1px #ddd solid;
+      h6{
+        margin-left: 1rem;
+      }
+      li{
+        line-height: 3rem;
+        padding: 0 1rem;
+        &:hover{
+          background: #f8f8f8;
+          i{
+            opacity: 1;
+          }
+        }
+        i{
+          opacity: 0;
+          margin-left: 2rem;
+          cursor: pointer;
+        }
+      }
+    }
+    .list-fornecedor{
+      min-width: 360px;
+      position: relative;
+      .about-fornec{
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: #FFF;
+        top: 15px;
+        opacity: 0;
+        visibility: hidden;
+        &.show{
+          top: 0;
+          opacity: 1;
+          visibility: visible;
+        }
+        > .bback{
+          color: $primary-color;
+          font-size: 1rem;
+          margin-left: 1rem;
+          margin-bottom: 2rem;
+        }
+      }
+    }
+  }
+}
+
+
+.xm-set-stock-adjust{
+  .body-modal{
+    font-size: 1rem;
+    text-align: center;
+    p{
+      span{
+        font-weight: bold;
+        color: $primary-color-dark;
+      }
+    }
+    b{
+      display: block;
+      margin: 1.5rem 0 2rem;
+    }
+  }
+}
+
+.xm-set-extra-price{
+  text-align: center;
+  font-size: 1rem;
+  .b-extra{
+    display: block;
+    margin: 1rem 0 2rem;
+  }
+}

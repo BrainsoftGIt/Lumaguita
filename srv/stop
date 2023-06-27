@@ -1,0 +1,15 @@
+if [ "$1" == "LUMA" ]; then
+   mode="prod"
+   app="LUMA"
+elif [ "$1" == "MAGUITA" ]; then
+   mode="test"
+   app="MAGUITA"
+else
+   mode="dev"
+   app="MAGUITA-DEV"
+fi
+
+sock_file="$(pwd)/${mode}.sock"
+kill $(ps aux | grep "${app}" | awk '{print $2}')
+kill $(ps aux | grep "anchorio-agent:${app}" | awk '{print $2}')
+rm -rf "${sock_file}"

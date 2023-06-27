@@ -1,0 +1,185 @@
+@import "vars";
+.__included__.colabs {
+    ._body {
+        .list-colaborators {
+            padding: 2rem 0;
+            display: grid;
+            grid-gap: 14px;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            // padding: 1rem;
+            // margin-top: 1rem;
+            section {
+                *{
+                    font-size: 0.85rem;
+                }
+                background: #fff;
+                // max-width: 380px;
+                padding: 1rem;
+                box-shadow: 0 5px 15px -5px #ddd;
+                padding-bottom: 0;
+                border-radius: 4px;
+                position: relative;
+                cursor: pointer;
+                &.public:after {
+                    content: "Público";
+                    position: absolute;
+                    background-color: #f88250;
+                    color: #fff;
+                    padding: 1px 8px 2px;
+                    border-radius: 0 0 0 8px;
+                    font-size: 0.8rem;
+                    top: 0;
+                    right: 0;
+                }
+                &:hover {
+                    .sep div {
+                        opacity: 1;
+                    }
+                }
+                .userPhoto {
+                    width: 45px;
+                    height: 45px;
+                    margin-right: 1rem;
+                    font-weight: 600;
+                    font-size: 1.1rem;
+                    opacity: 0.6;
+                    color: $blue;
+                    &.noPhoto{
+                        background: darken($background, 5%);
+                    }
+                }
+                b {
+                    font-weight: 700;
+                    opacity: 0.8;
+                    display: block;
+                    margin-bottom: 6px;
+                }
+                .nif {
+                    margin-top: 18px;
+                }
+                .sep {
+                    border-top: 1px solid #eee;
+                    padding: 10px 0;
+                    margin-top: 12px;
+                    cursor: default;
+                    div {
+                        opacity: 0.4;
+                        span {
+                            cursor: pointer;
+                        }
+                    }
+                    small {
+                        opacity: 0.7;
+                        font-size: 0.75rem;
+                    }
+                    .edit {
+                        margin-right: 1rem;
+                        color: $blue;
+                        cursor: pointer;
+                    }
+                    svg {
+                        width: 20px;
+                        &:hover {
+                            fill: $blue;
+                        }
+                    }
+                    .xSwitch {
+                        transform: scale(0.75);
+                    }
+                }
+            }
+        }
+    }
+}
+.XM-createColab {
+    .inputs {
+        max-width: 440px;
+        align-content: flex-start;
+        .first{
+            margin-top: 0;
+        }
+        p{
+            font-size: 0.85rem;
+            margin: 1rem 0;
+        }
+    }
+    .control-access{
+        margin-left: 2%;
+        padding-left: 2rem;
+        *{
+            font-size: .85rem;
+        }
+        b{
+            display: block;
+            margin-bottom: 1rem;
+        }
+        .xcheck{
+            border-radius: 6px;
+            min-width: 300px;
+            background-color: #f5f8f8;
+            margin-bottom: 8px;
+            &.opened{
+                padding-bottom: 10px;
+                .tit{
+                    margin-bottom: 15px;
+                    padding-bottom: 5px;
+                }
+                ul{
+                    max-height: 100vh;
+                    padding-left: 3rem;
+                }
+            }
+            .tit{
+                padding: 1rem;
+                position: relative;
+                cursor: pointer;
+                font-weight: 500;
+                &:after{
+                    content: "";
+                    position: absolute;
+                    width: 6px;
+                    height: 6px;
+                    border-right: 2px #222 solid;;
+                    border-bottom: 2px #222 solid;
+                    transform: rotate(45deg);
+                    right: 1rem;
+                    top: 25px;
+                }
+                .fkcheck{
+                    width: 22px;
+                    height: 22px;
+                    border-radius: 4px;
+                    margin-right: 1rem;
+                    border: 2px #222 solid;
+                    &.full{
+                        border-color: $blue;
+                        background-color: $blue;
+                        &:after{
+                            content: "\2714";
+                            color: #FFF;
+                            margin-left: 2px;
+                        }
+                    }
+                    &.parcial{
+                        border-color: $blue;
+                        background-color: $blue;
+                        padding: 4px;
+                        background-clip: content-box;
+                    }
+                }
+            }
+            ul{
+                max-height: 0;
+                overflow: hidden;
+                
+            }
+        }
+    }
+    .maps {
+        width: 560px;
+        height: 440px;
+        border-radius: 6px;
+        background-color: #f5f8f8;
+        margin-left: 2%;
+    }
+}

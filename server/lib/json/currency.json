@@ -1,0 +1,6 @@
+[
+  { "currency_id": 141, "currency_code": "STN", "currency_name": "São Tomé and Príncipe dobra", "currency_symbol": "Db" },
+  { "currency_id": 46, "currency_code": "EUR", "currency_name": "Euro", "currency_symbol": "€" },
+  { "currency_id": 156, "currency_code": "USD", "currency_name": "United State Dollar", "currency_symbol": "$" },
+  { "currency_id": 165, "currency_code": "XAF", "currency_name": "Central African CFA franc", "currency_symbol": "Fr" }
+]

@@ -1,0 +1,421 @@
+.__included__.utentes ._head .xbtn {
+  margin-left: 2rem;
+}
+.__included__.utentes ._body {
+  overflow: hidden;
+}
+.__included__.utentes .tabunt {
+  margin-top: 1rem;
+  height: calc(100vh - 100px);
+}
+.__included__.utentes .listUtentes .xSwitch {
+  -webkit-transform: scale(0.7);
+      -ms-transform: scale(0.7);
+          transform: scale(0.7);
+  margin-top: -4px;
+}
+.__included__.utentes .listUtentes svg {
+  width: 20px;
+  fill: #1A73E8;
+}
+
+.xFrame.ficha:after {
+  content: "";
+  position: absolute;
+  width: 250px;
+  height: 60px;
+  top: -70px;
+  right: 220px;
+  background-color: #f6fbff;
+}
+.xFrame.ficha .topHead h2 span {
+  color: #000;
+  font-size: 0.94rem;
+}
+.xFrame.ficha .topHead .inR > * {
+  margin-left: 2rem;
+}
+.xFrame.ficha .topHead .inR .masterSearch {
+  position: relative;
+}
+.xFrame.ficha .topHead .inR .masterSearch input {
+  max-width: 220px;
+  height: 40px;
+  border-radius: 6px;
+  background: #ddeeff;
+  border: 1px solid #b9dcff;
+  text-indent: 2.5rem;
+  font-size: 0.85rem;
+}
+.xFrame.ficha .topHead .inR .masterSearch svg {
+  fill: #1A73E8;
+  width: 16px;
+  position: absolute;
+  left: 12px;
+  top: 12px;
+}
+.xFrame.ficha .topHead button {
+  background-color: #e6f0fc;
+  padding: 12px 1rem 10px 1rem;
+  border: none;
+  color: #1A73E8;
+  text-transform: uppercase;
+  font-weight: 600;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 0.84rem;
+}
+.xFrame.ficha .bottomBody h3 {
+  font-size: 0.94rem;
+  margin-bottom: 2rem;
+  color: #4300c9;
+}
+.xFrame.ficha .bottomBody .steps .stepper {
+  margin-top: 2rem;
+  margin-left: 6px;
+}
+.xFrame.ficha .bottomBody .steps .stepper ul {
+  position: relative;
+}
+.xFrame.ficha .bottomBody .steps .stepper ul:before {
+  content: "";
+  height: 100%;
+  position: absolute;
+  border-left: 3px solid #ffc7b3;
+  left: 0;
+  top: 5px;
+}
+.xFrame.ficha .bottomBody .steps .stepper ul li {
+  position: relative;
+  padding-left: 3rem;
+  margin-top: 1.4rem;
+}
+.xFrame.ficha .bottomBody .steps .stepper ul li.closed {
+  margin-top: 0;
+  -webkit-transition: all 0.25s;
+  -o-transition: all 0.25s;
+  transition: all 0.25s;
+}
+.xFrame.ficha .bottomBody .steps .stepper ul li.closed:before {
+  background-color: orangered;
+}
+.xFrame.ficha .bottomBody .steps .stepper ul li.closed + li {
+  margin-top: 10px;
+}
+.xFrame.ficha .bottomBody .steps .stepper ul li.closed ul {
+  max-height: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  overflow: hidden;
+  margin-bottom: 0;
+}
+.xFrame.ficha .bottomBody .steps .stepper ul li:before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  border: 3px solid orangered;
+  position: absolute;
+  left: -5px;
+  top: 4px;
+  background-color: #fff;
+}
+.xFrame.ficha .bottomBody .steps .stepper ul li:last-child {
+  margin-bottom: 2rem;
+}
+.xFrame.ficha .bottomBody .steps .stepper ul li:last-child:after {
+  content: "";
+  position: absolute;
+  height: calc(100% - 12px);
+  bottom: -5px;
+  left: 0;
+  border-left: 3px solid #f6fbff;
+}
+.xFrame.ficha .bottomBody .steps .stepper ul li:last-child ul:after {
+  content: none;
+}
+.xFrame.ficha .bottomBody .steps .stepper ul li b,
+.xFrame.ficha .bottomBody .steps .stepper ul li h4,
+.xFrame.ficha .bottomBody .steps .stepper ul li p {
+  font-size: 0.88rem;
+}
+.xFrame.ficha .bottomBody .steps .stepper ul li h4 {
+  width: 100%;
+  cursor: pointer;
+  color: orangered;
+  display: inline-block;
+  line-height: 1.7;
+  margin-left: -6px;
+}
+.xFrame.ficha .bottomBody .steps .stepper ul li ul:before {
+  content: none;
+}
+.xFrame.ficha .bottomBody .steps .stepper ul li ul li {
+  margin-top: 0;
+  padding: 1rem;
+  width: 50vw;
+}
+.xFrame.ficha .bottomBody .steps .stepper ul li ul li,
+.xFrame.ficha .bottomBody .steps .stepper ul li ul li * {
+  -webkit-transition: all 0.24s;
+  -o-transition: all 0.24s;
+  transition: all 0.24s;
+}
+.xFrame.ficha .bottomBody .steps .stepper ul li ul li:hover {
+  background: #fff;
+  padding-left: 1.7rem;
+  -webkit-box-shadow: 0 15px 35px -20px #aad4ff;
+          box-shadow: 0 15px 35px -20px #aad4ff;
+  -webkit-transform: scale(1.03);
+      -ms-transform: scale(1.03);
+          transform: scale(1.03);
+}
+.xFrame.ficha .bottomBody .steps .stepper ul li ul li:hover:before {
+  left: 10px;
+  background-color: darkorange;
+  border-color: darkorange;
+  -webkit-transition: all 0.3s;
+  -o-transition: all 0.3s;
+  transition: all 0.3s;
+}
+.xFrame.ficha .bottomBody .steps .stepper ul li ul li:hover b {
+  color: darkorange;
+}
+.xFrame.ficha .bottomBody .steps .stepper ul li ul li:before {
+  top: 1.2rem;
+  width: 1px;
+  height: 1px;
+  background-color: #555;
+  border-color: #555;
+}
+.xFrame.ficha .bottomBody .steps .stepper ul li ul li:last-child:after {
+  content: none;
+}
+.xFrame.ficha .bottomBody .steps .stepper ul li ul li b {
+  font-size: 0.84rem;
+  line-height: 1.4;
+  color: #000;
+  display: block;
+  -webkit-transform: translateY(-1px);
+      -ms-transform: translateY(-1px);
+          transform: translateY(-1px);
+}
+.xFrame.ficha .bottomBody .steps .stepper ul li ul li p {
+  line-height: 1.5;
+  font-size: 0.8rem;
+  opacity: 0.8;
+}
+.xFrame.ficha .bottomBody .premanents {
+  width: 100%;
+  max-width: 480px;
+}
+.xFrame.ficha .bottomBody .premanents .eddit {
+  color: #1A73E8;
+  font-weight: 500;
+  font-size: 0.9rem;
+  margin-bottom: 2rem;
+}
+.xFrame.ficha .bottomBody .premanents .eddit svg {
+  margin-right: 5px;
+  width: 17px;
+  fill: #1A73E8;
+}
+.xFrame.ficha .bottomBody .premanents .permadata {
+  background: #fff;
+  padding: 2.5rem;
+  border-radius: 5px;
+  -webkit-box-shadow: 0 15px 35px -10px #aad4ff;
+          box-shadow: 0 15px 35px -10px #aad4ff;
+}
+.xFrame.ficha .bottomBody .premanents .permadata * {
+  font-size: 0.85rem;
+}
+.xFrame.ficha .bottomBody .premanents .permadata ul.mastul > li {
+  padding-bottom: 8px;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid #ccc;
+}
+.xFrame.ficha .bottomBody .premanents .permadata ul.mastul > li:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+}
+.xFrame.ficha .bottomBody .premanents .permadata ul li {
+  line-height: 2.4;
+  width: 100%;
+}
+.xFrame.ficha .bottomBody .premanents .permadata ul li b {
+  opacity: 0.8;
+}
+.xFrame.ficha .bottomBody .premanents .permadata ul li li {
+  list-style: disc;
+  margin-left: 1rem;
+}
+
+.XM-crutente .modal-frame {
+  max-width: 1024px;
+}
+.XM-crutente b {
+  color: #4300c9;
+}
+.XM-crutente b.bResp {
+  margin-bottom: 1.5rem;
+}
+.XM-crutente .responsacli {
+  margin-right: 5%;
+  padding: 2rem 4%;
+  background: #f6fbff;
+}
+.XM-crutente .responsacli .xcheck {
+  margin-top: 1rem;
+}
+.XM-crutente .responsacli .xcheck b {
+  color: #222;
+  font-size: 0.9rem;
+  display: block;
+  margin-bottom: 10px;
+}
+.XM-crutente .responsacli hr {
+  width: 100%;
+  border: none;
+  border-bottom: 1px solid #9acdff;
+  height: 0;
+  margin: 2rem 0;
+}
+.XM-crutente .flb {
+  margin-bottom: 2rem;
+}
+.XM-crutente .age {
+  white-space: nowrap;
+  margin-left: 1rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.XM-crustomer .modal-frame {
+  max-width: 680px;
+}
+
+.XM-consulta .septs > div {
+  margin-top: 3rem;
+  padding-top: 1rem;
+  min-height: 30vh;
+}
+.XM-consulta .septs > div:nth-child(2) {
+  padding: 1rem 2rem 0;
+  border: 1px solid #ddeeff;
+  margin-right: 2rem;
+  margin-left: 2rem;
+  background: #f6fbff;
+}
+.XM-consulta .septs > div .hhd {
+  margin-bottom: 1rem;
+}
+.XM-consulta .septs > div .hhd .rt-menus {
+  margin-left: 2rem;
+}
+.XM-consulta .septs > div .hhd .rt-menus .xdropdown {
+  background-color: #ddeeff;
+  border: 1px #c3e1ff solid;
+}
+.XM-consulta .septs > div .hhd .rt-menus .xdropdown:hover {
+  background-color: #1A73E8;
+}
+.XM-consulta .septs > div .hhd .rt-menus .xdropdown:hover svg {
+  fill: #fff;
+}
+.XM-consulta .septs > div .hhd .rt-menus .xdropdown svg {
+  fill: #1A73E8;
+  width: 24px;
+}
+.XM-consulta .septs > div .hhd .rt-menus .o-opts ul li {
+  padding: 0 1rem;
+}
+.XM-consulta .septs > div .hhd .rt-menus .o-opts ul li:hover span:before {
+  color: #1A73E8;
+}
+.XM-consulta .septs > div .hhd .rt-menus .o-opts ul li span {
+  font-size: 0.9rem;
+  width: 10px;
+  text-align: center;
+}
+.XM-consulta .septs > div .hhd .rt-menus .o-opts ul li span.add:before, .XM-consulta .septs > div .hhd .rt-menus .o-opts ul li span.remove:before {
+  font-weight: 400;
+}
+.XM-consulta .septs > div .hhd .rt-menus .o-opts ul li span.add:before {
+  content: "+";
+  font-size: 1.4rem;
+  line-height: 1;
+}
+.XM-consulta .septs > div .hhd .rt-menus .o-opts ul li span.remove:before {
+  content: "-";
+  font-size: 2rem;
+  line-height: 0;
+  margin-left: 2px;
+}
+.itemCalendario{
+  display: flex;
+  align-content: baseline;
+}
+.itemCalendario .ListaCalendario{
+  width: 100%;
+}
+.CardsCalendario {
+  width: 365px;
+  background: #fff;
+  padding: .7rem;
+  height: 90vh;
+  overflow: hidden;
+  overflow-y: scroll;
+  border-radius: .5rem;
+}
+.CardsCalendario::-webkit-scrollbar{
+  background: #fff;
+  border-radius: 7px;
+  width: 7px;
+}
+.CardsCalendario::-webkit-scrollbar-thumb{
+  background: #555;
+  border-radius: 7px;
+}
+.CardsCalendario ul li .fc-list-event-dot {
+  display: inline-block;
+  box-sizing: content-box;
+  width: 0;
+  height: 0;
+  border: 5px solid #3788d8;
+  border: calc(var(--fc-list-event-dot-width, 10px) / 2) solid var(--fc-event-border-color, #3788d8);
+  border-radius: 5px;
+  border-radius: calc(var(--fc-list-event-dot-width, 10px) / 2);
+}
+.CardsCalendario ul li {
+  margin: .8rem 0;
+}
+.CardsCalendario ul li small{
+  margin-left: .7rem;
+}
+.CardsCalendario ul .FlexCalendar{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.CardsCalendario ul .FlexCalendar .CalendarNome{
+  display: flex;
+  align-items: center;
+}
+.CardsCalendario ul .FlexCalendar .CalendarNome small{
+  width: 10rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.CardsCalendario ul .FlexCalendar .CalenSvg{
+
+}
+.CardsCalendario ul .FlexCalendar .CalenSvg svg{
+  margin: 0 .3rem;
+  width: 16px;
+  cursor: pointer;
+}
+.CardsCalendario ul .FlexCalendar .CalenSvg svg:hover{
+  opacity: .7;
+}

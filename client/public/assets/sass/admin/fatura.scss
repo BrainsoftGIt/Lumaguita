@@ -1,0 +1,28 @@
+@import "vars";
+.__included__.fatura {
+    
+    .XM-listProformas .modal-frame{
+        width: 100%;
+        max-width: 1280px;
+        .masterSearch {
+            position: relative;
+            margin-bottom: 2rem;
+            input {
+                max-width: 220px;
+                height: 40px;
+                border-radius: 6px;
+                background: darken($background, 5%);
+                border: 1px solid darken($background, 12%);
+                text-indent: 2.5rem;
+                font-size: 0.85rem;
+            }
+            svg {
+                fill: $blue;
+                width: 16px;
+                position: absolute;
+                left: 12px;
+                top: 12px;
+            }
+        }
+    }
+}

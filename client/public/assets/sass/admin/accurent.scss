@@ -1,0 +1,256 @@
+@import "vars";
+body{
+    overflow: hidden;
+}
+.__included__.accurent {
+    
+    ._head {
+        .masterSearch {
+            margin-right: 1.5rem;
+        }
+        .xbtn:before{
+            content: "+";
+            margin-right: 5px;
+            font-size: 1.1rem;
+            line-height: 0;
+
+        }
+    }
+    ._body {
+        overflow: hidden;
+        // position: relative;
+
+        .sums {
+            display: grid;
+            margin: 2rem 0;
+            grid-gap: 2%;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            section {
+                padding: 1.2rem;
+                border-radius: 3px;
+                position: relative;
+                box-shadow: 0 10px 40px -15px darken($background, 25%);
+                &:after {
+                    content: "$";
+                    position: absolute;
+                    top: 6%;
+                    right: 1rem;
+                    color: #fff;
+                    opacity: 0.12;
+                    font-size: 5rem;
+                }
+                * {
+                    color: #fff;
+                }
+                &.credit {
+                    background-color: darken(#00e082, 10%);
+                    box-shadow: 0 10px 40px -18px darken(#00e082, 10%);
+                }
+                &.debit {
+                    background-color: tomato;
+                    box-shadow: 0 10px 40px -18px tomato;
+                }
+                &.saldo {
+                    background-color: #4b01d7;
+                    box-shadow: 0 10px 40px -18px #4b01d7;
+                }
+                &.clients {
+                    background-color: #fff;
+                    * {
+                        color: #111;
+                    }
+                    h4:before {
+                        content: none;
+                    }
+                }
+                p {
+                    font-size: 0.85rem;
+                    margin-bottom: 1rem;
+                    font-weight: 600;
+                }
+                small{
+                    position: absolute;
+                    top: 23px;
+                    font-size: 0.85rem;
+                    text-decoration: underline;
+                    cursor: pointer;
+                    right: 1rem;
+                    z-index: 5;
+                }
+                h4 {
+                    font-size: 1.7rem;
+                    &:before {
+                        content: "STN ";
+                        font-size: 1.1rem;
+                        opacity: 0.7;
+                    }
+                }
+                svg {
+                    position: absolute;
+                    width: 80px;
+                    top: 18%;
+                    right: 1rem;
+                    opacity: 0.1;
+                }
+            }
+        }
+        .x-table {
+            height: calc(100% - 230px);
+            li {
+                &.debit {
+                    color: red;
+                }
+                &.credit {
+                    color: green;
+                }
+            }
+            span {
+                height: 40px;
+                border-radius: 4px;
+                padding: 8px 12px;
+                &:hover {
+                    background: $blue;
+                    a {
+                        color: #fff;
+                    }
+                    svg {
+                        fill: #fff;
+                    }
+                }
+
+                a {
+                    font-size: 0.85rem;
+                    color: $blue;
+                }
+            }
+            svg {
+                margin-right: 8px;
+                width: 24px;
+                fill: $blue;
+            }
+        }
+
+        .aboutAccountFrame {
+            background: $background;
+            position: absolute;
+            // padding-top: 80px;
+            width: 100%;
+            height: calc(100% - 80px);
+            top: 90px;
+            left: 0;
+            opacity: 0;
+            visibility: hidden;
+            transition: all .3s ease;
+            z-index: 10;
+            &.show {
+                top: 80px;
+                opacity: 1;
+                visibility: visible;
+            }
+            .tHead {
+                padding: 2rem;
+                padding-left: 1rem;
+                .goBack, .edit {
+                    padding: 12px 13px;
+                    border-radius: 5px;
+                    background: #fff;
+                    color: $blue;
+                    margin-right: 1rem;
+                    cursor: pointer;
+                    border: 2px darken($background, 12%) solid;
+                    svg {
+                        fill: $blue;
+                        width: 15px;
+                    }
+                }
+                .jkl{
+                    b{
+                        font-size: 0.9rem;
+                    }
+                    p{
+                        font-size: .9rem;
+                        margin-top: 3px; 
+                        font-weight: 500;
+                        &.credit{
+                            color: green;
+                        }
+                        &.debit{
+                            color: red;
+                        }
+                        &:before{
+                            content: "Saldo: ";
+                        }
+                    }
+                }
+                .rgt {
+                    > span {
+                        margin-right: 1rem;
+                    }
+                    .switch{
+                        transform: scale(.9);
+                    }
+                    .edit{
+                        padding: 10px;
+                        svg {
+                            width: 21px;
+                        }
+                    }
+                    button{
+                        margin-left: 1rem;
+                    }
+                }
+            }
+            .x-table{
+                height: calc(100vh - 220px);
+            }
+            .theBody {
+                // padding-top: 2rem;
+                padding-left: 1rem;
+            }
+        }
+    }
+}
+
+.x-mobdal{
+    &.viewMode{
+        .xform{
+            .xinput, .xselect{
+                margin-top: 1rem;
+                &, *{
+                    pointer-events: none;
+                }
+                input, textarea{
+                    border: none;
+                    padding-left: 0;
+                    + label{
+                        transform: translate(0, -14px) scale(0.85);
+                        padding-left: 0;
+                        left: 0;
+                        font-weight: 700;
+                        opacity: 0.7;
+                        &:after{
+                            content: none;
+                        }
+                    }
+                }
+                .fakearrow{
+                    display: none;
+                }
+                
+            }
+            
+        }
+    }
+}
+.XM-makePayment{
+    .inn{
+        width: 380px;
+    }
+}
+
+.XM-crustomer{
+    
+    .inn{
+        max-width: 600px;
+    }
+}

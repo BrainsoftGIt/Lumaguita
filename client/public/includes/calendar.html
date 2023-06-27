@@ -1,0 +1,193 @@
+<link rel="stylesheet" href="../assets/css/admin/utentes.css">
+<link href='../assets/fw/fullcalendar/lib/main.css' rel='stylesheet' />
+<style>
+
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
+        font-size: 14px;
+    }
+
+    #script-warning {
+        display: none;
+        background: #eee;
+        border-bottom: 1px solid #ddd;
+        padding: 0 10px;
+        line-height: 40px;
+        text-align: center;
+        font-weight: bold;
+        font-size: 12px;
+        color: red;
+    }
+
+    #loading {
+        display: none;
+        position: absolute;
+        top: 10px;
+        right: 10px;
+    }
+
+    #calendar {
+        max-width: 1100px;
+        margin: 40px auto;
+        padding: 0 10px;
+    }
+
+    .hide{
+        display: none;
+    }
+
+    [data-noshow="true"]{
+        display: none!important;
+    }
+
+</style>
+<div class="__included__ utentes">
+    <div class="_head flex h-sb v-ct">
+        <div class="inLeft">
+            <h1>Agenda</h1>
+        </div>
+        <div class="inRight flex v-ct">
+            <div class="masterSearch">
+                <input type="search" placeholder="Pesquise aqui...">
+                <svg x="0px" y="0px" viewBox="0 0 118.783 118.783" style="enable-background:new 0 0 118.783 118.783;"
+                    xml:space="preserve">
+                    <g>
+                        <path d="M115.97,101.597L88.661,74.286c4.64-7.387,7.333-16.118,7.333-25.488c0-26.509-21.49-47.996-47.998-47.996
+				S0,22.289,0,48.798c0,26.51,21.487,47.995,47.996,47.995c10.197,0,19.642-3.188,27.414-8.605l26.984,26.986
+				c1.875,1.873,4.333,2.806,6.788,2.806c2.458,0,4.913-0.933,6.791-2.806C119.72,111.423,119.72,105.347,115.97,101.597z
+				 M47.996,81.243c-17.917,0-32.443-14.525-32.443-32.443s14.526-32.444,32.443-32.444c17.918,0,32.443,14.526,32.443,32.444
+				S65.914,81.243,47.996,81.243z"></path>
+                    </g>
+                </svg>
+            </div>
+            <button class="xbtn showTarget" target="xModalSetsAgenda" tTitle="Adicionar Agenda">Adicionar Agenda</button>
+        </div>
+    </div>
+    <div class="_body">
+        <div class="itemCalendario">
+            <div class="CardsCalendario">
+                <ul listEventCalendar>
+
+                </ul>
+            </div>
+            <div class="ListaCalendario">
+                <div id='script-warning'>
+                    must be running.
+                </div>
+
+                <div id='loading'>loading...</div>
+
+                <div id='calendar'></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="xModalSetsAgenda" class="x-mobdal XM-crustomer flex v-ct h-ct" target="xModalSetsAgenda">
+    <div class="modal-frame">
+        <h3 targetTitle>Adicionar Cliente</h3>
+        <div class="xform">
+            <div class="xinput w50">
+                <input type="text" placeholder="_" id="schedule_name">
+                <label>Titulo</label>
+            </div>
+            <div class="xselect flutuate w50">
+                <input schedule_type placeholder="Tipo" type="text" readonly>
+                <label>Tipo</label>
+                <ul list="schedule_type" >
+                </ul>
+                <div class="fakearrow flex"><span></span><span></span></div>
+            </div>
+            <div class="xselect flutuate w50 hide">
+                <input schedule_client type="text" placeholder="Cliente" readonly  class="_noObrigatory" _noObrigatory="true">
+                <label>Cliente</label>
+                <ul list="schedule_client" >
+                </ul>
+                <div class="fakearrow flex"><span></span><span></span></div>
+            </div>
+            <div class="xselect flutuate multiple w50 hide">
+                <input schedule_patient type="text" placeholder="Paciente" readonly  class="_noObrigatory" _noObrigatory="true">
+                <label>Pacientes</label>
+                <ul list="schedule_patient" >
+                </ul>
+                <div class="fakearrow flex"><span></span><span></span></div>
+            </div>
+            <div class="xinput w25">
+                <input type="text" data-inputmask-alias="dd-mm-yyyy" data-val="true" placeholder="_" id="schedule_startdate">
+                <label>Inicio</label>
+            </div>
+            <div class="xinput w25">
+                <input type="text" disabled data-inputmask-alias="hh:mm" data-inputmask-max="24" data-val="true" placeholder="_" id="schedule_startdate_time" class="_noObrigatory" _noObrigatory="true">
+                <label>Inicio</label>
+            </div>
+            <div class="xinput w25">
+                <input type="text" data-inputmask-alias="dd-mm-yyyy" data-val="true" placeholder="_" id="schedule_enddate"  class="_noObrigatory" _noObrigatory="true">
+                <label>Fim</label>
+            </div>
+            <div class="xinput w25">
+                <input type="text" disabled data-inputmask-alias="hh:mm" data-inputmask-max="24" data-val="true" placeholder="_" id="schedule_enddate_time"  class="_noObrigatory" _noObrigatory="true">
+                <label>Fim</label>
+            </div>
+            <div class="xselect flutuate w50 multiple">
+                <input schedule_xdayadvance placeholder="Antecedência" type="text" readonly  class="_noObrigatory" _noObrigatory="true">
+                <label>Antecedência</label>
+                <ul list="schedule_xdayadvance">
+                    <li data-value="1">Minuto</li>
+                    <li data-value="60">Hora</li>
+                    <li data-value="1440">Dia</li>
+                    <li data-value="10080">Semana</li>
+                    <li data-value="20160">15 Dias</li>
+                    <li data-value="43800">Mes</li>
+                    <li data-value="525600">Ano</li>
+                </ul>
+                <div class="fakearrow flex"><span></span><span></span></div>
+            </div>
+            <!--<div class="xselect flutuate w50">
+                <input schedule_repeat placeholder="Repetir" type="text" readonly>
+                <label>Repetir</label>
+                <ul list="schedule_repeat">
+                    <li data-value="1">Minuto</li>
+                    <li data-value="60">Hora</li>
+                    <li data-value="1440">Dia</li>
+                    <li data-value="10080">Semana</li>
+                    <li data-value="20160">15 Dias</li>
+                    <li data-value="43800">Mes</li>
+                    <li data-value="525600">Ano</li>
+                </ul>
+                <div class="fakearrow flex"><span></span><span></span></div>
+            </div>-->
+        </div>
+        <div class="master-btn-right flex">
+            <span class="hideTarget" target="xModalSetsAgenda">cancelar</span>
+            <span class="flex v-ct" setsAgenda>
+                    concluir
+                    <svg class="spinner" viewBox="0 0 50 50">
+                        <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
+                    </svg>
+                </span>
+        </div>
+    </div>
+</div>
+<div id="xModalDeleteAgenda" class="x-mobdal flex v-ct h-ct" target="xModalDeleteAgenda">
+    <div class="modal-frame">
+        <p>Pretendes eliminar essa agenda?</p>
+        <div class="master-btn-right flex">
+            <span class="hideTarget" target="xModalDeleteAgenda">NÃO</span>
+            <span class="flex v-ct" deleteSeletedAgenda>
+					SIM
+					<svg class="spinner" viewBox="0 0 50 50">
+						<circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
+					</svg>
+				</span>
+        </div>
+    </div>
+</div>
+
+<script src='../assets/fw/fullcalendar/lib/main.js'></script>
+<script src='../assets/fw/fullcalendar/lib/locales/pt.js'></script>
+<script>
+    $('[data-inputmask-alias]').inputmask();
+</script>
+<script src='../assets/js/admin/utentes/calendar.js'></script>

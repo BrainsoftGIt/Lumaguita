@@ -1,0 +1,283 @@
+@import "vars";
+.__included__.settings {
+  ._head {
+    .inRight svg {
+      width: 25px;
+	  fill: $blue;
+	  display: none;
+    }
+  }
+  ._body {
+	  position: relative;
+    .sett1 {
+      padding-top: 1.5rem;
+      .tit {
+        border-bottom: 1px solid darken($background, 8%);
+        padding-bottom: 1rem;
+        margin-bottom: 1rem;
+      }
+      h2 {
+        color: $blue;
+        font-size: 0.9rem;
+      }
+      .group {
+        margin-bottom: 3rem;
+        &:last-child {
+          margin-bottom: 0;
+        }
+        a.showTarget {
+          // padding-top: 4px;
+          transform: translateY(3px);
+        }
+        &.postos {
+          ._listTbl {
+            li {
+              width: 20%;
+            }
+          }
+        }
+        &.armazens,
+        &.impressao {
+          ._listTbl {
+            li {
+              width: 25%;
+            }
+          }
+        }
+        &.efatura {
+          ._listTbl {
+            li {
+              width: 33.33%;
+            }
+          }
+        }
+      }
+    }
+    .sett2 {
+      padding-top: 1.5rem;
+      width: 100%;
+      max-width: 380px;
+	//   min-width: 360px;
+      border-left: 1px solid darken($background, 5%);
+      background: darken($background, 1.5%);
+      flex-shrink: 0;
+      margin-left: 5%;
+      padding-left: 3%;
+
+      .listinfos {
+        padding-right: 8%;
+      }
+      .tit {
+        ~ .tit {
+          margin-top: 2rem;
+          padding-top: 1.8rem;
+          margin-bottom: 1rem;
+
+          border-top: 1px solid darken($background, 10%);
+        }
+      }
+      * {
+        font-size: 0.85rem;
+      }
+      h3 {
+        color: $blue;
+        font-weight: 600;
+      }
+      svg {
+        width: 22px;
+        &:hover {
+          cursor: pointer;
+          fill: $blue;
+        }
+      }
+      .intro {
+        margin-bottom: 1rem;
+        // background: #000;
+        .img-container {
+          width: 60px;
+          height: 60px;
+          background-color: $fkblue;
+          margin-right: 1rem;
+        }
+        h3 {
+          font-size: 1rem;
+        }
+        p {
+          margin-top: 7px;
+        }
+      }
+      ul {
+        &.uno {
+          span:last-child {
+            &:before {
+              content: ":";
+              font-weight: 700;
+              margin-right: 5px;
+            }
+          }
+        }
+        &.dos {
+          span:nth-child(2) {
+            margin: 0 6px;
+          }
+        }
+        li {
+          line-height: 3;
+          b {
+            min-width: 120px;
+          }
+        }
+      }
+    }
+  }
+}
+
+// MODALS
+.x-mobdal {
+  .xform {
+    max-width: 480px;
+  }
+}
+
+.XM-settPOS {
+  .intt {
+    font-size: 0.88rem;
+  }
+  .xcheck {
+    margin-top: 1rem;
+  }
+}
+
+.XM-printSett {
+  &.haveKuchen .kuchenPrint {
+    display: flex !important;
+  }
+  .listSettings {
+    padding: 1rem 1.5rem;
+    margin-left: 2.5rem;
+    background: $background;
+    h4 {
+      font-size: 0.9rem;
+      color: $fkblue;
+      margin-bottom: 1rem;
+    }
+    ul {
+      li {
+        padding: 14px 1rem;
+        position: relative;
+        background: #fff;
+        min-width: 320px;
+        border: 1px solid darken($background, 4%);
+        border-radius: 5px;
+        box-shadow: 0 15px 45px -20px darken($background, 7%);
+        background-color: #fff;
+        margin-bottom: 12px;
+        &:hover {
+          box-shadow: 0 15px 45px -5px darken($background, 7%);
+          .ctrl {
+            right: 17px;
+            opacity: 1;
+            visibility: visible;
+          }
+        }
+        * {
+          font-size: 0.85rem;
+          line-height: 1.8;
+        }
+        span {
+        }
+        b {
+          font-weight: 500;
+        }
+        small {
+          opacity: 0.7;
+          &:last-child {
+            margin-left: 2rem;
+          }
+        }
+      }
+      .ctrl {
+        position: absolute;
+        top: 12px;
+        background: #fff;
+        right: 10px;
+        opacity: 0;
+        visibility: hidden;
+        svg {
+          width: 20px;
+          cursor: pointer;
+          margin-left: 5px;
+          fill: $blue;
+        }
+      }
+    }
+  }
+  .xform {
+    max-width: 360px;
+    align-content: flex-start;
+    &.kuchenPrint {
+      width: 100%;
+      max-width: 100%;
+      display: none;
+    }
+    h3 {
+      font-size: 0.9rem;
+      color: $fkblue;
+      margin-top: 12px;
+    }
+    .xcheck {
+      b {
+        display: block;
+        margin-bottom: 1rem;
+        font-size: 0.9rem;
+        margin-top: 1.2rem;
+      }
+    }
+    button {
+      margin-top: 1rem;
+    }
+  }
+  .kuchen {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid darken($background, 7%);
+    b {
+      display: block;
+      margin-bottom: 1rem;
+      font-size: 0.9rem;
+      color: $fkblue;
+    }
+  }
+}
+
+@media only screen and (max-width: 1200px) {
+	.__included__.settings {
+		._head {
+		  .inRight svg{
+			display: block;
+			cursor: pointer;
+		  }
+		}
+		._body {
+			.sett2{
+				position: absolute;
+				z-index: 10;
+				background: #FFF;
+				right: -8px;
+				height: calc(100% - 80px);
+				top: 80px;
+				overflow: auto;
+				max-width: 480px;
+				box-shadow: -10px 5px 30px -10px darken($background, 15%);
+				opacity: 0;
+				visibility: hidden;
+				transition: all .25s;
+				&.show{
+					opacity: 1;
+					visibility: visible;
+					right: 0;
+				}
+			}
+		}
+	}
+}

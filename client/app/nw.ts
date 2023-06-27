@@ -1,0 +1,17 @@
+export type NW = typeof import("nw.gui");
+export type Window = import("nw.gui").Window;
+export type EventEmitter = import("nw.gui").EventEmitter;
+export type App = import("nw.gui").App;
+export type Shell = import("nw.gui").Shell;
+export type Menu = import("nw.gui").Menu;
+export type MenuItem = import("nw.gui").MenuItem;
+export type Clipboard = import("nw.gui").Clipboard;
+export type HideMenusOptions = import("nw.gui").HideMenusOptions;
+export type IEventEmitter = import("nw.gui").IEventEmitter;
+export type MenuConfig = import("nw.gui").MenuConfig;
+export type Shortcut = import("nw.gui").Shortcut;
+export type ShortcutOption = import("nw.gui").ShortcutOption;
+export type Tray = import("nw.gui").Tray;
+export type TrayOption = import("nw.gui").TrayOption;
+export type WindowManifestOptions = import("nw.gui").WindowManifestOptions;
+export const nw:NW = global.nw;

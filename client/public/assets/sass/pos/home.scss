@@ -1,0 +1,206 @@
+@import "vars";
+.x-mobdal .modal-frame {
+	h3{
+		font-size: 1.2rem;
+		margin: 1rem 0 2rem;
+	}
+	.master-btn-right span{
+		font-size: 1rem;
+	}
+}
+
+body.dark{
+	.x-table{
+		.xheader ul li{
+			color: lighten($dark-background, 70%);
+		}
+		.xbody{
+			ul{
+				background: lighten($dark-background, 7%);
+				li{
+					&, span, i{
+						color: #FFF !important;
+					}
+				}
+			}
+		}
+	}
+	.x-mobdal .modal-frame {
+		background: lighten($dark-background, 5%);
+		h3{
+			color: lighten($dark-background, 65%);
+		}
+		p, b, h4, h6{
+			color: lighten($dark-background, 75%) !important;
+		}
+		.master-btn-right{
+			span{
+				color: lighten($dark-background, 70%);
+				&:last-child{
+					color: #FFF;
+				}
+			}
+		}
+	}
+	input, textarea{
+		color: #FFF;
+		&:focus{
+			border-bottom: 1px solid lighten($dark-background, 70%) !important;
+			box-shadow: 0 1px 0 0 lighten($dark-background, 70%) !important;
+			+ label{
+				color: lighten($dark-background, 75%) !important;
+			}
+		}
+		&:disabled + label{
+			color: rgba(#FFF, .4) !important;
+		}
+	}
+	.is-money-field span{
+		color: #FFF;
+		opacity: 0.8;
+	}
+	.select-wrapper svg{
+		fill: #FFF !important;
+	}
+	.dropdown-content{
+		background: lighten($dark-background, 25%);
+		li{
+			color:  lighten($dark-background, 50%);
+			&.selected span{
+				color:  #FFF;
+
+			}
+		}
+	}
+	.XM-ChooseArmazene,
+	.XM-PrintTypeAccount{
+		.account{
+			background: lighten($dark-background, 12%);
+			&.active{
+				border-color: lighten($dark-background, 70%);
+				background: lighten($dark-background, 15%);
+				&:after{
+					background: lighten($dark-background, 75%);
+					color: $dark-background;
+				}
+				svg{
+					fill: lighten($dark-background, 75%);
+				}
+			}
+			small{
+				color: rgba(#FFF, .7);
+			}
+		}
+	}
+	.XM-makePayment .modal-frame{
+		h4{
+			color: #FFF !important;
+		}
+		.pay-modes{
+			ul li{
+				&.active{
+					background-color: lighten($dark-background, 25%) !important;
+					span{
+						color: #FFF;
+
+					}
+				}
+				span{
+					color: lighten($dark-background, 75%);
+				}
+			}
+		}
+		.make-payment {
+			border-color: lighten($dark-background, 20%);
+			
+		}
+		.calculate{
+			.is-money-text{
+				color: #FFF;
+			}
+		}
+		.list-consum{
+			background-color: lighten($dark-background, 16%);
+			border-bottom: none;
+			ul li{
+				background-color: lighten($dark-background, 20%);
+				&.active{
+					box-shadow: 0 10px 25px -10px $dark-background;
+					background-color: lighten($dark-background, 30%);
+
+				}
+
+			}
+		}
+	}
+
+}
+.is-money-text {
+	cursor: pointer;
+	&:before {
+		// font-size: .85rem;
+		// font-weight: 500;
+		// opacity: .8;
+	}
+	&[coin="EUR"] {
+		&:after {
+			content: " EUR";
+		}
+	}
+	&[coin="STN"] {
+		&:after {
+			content: " STN";
+		}
+	}
+	&[coin="USD"] {
+		&:after {
+			content: " USD";
+		}
+	}
+	&[coin="XAF"] {
+		&:after {
+			content: " XAF";
+		}
+	}
+	
+}
+.is-money-field {
+	position: relative;
+	&[coin="EUR"] {
+		span:after {
+			content: "EUR";
+		}
+	}
+	&[coin="STN"] {
+		span:after {
+			content: "STN";
+		}
+	}
+	&[coin="USD"] {
+		span:after {
+			content: "USD";
+		}
+	}
+	&[coin="XAF"] {
+		span:after {
+			content: "XAF";
+		}
+	}
+	span {
+		// content: attr(coin);
+		display: block;
+		position: absolute;
+		right: 0;
+		bottom: 18px;
+		font-weight: 600;
+		font-size: 1.1rem;
+		cursor: pointer;
+	}
+	input {
+		text-align: right;
+		width: calc(100% - 2.5rem) !important;
+		padding-right: 2.5rem !important;
+		text-indent: 2.2rem;
+		font-weight: 600;
+	}
+}

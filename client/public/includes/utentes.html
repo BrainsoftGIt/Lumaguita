@@ -1,0 +1,708 @@
+<link rel="stylesheet" href="../assets/css/admin/utentes.css">
+<link rel="stylesheet" href="../assets/css/pos/posale.css">
+<style>
+    [listconsultas] svg{
+        cursor: pointer;
+    }
+</style>
+<div class="__included__ utentes">
+    <div class="_head flex h-sb v-ct">
+        <div class="inLeft">
+            <h1>Pacientes</h1>
+        </div>
+        <div class="inRight flex v-ct">
+            <div class="masterSearch">
+                <input filter-pacient type="search" placeholder="Pesquise aqui...">
+                <svg x="0px" y="0px" viewBox="0 0 118.783 118.783" style="enable-background:new 0 0 118.783 118.783;"
+                    xml:space="preserve">
+                    <g>
+                        <path d="M115.97,101.597L88.661,74.286c4.64-7.387,7.333-16.118,7.333-25.488c0-26.509-21.49-47.996-47.998-47.996
+				S0,22.289,0,48.798c0,26.51,21.487,47.995,47.996,47.995c10.197,0,19.642-3.188,27.414-8.605l26.984,26.986
+				c1.875,1.873,4.333,2.806,6.788,2.806c2.458,0,4.913-0.933,6.791-2.806C119.72,111.423,119.72,105.347,115.97,101.597z
+				 M47.996,81.243c-17.917,0-32.443-14.525-32.443-32.443s14.526-32.444,32.443-32.444c17.918,0,32.443,14.526,32.443,32.444
+				S65.914,81.243,47.996,81.243z"></path>
+                    </g>
+                </svg>
+            </div>
+            <button class="xbtn showTarget" target="xModalCRUtente" tTitle="Adicionar Paciente">Adicionar
+                Paciente</button>
+        </div>
+    </div>
+    <div class="_body">
+        <div class="x-table hovered grow-1 tabunt">
+            <div class="xheader">
+                <ul header-report-list class="flex">
+                    <li grow="1.5">Data de registo</li>
+                    <li grow="1.5">Número</li>
+                    <li grow="2.5">Nome</li>
+                    <li grow="2.5">Responsável</li>
+                    <li grow="1">Contacto</li>
+                    <li grow="1"></li>
+                </ul>
+            </div>
+            <div class="xbody listUtentes" id="listUtentes">
+                <!--<ul class=" showTarget" target="FRAME-FICHA">
+                    <li>12-12-2022</li>
+                    <li>68412168</li>
+                    <li>Name Comes Here</li>
+                    <li>Name Comes Here</li>
+                    <li>+2399913621</li>
+                    <li class="flex v-ct h-ct j-stp">
+                        <a tooltip="Editar" flow="top" title="Editar" style="cursor: pointer;">
+                            <svg class="edit" viewBox="0 0 512 512">
+                                <path d="m368 511.957031h-309.332031c-32.363281 0-58.667969-26.304687-58.667969-58.667969v-309.332031c0-32.363281 26.304688-58.667969 58.667969-58.667969h181.332031c8.832031 0 16 7.167969 16 16 0 8.832032-7.167969 16-16 16h-181.332031c-14.699219 0-26.667969 11.96875-26.667969 26.667969v309.332031c0 14.699219 11.96875 26.667969 26.667969 26.667969h309.332031c14.699219 0 26.667969-11.96875 26.667969-26.667969v-181.332031c0-8.832031 7.167969-16 16-16s16 7.148438 16 16v181.332031c0 32.363282-26.304688 58.667969-58.667969 58.667969zm0 0"/>
+                                <path d="m187.136719 340.820312c-4.203125 0-8.300781-1.664062-11.308594-4.691406-3.796875-3.777344-5.417969-9.21875-4.371094-14.445312l15.082031-75.433594c.617188-3.113281 2.152344-5.953125 4.371094-8.171875l220.953125-220.925781c22.867188-22.871094 60.074219-22.871094 82.964844 0 11.070313 11.070312 17.171875 25.792968 17.171875 41.472656s-6.101562 30.398438-17.195312 41.472656l-220.925782 220.949219c-2.21875 2.238281-5.078125 3.753906-8.171875 4.371094l-75.414062 15.082031c-1.046875.214844-2.113281.320312-3.15625.320312zm75.433593-31.082031h.214844zm-45.609374-52.457031-9.410157 47.144531 47.125-9.429687 217.515625-217.511719c5.035156-5.058594 7.808594-11.734375 7.808594-18.859375s-2.773438-13.804688-7.808594-18.859375c-10.367187-10.390625-27.285156-10.390625-37.714844 0zm0 0"/>
+                                <path d="m453.332031 134.976562c-4.09375 0-8.191406-1.558593-11.304687-4.695312l-60.332032-60.351562c-6.25-6.25-6.25-16.382813 0-22.632813s16.382813-6.25 22.636719 0l60.328125 60.351563c6.25 6.25 6.25 16.382812 0 22.632812-3.136718 3.117188-7.230468 4.695312-11.328125 4.695312zm0 0"/>
+                            </svg>
+                        </a>
+                        <label class="xSwitch">
+                            <input type="checkbox">
+                            <span class="slider round"></span>
+                        </label>
+                    </li>
+                </ul>-->
+            </div>
+        </div>
+
+        <div id="FRAME-FICHA" class="xFrame ficha">
+            <div class="topHead flex v-ct h-sb">
+                <h2>Ficha clínica - <span pacient_selected>Name comes here, 22 anos</span></h2>
+                <div class="inR flex v-ct">
+                    <div class="masterSearch">
+                        <input type="search" placeholder="Pesquise aqui...">
+                        <svg x="0px" y="0px" viewBox="0 0 118.783 118.783"
+                            style="enable-background:new 0 0 118.783 118.783;" xml:space="preserve">
+                            <g>
+                                <path d="M115.97,101.597L88.661,74.286c4.64-7.387,7.333-16.118,7.333-25.488c0-26.509-21.49-47.996-47.998-47.996
+                        S0,22.289,0,48.798c0,26.51,21.487,47.995,47.996,47.995c10.197,0,19.642-3.188,27.414-8.605l26.984,26.986
+                        c1.875,1.873,4.333,2.806,6.788,2.806c2.458,0,4.913-0.933,6.791-2.806C119.72,111.423,119.72,105.347,115.97,101.597z
+                         M47.996,81.243c-17.917,0-32.443-14.525-32.443-32.443s14.526-32.444,32.443-32.444c17.918,0,32.443,14.526,32.443,32.444
+                        S65.914,81.243,47.996,81.243z"></path>
+                            </g>
+                        </svg>
+                    </div>
+                    <button class="xbn showTarget" target="xModalCRUDsulta">nova consulta</button>
+                    <span class="close hideTarget" target="FRAME-FICHA"></span>
+                </div>
+            </div>
+            <div class="bottomBody">
+                <div class="flex">
+                    <div class="steps grow-1">
+                        <h3>Consultas</h3>
+                        <div class="stepper">
+                            <ul listConsultas>
+                               <!-- <li class="flex wrap">
+                                    <h4>12 de Novembro, 2021 - (Rotina)</h4>
+                                    <ul>
+                                        <li>
+                                            <b>Anamnese</b>
+                                            <p>Sintoma 1, Sintoma 2</p>
+                                        </li>
+                                        <li>
+                                            <b>Avaliação Física e Psicológica</b>
+                                            <p>Estado geral: Boas condições</p>
+                                            <p>Peso: 4,54 KG</p>
+                                        </li>
+                                        <li>
+                                            <b>Exames Laboratoriais</b>
+                                            <p>Exame X: (Aguardando resultado)</p>
+                                            <p>Exame X: (Aguardando resultado)</p>
+                                        </li>
+                                        <li>
+                                            <b>Medicamentos receitados</b>
+                                            <p>Amoxilina, 1 comprimido de 8 em 8 horas</p>
+                                            <p>Amoxilina, 1 comprimido de 8 em 8 horas</p>
+                                        </li>
+                                        <li>
+                                            <b>Observações</b>
+                                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="flex wrap closed">
+                                    <h4>12 de Novembro, 2021 - (Eventual)</h4>
+                                    <ul>
+                                        <li>
+                                            <b>Observações</b>
+                                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="flex wrap closed">
+                                    <h4>12 de Novembro, 2021</h4>
+                                    <ul>
+                                        <li>
+                                            <b>Observações</b>
+                                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+                                        </li>
+                                        <li>
+                                            <b>Observações</b>
+                                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+                                        </li>
+                                    </ul>
+                                </li>-->
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="premanents">
+                        <div class="flex h-sb">
+                            <h3>Dados permanentes</h3>
+                            <a class="eddit flex v-ct showTarget" target="xModalPermaData" tooltip="Editar" flow="top" title="Editar" style="cursor: pointer;">
+                                <svg class="edit" viewBox="0 0 512 512">
+                                    <path
+                                        d="m368 511.957031h-309.332031c-32.363281 0-58.667969-26.304687-58.667969-58.667969v-309.332031c0-32.363281 26.304688-58.667969 58.667969-58.667969h181.332031c8.832031 0 16 7.167969 16 16 0 8.832032-7.167969 16-16 16h-181.332031c-14.699219 0-26.667969 11.96875-26.667969 26.667969v309.332031c0 14.699219 11.96875 26.667969 26.667969 26.667969h309.332031c14.699219 0 26.667969-11.96875 26.667969-26.667969v-181.332031c0-8.832031 7.167969-16 16-16s16 7.148438 16 16v181.332031c0 32.363282-26.304688 58.667969-58.667969 58.667969zm0 0" />
+                                    <path
+                                        d="m187.136719 340.820312c-4.203125 0-8.300781-1.664062-11.308594-4.691406-3.796875-3.777344-5.417969-9.21875-4.371094-14.445312l15.082031-75.433594c.617188-3.113281 2.152344-5.953125 4.371094-8.171875l220.953125-220.925781c22.867188-22.871094 60.074219-22.871094 82.964844 0 11.070313 11.070312 17.171875 25.792968 17.171875 41.472656s-6.101562 30.398438-17.195312 41.472656l-220.925782 220.949219c-2.21875 2.238281-5.078125 3.753906-8.171875 4.371094l-75.414062 15.082031c-1.046875.214844-2.113281.320312-3.15625.320312zm75.433593-31.082031h.214844zm-45.609374-52.457031-9.410157 47.144531 47.125-9.429687 217.515625-217.511719c5.035156-5.058594 7.808594-11.734375 7.808594-18.859375s-2.773438-13.804688-7.808594-18.859375c-10.367187-10.390625-27.285156-10.390625-37.714844 0zm0 0" />
+                                    <path
+                                        d="m453.332031 134.976562c-4.09375 0-8.191406-1.558593-11.304687-4.695312l-60.332032-60.351562c-6.25-6.25-6.25-16.382813 0-22.632813s16.382813-6.25 22.636719 0l60.328125 60.351563c6.25 6.25 6.25 16.382812 0 22.632812-3.136718 3.117188-7.230468 4.695312-11.328125 4.695312zm0 0" />
+                                </svg>
+                                Editar
+                            </a>
+                        </div>
+                        <div class="permadata">
+                            <ul class="mastul">
+                                <li>
+                                    <ul>
+                                        <b>Antecedentes mórbidos</b>
+                                        <li pacient_view_pemanentes_antecedentes_morbidos>Item X</li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <ul>
+                                        <b>Antecedentes familiares</b>
+                                        <li pacient_view_pemanentes_antecedentes_familiares>Item X</li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <ul>
+                                        <b>Atividades que pratica</b>
+                                        <li pacient_view_pemanentes_atividades_pratica>Item X</li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <ul>
+                                        <b>Vacinas recebidas</b>
+                                        <li pacient_view_pemanentes_vacinas_recebidas>Item X</li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <ul>
+                                        <b>Desparasitação</b>
+                                        <li pacient_view_pemanentes_desparasitacao>Item X</li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div id="xModalCRUtente" class="x-mobdal XM-crutente flex v-ct h-ct" target="xModalCRUtente">
+        <div class="modal-frame j-stp">
+            <h3 targetTitle>Adicionar Utente</h3>
+            <div clientform class="inn flex">
+                <div class="xform responsacli">
+                    <div class="client">
+                        <div class="flex h-sb v-ct flb">
+                            <b>O cliente</b>
+                            <button bt-control-client tTitle class="xbtn showTarget" target="xModalCRUCustomer">Adicionar</button>
+                        </div>
+                        <div class="xinput w100">
+                            <input utente_paciente_cliente_nome type="text" placeholder="_" list="utente_paciente_cliente_nome">
+                            <label>Nome</label>
+                            <datalist id="utente_paciente_cliente_nome">
+
+                            </datalist>
+                        </div>
+                        <div class="xinput w100">
+                            <input utente_paciente_cliente_contactos type="text" placeholder="_" list="utente_paciente_cliente_contactos">
+                            <label>Telefone</label>
+                            <datalist id="utente_paciente_cliente_contactos">
+
+                            </datalist>
+                        </div>
+                        <div class="xcheck single">
+                            <b>O cliente é também o responsável?</b>
+                            <ul utente_paciente_cliente_is_responsavel >
+                                <li value="true" class="tgl">Sim</li>
+                                <li value="false" class="tgl">Não</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <hr>
+                    <b class="bResp">O Responsável</b>
+                    <div class="xinput w100">
+                        <input responsavel_data utente_paciente_responsavel_nome type="text" placeholder="_">
+                        <label>Nome</label>
+                    </div>
+                    <div class="xinput w100">
+                        <input responsavel_data utente_paciente_responsavel_telefone type="text" placeholder="_">
+                        <label>Telefone</label>
+                    </div>
+                    <div class="xinput w100">
+                        <input responsavel_data utente_paciente_responsavel_whatsapp type="text" placeholder="_">
+                        <label>Whatsapp</label>
+                    </div>
+                    <div class="xinput w100">
+                        <input responsavel_data utente_paciente_responsavel_mail class="_noObrigatory" _noObrigatory="true" type="text" placeholder="_">
+                        <label>Email</label>
+                    </div>
+
+                    <div class="xcheck single">
+                        <b>O responsavel ser notificado?</b>
+                        <ul utente_paciente_responsavel_deseja_ser_notificaoo >
+                            <li value="true" class="tgl">Sim</li>
+                            <li value="false" class="tgl">Não</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="xform utt">
+                    <b class="w100">Dados do paciente</b>
+                    <div class="xinput w50">
+                        <input utente_paciente_codigo type="text" placeholder="_">
+                        <label>Cód. Identificação</label>
+                    </div>
+                    <div class="xinput w50">
+                        <input utente_paciente_nome type="text" placeholder="_" id="">
+                        <label>Nome</label>
+                    </div>
+                    <div class="xselect flutuate w50">
+                        <input utente_paciente_tipoanimal placeholder="_" type="text" readonly>
+                        <label>Tipo de animal</label>
+                        <ul list="utente_paciente_tipoanimal" >
+                        </ul>
+                        <div class="fakearrow flex"><span></span><span></span></div>
+                    </div>
+                    <div class="flex w50">
+                        <div class="xinput w100">
+                            <input utente_paciente_datanacimento data-inputmask-alias="dd-mm-yyyy" data-val="true" type="text" placeholder="_">
+                            <label>Data de nascimento</label>
+                        </div>
+                        <span class="age" style="padding-top: 1.7em">x anos</span>
+                    </div>
+                    <div class="xinput w80">
+                        <input utente_paciente_morrada type="text" placeholder="_">
+                        <label>Morada</label>
+                    </div>
+                    <div class="xselect flutuate w20">
+                        <input utente_paciente_genero placeholder="_" type="text" readonly>
+                        <label>Gênero</label>
+                        <ul list="utente_paciente_genero" >
+                            <li>Macho</li>
+                            <li>Fêmea</li>
+                        </ul>
+                        <div class="fakearrow flex"><span></span><span></span></div>
+                    </div>
+                    <div class="xinput w33">
+                        <input utente_paciente_raca type="text" placeholder="_">
+                        <label>Raça</label>
+                    </div>
+                    <div class="xinput w33">
+                        <input utente_paciente_cor type="text" placeholder="_">
+                        <label>Cor</label>
+                    </div>
+                    <div class="xinput w33">
+                        <input utente_paciente_peso type="text" placeholder="_">
+                        <label>Peso</label>
+                    </div>
+                    <div class="xinput w100">
+                        <textarea utente_paciente_alergias placeholder="_" _noObrigatory="true"></textarea>
+                        <label>Alergias</label>
+                    </div>
+                    <div class="xinput w100">
+                        <textarea utente_paciente_doencas placeholder="_" _noObrigatory="true"></textarea>
+                        <label>Doenças</label>
+                    </div>
+                    <div class="xinput w100">
+                        <textarea utente_paciente_observacao placeholder="_" _noObrigatory="true"></textarea>
+                        <label>Observações</label>
+                    </div>
+                </div>
+
+            </div>
+            <div class="master-btn-right flex">
+                <span class="hideTarget" target="xModalCRUtente">cancelar</span>
+                <span utente_paciente_bt class="flex v-ct" bt_cliente>
+                    concluir
+                    <svg class="spinner" viewBox="0 0 50 50">
+                        <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
+                    </svg>
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <div id="xModalCRUCustomer" class="x-mobdal XM-crustomer flex v-ct h-ct" target="xModalCRUCustomer">
+        <div class="modal-frame j-stp">
+            <h3 targettitle>Adicionar Cliente</h3>
+            <div class="inn xform">
+                <div class="xinput w50">
+                    <input utente_reg_cliente_bi type="text" placeholder="_" class="_noObrigatory" _noObrigatory="true">
+                    <label>BI</label>
+                </div>
+                <div class="xinput w50">
+                    <input utente_reg_cliente_nif type="text" placeholder="NIF" _noObrigatory="true" class="integer _noObrigatory" maxlength="9">
+                    <label>NIF</label>
+                </div>
+                <div class="xinput w20">
+                    <input utente_reg_cliente_codigo type="text" placeholder="_">
+                    <label>Código</label>
+                </div>
+                <div class="xinput w80">
+                    <input utente_reg_cliente_nome type="text" placeholder="_">
+                    <label>Nome</label>
+                </div>
+                <div class="xinput w50">
+                    <input utente_reg_cliente_telefone type="text" placeholder="_" class="integer">
+                    <label>Telefone</label>
+                </div>
+                <div class="xinput w50">
+                    <input utente_reg_cliente_whatsapp type="text" placeholder="_" class="integer">
+                    <label>WhatsApp</label>
+                </div>
+                <div class="xinput w50">
+                    <input utente_reg_cliente_email type="text" class="_noObrigatory" placeholder="_" _noObrigatory="true">
+                    <label>Email</label>
+                </div>
+                <div class="xinput w50">
+                    <input utente_reg_cliente_morada type="text" placeholder="_">
+                    <label>Morada</label>
+                </div>
+                <div class="xinput w100">
+                    <textarea utente_reg_cliente_obs placeholder="_" class="_noObrigatory" _noObrigatory="true"></textarea>
+                    <label>Observações</label>
+                </div>
+                <div class="xcheck single w100">
+                    <b>O cliente ser notificado?</b>
+                    <ul utente_paciente_client_deseja_ser_notificaoo >
+                        <li value="true" class="tgl">Sim</li>
+                        <li value="false" class="tgl">Não</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="master-btn-right flex">
+                <span class="hideTarget" target="xModalCRUCustomer">cancelar</span>
+                <span class="flex v-ct" utente_reg_cliente_bt>
+                    concluir
+                    <svg class="spinner" viewBox="0 0 50 50">
+                        <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
+                    </svg>
+                </span>
+            </div>
+        </div>
+    </div>
+    <div id="xModalCRUDsulta" class="x-mobdal XM-consulta flex v-ct h-ct" target="xModalCRUDsulta">
+        <div class="modal-frame j-stp">
+            <h3>Nova Consulta</h3>
+            <div class="inn">
+                <div class="xform">
+                    <div class="xselect w100">
+                        <input utente_consulta_tipoConsulta placeholder="_" type="text" readonly>
+                        <label>Tipo de Consulta</label>
+                        <ul list="utente_consulta_tipoConsulta">
+                            <!--<li>Consulta x</li>
+                            <li>Consulta x</li>
+                            <li>Consulta x</li>-->
+                        </ul>
+                        <div class="fakearrow flex"><span></span><span></span></div>
+                    </div>
+                    <div class="w50">
+                        <h4>Anamnese</h4>
+                        <div class="xinput w100">
+                            <textarea utente_consulta_sintomas placeholder="_" _noObrigatory="true"></textarea>
+                            <label>Anamnese</label>
+                        </div>
+
+                    </div>
+                    <div class="w50">
+                        <h4>Tratamento</h4>
+                        <div class="xinput w100">
+                            <textarea utente_consulta_tratamento placeholder="_" _noObrigatory="true"></textarea>
+                            <label>Tratamento</label>
+                        </div>
+                    </div>
+                    <div class="w100">
+                        <h4>Observações</h4>
+                        <div class="xinput w100">
+                            <textarea utente_consulta_observacao placeholder="_" _noObrigatory="true"></textarea>
+                            <label>Observações</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex septs">
+                    <div>
+                        <div class="flex h-sb v-ct hhd">
+                            <h4>Avaliação Física e Psicológica</h4>
+                            <div class="rt-menus">
+                                <div class="xdropdown flex v-ct h-ct j-stp">
+                                    <svg viewBox="0 0 24 24" fill="#000000">
+                                        <path d="M0 0h24v24H0z" fill="none" />
+                                        <path
+                                            d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z" />
+                                    </svg>
+                                </div>
+                                <div class="o-opts">
+                                    <ul ktype="avalicacao" >
+                                        <div class="masterSearch">
+                                            <input ksearch type="search" placeholder="Pesquise aqui...">
+                                            <svg x="0px" y="0px" viewBox="0 0 118.783 118.783"
+                                                style="enable-background:new 0 0 118.783 118.783;" xml:space="preserve">
+                                                <g>
+                                                    <path d="M115.97,101.597L88.661,74.286c4.64-7.387,7.333-16.118,7.333-25.488c0-26.509-21.49-47.996-47.998-47.996
+                                            S0,22.289,0,48.798c0,26.51,21.487,47.995,47.996,47.995c10.197,0,19.642-3.188,27.414-8.605l26.984,26.986
+                                            c1.875,1.873,4.333,2.806,6.788,2.806c2.458,0,4.913-0.933,6.791-2.806C119.72,111.423,119.72,105.347,115.97,101.597z
+                                             M47.996,81.243c-17.917,0-32.443-14.525-32.443-32.443s14.526-32.444,32.443-32.444c17.918,0,32.443,14.526,32.443,32.444
+                                            S65.914,81.243,47.996,81.243z"></path>
+                                                </g>
+                                            </svg>
+                                        </div>
+                                        <li koption="add" class="flex h-sb v-ct">
+                                            <span>Exame X</span>
+                                            <span class="add"></span>
+                                        </li>
+                                        <li koption="add" class="flex h-sb v-ct">
+                                            <span>Exame X</span>
+                                            <span class="add"></span>
+                                        </li>
+
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div klist="avalicacao" class="xform">
+                            <!--<div class="xinput w100">
+                                <input _noObrigatory="true" type="text" placeholder="_">
+                                <label>Peso</label>
+                            </div>-->
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex v-ct h-sb hhd">
+                            <h4>Exames Laboratoriais</h4>
+                            <div class="rt-menus">
+                                <div class="xdropdown flex v-ct h-ct j-stp">
+                                    <svg viewBox="0 0 24 24" fill="#000000">
+                                        <path d="M0 0h24v24H0z" fill="none" />
+                                        <path
+                                            d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z" />
+                                    </svg>
+                                </div>
+                                <div class="o-opts">
+                                    <ul ktype="exames">
+                                        <div class="masterSearch">
+                                            <input ksearch type="search" placeholder="Pesquise aqui...">
+                                            <svg x="0px" y="0px" viewBox="0 0 118.783 118.783"
+                                                style="enable-background:new 0 0 118.783 118.783;" xml:space="preserve">
+                                                <g>
+                                                    <path d="M115.97,101.597L88.661,74.286c4.64-7.387,7.333-16.118,7.333-25.488c0-26.509-21.49-47.996-47.998-47.996
+                                            S0,22.289,0,48.798c0,26.51,21.487,47.995,47.996,47.995c10.197,0,19.642-3.188,27.414-8.605l26.984,26.986
+                                            c1.875,1.873,4.333,2.806,6.788,2.806c2.458,0,4.913-0.933,6.791-2.806C119.72,111.423,119.72,105.347,115.97,101.597z
+                                             M47.996,81.243c-17.917,0-32.443-14.525-32.443-32.443s14.526-32.444,32.443-32.444c17.918,0,32.443,14.526,32.443,32.444
+                                            S65.914,81.243,47.996,81.243z"></path>
+                                                </g>
+                                            </svg>
+                                        </div>
+                                        <li koption="add" class="flex h-sb v-ct">
+                                            <span>Exame X</span>
+                                            <span class="add"></span>
+                                        </li>
+                                        <li koption="add" class="flex h-sb v-ct">
+                                            <span>Exame X</span>
+                                            <span class="add"></span>
+                                        </li>
+
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div klist="exames" class="xform">
+                            <!--<div class="xinput w100">
+                                <input _noObrigatory="true" type="text" placeholder="Resultado">
+                                <label>Exame X</label>
+                            </div>-->
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="master-btn-right flex">
+                <span class="hideTarget" target="xModalCRUDsulta">cancelar</span>
+                <span utente_consulta_pacient_bt class="flex v-ct">
+                    concluir
+                    <svg class="spinner" viewBox="0 0 50 50">
+                        <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
+                    </svg>
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <div id="xModalPermaData" class="x-mobdal XM-permadata flex v-ct h-ct" target="xModalPermaData">
+        <div class="modal-frame j-stp">
+            <h3>Dados Permanentes</h3>
+            <div class="inn xform">
+                <div class="xinput w100">
+                    <textarea pacient_data_pemanentes_antecedentes_morbidos placeholder="_" _noObrigatory="true"></textarea>
+                    <label>Antecedentes mórbidos</label>
+                </div>
+                <div class="xinput w100">
+                    <textarea pacient_data_pemanentes_antecedentes_familiares placeholder="_" _noObrigatory="true"></textarea>
+                    <label>Antecedentes familiares</label>
+                </div>
+                <div class="xinput w100">
+                    <textarea pacient_data_pemanentes_atividades_pratica placeholder="_" _noObrigatory="true"></textarea>
+                    <label>Atividades que pratica</label>
+                </div>
+                <div class="xinput w100">
+                    <textarea pacient_data_pemanentes_vacinas_recebidas placeholder="_" _noObrigatory="true"></textarea>
+                    <label>Vacinas recebidas</label>
+                </div>
+                <div class="xinput w100">
+                    <textarea pacient_data_pemanentes_desparasitacao placeholder="_" _noObrigatory="true"></textarea>
+                    <label>Desparasitação</label>
+                </div>
+
+            </div>
+            <div class="master-btn-right flex">
+                <span class="hideTarget" target="xModalPermaData">cancelar</span>
+                <span pacient_data_pemanentes_bt class="flex v-ct" bt_cliente>
+                    concluir
+                    <svg class="spinner" viewBox="0 0 50 50">
+                        <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
+                    </svg>
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <div id="xModalOpenFatura" class="x-mobdal XM-consulta flex v-ct h-ct" target="xModalOpenFatura">
+        <div loadFatutaPage class="modal-frame j-stp">
+
+        </div>
+    </div>
+
+    <div id="xModalWhatFatura" class="x-mobdal flex v-ct h-ct" target="xModalWhatFatura">
+        <div class="modal-frame">
+            <h3 targetTitle></h3>
+            <p>Pretendes faturar a consulta?</p>
+            <div class="master-btn-right flex">
+                <span class="hideTarget" target="xModalWhatFatura">NÃO</span>
+                <span class="flex v-ct hideTarget" target="xModalWhatFatura" createFatura>
+					SIM
+					<svg class="spinner" viewBox="0 0 50 50">
+						<circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
+					</svg>
+				</span>
+            </div>
+        </div>
+    </div>
+
+    <div id="xModalDeleteConsulta" class="x-mobdal flex v-ct h-ct" target="xModalDeleteConsulta">
+        <div class="modal-frame">
+            <h3 targetTitle></h3>
+            <p>Pretendes eliminar essa consulta?</p>
+            <div class="master-btn-right flex">
+                <span class="hideTarget" target="xModalDeleteConsulta">NÃO</span>
+                <span class="flex v-ct" deleteSeletedConsulta>
+					SIM
+					<svg class="spinner" viewBox="0 0 50 50">
+						<circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
+					</svg>
+				</span>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="xModalPrintModel" class="x-mobdal XM-PrintModel flex v-ct h-ct" target="xModalPrintModel">
+    <div class="modal-frame">
+        <h3>Impressão</h3>
+        <div class="inn">
+            <p>Escolha o tipo de impressão.</p>
+            <div class="flex h-ct v-ct">
+                <div class="waves-effect account active tgl" type="a5">
+                    <div class="flex v-ct h-ct">
+                        <svg x="0px" y="0px" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;"
+                             xml:space="preserve">
+								<g>
+									<g>
+										<path d="M442.702,0.03c-0.2-0.008-0.397-0.03-0.599-0.03H134.768c-25.992,0-47.139,21.146-47.139,47.139v374.524H38.352
+											c-8.284,0-15,6.716-15,15v28.199c0,25.592,20.505,46.472,45.946,47.108c0.2,0.008,0.397,0.03,0.599,0.03h307.335
+											c25.992,0,47.139-21.146,47.139-47.139V90.337h49.277c8.284,0,15-6.716,15-15V47.139C488.648,21.546,468.144,0.667,442.702,0.03z
+											 M70.49,482.001c-9.45,0-17.139-7.688-17.139-17.139v-13.199h0.001h276.507v13.199c0,6.045,1.156,11.823,3.239,17.139H70.49z
+											 M394.371,464.861c0,9.45-7.688,17.139-17.139,17.139h-0.235c-9.45,0-17.139-7.688-17.139-17.139v-28.199c0-8.284-6.716-15-15-15
+											h-227.23V47.139c0-9.45,7.688-17.139,17.139-17.139H397.61c-2.083,5.316-3.239,11.093-3.239,17.139L394.371,464.861
+											L394.371,464.861z M458.649,60.337h-0.001h-34.277V47.139c0-9.45,7.688-17.139,17.139-17.139c9.451,0,17.139,7.688,17.139,17.139
+											V60.337z" />
+									</g>
+								</g>
+                            <g>
+									<g>
+										<path d="M344.859,97.908H159.724c-8.284,0-15,6.716-15,15s6.716,15,15,15h185.135c8.284,0,15-6.716,15-15
+											S353.143,97.908,344.859,97.908z" />
+									</g>
+								</g>
+                            <g>
+									<g>
+										<path d="M344.859,173.301H159.724c-8.284,0-15,6.716-15,15s6.716,15,15,15h185.135c8.284,0,15-6.716,15-15
+											S353.143,173.301,344.859,173.301z" />
+									</g>
+								</g>
+                            <g>
+									<g>
+										<path d="M344.859,248.695H159.724c-8.284,0-15,6.716-15,15s6.716,15,15,15h185.135c8.284,0,15-6.716,15-15
+											S353.143,248.695,344.859,248.695z" />
+									</g>
+								</g>
+                            <g>
+									<g>
+										<path d="M344.859,324.088H159.724c-8.284,0-15,6.716-15,15s6.716,15,15,15h185.135c8.284,0,15-6.716,15-15
+											S353.143,324.088,344.859,324.088z" />
+									</g>
+								</g>
+							</svg>
+
+                    </div>
+                    <p>A5 (pdf)</p>
+                </div>
+                <div class="waves-effect account tgl" type="a4">
+                    <div class="flex v-ct h-ct">
+                        <svg x="0px" y="0px" viewBox="0 0 470.586 470.586"
+                             style="enable-background:new 0 0 470.586 470.586;" xml:space="preserve">
+								<g>
+									<path d="M327.081,0H90.234C74.331,0,61.381,12.959,61.381,28.859v412.863c0,15.924,12.95,28.863,28.853,28.863H380.35
+										c15.917,0,28.855-12.939,28.855-28.863V89.234L327.081,0z M333.891,43.184l35.996,39.121h-35.996V43.184z M384.972,441.723
+										c0,2.542-2.081,4.629-4.635,4.629H90.234c-2.55,0-4.619-2.087-4.619-4.629V28.859c0-2.548,2.069-4.613,4.619-4.613h219.411v70.181
+										c0,6.682,5.443,12.099,12.129,12.099h63.198V441.723z M128.364,128.89H334.15c5.013,0,9.079,4.066,9.079,9.079
+										c0,5.013-4.066,9.079-9.079,9.079H128.364c-5.012,0-9.079-4.066-9.079-9.079C119.285,132.957,123.352,128.89,128.364,128.89z
+										M343.229,198.98c0,5.012-4.066,9.079-9.079,9.079H128.364c-5.012,0-9.079-4.066-9.079-9.079s4.067-9.079,9.079-9.079H334.15
+										C339.163,189.901,343.229,193.968,343.229,198.98z M343.229,257.993c0,5.013-4.066,9.079-9.079,9.079H128.364
+										c-5.012,0-9.079-4.066-9.079-9.079s4.067-9.079,9.079-9.079H334.15C339.163,248.914,343.229,252.98,343.229,257.993z
+										M343.229,318.011c0,5.013-4.066,9.079-9.079,9.079H128.364c-5.012,0-9.079-4.066-9.079-9.079s4.067-9.079,9.079-9.079H334.15
+										C339.163,308.932,343.229,312.998,343.229,318.011z" />
+								</g>
+							</svg>
+                    </div>
+                    <p>A4 (pdf)</p>
+                </div>
+            </div>
+        </div>
+        <div class="master-btn-right flex">
+            <span class="hideTarget waves-effect" target="xModalPrintModel">cancelar</span>
+            <span class="flex v-ct waves-effect" printTratament>
+					IMPRIMIR
+					<svg class="spinner" viewBox="0 0 50 50">
+						<circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
+					</svg>
+				</span>
+        </div>
+    </div>
+</div>
+<script src="../assets/js/admin/utentes/client.js"></script>
+<script src="../assets/js/admin/utentes/pacientes.js"></script>
+<script src="../assets/js/admin/utentes/consultas.js"></script>
+<script>xTableGenerate()</script>

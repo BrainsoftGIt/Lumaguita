@@ -1,0 +1,176 @@
+@charset "UTF-8";
+.__included__.report ._head .inLeft h1 {
+  position: relative;
+}
+.__included__.report ._head .inLeft h1:before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 8px;
+  background-color: #aaa;
+  position: absolute;
+  top: 9px;
+  right: -20px;
+}
+.__included__.report ._head .inLeft h1:after {
+  content: attr(found);
+  position: absolute;
+  white-space: nowrap;
+  font-weight: 500;
+  font-size: 0.8rem;
+  color: #666;
+  top: 3px;
+  left: 140%;
+}
+.__included__.report ._head .filterMst {
+  position: relative;
+  margin-left: 2rem;
+}
+.__included__.report ._head .filterMst .flt-fire {
+  border: 2px #1A73E8 solid;
+  padding: 12px 16px;
+  border-radius: 3px;
+}
+.__included__.report ._head .filterMst .flt-fire svg {
+  width: 18px;
+  fill: #1A73E8;
+}
+.__included__.report ._head .filterMst .flt-fire span {
+  font-size: 0.8rem;
+  margin-left: 8px;
+  font-weight: 600;
+  color: #1A73E8;
+}
+.__included__.report ._head .eximport {
+  margin-left: 1rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+.__included__.report ._head .eximport span {
+  position: relative;
+  width: 41px;
+  height: 41px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-left: 1.2rem;
+  -webkit-transition: all 0.25s;
+  -o-transition: all 0.25s;
+  transition: all 0.25s;
+}
+.__included__.report ._head .eximport span.excel {
+  background: #f6fdf9;
+  border: 2px #36d278 solid;
+}
+.__included__.report ._head .eximport span.pdf {
+  background: #fff6f4;
+  border: 2px #ffa494 solid;
+}
+.__included__.report ._head .eximport span:hover {
+  background: #fff;
+}
+.__included__.report ._head .eximport span svg {
+  width: 20px;
+}
+.__included__.report ._head .eximport span a {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: tomato;
+}
+.__included__.report ._body {
+  overflow-y: hidden;
+}
+.__included__.report ._body .x-table {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  height: calc(100% - 5rem);
+}
+.__included__.report ._body .x-table .xbody ul:hover {
+  background-color: rgb(230,240,252);
+}
+.__included__.report ._body .x-table .xbody ul:last-child {
+  background-color: rgb(230,240,252);
+}
+.__included__.report ._body .x-table .xbody {
+  cursor: pointer;
+}
+.__included__.report ._body .x-table .xbody ul.active {
+  background-color: #4300c9;
+  color: #fff !important;
+  fill: #fff !important;
+}
+
+.XM-masterFilter * {
+  font-size: 0.9rem;
+}
+.XM-masterFilter p {
+  margin-bottom: 1.8rem;
+}
+.XM-masterFilter b {
+  font-weight: 600;
+  display: block;
+  margin-bottom: 1rem;
+  white-space: nowrap;
+  font-size: 0.85rem;
+}
+.XM-masterFilter .types {
+  margin-right: 5%;
+}
+.XM-masterFilter .types ul li {
+  white-space: nowrap;
+}
+.XM-masterFilter .options {
+  padding: 0 12px;
+  border-radius: 5px;
+  margin-right: 2rem;
+}
+.XM-masterFilter .options b {
+  padding-left: 1rem;
+}
+.XM-masterFilter .options ul {
+  min-width: 280px;
+  background-color: #f6fbff;
+  padding: 12px 0;
+}
+.XM-masterFilter .options ul li {
+  line-height: 2.4;
+  font-size: 0.85rem;
+  cursor: pointer;
+  padding: 0 1rem;
+}
+.XM-masterFilter .options ul li:hover {
+  background-color: #e2f0ff;
+  color: #1A73E8;
+}
+.XM-masterFilter .inputs {
+  max-width: 360px;
+  -ms-flex-line-pack: start;
+  align-content: flex-start;
+}
+.XM-masterFilter .inputs .xinput:hover .delete {
+  visibility: visible;
+  opacity: 1;
+}
+.XM-masterFilter .inputs .delete {
+  position: absolute;
+  top: -9px;
+  right: -9px;
+  cursor: pointer;
+  visibility: hidden;
+  opacity: 0;
+}
+.XM-masterFilter .inputs .delete:after {
+  content: "✕";
+  color: tomato;
+  width: 22px;
+  height: 22px;
+  line-height: 22px;
+  text-align: center;
+  border-radius: 50%;
+  background-color: #fff;
+  display: inline-block;
+}
+
+li.active {
+  color: #1A73E8;
+}

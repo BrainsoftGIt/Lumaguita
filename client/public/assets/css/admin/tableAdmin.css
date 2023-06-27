@@ -1,0 +1,24 @@
+.x-table span {
+    height: 40px;
+    border-radius: 4px;
+    padding: 8px 12px;
+}
+.x-table span:hover {
+    background: #1A73E8;
+}
+.x-table span:hover a {
+    color: #fff;
+}
+.x-table span:hover svg {
+    fill: #fff;
+}
+.x-table span a {
+    font-size: 0.85rem;
+    color: #1A73E8;
+}
+.x-table svg {
+    margin-right: 8px;
+    width: 24px;
+    fill: #1A73E8;
+    cursor: pointer;
+}

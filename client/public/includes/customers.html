@@ -1,0 +1,117 @@
+<link rel="stylesheet" href="../assets/css/admin/tableAdmin.css">
+<div class="__included__ colabs">
+    <div class="_head flex h-sb v-ct">
+        <div class="inLeft">
+            <h1>Clientes</h1>
+        </div>
+        <div class="inRight flex v-ct">
+            <div class="masterSearch">
+                <input type="search" placeholder="Pesquise aqui..." style="margin-right: 0.8rem;" id="pesquisarCliente">
+                <svg x="0px" y="0px" viewBox="0 0 118.783 118.783" style="enable-background:new 0 0 118.783 118.783;"
+                     xml:space="preserve">
+                    <g>
+                        <path d="M115.97,101.597L88.661,74.286c4.64-7.387,7.333-16.118,7.333-25.488c0-26.509-21.49-47.996-47.998-47.996
+				S0,22.289,0,48.798c0,26.51,21.487,47.995,47.996,47.995c10.197,0,19.642-3.188,27.414-8.605l26.984,26.986
+				c1.875,1.873,4.333,2.806,6.788,2.806c2.458,0,4.913-0.933,6.791-2.806C119.72,111.423,119.72,105.347,115.97,101.597z
+				 M47.996,81.243c-17.917,0-32.443-14.525-32.443-32.443s14.526-32.444,32.443-32.444c17.918,0,32.443,14.526,32.443,32.444
+				S65.914,81.243,47.996,81.243z"></path>
+                    </g>
+                </svg>
+            </div>
+            <div>
+                <button class="xbtn" novoCliente>Adicionar cliente</button>
+            </div>
+        </div>
+    </div>
+    <div class="_body">
+        <div class="x-table hovered grow-1">
+            <div class="xheader">
+                <ul header-report-list class="flex">
+                    <li grow="2">Data de registo</li>
+                    <li grow="1">Código</li>
+                    <li grow="1">NIF</li>
+                    <li grow="3">Nome</li>
+                    <li grow="1">Contacto</li>
+                    <li grow="1">Email</li>
+                    <li grow="1"></li>
+                </ul>
+            </div>
+            <div class="xbody" id="listClients">
+                <!--<ul class=" showTarget" target="AbtAccFrmID">
+                    <li>109000000</li>
+                    <li>Name Comes Here</li>
+                    <li>+2399913621</li>
+                    <li class="flex v-ct">
+                        <span class="flex v-ct j-stp showTarget" target="xModalMakePayment">
+                            <svg enable-background="new 0 0 512 512" viewBox="0 0 512 512"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <g>
+                                    <path
+                                        d="m256 512c-68.38 0-132.668-26.628-181.02-74.98s-74.98-112.64-74.98-181.02 26.629-132.667 74.98-181.02 112.64-74.98 181.02-74.98 132.668 26.628 181.02 74.98 74.98 112.64 74.98 181.02-26.629 132.667-74.98 181.02-112.64 74.98-181.02 74.98zm0-480c-123.514 0-224 100.486-224 224s100.486 224 224 224 224-100.486 224-224-100.486-224-224-224z" />
+                                    <path
+                                        d="m256 240c-22.056 0-40-17.944-40-40s17.944-40 40-40 40 17.944 40 40c0 8.836 7.163 16 16 16s16-7.164 16-16c0-34.201-23.978-62.888-56-70.186v-17.814c0-8.836-7.163-16-16-16s-16 7.164-16 16v17.814c-32.022 7.298-56 35.985-56 70.186 0 39.701 32.299 72 72 72 22.056 0 40 17.944 40 40s-17.944 40-40 40-40-17.944-40-40c0-8.836-7.163-16-16-16s-16 7.164-16 16c0 34.201 23.978 62.888 56 70.186v17.814c0 8.836 7.163 16 16 16s16-7.164 16-16v-17.814c32.022-7.298 56-35.985 56-70.186 0-39.701-32.299-72-72-72z" />
+                                </g>
+                            </svg>
+                            <a>Efetuar pagamento</a>
+                        </span>
+                    </li>
+                </ul>-->
+            </div>
+        </div>
+    </div>
+
+
+    <div id="xModalCRUCustomer" class="x-mobdal XM-crustomer flex v-ct h-ct" target="xModalCRUCustomer">
+        <div class="modal-frame">
+            <h3 targetTitle>Adicionar Cliente</h3>
+            <div class="inn xform">
+                <div class="xinput w50">
+                    <input type="text" placeholder="_" id="cliente_codigo">
+                    <label>Codigo</label>
+                </div>
+                <div class="xinput w50">
+                    <input type="text" placeholder="_" id="cliente_nome">
+                    <label>Nome</label>
+                </div>
+                <div class="xinput w50">
+                    <input type="text" placeholder="NIF" _noObrigatory="true" class="integer" maxlength="9" id="cliente_nif">
+                    <label>NIF</label>
+                </div>
+                <div class="xinput w50">
+                    <input type="text" placeholder="_" class="integer" id="cliente_telefone">
+                    <label>Telefone</label>
+                </div>
+                <div class="xinput w50">
+                    <input type="text" placeholder="_" _noObrigatory="true" id="cliente_email">
+                    <label>Email</label>
+                </div>
+
+            </div>
+            <div class="master-btn-right flex">
+                <span class="hideTarget" target="xModalCRUCustomer">cancelar</span>
+                <span class="flex v-ct" bt_cliente>
+                    concluir
+                    <svg class="spinner" viewBox="0 0 50 50">
+                        <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
+                    </svg>
+                </span>
+            </div>
+        </div>
+    </div>
+    <div id="xModalChangeCustomerStatus" class="x-mobdal flex v-ct h-ct" target="xModalChangeCustomerStatus">
+        <div class="modal-frame">
+            <h3 targetTitle></h3>
+            <p>Tem certeza de que pretende executar esta operação?</p>
+            <div class="master-btn-right flex">
+                <span class="hideTarget" target="xModalChangeCustomerStatus">NÃO</span>
+                <span class="flex v-ct" changeStatusCustomer>
+                        SIM
+                        <svg class="spinner" viewBox="0 0 50 50">
+                            <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
+                        </svg>
+                    </span>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/js/admin/clients.js"></script>

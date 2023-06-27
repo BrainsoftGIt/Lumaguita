@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Splash Screen</title>
+    <link rel="shortcut icon" href="/server/resources/fav/fav.png" />
+
+    <script src="../../../node_modules/nw-splasher/nw-splasher.js"></script>
+    <link
+      rel="stylesheet"
+      href="../../../node_modules/nw-splasher/nw-splasher.css"
+    />
+    <style>
+        .drag-enable,
+        .wrapper{
+            box-shadow: none !important;
+            border: none !important;
+        }
+        .wrapper{
+            background: #FFF !important;
+            border-radius: 6px !important;
+        }
+        .close{
+            color: tomato !important;
+        }
+        img{
+            max-width: 105px;
+            margin-top: 60px;
+        }
+      .barSpinner {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 30px auto;
+      }
+      .loader {
+        position: relative;
+        margin: 0 auto;
+        width: 40px;
+      }
+
+      .loader::before {
+        content: "";
+        display: block;
+        padding-top: 100%;
+      }
+
+      .circular {
+        animation: rotate 2s linear infinite;
+        height: 100%;
+        transform-origin: center center;
+        width: 100%;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        margin: auto;
+      }
+
+      .path {
+        stroke-dasharray: 1, 200;
+        stroke-dashoffset: 0;
+        animation: dash 1.5s ease-in-out infinite, color 6s ease-in-out infinite;
+        stroke-linecap: round;
+      }
+      .ellip{
+          max-width: 350px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          margin-left: auto;
+          margin-right: auto;
+      }
+
+      @keyframes rotate {
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      @keyframes dash {
+        0% {
+          stroke-dasharray: 1, 200;
+          stroke-dashoffset: 0;
+        }
+        50% {
+          stroke-dasharray: 89, 200;
+          stroke-dashoffset: -35px;
+        }
+        100% {
+          stroke-dasharray: 899, 200;
+          stroke-dashoffset: -124px;
+        }
+      }
+
+      @keyframes color {
+        100% {
+        }
+        0% {
+          stroke: red;
+        }
+        40% {
+          stroke: blue;
+        }
+        66% {
+          stroke: green;
+        }
+        80% {
+        }
+        90% {
+          stroke: yellow;
+        }
+      }
+    </style>
+  </head>
+  <body class="drag-enable">
+    <div class="wrapper">
+      <div
+        class="close drag-disable"
+        onclick="(()=>{
+        nw.Window.get().close(true);
+        process.exit( 0 );
+    })()"
+      >
+        &times;
+      </div>
+      <img src="../../public/assets/img/luma2.png" alt="">
+      <div class="barSpinner">
+        <div class="showbox">
+          <div class="loader">
+            <svg class="circular" viewBox="25 25 50 50">
+              <circle
+                class="path"
+                cx="50"
+                cy="50"
+                r="20"
+                fill="none"
+                stroke-width="4"
+                stroke-miterLimit="10"
+              />
+            </svg>
+          </div>
+        </div>
+      </div>
+      <div class="ellip" id="process">Inicializando...</div>
+      <div class="ellip" id="block"></div>
+      <div class="ellip" id="blockItem"></div>
+    </div>
+
+  </body>
+  <script>
+    require( ".." );
+  </script>
+</html>

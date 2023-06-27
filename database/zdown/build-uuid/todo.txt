@@ -1,0 +1,16 @@
+Rever função de criação do link de associação
+        _link_associacao.link_custo,
+        _link_associacao.link_quantidadecusto
+
+Rever as funções marcadas pelo helcio
+
+# Renomear todos os current_timestamptz para current_timestamp [SOLVED]
+# Alterar os timestamptztz para timestamp [SOLVED]
+# Alterar os timestamp para timestamptz [SOLVED]
+
+
+Proucuarar por cada ::int ::int2 ::int4 ::int8 que devem ser para transforma-los em uuid
+
+Analizar com mais detalhes o retalorio -> tweeks.funct_report_estatistica_posto
+
+Proucurar e alterar os id do tipo de imposto para uuid

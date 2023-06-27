@@ -1,0 +1,329 @@
+<link rel="stylesheet" href="../assets/css/admin/settings.css">
+<link rel="stylesheet" href="../assets/css/admin/colabs.css">
+<div class="__included__ settings" id="sys_config">
+	<div class="_head flex h-sb v-ct">
+		<div class="inLeft">
+			<h1>Configurações do Sistema</h1>
+		</div>
+		<div class="inRight">
+		</div>
+	</div>
+	<div class="_body">
+		<div class="comfort flex">
+			<div class="sett1 grow-1">
+				<div class="group postos">
+					<div class="flex h-sb v-ct tit">
+						<h2>Clusters</h2>
+						<button class="xbtn" id="novoCluster">Adicionar novo</button>
+					</div>
+					<div class="list-postos _listTbl" id="listClusters">
+						<!--<ul class="flex">
+							<li class="flex column">
+								<span>Nome</span>
+								<span>Posto 0</span>
+							</li>
+							<li class="flex column">
+								<span>Endereço</span>
+								<span>Posto 0</span>
+							</li>
+							<li class="flex column">
+								<span>Porta</span>
+								<span>Posto 0</span>
+							</li>
+							<li class="flex column">
+								<span>Grupo</span>
+								<span>groud</span>
+							</li>
+							<li class="flex column">
+								<span class="noLabel"></span>
+								<span class="flex v-ct">
+									<a class="showTarget" target="xModalCtrlCluster" tTitle="Editar Cluster">
+										<svg class="edit showTarget" viewBox="0 0 512 512"><path d="m368 511.957031h-309.332031c-32.363281 0-58.667969-26.304687-58.667969-58.667969v-309.332031c0-32.363281 26.304688-58.667969 58.667969-58.667969h181.332031c8.832031 0 16 7.167969 16 16 0 8.832032-7.167969 16-16 16h-181.332031c-14.699219 0-26.667969 11.96875-26.667969 26.667969v309.332031c0 14.699219 11.96875 26.667969 26.667969 26.667969h309.332031c14.699219 0 26.667969-11.96875 26.667969-26.667969v-181.332031c0-8.832031 7.167969-16 16-16s16 7.148438 16 16v181.332031c0 32.363282-26.304688 58.667969-58.667969 58.667969zm0 0"/><path d="m187.136719 340.820312c-4.203125 0-8.300781-1.664062-11.308594-4.691406-3.796875-3.777344-5.417969-9.21875-4.371094-14.445312l15.082031-75.433594c.617188-3.113281 2.152344-5.953125 4.371094-8.171875l220.953125-220.925781c22.867188-22.871094 60.074219-22.871094 82.964844 0 11.070313 11.070312 17.171875 25.792968 17.171875 41.472656s-6.101562 30.398438-17.195312 41.472656l-220.925782 220.949219c-2.21875 2.238281-5.078125 3.753906-8.171875 4.371094l-75.414062 15.082031c-1.046875.214844-2.113281.320312-3.15625.320312zm75.433593-31.082031h.214844zm-45.609374-52.457031-9.410157 47.144531 47.125-9.429687 217.515625-217.511719c5.035156-5.058594 7.808594-11.734375 7.808594-18.859375s-2.773438-13.804688-7.808594-18.859375c-10.367187-10.390625-27.285156-10.390625-37.714844 0zm0 0"/><path d="m453.332031 134.976562c-4.09375 0-8.191406-1.558593-11.304687-4.695312l-60.332032-60.351562c-6.25-6.25-6.25-16.382813 0-22.632813s16.382813-6.25 22.636719 0l60.328125 60.351563c6.25 6.25 6.25 16.382812 0 22.632812-3.136718 3.117188-7.230468 4.695312-11.328125 4.695312zm0 0"/></svg>
+									</a>
+									<svg class="delete" viewBox="-40 0 427 427.00131"><path d="m232.398438 154.703125c-5.523438 0-10 4.476563-10 10v189c0 5.519531 4.476562 10 10 10 5.523437 0 10-4.480469 10-10v-189c0-5.523437-4.476563-10-10-10zm0 0"/><path d="m114.398438 154.703125c-5.523438 0-10 4.476563-10 10v189c0 5.519531 4.476562 10 10 10 5.523437 0 10-4.480469 10-10v-189c0-5.523437-4.476563-10-10-10zm0 0"/><path d="m28.398438 127.121094v246.378906c0 14.5625 5.339843 28.238281 14.667968 38.050781 9.285156 9.839844 22.207032 15.425781 35.730469 15.449219h189.203125c13.527344-.023438 26.449219-5.609375 35.730469-15.449219 9.328125-9.8125 14.667969-23.488281 14.667969-38.050781v-246.378906c18.542968-4.921875 30.558593-22.835938 28.078124-41.863282-2.484374-19.023437-18.691406-33.253906-37.878906-33.257812h-51.199218v-12.5c.058593-10.511719-4.097657-20.605469-11.539063-28.03125-7.441406-7.421875-17.550781-11.5546875-28.0625-11.46875h-88.796875c-10.511719-.0859375-20.621094 4.046875-28.0625 11.46875-7.441406 7.425781-11.597656 17.519531-11.539062 28.03125v12.5h-51.199219c-19.1875.003906-35.394531 14.234375-37.878907 33.257812-2.480468 19.027344 9.535157 36.941407 28.078126 41.863282zm239.601562 279.878906h-189.203125c-17.097656 0-30.398437-14.6875-30.398437-33.5v-245.5h250v245.5c0 18.8125-13.300782 33.5-30.398438 33.5zm-158.601562-367.5c-.066407-5.207031 1.980468-10.21875 5.675781-13.894531 3.691406-3.675781 8.714843-5.695313 13.925781-5.605469h88.796875c5.210937-.089844 10.234375 1.929688 13.925781 5.605469 3.695313 3.671875 5.742188 8.6875 5.675782 13.894531v12.5h-128zm-71.199219 32.5h270.398437c9.941406 0 18 8.058594 18 18s-8.058594 18-18 18h-270.398437c-9.941407 0-18-8.058594-18-18s8.058593-18 18-18zm0 0"/><path d="m173.398438 154.703125c-5.523438 0-10 4.476563-10 10v189c0 5.519531 4.476562 10 10 10 5.523437 0 10-4.480469 10-10v-189c0-5.523437-4.476563-10-10-10zm0 0"/></svg>
+								</span>
+							</li>
+						</ul>-->
+					</div>
+				</div>
+                <div class="group postos">
+                    <div class="flex h-sb v-ct tit">
+                        <h2>Branches</h2>
+                        <button class="xbtn" id="newBranch">Adicionar novo</button>
+                    </div>
+                    <div class="list-postos _listTbl" id="listBranches">
+                        <!--<ul class="flex">
+                            <li class="flex column">
+                                <span>Nome</span>
+                                <span>Posto 0</span>
+                            </li>
+                            <li class="flex column">
+                                <span>Endereço</span>
+                                <span>Posto 0</span>
+                            </li>
+                            <li class="flex column">
+                                <span>Porta</span>
+                                <span>Posto 0</span>
+                            </li>
+                            <li class="flex column">
+                                <span>Grupo</span>
+                                <span>groud</span>
+                            </li>
+                            <li class="flex column">
+                                <span class="noLabel"></span>
+                                <span class="flex v-ct">
+                                    <a class="showTarget" target="xModalCtrlCluster" tTitle="Editar Cluster">
+                                        <svg class="edit showTarget" viewBox="0 0 512 512"><path d="m368 511.957031h-309.332031c-32.363281 0-58.667969-26.304687-58.667969-58.667969v-309.332031c0-32.363281 26.304688-58.667969 58.667969-58.667969h181.332031c8.832031 0 16 7.167969 16 16 0 8.832032-7.167969 16-16 16h-181.332031c-14.699219 0-26.667969 11.96875-26.667969 26.667969v309.332031c0 14.699219 11.96875 26.667969 26.667969 26.667969h309.332031c14.699219 0 26.667969-11.96875 26.667969-26.667969v-181.332031c0-8.832031 7.167969-16 16-16s16 7.148438 16 16v181.332031c0 32.363282-26.304688 58.667969-58.667969 58.667969zm0 0"/><path d="m187.136719 340.820312c-4.203125 0-8.300781-1.664062-11.308594-4.691406-3.796875-3.777344-5.417969-9.21875-4.371094-14.445312l15.082031-75.433594c.617188-3.113281 2.152344-5.953125 4.371094-8.171875l220.953125-220.925781c22.867188-22.871094 60.074219-22.871094 82.964844 0 11.070313 11.070312 17.171875 25.792968 17.171875 41.472656s-6.101562 30.398438-17.195312 41.472656l-220.925782 220.949219c-2.21875 2.238281-5.078125 3.753906-8.171875 4.371094l-75.414062 15.082031c-1.046875.214844-2.113281.320312-3.15625.320312zm75.433593-31.082031h.214844zm-45.609374-52.457031-9.410157 47.144531 47.125-9.429687 217.515625-217.511719c5.035156-5.058594 7.808594-11.734375 7.808594-18.859375s-2.773438-13.804688-7.808594-18.859375c-10.367187-10.390625-27.285156-10.390625-37.714844 0zm0 0"/><path d="m453.332031 134.976562c-4.09375 0-8.191406-1.558593-11.304687-4.695312l-60.332032-60.351562c-6.25-6.25-6.25-16.382813 0-22.632813s16.382813-6.25 22.636719 0l60.328125 60.351563c6.25 6.25 6.25 16.382812 0 22.632812-3.136718 3.117188-7.230468 4.695312-11.328125 4.695312zm0 0"/></svg>
+                                    </a>
+                                    <svg class="delete" viewBox="-40 0 427 427.00131"><path d="m232.398438 154.703125c-5.523438 0-10 4.476563-10 10v189c0 5.519531 4.476562 10 10 10 5.523437 0 10-4.480469 10-10v-189c0-5.523437-4.476563-10-10-10zm0 0"/><path d="m114.398438 154.703125c-5.523438 0-10 4.476563-10 10v189c0 5.519531 4.476562 10 10 10 5.523437 0 10-4.480469 10-10v-189c0-5.523437-4.476563-10-10-10zm0 0"/><path d="m28.398438 127.121094v246.378906c0 14.5625 5.339843 28.238281 14.667968 38.050781 9.285156 9.839844 22.207032 15.425781 35.730469 15.449219h189.203125c13.527344-.023438 26.449219-5.609375 35.730469-15.449219 9.328125-9.8125 14.667969-23.488281 14.667969-38.050781v-246.378906c18.542968-4.921875 30.558593-22.835938 28.078124-41.863282-2.484374-19.023437-18.691406-33.253906-37.878906-33.257812h-51.199218v-12.5c.058593-10.511719-4.097657-20.605469-11.539063-28.03125-7.441406-7.421875-17.550781-11.5546875-28.0625-11.46875h-88.796875c-10.511719-.0859375-20.621094 4.046875-28.0625 11.46875-7.441406 7.425781-11.597656 17.519531-11.539062 28.03125v12.5h-51.199219c-19.1875.003906-35.394531 14.234375-37.878907 33.257812-2.480468 19.027344 9.535157 36.941407 28.078126 41.863282zm239.601562 279.878906h-189.203125c-17.097656 0-30.398437-14.6875-30.398437-33.5v-245.5h250v245.5c0 18.8125-13.300782 33.5-30.398438 33.5zm-158.601562-367.5c-.066407-5.207031 1.980468-10.21875 5.675781-13.894531 3.691406-3.675781 8.714843-5.695313 13.925781-5.605469h88.796875c5.210937-.089844 10.234375 1.929688 13.925781 5.605469 3.695313 3.671875 5.742188 8.6875 5.675782 13.894531v12.5h-128zm-71.199219 32.5h270.398437c9.941406 0 18 8.058594 18 18s-8.058594 18-18 18h-270.398437c-9.941407 0-18-8.058594-18-18s8.058593-18 18-18zm0 0"/><path d="m173.398438 154.703125c-5.523438 0-10 4.476563-10 10v189c0 5.519531 4.476562 10 10 10 5.523437 0 10-4.480469 10-10v-189c0-5.523437-4.476563-10-10-10zm0 0"/></svg>
+                                </span>
+                            </li>
+                        </ul>-->
+                    </div>
+                </div>
+			</div>
+		</div>
+	</div>
+    <div id="xModalCluster" class="x-mobdal XM-ctrlPosto flex v-ct h-ct hideTarget" target="xModalCluster">
+        <div class="modal-frame j-stp">
+            <h3 targetTitle></h3>
+            <div class="inn flex">
+                <div class="xform">
+                    <div class="xinput grow-1 w100 removeFieldMaster">
+                        <input type="text" id="cluster_name" placeholder="_">
+                        <label for="cluster_name">Nome</label>
+                    </div>
+                    <div class="xinput grow-1 w100 removeFieldMaster">
+                        <input type="text" id="cluster_group" placeholder="_">
+                        <label for="cluster_group">Caminho</label>
+                    </div>
+                    <div class="xinput grow-1 w100 removeFieldMaster">
+                        <input type="text" id="cluster_amount_life" placeholder="_" class="integer">
+                        <label for="cluster_amount_life">Quantidade de validade</label>
+                    </div>
+                    <div class="xselect w100">
+                        <input type="text" readonly>
+                        <label>Período de validade</label>
+                        <ul id="periods_validation">
+                        </ul>
+                    </div>
+                    <div class="xcheck multiple removeFieldMaster">
+                        <ul id="cluster_revision">
+                            <!--<li class="stgl"  grant="revision_child">Fazer backup online </li>
+                            <li class="stgl" grant="revision_sub_path">Receber cópia de subcaminho</li>-->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="master-btn-right flex">
+                <span class="hideTarget" target="xModalCluster">CANCELAR</span>
+                <span class="flex v-ct" bt_cluster>
+					CONCLUIR
+					<svg class="spinner" viewBox="0 0 50 50">
+						<circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
+					</svg>
+				</span>
+			</div>
+		</div>
+	</div>
+    <div id="xModalChangeLicense" class="x-mobdal XM-ctrlPosto flex v-ct h-ct hideTarget" target="xModalChangeLicense">
+        <div class="modal-frame j-stp">
+            <h3 targetTitle></h3>
+            <div class="inn flex">
+                <div class="xform">
+                    <div class="xinput grow-1 w100 removeFieldMaster">
+                        <input type="text" id="cluster_change_amount_life" placeholder="_" class="integer">
+                        <label for="cluster_change_amount_life">Quantidade de validade</label>
+                    </div>
+                    <div class="xselect w100">
+                        <input type="text" readonly id="period_change_validation_desc">
+                        <label for="period_change_validation_desc">Período de validade</label>
+                        <ul id="periods_change_validation">
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="master-btn-right flex">
+                <span class="hideTarget" target="xModalChangeLicense">CANCELAR</span>
+                <span class="flex v-ct" bt_restore_change_license>
+					CONCLUIR
+					<svg class="spinner" viewBox="0 0 50 50">
+						<circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
+					</svg>
+				</span>
+            </div>
+        </div>
+    </div>
+
+    <div id="xModalCreateBranch" class="x-mobdal XM-createColab flex v-ct h-ct hideTarget" target="xModalCreateBranch">
+        <div class="modal-frame j-stp">
+            <h3 targetTitle></h3>
+            <div class="flex">
+                <div class="inputs flex wrap h-sb xform">
+                    <div class="xinput w100">
+                        <input type="text" placeholder="_" id="branch_nome">
+                        <label for="branch_nome">Nome de estabelecimento</label>
+                    </div>
+                    <div class="xselect flutuate w100">
+                        <input type="text" readonly id="tipoBranchDesc">
+                        <label>Tipo de estabelecimento</label>
+                        <ul id="tipo_branch">
+                            <li tbranch_id="1">Restaurante</li>
+                            <li tbranch_id="2">Farmácia</li>
+                            <li tbranch_id="3">Supermercado</li>
+                            <li tbranch_id="4">Loja</li>
+                            <li tbranch_id="5">Fábrica</li>
+                            <li tbranch_id="6">Salão</li>
+                            <li tbranch_id="7">Hotel</li>
+                        </ul>
+                    </div>
+                    <div class="xselect flutuate w100">
+                        <input type="text" readonly>
+                        <label>Caminho de branch</label>
+                        <ul id="branch_path">
+                        </ul>
+                    </div>
+                    <div class="xinput w100">
+                        <input type="text" placeholder="_" id="colaborador_master_nome">
+                        <label for="colaborador_master_nome">Nome de colaborador responsável</label>
+                    </div>
+                    <div class="xinput w100">
+                        <input type="text" placeholder="_" id="colaborador_master_email">
+                        <label for="colaborador_master_email">Email de colaborador responsável</label>
+                    </div>
+                    <div class="xcheck multiple">
+                        <ul id="clustersBranch">
+                        </ul>
+                    </div>
+                </div>
+                <div class="control-access w100" allMenus>
+                    <b>Recursos do estabelecimento</b>
+                    <div class="xcheck multiple">
+                        <div class="tit flex">
+                            <span class="j-stp fkcheck parcial"></span>
+                            <span>Menu name</span>
+                        </div>
+                    </div>
+                    <div class="xcheck multiple">
+                        <div class="tit flex">
+                            <span class="j-stp fkcheck parcial"></span>
+                            <span>Menu name</span>
+                        </div>
+                        <ul>
+                            <li class="">Funcionality 1</li>
+                            <li class="">Funcionality 1</li>
+                            <li class="">Funcionality 1</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="master-btn-right flex">
+                <span class="hideTarget" target="xModalCreateBranch">Cancelar</span>
+                <span bt_branch class="flex v-ct">
+                        CONCLUIR
+                        <svg class="spinner" viewBox="0 0 50 50">
+                            <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
+                        </svg>
+                    </span>
+            </div>
+        </div>
+    </div>
+
+    <div id="xModalCopyApi" class="x-mobdal flex v-ct h-ct" target="xModalCopyApi">
+        <div class="modal-frame">
+            <p id="apiCluster"></p>
+            <div class="master-btn-right flex">
+                <span class="hideTarget" target="xModalCopyApi">Cancelar</span>
+                <span class="flex v-ct" copyApi data-clipboard-action="copy" data-clipboard-target="#apiCluster">
+					Copiar
+					<svg class="spinner" viewBox="0 0 50 50">
+						<circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
+					</svg>
+				</span>
+            </div>
+        </div>
+    </div>
+
+    <div id="xModalDownloadLicense" class="x-mobdal flex v-ct h-ct" target="xModalDownloadLicense">
+        <div class="modal-frame">
+            <h3 targetTitle></h3>
+            <p>Tem certeza de que pretende executar esta operação?</p>
+            <div class="master-btn-right flex">
+                <span class="hideTarget" target="xModalDownloadLicense">NÃO</span>
+                <span class="flex v-ct" downloadLicense>
+					SIM
+					<svg class="spinner" viewBox="0 0 50 50">
+						<circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
+					</svg>
+				</span>
+            </div>
+        </div>
+    </div>
+    <div id="xModalLinkUnlinkCluster" class="x-mobdal flex v-ct h-ct" target="xModalLinkUnlinkCluster">
+        <div class="modal-frame">
+            <h3 targetTitle></h3>
+            <p>Tem certeza de que pretende executar esta operação?</p>
+            <div class="master-btn-right flex">
+                <span class="hideTarget" target="xModalLinkUnlinkCluster">NÃO</span>
+                <span class="flex v-ct" clusterReload>
+					SIM
+					<svg class="spinner" viewBox="0 0 50 50">
+						<circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
+					</svg>
+				</span>
+            </div>
+        </div>
+    </div>
+
+    <div id="xModalAboutCluster" class="x-mobdal flex v-ct h-ct" target="xModalAboutCluster">
+        <div class="modal-frame">
+            <h3>Sobre o cluster</h3>
+            <div class="inn xform">
+                <div class="xinput w50" >
+                    <input type="text" id="cluster_details_identifier" readonly _noObrigatory="true">
+                    <label>Identificador</label>
+                </div>
+                <div class="xinput w50">
+                    <input type="text" id="cluster_details_name" readonly _noObrigatory="true">
+                    <label>Nome</label>
+                </div>
+                <div class="xinput w50">
+                    <input type="text" id="cluster_amount_life_details" readonly _noObrigatory="true">
+                    <label for="cluster_amount_life_details">Quantidade de validade</label>
+                </div>
+                <div class="xinput w50">
+                    <input type="text" id="cluster_period_details" readonly _noObrigatory="true">
+                    <label for="cluster_period_details">Período de validade</label>
+                </div>
+                <div class="xinput w50">
+                    <input type="text" id="cluster_details_path" readonly _noObrigatory="true">
+                    <label>Caminho</label>
+                </div>
+                <div class="xinput w50">
+                    <input type="text" id="cluster_details_address" readonly _noObrigatory="true">
+                    <label>Endereço</label>
+                </div>
+                <div class="xinput w50">
+                    <input type="text" id="cluster_details_port" readonly _noObrigatory="true">
+                    <label>Porta</label>
+                </div>
+                <div class="xinput w50">
+                    <input type="text" id="cluster_details_sequence" readonly _noObrigatory="true">
+                    <label>Sequência</label>
+                </div>
+                <div class="xinput w50">
+                    <input type="text" id="cluster_details_version" readonly _noObrigatory="true">
+                    <label>Versão</label>
+                </div>
+            </div>
+            <div class="master-btn-right flex">
+                <span class="hideTarget" target="xModalAboutCluster">Fechar</span>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/js/admin/cluster.js"></script>
+<script src="../assets/js/admin/branch.js"></script>
+<script src="../assets/js/admin/clipboard.min.js"></script>
+<script src="../assets/js/admin/clipboard.js"></script>

@@ -1,0 +1,24 @@
+.__included__.fatura .XM-listProformas .modal-frame {
+  width: 100%;
+  max-width: 1280px;
+}
+.__included__.fatura .XM-listProformas .modal-frame .masterSearch {
+  position: relative;
+  margin-bottom: 2rem;
+}
+.__included__.fatura .XM-listProformas .modal-frame .masterSearch input {
+  max-width: 220px;
+  height: 40px;
+  border-radius: 6px;
+  background: #ddeeff;
+  border: 1px solid #b9dcff;
+  text-indent: 2.5rem;
+  font-size: 0.85rem;
+}
+.__included__.fatura .XM-listProformas .modal-frame .masterSearch svg {
+  fill: #1A73E8;
+  width: 16px;
+  position: absolute;
+  left: 12px;
+  top: 12px;
+}

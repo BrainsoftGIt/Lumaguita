@@ -1,0 +1,11 @@
+{
+  "name": "nw-splash-example",
+  "version": "0.1.0",
+  "scripts": {
+    "start": "nw ."
+  },
+  "dependencies": {
+    "nw-splasher": "^1.0.0"
+  },
+  "devDependencies": {}
+}

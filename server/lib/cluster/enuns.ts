@@ -1,0 +1,50 @@
+export enum ClusterMessage {
+    REJECTED_CLUSTER_CONNECTION = "ClusterMessage.REJECTED_CLUSTER_CONNECTION",
+    REJECTED_MASTER_STARTING = "ClusterMessage.REJECTED_MASTER_STARTING...",
+}
+export enum ClusterType {
+    LOCAL =1,
+    MASTER =2,
+    REMOTE =3,
+    CHILD = 4
+}
+
+export enum ClusterTreePosition{
+    TRUNC = 1,
+    BRANCH =2
+}
+
+export enum ClusterEvent{
+
+    //JUMPS EVENTS
+    JUMP = "@JUMP",
+    JUMP_PROPAGATION = "ClusterEvent.JUMP_PROPAGATION",
+
+    //ANALISE EVENTS
+    PING = "@PING",
+    PONG = "@PONG",
+    MESSAGE = "@MESSAGE",
+    BROADCAST = "@BROADCAST",
+
+    //DISCOVER SERVER EVENTS
+    SERVER_CONNECT = "ClusterEvent.SERVER_CONNECT",
+    SERVER_CONNECT_ACCEPT = "ClusterEvent.SERVER_CONNECT_ACCEPT",
+    SERVER_CONNECT_REJECT = "ClusterEvent.SERVER_CONNECT_REJECT",
+
+    //CONFIGS
+    CONFIGS = "ClusterEvent.CONFIGS",
+    CONFIGS_SETS = "ClusterEvent.CONFIGS_SETS",
+
+    //REVISIONS EVENS
+    REVISION = "ClusterEvent.REVISION",
+    REVISION_REQUEST = "ClusterEvent.REVISION_REQUEST",
+    REVISION_SEND = "ClusterEvent.REVISION_SEND",
+    REVISION_RECEIVED = "ClusterEvent.REVISION_RECEIVED",
+
+    RESOURCE_REQ = "ClusterEvent.RESOURCE_REQ",
+    RESOURCE_HEAD = "ClusterEvent.RESOURCE_HEAD",
+    RESOURCE_404 = "ClusterEvent.RESOURCE_404",
+    RESOURCE_CHUNK = "ClusterEvent.RESOURCE_CHUNK",
+    RESOURCE_AVAILABLE = "ClusterEvent.RESOURCE_AVAILABLE",
+}
+

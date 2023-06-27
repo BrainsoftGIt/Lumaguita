@@ -1,0 +1,6 @@
+{
+  "watch": [ "server/" ],
+  "ext": "js",
+  "ignore": [ "./*.spec.js" ],
+  "exec": "node server --port 7741 --dbName maguita_cluster_01_simula_main start --mode test"
+}

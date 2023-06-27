@@ -1,0 +1,76 @@
+<link rel="stylesheet" href="../assets/css/admin/settings.css">
+<div class="__included__ settings" id="sys_config">
+    <div class="_head flex h-sb v-ct">
+        <div class="inLeft">
+            <h1>Fornecedores</h1>
+        </div>
+        <div class="inRight">
+        <button class="xbtn showTarget" target="xModalProvider" tTitle="Adicionar Fornecedor" novo_fornecedor>Adicionar</button>
+        </div>
+    </div>
+    <div class="_body">
+        <div class="comfort flex">
+            <div class="sett1 grow-1">
+                <div class="group postos">
+                    <div class="list-postos _listTbl" id="listProviders">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="xModalRemoveProvider" class="x-mobdal XM-resetColabPass flex v-ct h-ct" target="xModalRemoveProvider">
+        <div class="modal-frame">
+            <h3 targetTitle></h3>
+            <p>Tem certeza de que pretende executar esta operação?</p>
+            <div class="master-btn-right flex">
+                <span class="hideTarget" target="xModalRemoveProvider">NÃO</span>
+                <span class="flex v-ct" removeProvider>
+					SIM
+					<svg class="spinner" viewBox="0 0 50 50">
+						<circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
+					</svg>
+				</span>
+            </div>
+        </div>
+    </div>
+
+    <div id="xModalProvider" class="x-mobdal flex v-ct h-ct hideTarget" target="xModalProvider">
+        <div class="modal-frame j-stp">
+            <h3 targetTitle></h3>
+            <div class="xform">
+                <div class="xinput grow-1 w100">
+                    <input type="text" id="fornecedor_nome">
+                    <label for="fornecedor_nome">Nome</label>
+                </div>
+                <div class="xinput grow-1 w100">
+                    <input type="text" class="integer _noObrigatory" id="fornecedor_nif" maxlength="9"
+                           _noObrigatory="true">
+                    <label for="fornecedor_nif">NIF</label>
+                </div>
+                <div class="xinput grow-1 w100">
+                    <input type="text" class="integer _noObrigatory" id="fornecedor_telefone" _noObrigatory="true">
+                    <label for="fornecedor_telefone">Telefone</label>
+                </div>
+                <div class="xinput grow-1 w100">
+                    <input type="text" id="fornecedor_email" _noObrigatory="true" class="_noObrigatory">
+                    <label for="fornecedor_email">Email</label>
+                </div>
+                <div class="xinput grow-1 w100">
+                    <input type="text" id="fornecedor_endereco" class="_noObrigatory" _noObrigatory="true">
+                    <label for="fornecedor_endereco">Endereço</label>
+                </div>
+            </div>
+            <div class="master-btn-right flex">
+                <span class="hideTarget" target="xModalProvider">CANCELAR</span>
+                <span class="flex v-ct" bt_fornecedor>
+                    CONCLUIR
+                    <svg class="spinner" viewBox="0 0 50 50">
+                        <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
+                    </svg>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/js/admin/provider.js"></script>

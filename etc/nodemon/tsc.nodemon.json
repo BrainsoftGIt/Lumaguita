@@ -1,0 +1,6 @@
+{
+  "watch": [ "./build", "./server" ],
+  "ext": "ts",
+  "ignore": [ "./*.spec.ts" ],
+  "exec": "tsc"
+}

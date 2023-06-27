@@ -1,0 +1,388 @@
+@import "vars";
+.__included__.utentes {
+    ._head {
+        .xbtn {
+            margin-left: 2rem;
+        }
+    }
+    ._body {
+        overflow: hidden;
+    }
+    .tabunt {
+        margin-top: 1rem;
+        height: calc(100vh - 100px);
+    }
+    .listUtentes {
+        .xSwitch {
+            transform: scale(0.7);
+            margin-top: -4px;
+        }
+        svg {
+            width: 20px;
+            fill: $blue;
+        }
+    }
+}
+
+.xFrame.ficha {
+    &:after {
+        content: "";
+        position: absolute;
+        width: 250px;
+        height: 60px;
+        top: -70px;
+        right: 220px;
+        background-color: $background;
+    }
+    .topHead {
+        // position: relative;
+        h2 span {
+            color: #000;
+            font-size: 0.94rem;
+        }
+        .inR {
+            > * {
+                margin-left: 2rem;
+            }
+            .masterSearch {
+                position: relative;
+                input {
+                    max-width: 220px;
+                    height: 40px;
+                    border-radius: 6px;
+                    background: darken($background, 5%);
+                    border: 1px solid darken($background, 12%);
+                    text-indent: 2.5rem;
+                    font-size: 0.85rem;
+                }
+                svg {
+                    fill: $blue;
+                    width: 16px;
+                    position: absolute;
+                    left: 12px;
+                    top: 12px;
+                }
+            }
+        }
+        button {
+            background-color: lighten($blue, 44%);
+            padding: 12px 1rem 10px 1rem;
+            border: none;
+            color: $blue;
+            text-transform: uppercase;
+            font-weight: 600;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 0.84rem;
+        }
+    }
+    .bottomBody {
+        h3 {
+            font-size: 0.94rem;
+            margin-bottom: 2rem;
+            color: $fkblue;
+        }
+        .steps {
+            .stepper {
+                margin-top: 2rem;
+                margin-left: 6px;
+                ul {
+                    position: relative;
+                    &:before {
+                        content: "";
+                        height: 100%;
+                        position: absolute;
+                        border-left: 3px solid lighten(orangered, 35%);
+                        left: 0;
+                        top: 5px;
+                    }
+                    li {
+                        position: relative;
+                        padding-left: 3rem;
+                        margin-top: 1.4rem;
+                        &.closed {
+                            margin-top: 0;
+                            transition: all 0.25s;
+                            &:before {
+                                background-color: orangered;
+                            }
+                            + li {
+                                margin-top: 10px;
+                                // margin-top: 2rem;
+                            }
+                            ul {
+                                max-height: 0;
+                                padding-top: 0;
+                                padding-bottom: 0;
+                                overflow: hidden;
+                                margin-bottom: 0;
+                            }
+                        }
+                        &:before {
+                            content: "";
+                            width: 7px;
+                            height: 7px;
+                            border-radius: 50%;
+                            border: 3px solid orangered;
+                            position: absolute;
+                            left: -5px;
+                            top: 4px;
+                            background-color: #fff;
+                        }
+                        &:last-child {
+                            margin-bottom: 2rem;
+                            &:after {
+                                content: "";
+                                position: absolute;
+                                height: calc(100% - 12px);
+                                bottom: -5px;
+                                left: 0;
+                                border-left: 3px solid $background;
+                            }
+                            ul:after {
+                                content: none;
+                            }
+                        }
+                        b,
+                        h4,
+                        p {
+                            font-size: 0.88rem;
+                        }
+                        h4 {
+                            width: 100%;
+                            cursor: pointer;
+                            color: orangered;
+                            display: inline-block;
+                            // margin-bottom: 8px;
+                            line-height: 1.7;
+                            margin-left: -6px;
+                        }
+                        ul {
+                            // max-height: 1000px;
+                            // overflow: auto;
+                            &:before {
+                                content: none;
+                            }
+                            li {
+                                margin-top: 0;
+                                padding: 1rem;
+                                &,
+                                * {
+                                    transition: all 0.24s;
+                                }
+                                &:hover {
+                                    background: #fff;
+                                    padding-left: 1.7rem;
+                                    box-shadow: 0 15px 35px -20px darken($background, 15%);
+                                    transform: scale(1.03);
+                                    &:before {
+                                        left: 10px;
+                                        background-color: darkorange;
+                                        border-color: darkorange;
+                                        transition: all 0.3s;
+                                    }
+                                    b {
+                                        color: darkorange;
+                                    }
+                                }
+                                &:before {
+                                    top: 1.2rem;
+                                    width: 1px;
+                                    height: 1px;
+                                    background-color: #555;
+                                    border-color: #555;
+                                }
+                                &:last-child {
+                                    //    margin-top: 2rem;
+                                    &:after {
+                                        content: none;
+                                    }
+                                }
+                                b {
+                                    font-size: 0.84rem;
+                                    line-height: 1.4;
+                                    color: #000;
+                                    display: block;
+                                    transform: translateY(-1px);
+                                }
+                                p {
+                                    line-height: 1.5;
+                                    font-size: 0.8rem;
+                                    opacity: 0.8;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        .premanents {
+            width: 100%;
+            max-width: 480px;
+            .eddit {
+                color: $blue;
+                font-weight: 500;
+                font-size: 0.9rem;
+                margin-bottom: 2rem;
+                svg {
+                    margin-right: 5px;
+                    width: 17px;
+                    fill: $blue;
+                }
+            }
+            .permadata {
+                background: #fff;
+                padding: 2.5rem;
+                border-radius: 5px;
+                box-shadow: 0 15px 35px -10px darken($background, 15%);
+                * {
+                    font-size: 0.85rem;
+                }
+                ul {
+                    &.mastul {
+                        > li {
+                            padding-bottom: 8px;
+                            margin-bottom: 1rem;
+                            border-bottom: 1px solid #ccc;
+                            &:last-child {
+                                border-bottom: none;
+                                margin-bottom: 0;
+                            }
+                        }
+                    }
+                    li {
+                        b {
+                            opacity: 0.8;
+                        }
+                        line-height: 2.4;
+                        width: 100%;
+                        li {
+                            list-style: disc;
+                            margin-left: 1rem;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+.XM-crutente {
+    .modal-frame {
+        max-width: 1024px;
+    }
+    b {
+        color: $fkblue;
+        &.bResp {
+            margin-bottom: 1.5rem;
+        }
+    }
+    .responsacli {
+        margin-right: 5%;
+        padding: 2rem 4%;
+        // border-right: 1px #ddd solid;
+        background: $background;
+
+        .xcheck {
+            margin-top: 1rem;
+            b {
+                color: #222;
+                font-size: 0.9rem;
+                display: block;
+                margin-bottom: 10px;
+            }
+        }
+        hr {
+            width: 100%;
+            border: none;
+            border-bottom: 1px solid darken($background, 18%);
+            height: 0;
+            margin: 2rem 0;
+        }
+    }
+    .flb {
+        margin-bottom: 2rem;
+    }
+    .age {
+        white-space: nowrap;
+        margin-left: 1rem;
+        font-weight: 600;
+        font-size: 0.9rem;
+    }
+}
+
+.XM-crustomer {
+    .modal-frame {
+        max-width: 680px;
+    }
+}
+.XM-consulta {
+    .septs {
+        > div {
+            margin-top: 3rem;
+            padding-top: 1rem;
+            min-height: 30vh;
+
+            &:nth-child(2) {
+                padding: 1rem 2rem 0;
+                border: 1px solid darken($background, 5%);
+                margin-right: 2rem;
+                margin-left: 2rem;
+                background: $background;
+            }
+            .hhd {
+                margin-bottom: 1rem;
+                .rt-menus {
+                    margin-left: 2rem;
+                    .xdropdown {
+                        background-color: darken($background, 5%);
+                        border: 1px darken($background, 10%) solid;
+                        &:hover {
+                            background-color: $blue;
+                            svg {
+                                fill: #fff;
+                            }
+                        }
+                        svg {
+                            fill: $blue;
+                            width: 24px;
+                        }
+                    }
+                    .o-opts {
+                        ul {
+                            li {
+                                padding: 0 1rem;
+                                &:hover {
+                                    span:before {
+                                        color: $blue;
+                                    }
+                                }
+                                span {
+                                    font-size: 0.9rem;
+                                    width: 10px;
+                                    text-align: center;
+                                    &.add:before,
+                                    &.remove:before {
+                                        font-weight: 400;
+                                        // color: $blue;
+                                    }
+                                    &.add:before {
+                                        content: "+";
+                                        font-size: 1.4rem;
+                                        line-height: 1;
+                                    }
+                                    &.remove:before {
+                                        content: "-";
+                                        font-size: 2rem;
+                                        line-height: 0;
+                                        margin-left: 2px;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

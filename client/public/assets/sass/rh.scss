@@ -1,0 +1,173 @@
+@import "./pattern/variable";
+.master-page-include.rhs,
+.master-page-include.tables{
+	.in--top{
+		padding-top: 10px;
+		padding-bottom: 14px;
+	}
+	.list-rh,
+	.list-tables{
+		overflow: auto;
+		padding: 1rem ;
+		align-content: flex-start;
+		.ffather{
+			min-width: 300px;
+			max-width: 360px;
+			flex-grow: 1;
+			padding: .4rem;
+			section{
+				max-width: 100%;
+				background: #FFF;
+				padding: 1rem;
+				position: relative;
+				margin-bottom: .5rem;
+				box-shadow: 0 1px 3px rgba(100, 100, 100, 0.12), 0 1px 2px rgba(100, 100, 100, 0.24);
+				p{
+					margin: 1rem 0;
+				}
+				.lever{
+					margin: 0;
+				}
+				.img-container{
+					width: 35px;
+					height: 35px;
+				}
+				.ctrls{
+					position: absolute;
+					right: 1rem;
+					top: 1rem;
+					i{
+						width: 30px;
+						height: 30px;
+						line-height: 30px;
+						text-align: center;
+						border-radius: 50%;
+						color: $primary-color;
+						border: 1px solid #f2f2f2;
+						cursor: pointer;
+						background: #eee;
+						opacity: 0;
+						margin-left: 5px;
+						&:hover{
+							background: $primary-color;
+							color: #FFF;
+						}
+					}
+				}
+				&:hover .ctrls i{
+					opacity: 1;
+				}
+			}
+		}
+	}
+	.xfr-m-new-colaborator{
+		.access-set{
+			margin: 2rem 0 1em;
+			color: $primary-color;
+			i{
+				margin-right: 5px;
+			}
+		}
+		div.last{
+			margin-top: 2.4rem;
+		}
+		.btn{
+			margin-top: 1rem;
+		}
+	}
+	.xm-set-menu-access{
+		.x-container{
+			width: 45%;
+			.done{
+				margin-top: 1rem;
+			}
+		}
+	}
+	.xm-create-link-access{
+		.x-container{
+			min-width: 360px;
+		}
+		p.user-name{
+			text-align: center;
+			font-size: 1.1rem;
+		}
+		.link{
+			border-radius: 2px;
+			max-height: 0;
+			margin: 0;
+			overflow: hidden;
+			line-height: 1.5rem;
+			max-width: 360px;
+				max-height: 200px;
+				margin: 2rem 0 3rem;
+
+			span{
+				word-break: break-all;
+			}
+			button{
+				color: $primary-color-dark;
+				margin-left: 10px;
+				border: none;
+				border-left: 1px #eee solid;
+				background: transparent;
+				font-size: 1.3rem;
+
+			}
+		}
+	}
+}
+
+
+.xm-set-user-permission{
+	.set-access{
+		margin-bottom: 2rem;
+		> div{
+			min-width: 220px;
+			ul{
+				margin-top: 1rem;
+			}
+		}
+		.menus{
+			margin-right: 2rem;
+			padding-right: 2rem;
+			border-right: 1px #ddd solid;
+			ul{
+				li{
+					position: relative;
+
+					&.active, &.selected{
+						font-weight: 500;
+						padding-left: 1rem;
+						&:before{
+							content: "";
+							position: absolute;
+							width: 6px;
+							height: 6px;
+							border-radius: 50%;
+							background: $primary-color;
+							left: 0;
+							top: calc(50% - 3px);
+
+						}
+					}
+					&.active{
+						color: $primary-color;
+					}
+					&.selected{
+						color: $green-color;
+					}
+				}
+			}
+		}
+		.funcs{
+			ul{
+				li{
+					display: none;
+					&.show{
+						display: block;
+					}
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,72 @@
+.prima {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    flex-wrap: wrap;
+    background-color: #f7f8fe;
+    header{
+        width: 100%;
+        height: 60px;
+        line-height: 60px;
+        background: #FFF;
+        color: #FFF;
+        padding: 0 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid darken(#f7f8fe, 5%);
+        b{
+            color: #000;
+        }
+       
+        a{
+            border: 2px lighten(#320096, 10%) solid;
+            color: lighten(#320096, 10%);
+            font-weight: 500;
+            height: 42px;
+            line-height: 40px;
+            padding: 0 20px;
+            font-size: 0.9rem;
+        }
+    }
+    main{
+        width: 100%;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        *{
+            text-align: center;
+        }
+        h1{
+            font-size: 75px;
+            font-weight: 300;
+            color: lighten(#320096, 10%);
+        }
+        p{
+            max-width: 550px;
+            line-height: 2;
+        }
+        a{
+            display: block;
+            background-color: lighten(#320096, 10%);
+            color: #FFF;
+            margin: auto;
+            line-height: 50px;
+            margin-top: 60px;
+            max-width: 220px;
+            border-radius: 3px;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.94rem;
+        }
+    }
+    footer{
+        text-align: center;
+        padding: 1.5rem 1rem;
+        font-size: 0.85rem;
+        opacity: .7;
+    }
+ 
+}

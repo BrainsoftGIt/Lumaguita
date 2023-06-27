@@ -1,0 +1,38 @@
+.salesOfDay .head .period .ppriodd svg {
+    -webkit-transform: rotate(-90deg);
+    -ms-transform: rotate(-90deg);
+    transform: rotate(-90deg);
+    margin-left: 8px;
+    width: 12px;
+    -ms-flex-negative: 0;
+    flex-shrink: 0;
+}
+.salesOfDay .inBottom .x-table {
+    height: 100%;
+}
+.salesOfDay .inBottom .x-table span span {
+    font-size: 0.95rem;
+    margin-left: 8px;
+    color: #1A73E8;
+    font-weight: 500;
+}
+.salesOfDay .inBottom .x-table i {
+    color: #1A73E8;
+}
+.salesOfDay .head .period .ppriodd span {
+    font-size: 1.1rem;
+}
+.salesOfDay .head .period .ppriodd {
+    width: auto;
+}
+.salesOfDay .head .period li {
+    width: 100% !important;
+}
+.salesOfDay .head .period .btn {
+    font-weight: 500;
+    margin-left: 2rem;
+}
+.salesOfDay .head {
+    position: relative;
+    z-index: 10;
+}

@@ -1,0 +1,150 @@
+{
+  //language=file-reference
+  dist: "../dists/current",
+  //language=file-reference
+  oneShot: [
+    "db.sql.one.sql",
+    "cluster.sql.one.sql",
+    "admin.cliente.sql.one.sql",
+    "admin.artigo.sql.one.before.sql",
+    "admin.artigo.sql.one.after.sql",
+    "admin.serie.sql.one.before.sql",
+    "admin.deposito.sql.one.before.sql",
+    "admin.conta.sql.one.before.sql",
+    "admin.guia.sql.one.before.sql",
+    "admin.entrada.sql.one.before.sql",
+    "admin.fornecedor.sql.one.before.sql",
+    "admin.entrada.sql.one.before.002.sql",
+    "admin.entrada.sql.one.before.003.sql",
+    "admin.serie.sql.one.before.002.sql",
+    "pos.venda.sql.one.before.sql",
+    "admin.transferencia.sql.one.berore.sql",
+    "admin.entrada.sql.one.before.004.sql",
+    "cluster.pull.sql.one.before.sql",
+    "admin.espaco.sql.one.after.sql",
+    "admin.guia.sql.one.before.0001.sql",
+    "admin.posto.sql.before.sql",
+    "admin.entrada.sql.one.before.005.sql",
+    "cluster.sql.one.before.001.sql",
+    "cluster.sql.one.before.002.sql",
+    "cluster.sql.one.before.003.sql",
+    "cluster.break.sql.one.sql",
+    //    "admin.saida.sql.one.before.sql",
+  ],
+  //language=file-reference
+  order: [
+    "db.sql.one.sql",
+
+    //Cluster
+    "cluster.sql.one.before.001.sql",
+    "cluster.sql.one.before.002.sql",
+    "cluster.sql.one.before.003.sql",
+    "cluster.sql",
+    "cluster.sql.one.sql",
+
+    "cluster.collector.sql",
+
+    //Cluster Break
+    "cluster.break.sql.one.sql",
+
+    //Branch
+    "branch.sql",
+
+
+    //Auth
+    "auth.sql",
+
+    //Client
+    "admin.cliente.sql",
+    "admin.cliente.sql.one.sql",
+
+    //Artigo
+    "admin.artigo.sql.one.after.sql",
+    "admin.artigo.sql.one.before.sql",
+    "admin.artigo.sql",
+
+    //Serie
+    "admin.serie.sql.one.before.sql",
+    "admin.serie.sql.one.before.002.sql",
+    "admin.serie.sql",
+
+    //Deposito
+    "admin.deposito.sql.one.before.sql",
+    "admin.deposito.sql",
+
+    //
+    "admin.conta.sql.one.before.sql",
+    "admin.conta.sql",
+
+    //Guia
+    "admin.guia.sql.one.before.sql",
+    "admin.guia.sql.one.before.0001.sql",
+    "admin.guia.sql",
+
+    //Entrada
+    "admin.entrada.sql.one.before.sql",
+    "admin.entrada.sql.one.before.002.sql",
+    "admin.entrada.sql.one.before.003.sql",
+    "admin.entrada.sql.one.before.004.sql",
+    "admin.entrada.sql.one.before.005.sql",
+    "admin.entrada.sql",
+
+
+    //Saida
+//    "admin.saida.sql.one.before.sql",
+//    "admin.saida.sql",
+
+    //Posto
+    "admin.posto.sql.before.sql",
+    "admin.posto.sql",
+
+    //Espaco
+    "admin.espaco.sql",
+    "admin.espaco.sql.one.after.sql",
+
+    //Fornecedor
+    "admin.fornecedor.sql.one.before.sql",
+    "admin.fornecedor.sql",
+
+    //ArtigoExtras
+    "admin.artigo.code.sql",
+
+
+    //Caixa
+    'pos.caixa.sql',
+
+    //Venda
+    "pos.venda.sql.one.before.sql",
+
+    "pos.venda.sql",
+
+    //Lote
+    "admin.lote.sql",
+
+    //Transferencia
+    "admin.transferencia.sql.one.berore.sql",
+    "admin.transferencia.sql",
+
+    //Branchs
+    "admin.branch.sql",
+
+
+    //Reports
+    "../../../patch/revisions/report/core-engine/report.engine.sql.ts",
+    "reports/sources.sql",
+    "../../../patch/revisions/report/sources/balanco.sorce.report.sql.ts",
+    "../../../patch/revisions/report/sources/fatura.source.report.sql.ts",
+    "../../../patch/revisions/report/sources/fluxo.source.report.sql.ts",
+    "../../../patch/revisions/report/sources/venda.source.report.sql.ts",
+
+    //Cluster Pull
+    "cluster.pull.sql.one.before.sql",
+    "cluster.pull.sql",
+
+    //Cluster push
+    "cluster.push.sql",
+
+    "cluster.share.sql",
+    "zbranch.map.sql"
+  ]
+}

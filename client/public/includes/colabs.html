@@ -1,0 +1,199 @@
+<link rel="stylesheet" href="../assets/css/admin/colabs.css">
+<div class="__included__ colabs">
+    <div class="_head flex h-sb v-ct">
+        <div class="inLeft">
+            <h1>Colaboradores</h1>
+        </div>
+        <div class="inRight">
+            <button class="xbtn"  novoColaborador>Adicionar</button>
+        </div>
+    </div>
+    <div class="_body">
+        <div class="list-colaborators">
+           <!-- <section class="showTarget" target="xModalAboutColaborator" tTitle="Dados do Colaborador">
+                <div class="flex">
+                    <div class="img-container noPhoto userPhoto round" emblem="A"></div>
+                    <div class="grow">
+                        <b>Name And Surname</b>
+                        <p>email@domain.host</p>
+                        <p class="nif">NIF: 1091254798</p>
+                    </div>
+                </div>
+                <div class="sep j-stp flex v-ct h-sb">
+                    <small>Em: 12-12-2020</small>
+                    <div class="flex v-ct">
+                        <span tooltip="Redefinir senha" flow="up" class="edit flex v-ct h-ct showTarget"
+                            target="xModalResetColabPass">
+                            <svg x="0px" y="0px" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;"
+                                xml:space="preserve">
+                                <g>
+                                    <circle cx="277.937" cy="346" r="20" />
+                                    <path
+                                        d="M344.937,471.999h-249c-22.056,0-40-17.944-40-40v-164c0-22.056,17.944-40,40-40h288c4.554,0,8.167,0.402,11.047,1.227
+                                                c10.618,3.042,21.692-3.1,24.735-13.718c3.042-10.618-3.1-21.692-13.718-24.735c-6.513-1.866-13.73-2.773-22.064-2.773H359.9
+                                                v-70.534C359.9,52.695,306.068,0,239.9,0s-120,52.695-120,117.466V188H95.937c-44.112,0-80,35.888-80,80v164
+                                                c0,44.112,35.888,80,80,80h249c11.046,0,20-8.954,20-20C364.937,480.954,355.983,472,344.937,471.999z M159.9,117.466
+                                                c0-42.715,35.888-77.466,80-77.466s80,34.751,80,77.466V188h-160V117.466z" />
+                                    <circle cx="202.937" cy="346" r="20" />
+                                    <path
+                                        d="M496.046,331.21c-0.438-38.789-32.13-70.21-71.021-70.21C385.863,261,354,292.862,354,332.025c0,11.046,8.954,20,20,20
+                                                c11.046,0,20-8.954,20-20C394,314.918,407.918,301,425.026,301c17.108,0,31.025,13.918,31.025,31.025
+                                                c0,0.182,0.002,0.363,0.007,0.543c-0.206,12.247-7.563,23.211-18.864,28.035c-19.541,8.345-32.168,27.618-32.168,49.101V427
+                                                c0,11.046,8.954,20,20,20c11.046,0,20-8.954,20-20v-17.296c0-5.438,3.092-10.271,7.875-12.313
+                                                c26.227-11.196,43.169-36.855,43.162-65.37C496.063,331.749,496.057,331.479,496.046,331.21z" />
+                                    <circle cx="424.937" cy="492" r="20" />
+                                    <circle cx="127.937" cy="346" r="20" />
+                                </g>
+                            </svg>
+                        </span>
+                        <span tooltip="Editar" flow="up" class="edit flex v-ct h-ct showTarget"
+                            target="xModalCreateColab" tTitle="Editar Colaborador">
+                            <svg version="1.1" xmlns="http://www.w3.org/2000/svg"
+                                xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 348.882 348.882"
+                                style="enable-background:new 0 0 348.882 348.882;" xml:space="preserve">
+                                <g>
+                                    <path
+                                        d="M333.988,11.758l-0.42-0.383C325.538,4.04,315.129,0,304.258,0c-12.187,0-23.888,5.159-32.104,14.153L116.803,184.231
+                                        c-1.416,1.55-2.49,3.379-3.154,5.37l-18.267,54.762c-2.112,6.331-1.052,13.333,2.835,18.729c3.918,5.438,10.23,8.685,16.886,8.685
+                                        c0,0,0.001,0,0.001,0c2.879,0,5.693-0.592,8.362-1.76l52.89-23.138c1.923-0.841,3.648-2.076,5.063-3.626L336.771,73.176
+                                        C352.937,55.479,351.69,27.929,333.988,11.758z M130.381,234.247l10.719-32.134l0.904-0.99l20.316,18.556l-0.904,0.99
+                                        L130.381,234.247z M314.621,52.943L182.553,197.53l-20.316-18.556L294.305,34.386c2.583-2.828,6.118-4.386,9.954-4.386
+                                        c3.365,0,6.588,1.252,9.082,3.53l0.419,0.383C319.244,38.922,319.63,47.459,314.621,52.943z" />
+                                    <path
+                                        d="M303.85,138.388c-8.284,0-15,6.716-15,15v127.347c0,21.034-17.113,38.147-38.147,38.147H68.904
+                                        c-21.035,0-38.147-17.113-38.147-38.147V100.413c0-21.034,17.113-38.147,38.147-38.147h131.587c8.284,0,15-6.716,15-15
+                                        s-6.716-15-15-15H68.904c-37.577,0-68.147,30.571-68.147,68.147v180.321c0,37.576,30.571,68.147,68.147,68.147h181.798
+                                        c37.576,0,68.147-30.571,68.147-68.147V153.388C318.85,145.104,312.134,138.388,303.85,138.388z" />
+                                </g>
+                            </svg>
+                        </span>
+                        <span class="switch" tooltip="Ativar/Desativar" flow="up">
+                            <label class="xSwitch">
+                                <input type="checkbox" checked>
+                                <span class="slider round"></span>
+                            </label>
+                        </span>
+                    </div>
+                </div>
+            </section>-->
+        </div>
+
+        <!-- MODALS -->
+
+        <div id="xModalCreateColab" class="x-mobdal XM-createColab flex v-ct h-ct hideTarget"
+            target="xModalCreateColab">
+            <div class="modal-frame j-stp">
+                <h3 targetTitle>Adicionar Colaborador</h3>
+                <div class="flex">
+                    <div class="inputs flex wrap h-sb xform">
+                        <div class="xinput w100 first">
+                            <input type="file" id="colaborador_foto" _noObrigatory="true" accept=".png, .jpg, .jpeg">
+                            <label lab="FOTO" for="colaborador_foto">.jpg, .png, .jpeg</label>
+                        </div>
+                        <div class="xinput w33">
+                            <input type="text" placeholder="Nome" colaborador_nome>
+                            <label>Nome</label>
+                        </div>
+                        <div class="xinput grow-1 ml1">
+                            <input type="text" placeholder="Apelido" colaborador_apelido>
+                            <label>Apelido</label>
+                        </div>
+                        <div class="xinput w100">
+                            <input type="text" placeholder="NIF" colaborador_nif class="integer _noObrigatory"
+                                maxlength="9" _noObrigatory="true">
+                            <label>NIF</label>
+                        </div>
+                        <div class="xinput w100">
+                            <input data-inputmask-alias="dd-mm-yyyy" data-val="true" type="text"
+                                placeholder="Data de Nascimento" colaborador_datanascimento>
+                            <label>Data de nascimento</label>
+                        </div>
+                        <div class="xselect flutuate w100">
+                            <input type="text" readonly placeholder="Sexo" id="sexoDesc">
+                            <label>Sexo</label>
+                            <div class="fakearrow flex"><span></span><span></span></div>
+                            <ul colaborador_sexo>
+                                <li id="1">Masculino</li>
+                                <li id="2">Feminino</li>
+                            </ul>
+                        </div>
+                        <div class="xinput w100 last">
+                            <input type="text" placeholder="Email" colaborador_email>
+                            <label>Email</label>
+                        </div>
+                        <p>Selecione os armazéns nos quais este colaborador poderá trabalhar.</p>
+                        <div class="xcheck multiple">
+                            <ul colaborador_armazens>
+                                <li class="stgl">Funcionality 1</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="control-access w100" allMenus>
+                        <b>Definições de acesso</b>
+                        <!--<div class="xcheck multiple">
+                            <div class="tit flex">
+                                <span class="j-stp fkcheck parcial"></span>
+                                <span>Menu name</span>
+                            </div>
+                        </div>
+                        <div class="xcheck multiple">
+                            <div class="tit flex">
+                                <span class="j-stp fkcheck parcial"></span>
+                                <span>Menu name</span>
+                            </div>
+                            <ul>
+                                <li class="">Funcionality 1</li>
+                                <li class="">Funcionality 1</li>
+                                <li class="">Funcionality 1</li>
+                            </ul>
+                        </div>-->
+                    </div>
+                </div>
+
+                <div class="master-btn-right flex">
+                    <span class="hideTarget" target="xModalCreateColab">Cancelar</span>
+                    <span bt_colaborador class="flex v-ct">
+                        CONCLUIR
+                        <svg class="spinner" viewBox="0 0 50 50">
+                            <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
+                        </svg>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div id="xModalResetColabPass" class="x-mobdal XM-resetColabPass flex v-ct h-ct" target="xModalResetColabPass">
+            <div class="modal-frame">
+                <h3>Redefinir palavra-passe e PIN</h3>
+                <p>Ao redefinir a palavra-passe e o PIN do colaborador, este será obrigado a alterá-los da próxima vez
+                    que iniciar a sessão.</p>
+                <p class="sure">Pretende continuar?</p>
+                <div class="master-btn-right flex">
+                    <span class="hideTarget" target="xModalResetColabPass">NÃO</span>
+                    <span class="flex v-ct" redefinir_senha>
+                        SIM
+                        <svg class="spinner" viewBox="0 0 50 50">
+                            <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
+                        </svg>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div id="xModalChangeColStatus" class="x-mobdal XM-resetColabPass flex v-ct h-ct"
+            target="xModalChangeColStatus">
+            <div class="modal-frame">
+                <h3 targetTitle></h3>
+                <p>Tem certeza de que pretende executar esta operação?</p>
+                <div class="master-btn-right flex">
+                    <span class="hideTarget" target="xModalChangeColStatus">NÃO</span>
+                    <span class="flex v-ct" changeStatusCol>
+                        SIM
+                        <svg class="spinner" viewBox="0 0 50 50">
+                            <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
+                        </svg>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/js/admin/colaboradores.js"></script>
