@@ -1,6 +1,6 @@
 import {block} from "../../../core/updater";
 
-block( module, { identifier: "iva-serie", flags:[ "@unique" ]} ).sql`
+block( module, { identifier: "iva-structure", flags:[ "@unique" ]} ).sql`
 select map.constant( 'maguita_autorizacao_estado_ativo', 'int2', 1 );
 select map.constant( 'maguita_autorizacao_estado_fechado', 'int2', 0 );
 
@@ -28,7 +28,10 @@ alter table tweeks.serie add constraint fk_serie_to_autorizacao
   foreign key ( serie_autorizacao_uid )
   references tweeks.autorizacao
 ;
+`;
 
+
+block( module, { identifier: "iva-serie-functions", flags:[]}).sql`
 
 create or replace function tweeks.funct_sets_autorizacao(
   args jsonb
@@ -106,4 +109,179 @@ begin
   ));
 end;
 $$;
+
+
+
+
+
+
+
+
+create or replace function tweeks.__get_autorizacao( uuid )
+  returns tweeks.autorizacao
+  immutable
+  strict
+  language sql as $$
+    select * from tweeks.autorizacao where autorizacao_uid = $1;
+$$
+
+
+
+create or replace function tweeks.funct_change_autorizacao_closeyear(
+  args jsonb
+) returns lib.res
+language plpgsql as $$
+declare
+  /**
+    {
+      arg_colaborador_id: UID
+      arg_espaco_auth: UID
+      autorizacao_uid: UID
+    }
+   */
+  arg_colaborador_id uuid not null default args->>'arg_colaborador_id';
+  arg_espaco_auth uuid not null default args->>'arg_espaco_auth';
+  arg_branch_uid uuid default tweeks.__branch_uid( arg_colaborador_id, arg_espaco_auth );
+  _autorizacao tweeks.autorizacao;
+  _const map.constant;
+begin
+  _const := map.constant();
+  _autorizacao := jsonb_populate_record( _autorizacao, args );
+  _autorizacao := tweeks.__get_autorizacao( _autorizacao._branch_uid );
+
+  if _autorizacao.autorizacao_estado != _const.maguita_autorizacao_estado_ativo then
+    return lib.res_false( 'A autorizacao selecionada para fecho já esta encerada!' );
+  end if;
+
+  update tweeks.autorizacao
+    set autorizacao_colaborador_atualizacao = arg_colaborador_id,
+        autorizacao_dataatualizacao = now(),
+        autorizacao_estado = _const.autenticacao_estado_fechado
+    where autorizacao_uid = _autorizacao.autorizacao_uid
+    returning * into _autorizacao
+  ;
+
+  update tweeks.serie
+    set serie_dataatualizacao = now(),
+        serie_colaborador_atualizacao = arg_colaborador_id,
+        serie_estado = _const.maguita_serie_estado_fechado
+    where serie_estado = _const.maguita_serie_estado_ativo
+      and serie_autorizacao_uid = _autorizacao.autorizacao_uid
+  ;
+
+  return lib.res_true( jsonb_build_object(
+    'autorizacao', _autorizacao
+  ));
+end;
+$$;
+
+
+
+create or replace function tweeks.funct_load_autorizacao( args jsonb )
+returns setof jsonb
+language plpgsql as $$
+declare
+  /**
+  {
+    arg_colaborador_id: UID
+    arg_espaco_auth: UID
+  }
+ */
+  arg_colaborador_id uuid not null default args->>'arg_colaborador_id';
+  arg_espaco_auth uuid not null default args->>'arg_espaco_auth';
+  arg_branch_uid uuid default tweeks.__branch_uid( arg_colaborador_id, arg_espaco_auth );
+  _espaco_child uuid[] default rule.espaco_get_childrens_static( arg_espaco_auth );
+
+begin
+  return query
+    with __autorizacao as (
+      select *
+        from tweeks.autorizacao a
+          inner join tweeks.espaco e on a.autorizacao_espaco_uid = e.espaco_id
+        where a._branch_uid = _branch_uid
+        and true in (
+          a.autorizacao_espaco_auth = any( _espaco_child ),
+          a.autorizacao_espaco_uid = any( _espaco_child )
+        )
+    ) select to_jsonb( _a )
+        from __autorizacao _a
+        order by _a.autorizacao_ano desc,
+          _a.autorizacao_dataregistro desc
+  ;
+end;
+$$;
+
+
+create or replace function tweeks.funct_load_serie(args jsonb) returns SETOF jsonb
+  language plpgsql
+as
+$$
+declare
+  /**
+    arg_espaco_auth
+    arg_colaborador_id
+    arg_autorizacao_id
+   */
+  _const map.constant;
+  arg_espaco_auth uuid default args->>'arg_espaco_auth';
+  arg_autorizacao_id uuid default args->>'arg_autorizacao_id';
+  arg_colaborador_id uuid default args->>'arg_colaborador_id';
+  ___branch_uid uuid;
+  _espaco_child uuid[] default rule.espaco_get_childrens_static( arg_espaco_auth );
+begin
+  _const := map.constant();
+  ___branch_uid := tweeks.__branch_uid( null, arg_espaco_auth );
+  return query
+    with
+      __serie as (
+        select _vs.*,
+            e.espaco_id,
+            e.espaco_nome
+          from tweeks.serie _vs
+            inner join tweeks.espaco e on _vs.serie_espaco_id = e.espaco_id
+          where _vs._branch_uid = ___branch_uid
+            and coalesce( _vs.serie_autorizacao_uid ) = coalesce( arg_autorizacao_id, _vs.serie_autorizacao_uid )
+            and true in (
+              _vs.serie_espaco_auth = any( _espaco_child ),
+              _vs.serie_espaco_id = any( _espaco_child )
+            )
+      )
+    select to_jsonb( _s )
+      from __serie _s;
+end;
+$$;
+
+create or replace function tweeks.funct_load_autorizacao_continue(args jsonb) returns SETOF jsonb
+  language plpgsql
+as
+$$
+declare
+  /**
+    arg_espaco_auth
+    arg_espaco_id
+    arg_colaborador_id
+    arg_autorizacao_id
+   */
+  _const map.constant;
+  arg_espaco_auth uuid default args->>'arg_espaco_auth';
+  arg_autorizacao_id uuid default args->>'arg_autorizacao_id';
+  arg_colaborador_id uuid default args->>'arg_colaborador_id';
+  arg_espaco_id uuid default args->>'arg_espaco_id';
+  arg_branch_uid uuid default tweeks.__branch_uid( arg_colaborador_id, arg_espaco_auth );
+  _autorizacao tweeks.autorizacao;
+begin
+  _const := map.constant();
+  select * into _autorizacao
+    from tweeks.autorizacao a
+    where a.autorizacao_estado = _const.autenticacao_estado_fechado
+      and a._branch_uid = arg_branch_uid
+      and a.autorizacao_espaco_uid = arg_espaco_id
+    order by a.autorizacao_ano desc,
+      a.autorizacao_dataregistro desc
+  ;
+
+  return next to_jsonb( _autorizacao );
+end;
+$$;
+
 `;
