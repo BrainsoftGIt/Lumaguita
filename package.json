@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "author": "@brainsoft",
   "description": "",
-  "license": "ISC",
+  "license": "Apache-2.0",
   "main": "client/app/page/launcher.html",
   "window": {
     "icon": "/server/resources/fav/fav.png",
