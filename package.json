@@ -38,7 +38,6 @@
   },
   "dependencies": {
     "@google-cloud/local-auth": "^2.1.0",
-    "@types/ini": "^1.3.31",
     "axios": "^0.21.1",
     "chalk": "^2.4.2",
     "colors": "^1.4.0",
@@ -93,6 +92,7 @@
     "zoo.util": "^1.7.53"
   },
   "devDependencies": {
+    "@types/ini": "^1.3.31",
     "@types/connect-pg-simple": "^4.2.0",
     "@types/detect-port": "^1.3.1",
     "@types/express": "^4.17.13",
