@@ -1,4 +1,3 @@
-import NodePdfPrinter from 'node-pdf-printer'
 import path from "path";
 import fs from "fs";
 import {getFonts, structure, photoResize} from "./estruture-talao";
