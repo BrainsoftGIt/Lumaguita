@@ -32,7 +32,7 @@ alter table tweeks.serie add constraint fk_serie_to_autorizacao
 
 
 block( module, { identifier: "iva-structure-serie_fechoautorizacao", flags:[ "@unique" ]} ).sql`
-  alter table tweeks.serie add if not exists serie_fechoautorizacao boolean default false;
+  alter table tweeks.serie add if not exists serie_fechoautorizacao boolean not null default false;
 `;
 
 
@@ -129,8 +129,7 @@ create or replace function tweeks.__get_autorizacao( uuid )
   strict
   language sql as $$
     select * from tweeks.autorizacao where autorizacao_uid = $1;
-$$
-
+$$;
 
 
 create or replace function tweeks.funct_change_autorizacao_closeyear(
@@ -170,7 +169,8 @@ begin
   update tweeks.serie
     set serie_dataatualizacao = now(),
         serie_colaborador_atualizacao = arg_colaborador_id,
-        serie_estado = _const.maguita_serie_estado_fechado
+        serie_estado = _const.maguita_serie_estado_fechado,
+        serie_fechoautorizacao = true
     where serie_estado = _const.maguita_serie_estado_ativo
       and serie_autorizacao_uid = _autorizacao.autorizacao_uid
   ;
@@ -180,7 +180,6 @@ begin
   ));
 end;
 $$;
-
 
 
 create or replace function tweeks.funct_load_autorizacao( args jsonb )
