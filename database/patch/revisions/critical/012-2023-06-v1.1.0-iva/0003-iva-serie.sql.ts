@@ -251,37 +251,6 @@ begin
 end;
 $$;
 
-create or replace function tweeks.funct_load_autorizacao_continue(args jsonb) returns SETOF jsonb
-  language plpgsql
-as
-$$
-declare
-  /**
-    arg_espaco_auth
-    arg_espaco_id
-    arg_colaborador_id
-    arg_autorizacao_id
-   */
-  _const map.constant;
-  arg_espaco_auth uuid default args->>'arg_espaco_auth';
-  arg_autorizacao_id uuid default args->>'arg_autorizacao_id';
-  arg_colaborador_id uuid default args->>'arg_colaborador_id';
-  arg_espaco_id uuid default args->>'arg_espaco_id';
-  arg_branch_uid uuid default tweeks.__branch_uid( arg_colaborador_id, arg_espaco_auth );
-  _autorizacao tweeks.autorizacao;
-begin
-  _const := map.constant();
-  select * into _autorizacao
-    from tweeks.autorizacao a
-    where a.autorizacao_estado = _const.autenticacao_estado_fechado
-      and a._branch_uid = arg_branch_uid
-      and a.autorizacao_espaco_uid = arg_espaco_id
-    order by a.autorizacao_ano desc,
-      a.autorizacao_dataregistro desc
-  ;
-
-  return next to_jsonb( _autorizacao );
-end;
-$$;
+drop function if exists tweeks.funct_load_autorizacao_continue(args jsonb);
 
 `;
