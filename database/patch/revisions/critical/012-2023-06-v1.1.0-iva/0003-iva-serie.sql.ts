@@ -391,7 +391,7 @@ begin
       _numero_documento := format(
         '%s%s%s%s',
         _tserie.tserie_code, --TYPE
-        lpad( "right"( _serie.serie_numero, _tserie.tserie_numlimit ), _tserie.tserie_numlimit, '0'), --FIXA
+        lpad( "left"( _serie.serie_numero, _tserie.tserie_numlimit-2), _tserie.tserie_numlimit-2, '0'), --FIXA
         to_char( make_date( _autorizacao.autorizacao_ano, 1, 1 ), 'yy' ), --YEAR
         lpad( _serie.serie_sequencia::text, _tserie.tserie_seqlimit::int,  '0' ) --SEQUENCE
       );
