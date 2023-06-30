@@ -31,6 +31,12 @@ alter table tweeks.serie add constraint fk_serie_to_autorizacao
 `;
 
 
+block( module, { identifier: "iva-structure-serie_fechoautorizacao", flags:[ "@unique" ]} ).sql`
+  alter table tweeks.serie add if not exists serie_fechoautorizacao boolean default false;
+`;
+
+
+
 block( module, { identifier: "iva-serie-functions", flags:[]}).sql`
 
 create or replace function tweeks.funct_sets_autorizacao(
