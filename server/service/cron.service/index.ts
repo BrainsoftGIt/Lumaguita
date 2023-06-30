@@ -130,7 +130,8 @@ export const cronManager = {
         const _service =  services[ name ];
         if( !_service ) return;
         console.log( `[MAGUITA] Cron> service ${name} ->> ${ _service.expression }... RESTART!` );
-        return _service.task.stop().start();
+        _service.task.stop();
+        _service.task.start();
 
     }, play( name ){
         const _service =  services[ name ];
