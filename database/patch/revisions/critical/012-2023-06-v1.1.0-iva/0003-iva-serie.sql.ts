@@ -194,7 +194,15 @@ declare
 begin
   return query
     with __autorizacao as (
-      select *
+      select 
+          a.autorizacao_uid,
+          a.autorizacao_numero,
+          a.autorizacao_ano,
+          a.autorizacao_estado,
+          a.autorizacao_designacao,
+          a.autorizacao_dataregistro,
+          e.espaco_id,
+          e.espaco_nome
         from tweeks.autorizacao a
           inner join tweeks.espaco e on a.autorizacao_espaco_uid = e.espaco_id
         where a._branch_uid = _branch_uid
