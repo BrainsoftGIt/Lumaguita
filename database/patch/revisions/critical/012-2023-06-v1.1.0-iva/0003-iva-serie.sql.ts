@@ -37,8 +37,8 @@ block( module, { identifier: "iva-structure-serie_fechoautorizacao", flags:[ "@u
 
 
 
-block( module, { identifier: "iva-serie-functions", flags:[]}).sql`
-
+block( module, { identifier: "iva-serie-functions", flags:[]}).sql
+`
 create or replace function tweeks.funct_sets_autorizacao(
   args jsonb
 ) returns lib.res
@@ -109,18 +109,12 @@ begin
     );
   end loop;
 
-  return lib.result_true( jsonb_build_object(
+  return lib.res_true( jsonb_build_object(
     'autorizacao', _autorizacao,
     'series', _res_serie
   ));
 end;
 $$;
-
-
-
-
-
-
 
 
 create or replace function tweeks.__get_autorizacao( uuid )
@@ -317,14 +311,14 @@ create or replace function tweeks.__sets_generate_documento(arg_espaco_auth uuid
   returns TABLE(
     document character varying,
      serie_id uuid,
-     serie_numero character varying,
-     serie_numatorizacao character varying,
-      serie_numcertificacao character varying,
-       serie_sequencia bigint,
-        serie_quantidade bigint,
-          autorizacao_uid uuid,
-            autorizacao_ano int,
-              autorizacao_numero character varying
+       serie_numero character varying,
+         serie_numatorizacao character varying,
+           serie_numcertificacao character varying,
+             serie_sequencia bigint,
+               serie_quantidade bigint,
+                 autorizacao_uid uuid,
+                   autorizacao_ano int,
+                     autorizacao_numero character varying
         )
   strict
   language plpgsql
@@ -437,6 +431,4 @@ begin
     return next;
 end;
 $$;
-
-
 `;
