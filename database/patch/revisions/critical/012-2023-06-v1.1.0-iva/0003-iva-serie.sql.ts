@@ -205,7 +205,7 @@ begin
           e.espaco_nome
         from tweeks.autorizacao a
           inner join tweeks.espaco e on a.autorizacao_espaco_uid = e.espaco_id
-        where a._branch_uid = _branch_uid
+        where a._branch_uid = arg_branch_uid
         and true in (
           a.autorizacao_espaco_auth = any( _espaco_child ),
           a.autorizacao_espaco_uid = any( _espaco_child )
