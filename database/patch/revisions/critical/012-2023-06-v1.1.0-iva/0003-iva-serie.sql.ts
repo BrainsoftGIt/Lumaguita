@@ -194,7 +194,7 @@ declare
 begin
   return query
     with __autorizacao as (
-      select 
+      select
           a.autorizacao_uid,
           a.autorizacao_numero,
           a.autorizacao_ano,
@@ -202,16 +202,32 @@ begin
           a.autorizacao_designacao,
           a.autorizacao_dataregistro,
           e.espaco_id,
-          e.espaco_nome
+          e.espaco_nome,
+          count( at.* ) filter ( where at.autorizacao_ano > a.autorizacao_ano ) as autorizacao_postone,
+          count( at.* ) filter ( where at.autorizacao_ano < a.autorizacao_ano ) as autorizacao_previews
         from tweeks.autorizacao a
           inner join tweeks.espaco e on a.autorizacao_espaco_uid = e.espaco_id
+          left join tweeks.autorizacao at on at.autorizacao_espaco_uid = a.autorizacao_espaco_uid
+            and at._branch_uid = a._branch_uid
+            and at.autorizacao_ano != a.autorizacao_ano
         where a._branch_uid = arg_branch_uid
-        and true in (
-          a.autorizacao_espaco_auth = any( _espaco_child ),
-          a.autorizacao_espaco_uid = any( _espaco_child )
-        )
+          and true in (
+            a.autorizacao_espaco_auth = any( _espaco_child ),
+            a.autorizacao_espaco_uid = any( _espaco_child )
+          )
+        group by
+          a.autorizacao_uid,
+          e.espaco_id
+    ), __continue as (
+       select
+            at.*,
+            case
+              when at.autorizacao_estado = _const.maguita_autorizacao_estado_fechado and at.autorizacao_postone = 0 then true
+              else false
+            end as autorizacao_continue
+          from __autorizacao at
     ) select to_jsonb( _a )
-        from __autorizacao _a
+        from __continue _a
         order by _a.autorizacao_ano desc,
           _a.autorizacao_dataregistro desc
   ;
