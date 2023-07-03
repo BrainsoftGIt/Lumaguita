@@ -191,7 +191,10 @@ declare
   arg_branch_uid uuid default tweeks.__branch_uid( arg_colaborador_id, arg_espaco_auth );
   _espaco_child uuid[] default rule.espaco_get_childrens_static( arg_espaco_auth );
 
+  _const map.constant;
+
 begin
+  _const := map.constant();
   return query
     with __autorizacao as (
       select
