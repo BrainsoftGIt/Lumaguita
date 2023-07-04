@@ -146,7 +146,7 @@ declare
 begin
   _const := map.constant();
   _autorizacao := jsonb_populate_record( _autorizacao, args );
-  _autorizacao := tweeks.__get_autorizacao( _autorizacao._branch_uid );
+  _autorizacao := tweeks.__get_autorizacao( _autorizacao.autorizacao_uid );
 
   if _autorizacao.autorizacao_estado != _const.maguita_autorizacao_estado_ativo then
     return lib.res_false( 'A autorizacao selecionada para fecho já esta encerada!' );
@@ -174,6 +174,7 @@ begin
   ));
 end;
 $$;
+
 
 
 create or replace function tweeks.funct_load_autorizacao( args jsonb )
