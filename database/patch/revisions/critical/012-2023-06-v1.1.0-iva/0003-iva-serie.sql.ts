@@ -300,7 +300,7 @@ declare
   _const map.constant;
   _data record;
 begin
-  _autorizacao := tweeks.__get_autorizacao( args->>'autorizacao_uid' );
+  _autorizacao := tweeks.__get_autorizacao( ( args->>'autorizacao_uid' )::uuid );
   _const := map.constant();
   with __serie as (
     select
