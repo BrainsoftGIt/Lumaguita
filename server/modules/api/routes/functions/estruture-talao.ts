@@ -38,10 +38,10 @@ export let structure = (user) => {
                 bold: true,
             },
         },
-        pageMargins: [ 20, 0, 20, 0 ],
+        pageMargins: [ 20, 3, 20, 50 ],
         pageSize: {
-            width : 226.772,
-            height: 595 * 2
+            width : 263.78,
+            height: 'auto'
         },
         background: function (page) {
             return []

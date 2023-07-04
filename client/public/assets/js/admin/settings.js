@@ -295,7 +295,7 @@ var settings = {
                 let armazens_dados_empresa = $("#armazens_dados_empresa");
                 let armazens_posto = $("[armazens_posto]");
                 let armazens_posto_edit = $("[armazens_posto_edit]");
-                let armazens_efatura = $("#armazem_efatura");
+                let armazens_efatura = $("#armazem_efatura, #armazem_efaturav2");
                 let imposto_espacos = $("#imposto_espacos");
                 let spaceOptions;
                 armazens_posto.empty();
@@ -865,4 +865,8 @@ $("[migrate_space]").on("click", function () {
     else{
         settings.migrateSpace();
     }
+});
+
+$("[bt_set_aturizacao]").on("click", function (){
+
 });
