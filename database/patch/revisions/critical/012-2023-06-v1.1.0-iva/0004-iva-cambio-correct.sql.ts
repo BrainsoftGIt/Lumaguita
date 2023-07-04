@@ -67,7 +67,6 @@ begin
 end;
 $$;
 
-
 create or replace function tweeks.funct_reg_precario(args jsonb) returns lib.result
   language plpgsql
 as
