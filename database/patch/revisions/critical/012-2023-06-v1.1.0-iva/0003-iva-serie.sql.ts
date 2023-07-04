@@ -39,15 +39,16 @@ block( module, { identifier: "iva-structure-serie_fechoautorizacao", flags:[ "@u
 
 block( module, { identifier: "iva-serie-functions", flags:[]}).sql
 `
-create or replace function tweeks.funct_sets_autorizacao(
-  args jsonb
-) returns lib.res
-language plpgsql as $$
+create or replace function tweeks.funct_sets_autorizacao(args jsonb) returns lib.res
+  language plpgsql
+as
+$$
 declare
   /**
     {
       arg_colaborador_id: UID
       arg_espaco_auth: UID
+      arg_autorizacao_continue: AUTORIZACAO
 
       autorizacao_uid: UID
       autorizacao_espaco_uid: UID
@@ -68,8 +69,10 @@ declare
     }
    */
   _autorizacao tweeks.autorizacao;
+  _autorizacao_continue tweeks.autorizacao;
   arg_colaborador_id uuid not null default args->>'arg_colaborador_id';
   arg_espaco_auth uuid not null default args->>'arg_espaco_auth';
+  arg_autorizacao_continue boolean not null default args->>'arg_autorizacao_continue';
   arg_branch_uid uuid default tweeks.__branch_uid( arg_colaborador_id, arg_espaco_auth );
   _res_serie jsonb default jsonb_build_array();
   _next record;
@@ -77,6 +80,8 @@ declare
 
 begin
   _autorizacao := jsonb_populate_record( _autorizacao, args );
+  _autorizacao_continue := jsonb_populate_record( _autorizacao_continue, args->'arg_autorizacao_continue' );
+  
   if _autorizacao.autorizacao_uid is null then
     _autorizacao.autorizacao_colaborador_uid := arg_colaborador_id;
     _autorizacao.autorizacao_espaco_auth := arg_espaco_auth;
@@ -87,10 +92,27 @@ begin
     _autorizacao.autorizacao_colaborador_atualizacao := arg_colaborador_id;
     _autorizacao.autorizacao_dataatualizacao := now();
   end if;
-
+  
+  if _autorizacao_continue.autorizacao_uid is null and exists(
+    select *
+      from jsonb_array_elements( args->'series' ) e ( doc )
+        inner join jsonb_populate_record( null::tweeks.serie, e.doc ) sdoc on true
+        inner join tweeks.serie s on sdoc.serie_numero = s.serie_numero
+          and s.serie_tserie_id = sdoc.serie_tserie_id
+          and s._branch_uid = arg_branch_uid
+          and s.serie_espaco_auth = arg_espaco_auth
+        inner join tweeks.autorizacao a on s.serie_autorizacao_uid = a.autorizacao_uid
+          and a._branch_uid = arg_branch_uid
+          and a.autorizacao_ano = _autorizacao.autorizacao_ano
+          and a.autorizacao_espaco_auth = arg_espaco_auth
+  ) then
+    return lib.res_false( 'Já existe serie com essa numeração registrada' );
+  end if;
+  
   select ( "returning" ).* into _autorizacao
-    from lib.sets( _autorizacao );
-
+    from lib.sets( _autorizacao )
+  ;
+  
   for _data in (
     select
         e.document || jsonb_build_object(
@@ -102,20 +124,19 @@ begin
   ) loop
     select * into _next
       from tweeks.funct_sets_serie( _data.document_serie ) e;
-
+  
     _res_serie := _res_serie || jsonb_build_object(
       'serie', _data.document_serie,
       'result', _next
     );
   end loop;
-
+  
   return lib.res_true( jsonb_build_object(
     'autorizacao', _autorizacao,
     'series', _res_serie
   ));
 end;
 $$;
-
 
 create or replace function tweeks.__get_autorizacao( uuid )
   returns tweeks.autorizacao
@@ -280,10 +301,10 @@ $$;
 
 drop function if exists tweeks.funct_load_autorizacao_continue(args jsonb);
 
-create or replace function tweeks.funct_sets_autorizacao_continue(
-  args jsonb
-) returns lib.res
-language plpgsql as $$
+create or replace function funct_sets_autorizacao_continue(args jsonb) returns lib.res
+  language plpgsql
+as
+$$
 declare
   /**
     {
@@ -310,7 +331,11 @@ begin
         serie_numero,
         serie_quantidade,
         serie_numcertificacao,
-        serie_numatorizacao
+        serie_numatorizacao,
+        case 
+          when _autorizacao.autorizacao_ano = extract( years from current_date)::int then serie_sequencia
+          else 0
+        end serie_sequencia
       from tweeks.serie se
       where se.serie_autorizacao_uid = _autorizacao.autorizacao_uid
         and se.serie_estado = _const.maguita_serie_estado_fechado
@@ -324,6 +349,7 @@ begin
   return tweeks.funct_sets_autorizacao( jsonb_build_object(
     'arg_colaborador_id', arg_colaborador_id,
     'arg_espaco_auth', arg_espaco_auth,
+    'arg_autorizacao_continue', _autorizacao,
     'autorizacao_uid', null,
     'autorizacao_espaco_uid', _autorizacao.autorizacao_espaco_uid,
     'autorizacao_designacao', _autorizacao.autorizacao_designacao,
