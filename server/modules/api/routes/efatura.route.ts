@@ -69,3 +69,39 @@ app.post("/api/efatura/authorization/load", async (req, res) =>{
     const { rows } = await functLoadEfacturaAuthorization(req.body);
     res.json({datas: rows.map(({main}) => main)});
 });
+
+
+app.post("/api/efatura/authorization/closeyear", async (req, res) =>{
+    const {functChangeAuthorizationCloseYear} = require("../db/call-function-efatura");
+    let before =  await clusterServer.service.loadLocalCluster();
+    req.body.arg_colaborador_id = req.session.auth_data.auth.colaborador_id;
+    req.body.arg_espaco_auth = req.session.auth_data.auth.armazem_atual;
+    const { row : { main : { result, message } } } = await functChangeAuthorizationCloseYear(req.body);
+    let after = await clusterServer.service.loadLocalCluster();
+    res.json({result: result, data: message});
+    if(result && before.cluster_version < after.cluster_version){
+        clusterServer.notifyLocalChange({
+            event: "SERIE:INVOICE",
+            extras: null,
+            message: (req.body.serie_id === null ? "Série definida com sucesso!" : "Série atualizada com sucesso!")
+        });
+    }
+});
+
+
+app.post("/api/efatura/authorization/continue", async (req, res) =>{
+    const {functSetsAuthorizatioContinue} = require("../db/call-function-efatura");
+    let before =  await clusterServer.service.loadLocalCluster();
+    req.body.arg_colaborador_id = req.session.auth_data.auth.colaborador_id;
+    req.body.arg_espaco_auth = req.session.auth_data.auth.armazem_atual;
+    const { row : { main : { result, message } } } = await functSetsAuthorizatioContinue(req.body);
+    let after = await clusterServer.service.loadLocalCluster();
+    res.json({result: result, data: message});
+    if(result && before.cluster_version < after.cluster_version){
+        clusterServer.notifyLocalChange({
+            event: "SERIE:INVOICE",
+            extras: null,
+            message: (req.body.serie_id === null ? "Série definida com sucesso!" : "Série atualizada com sucesso!")
+        });
+    }
+});

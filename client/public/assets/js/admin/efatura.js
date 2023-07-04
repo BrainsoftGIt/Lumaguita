@@ -43,6 +43,54 @@ var efatura = {
                 }
             });
         },
+        closeyear : ({ autorizacao_uid }) => {
+            $.ajax({
+                url: "/api/efatura/authorization/closeyear",
+                method: "POST",
+                contentType: "application/json",
+                data: JSON.stringify({
+                    autorizacao_uid
+                }),
+                error: () => {
+                    $("[bt_efatura]").prop("disabled", false).removeClass("loading")
+                },
+                success: (e)  => {
+                    $("[bt_efatura]").prop("disabled", false).removeClass("loading");
+                    if(e.result){
+                        load();
+                        efatura.authorization.selected = null;
+                        xAlert("Série", "Configuração de série atualizada com sucesso!");
+                    }
+                    else{
+                        xAlert("Série", e.data, "error");
+                    }
+                }
+            });
+        },
+        reload : ({ autorizacao_uid }) => {
+            $.ajax({
+                url: "/api/efatura/authorization/continue",
+                method: "POST",
+                contentType: "application/json",
+                data: JSON.stringify({
+                    autorizacao_uid
+                }),
+                error: () => {
+                    $("[bt_efatura]").prop("disabled", false).removeClass("loading")
+                },
+                success: (e)  => {
+                    $("[bt_efatura]").prop("disabled", false).removeClass("loading");
+                    if(e.result){
+                        load();
+                        efatura.authorization.selected = null;
+                        xAlert("Série", "Configuração de série atualizada com sucesso!");
+                    }
+                    else{
+                        xAlert("Série", e.data, "error");
+                    }
+                }
+            });
+        },
         addSeries : () => {
             let { authorization: { series, loadAllSerieaAdded } } = efatura;
             let tipo_serie_efaturav2 = $("#tipo_serie_efaturav2");
@@ -175,6 +223,13 @@ var efatura = {
            load: ({arg_autorizacao_id}) => {
                 $("body").addClass("loading");
                let {authorization : { loadAllSerieaAdded }} = efatura;
+
+               $('[inp="tipo_serie_efaturav2"]').val("")
+               $("#tipo_serie_efaturav2").find("li.active").removeClass("active").hide();
+               $("#numero_serie_efaturav2").val("");
+               $("#quantidade_serie_efaturav2").val("");
+               $("#numero_autorizacao_seriev2").val("");
+
                $.ajax({
                     url: "/api/efatura/load",
                     method: "POST",
@@ -265,10 +320,16 @@ $("#series_efatura")
         e.stopPropagation();
     })
     .on("click", ".delete", function (){
-
+        let { authorization : { list, closeyear } } = efatura;
+        let index = $(this).closest("ul").index();
+        let { autorizacao_uid  } = list[index];
+        closeyear({ autorizacao_uid })
     })
     .on("click", ".reload", function (){
-
+        let { authorization : { list, reload }  } = efatura;
+        let index = $(this).closest("ul").index();
+        let { autorizacao_uid  } = list[index];
+        reload({ autorizacao_uid })
     })
 
 $("[btSetAturizacao]").on("click", function (){
