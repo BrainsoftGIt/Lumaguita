@@ -5,7 +5,7 @@ export async function printNetwork({articles, table, idPrinter}){
     const PrinterTypes = require("node-thermal-printer").types;
 
    let printer = new ThermalPrinter({
-        type: PrinterTypes.STAR,
+        type: PrinterTypes.EPSON,
         interface: 'tcp://'+idPrinter,
         characterSet: 'SLOVENIA',
         removeSpecialCharacters: false,
@@ -16,7 +16,7 @@ export async function printNetwork({articles, table, idPrinter}){
     });
 
     await printer.isPrinterConnected();
-    await printer.execute();
+    // await printer.execute();
     printer.bold(true);
     printer.setTypeFontB();
     printer.alignCenter();

@@ -1,175 +1,277 @@
 var efatura = {
     list: [],
     current_type_serie: null,
-    listar(){
-        $.ajax({
-            url: "/api/efatura/load",
-            method: "POST",
-            contentType: "application/json",
-            data: JSON.stringify({place: "admin"}),
-            success(e) {
-                let series_efatura = $("#series_efatura");
-                series_efatura.empty();
-                efatura.list = [];
-                efatura.list = e.series;
-                if(efatura.list.length === 0) series_efatura.addClass("empty");
-                else series_efatura.removeClass("empty");
+    authorization : {
+        series: [],
+        sets : () => {
+            if(!validation1($("#xModalEfaturaV2 input"))){
+                return
+            }
 
-                efatura.list.forEach((ef, idx) =>{
-                    ef = ef.data;
-                    series_efatura.append(`<ul class="flex">
-                                                <li class="flex column">
-                                                    <span>Tipo de série</span>
-                                                    <span>${$("#tipo_serie_efatura").find(`li[tipo_id=${ef.serie_tserie_id}]`).text()}</span>
-                                                </li>                                     
+            let armazem_efatura = $("#armazem_efaturav2").find("li.active").attr("armazem_id")
+            let { authorization : { series, load} } = efatura;
+            $.ajax({
+                url: "/api/efatura/authorization/reg",
+                method: "POST",
+                contentType: "application/json",
+                data: JSON.stringify({
+                    autorizacao_uid: null,
+                    autorizacao_espaco_uid: armazem_efatura,
+                    autorizacao_designacao: "",
+                    autorizacao_numero: new Date().getTime().toString(),
+                    series: series.map(({serie_espaco_id, ...serie}) => {
+                        return { ...serie, serie_espaco_id: armazem_efatura };
+                    })
+                }),
+                error: () => {
+                    $("[bt_efatura]").prop("disabled", false).removeClass("loading")
+                },
+                success: (e)  => {
+                    $("[bt_efatura]").prop("disabled", false).removeClass("loading");
+                    if(e.result){
+                        load();
+                        efatura.authorization.selected = null;
+                        xAlert("Série", "Configuração de série atualizada com sucesso!");
+                        $("#tipo_serie_efatura, #armazem_efatura").find("li").removeClass("active");
+                        $("#xModalEfatura input").val("");
+                        $("#numero_serie_efatura").attr("disabled", true);
+                        $("#xModalEfatura .hideTarget").click();
+                    }
+                    else{
+                        xAlert("Série", e.data, "error");
+                    }
+                }
+            });
+        },
+        addSeries : () => {
+            let { authorization: { series, loadAllSerieaAdded } } = efatura;
+            let tipo_serie_efaturav2 = $("#tipo_serie_efaturav2");
+            let numero_serie_efaturav2 = $("#numero_serie_efaturav2");
+            let quantidade_serie_efaturav2 = $("#quantidade_serie_efaturav2")
+            let numero_autorizacao_seriev2 = $("#numero_autorizacao_seriev2")
+
+            if(!validation1($("#xModalEfaturaV2 .inn input"))){
+                return
+            }
+
+            series.push({
+                serie_id: null,
+                serie_tserie_id: tipo_serie_efaturav2.find("li.active").attr("tipo_id"),
+                serie_espaco_id: null,
+                serie_designacao:  tipo_serie_efaturav2.find("li.active").text(),
+                serie_numerotext:  numero_serie_efaturav2.val(),
+                serie_numero: numero_serie_efaturav2.val().split("-")[1],
+                serie_quantidade: quantidade_serie_efaturav2.val(),
+                serie_numcertificacao: null,
+                serie_numatorizacao: numero_autorizacao_seriev2.val(),
+            })
+
+            $('[inp="tipo_serie_efaturav2"]').val("")
+            tipo_serie_efaturav2.find("li.active").removeClass("active").hide();
+            numero_serie_efaturav2.val("");
+            quantidade_serie_efaturav2.val("");
+            numero_autorizacao_seriev2.val("");
+
+            loadAllSerieaAdded();
+        },
+        loadAllSerieaAdded : () => {
+            let { authorization: { series } } = efatura;
+            $("#ConfiguredSerie").empty();
+            return series.forEach(({ serie_designacao, serie_numerotext, serie_quantidade, serie_numatorizacao }) =>  {
+                 $("#ConfiguredSerie").append(`
+                        <li>
+                            <span class="flex h-sb"><small>Tipo</small><small class="nome_impressora">${serie_designacao}</small></span>
+                            <span class="flex h-sb"><small>Qta.</small><small class="nome_impressora">${serie_quantidade}</small></span>
+                            <span class="flex h-sb"><small>Número</small><small class="nome_impressora">${serie_numerotext}</small></span>
+                            <span class="flex h-sb"><small>Nº Certificação</small><small class="nome_impressora">${serie_numatorizacao}</small></span>
+                            <span class="ctrl">
+                                <svg class="edit" viewBox="0 0 512 512">
+                                    <path
+                                        d="m368 511.957031h-309.332031c-32.363281 0-58.667969-26.304687-58.667969-58.667969v-309.332031c0-32.363281 26.304688-58.667969 58.667969-58.667969h181.332031c8.832031 0 16 7.167969 16 16 0 8.832032-7.167969 16-16 16h-181.332031c-14.699219 0-26.667969 11.96875-26.667969 26.667969v309.332031c0 14.699219 11.96875 26.667969 26.667969 26.667969h309.332031c14.699219 0 26.667969-11.96875 26.667969-26.667969v-181.332031c0-8.832031 7.167969-16 16-16s16 7.148438 16 16v181.332031c0 32.363282-26.304688 58.667969-58.667969 58.667969zm0 0" />
+                                    <path
+                                        d="m187.136719 340.820312c-4.203125 0-8.300781-1.664062-11.308594-4.691406-3.796875-3.777344-5.417969-9.21875-4.371094-14.445312l15.082031-75.433594c.617188-3.113281 2.152344-5.953125 4.371094-8.171875l220.953125-220.925781c22.867188-22.871094 60.074219-22.871094 82.964844 0 11.070313 11.070312 17.171875 25.792968 17.171875 41.472656s-6.101562 30.398438-17.195312 41.472656l-220.925782 220.949219c-2.21875 2.238281-5.078125 3.753906-8.171875 4.371094l-75.414062 15.082031c-1.046875.214844-2.113281.320312-3.15625.320312zm75.433593-31.082031h.214844zm-45.609374-52.457031-9.410157 47.144531 47.125-9.429687 217.515625-217.511719c5.035156-5.058594 7.808594-11.734375 7.808594-18.859375s-2.773438-13.804688-7.808594-18.859375c-10.367187-10.390625-27.285156-10.390625-37.714844 0zm0 0" />
+                                    <path
+                                        d="m453.332031 134.976562c-4.09375 0-8.191406-1.558593-11.304687-4.695312l-60.332032-60.351562c-6.25-6.25-6.25-16.382813 0-22.632813s16.382813-6.25 22.636719 0l60.328125 60.351563c6.25 6.25 6.25 16.382812 0 22.632812-3.136718 3.117188-7.230468 4.695312-11.328125 4.695312zm0 0" />
+                                </svg>
+                                <svg class="delete" viewBox="-40 0 427 427.00131">
+                                    <path
+                                        d="m232.398438 154.703125c-5.523438 0-10 4.476563-10 10v189c0 5.519531 4.476562 10 10 10 5.523437 0 10-4.480469 10-10v-189c0-5.523437-4.476563-10-10-10zm0 0" />
+                                    <path
+                                        d="m114.398438 154.703125c-5.523438 0-10 4.476563-10 10v189c0 5.519531 4.476562 10 10 10 5.523437 0 10-4.480469 10-10v-189c0-5.523437-4.476563-10-10-10zm0 0" />
+                                    <path
+                                        d="m28.398438 127.121094v246.378906c0 14.5625 5.339843 28.238281 14.667968 38.050781 9.285156 9.839844 22.207032 15.425781 35.730469 15.449219h189.203125c13.527344-.023438 26.449219-5.609375 35.730469-15.449219 9.328125-9.8125 14.667969-23.488281 14.667969-38.050781v-246.378906c18.542968-4.921875 30.558593-22.835938 28.078124-41.863282-2.484374-19.023437-18.691406-33.253906-37.878906-33.257812h-51.199218v-12.5c.058593-10.511719-4.097657-20.605469-11.539063-28.03125-7.441406-7.421875-17.550781-11.5546875-28.0625-11.46875h-88.796875c-10.511719-.0859375-20.621094 4.046875-28.0625 11.46875-7.441406 7.425781-11.597656 17.519531-11.539062 28.03125v12.5h-51.199219c-19.1875.003906-35.394531 14.234375-37.878907 33.257812-2.480468 19.027344 9.535157 36.941407 28.078126 41.863282zm239.601562 279.878906h-189.203125c-17.097656 0-30.398437-14.6875-30.398437-33.5v-245.5h250v245.5c0 18.8125-13.300782 33.5-30.398438 33.5zm-158.601562-367.5c-.066407-5.207031 1.980468-10.21875 5.675781-13.894531 3.691406-3.675781 8.714843-5.695313 13.925781-5.605469h88.796875c5.210937-.089844 10.234375 1.929688 13.925781 5.605469 3.695313 3.671875 5.742188 8.6875 5.675782 13.894531v12.5h-128zm-71.199219 32.5h270.398437c9.941406 0 18 8.058594 18 18s-8.058594 18-18 18h-270.398437c-9.941407 0-18-8.058594-18-18s8.058593-18 18-18zm0 0" />
+                                    <path
+                                        d="m173.398438 154.703125c-5.523438 0-10 4.476563-10 10v189c0 5.519531 4.476562 10 10 10 5.523437 0 10-4.480469 10-10v-189c0-5.523437-4.476563-10-10-10zm0 0" />
+                                </svg>
+                            </span>
+                        </li>
+                `);
+            })
+        },
+        load : () => {
+            $("body").addClass("loading");
+            $.ajax({
+                url: "/api/efatura/authorization/load",
+                method: "POST",
+                contentType: "application/json",
+                error: () => {
+                    $("body").removeClass("loading");
+                },
+                success: ({datas})  => {
+                    $("body").removeClass("loading");
+                    let series_efatura = $("#series_efatura").empty();
+                    efatura.authorization.list = datas;
+                    let { authorization: { list }} = efatura;
+
+                    if(list.length === 0) series_efatura.addClass("empty");
+                    else series_efatura.removeClass("empty");
+
+                    list.forEach(({ autorizacao_dataregistro, autorizacao_ano, espaco_nome, autorizacao_estado, autorizacao_continue}) =>{
+                        let icon = "";
+                        if( autorizacao_estado === 1 ){
+                            icon += `<a  class="edit" title="Editar">
+                                         <svg viewBox="0 0 512 512"><path d="m368 511.957031h-309.332031c-32.363281 0-58.667969-26.304687-58.667969-58.667969v-309.332031c0-32.363281 26.304688-58.667969 58.667969-58.667969h181.332031c8.832031 0 16 7.167969 16 16 0 8.832032-7.167969 16-16 16h-181.332031c-14.699219 0-26.667969 11.96875-26.667969 26.667969v309.332031c0 14.699219 11.96875 26.667969 26.667969 26.667969h309.332031c14.699219 0 26.667969-11.96875 26.667969-26.667969v-181.332031c0-8.832031 7.167969-16 16-16s16 7.148438 16 16v181.332031c0 32.363282-26.304688 58.667969-58.667969 58.667969zm0 0"/><path d="m187.136719 340.820312c-4.203125 0-8.300781-1.664062-11.308594-4.691406-3.796875-3.777344-5.417969-9.21875-4.371094-14.445312l15.082031-75.433594c.617188-3.113281 2.152344-5.953125 4.371094-8.171875l220.953125-220.925781c22.867188-22.871094 60.074219-22.871094 82.964844 0 11.070313 11.070312 17.171875 25.792968 17.171875 41.472656s-6.101562 30.398438-17.195312 41.472656l-220.925782 220.949219c-2.21875 2.238281-5.078125 3.753906-8.171875 4.371094l-75.414062 15.082031c-1.046875.214844-2.113281.320312-3.15625.320312zm75.433593-31.082031h.214844zm-45.609374-52.457031-9.410157 47.144531 47.125-9.429687 217.515625-217.511719c5.035156-5.058594 7.808594-11.734375 7.808594-18.859375s-2.773438-13.804688-7.808594-18.859375c-10.367187-10.390625-27.285156-10.390625-37.714844 0zm0 0"/><path d="m453.332031 134.976562c-4.09375 0-8.191406-1.558593-11.304687-4.695312l-60.332032-60.351562c-6.25-6.25-6.25-16.382813 0-22.632813s16.382813-6.25 22.636719 0l60.328125 60.351563c6.25 6.25 6.25 16.382812 0 22.632812-3.136718 3.117188-7.230468 4.695312-11.328125 4.695312zm0 0"/></svg>
+                                      </a>`;
+                            icon += `<a  class="delete" title="Editar">
+                                        <svg viewBox="-40 0 427 427.00131"><path d="m232.398438 154.703125c-5.523438 0-10 4.476563-10 10v189c0 5.519531 4.476562 10 10 10 5.523437 0 10-4.480469 10-10v-189c0-5.523437-4.476563-10-10-10zm0 0" /><path d="m114.398438 154.703125c-5.523438 0-10 4.476563-10 10v189c0 5.519531 4.476562 10 10 10 5.523437 0 10-4.480469 10-10v-189c0-5.523437-4.476563-10-10-10zm0 0" /><path d="m28.398438 127.121094v246.378906c0 14.5625 5.339843 28.238281 14.667968 38.050781 9.285156 9.839844 22.207032 15.425781 35.730469 15.449219h189.203125c13.527344-.023438 26.449219-5.609375 35.730469-15.449219 9.328125-9.8125 14.667969-23.488281 14.667969-38.050781v-246.378906c18.542968-4.921875 30.558593-22.835938 28.078124-41.863282-2.484374-19.023437-18.691406-33.253906-37.878906-33.257812h-51.199218v-12.5c.058593-10.511719-4.097657-20.605469-11.539063-28.03125-7.441406-7.421875-17.550781-11.5546875-28.0625-11.46875h-88.796875c-10.511719-.0859375-20.621094 4.046875-28.0625 11.46875-7.441406 7.425781-11.597656 17.519531-11.539062 28.03125v12.5h-51.199219c-19.1875.003906-35.394531 14.234375-37.878907 33.257812-2.480468 19.027344 9.535157 36.941407 28.078126 41.863282zm239.601562 279.878906h-189.203125c-17.097656 0-30.398437-14.6875-30.398437-33.5v-245.5h250v245.5c0 18.8125-13.300782 33.5-30.398438 33.5zm-158.601562-367.5c-.066407-5.207031 1.980468-10.21875 5.675781-13.894531 3.691406-3.675781 8.714843-5.695313 13.925781-5.605469h88.796875c5.210937-.089844 10.234375 1.929688 13.925781 5.605469 3.695313 3.671875 5.742188 8.6875 5.675782 13.894531v12.5h-128zm-71.199219 32.5h270.398437c9.941406 0 18 8.058594 18 18s-8.058594 18-18 18h-270.398437c-9.941407 0-18-8.058594-18-18s8.058593-18 18-18zm0 0" /><path d="m173.398438 154.703125c-5.523438 0-10 4.476563-10 10v189c0 5.519531 4.476562 10 10 10 5.523437 0 10-4.480469 10-10v-189c0-5.523437-4.476563-10-10-10zm0 0" /></svg>
+                                      </a>`;
+                        }
+
+                        if( autorizacao_continue ){
+                            icon += `<a  class="reload" title="Editar">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" ><path d="M13.1459 11.0499L12.9716 9.05752L15.3462 8.84977C14.4471 7.98322 13.2242 7.4503 11.8769 7.4503C9.11547 7.4503 6.87689 9.68888 6.87689 12.4503C6.87689 15.2117 9.11547 17.4503 11.8769 17.4503C13.6977 17.4503 15.2911 16.4771 16.1654 15.0224L18.1682 15.5231C17.0301 17.8487 14.6405 19.4503 11.8769 19.4503C8.0109 19.4503 4.87689 16.3163 4.87689 12.4503C4.87689 8.58431 8.0109 5.4503 11.8769 5.4503C13.8233 5.4503 15.5842 6.24474 16.853 7.52706L16.6078 4.72412L18.6002 4.5498L19.1231 10.527L13.1459 11.0499Z" fill="currentColor"/></svg>
+                                    </a>`;
+                        }
+
+                        series_efatura.append(`<ul class="flex">
                                                   <li class="flex column">
-                                                    <span>Designação</span>
-                                                    <span>${ef.serie_designacao}</span>
+                                                    <span>Ano</span>
+                                                    <span>${autorizacao_ano}</span>
+                                                </li>
+                                                <li class="flex column">
+                                                    <span>Armazém</span>
+                                                    <span>${espaco_nome}</span>
                                                 </li>
                                                 <li class="flex column">
                                                     <span>Número de série</span>
-                                                    <span>${ef.serie_numero}</span>
+                                                    <span>${ autorizacao_estado? "Ativo" : "Fechado" }</span>
                                                 </li>
-                                                 <li class="flex column">
-                                                    <span>Armazém</span>
-                                                    <span>${ef.espaco_nome}</span>
-                                                </li>
-                                                 <li class="flex column">
-                                                   <span>Número de autorização</span>
-                                                    <span>${(ef.serie_numatorizacao || "-----")}</span>
+                                                <li class="flex column">
+                                                    <span>Registo</span>
+                                                    <span>${autorizacao_dataregistro.stringToDateEn().getDatePt()}</span>
                                                 </li>
                                                 <li class="flex column">
                                                     <span class="noLabel"></span>
                                                     <span class="flex v-ct">
-                                                        <a  class="editar" i="${idx}" title="Editar">
-                                                          <svg viewBox="0 0 512 512"><path d="m368 511.957031h-309.332031c-32.363281 0-58.667969-26.304687-58.667969-58.667969v-309.332031c0-32.363281 26.304688-58.667969 58.667969-58.667969h181.332031c8.832031 0 16 7.167969 16 16 0 8.832032-7.167969 16-16 16h-181.332031c-14.699219 0-26.667969 11.96875-26.667969 26.667969v309.332031c0 14.699219 11.96875 26.667969 26.667969 26.667969h309.332031c14.699219 0 26.667969-11.96875 26.667969-26.667969v-181.332031c0-8.832031 7.167969-16 16-16s16 7.148438 16 16v181.332031c0 32.363282-26.304688 58.667969-58.667969 58.667969zm0 0"/><path d="m187.136719 340.820312c-4.203125 0-8.300781-1.664062-11.308594-4.691406-3.796875-3.777344-5.417969-9.21875-4.371094-14.445312l15.082031-75.433594c.617188-3.113281 2.152344-5.953125 4.371094-8.171875l220.953125-220.925781c22.867188-22.871094 60.074219-22.871094 82.964844 0 11.070313 11.070312 17.171875 25.792968 17.171875 41.472656s-6.101562 30.398438-17.195312 41.472656l-220.925782 220.949219c-2.21875 2.238281-5.078125 3.753906-8.171875 4.371094l-75.414062 15.082031c-1.046875.214844-2.113281.320312-3.15625.320312zm75.433593-31.082031h.214844zm-45.609374-52.457031-9.410157 47.144531 47.125-9.429687 217.515625-217.511719c5.035156-5.058594 7.808594-11.734375 7.808594-18.859375s-2.773438-13.804688-7.808594-18.859375c-10.367187-10.390625-27.285156-10.390625-37.714844 0zm0 0"/><path d="m453.332031 134.976562c-4.09375 0-8.191406-1.558593-11.304687-4.695312l-60.332032-60.351562c-6.25-6.25-6.25-16.382813 0-22.632813s16.382813-6.25 22.636719 0l60.328125 60.351563c6.25 6.25 6.25 16.382812 0 22.632812-3.136718 3.117188-7.230468 4.695312-11.328125 4.695312zm0 0"/></svg>
-                                                      </a>       
+                                                        ${icon}
                                                     </span>
                                                 </li>
                                             </ul>`);
+                    });
+                }
+            });
+        },
+        serie : {
+           load: ({arg_autorizacao_id}) => {
+                $("body").addClass("loading");
+               let {authorization : { loadAllSerieaAdded }} = efatura;
+               $.ajax({
+                    url: "/api/efatura/load",
+                    method: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify({
+                        place: "admin",
+                        arg_autorizacao_id
+                    }),
+                    success: ({ series }) => {
+                        $("body").removeClass("loading");
+                        $(`#tipo_serie_efaturav2 li`).show();
+                        let ss = series.map(({ data : { serie_numero, serie_tserie_id, ...serie } }) => {
+                            let sigla = $(`#tipo_serie_efaturav2 [tipo_id='${serie_tserie_id}']`).hide().attr("tipo_sigla")
+                            return {
+                                ...serie,
+                                serie_numerotext: sigla+serie_numero
+                            }
+                        })
+                        efatura.authorization.series = ss;
+                        loadAllSerieaAdded();
+                        showTarget("xModalEfaturaV2", "Definições de Autorização / Serie");
+                    },
+                    error: () => {
+                        $("body").removeClass("loading");
+                    },
                 });
-            }
-        });
-    },
-    adicionar(){
-        $("[bt_efatura]").prop("disabled", true).addClass("loading");
-        $.ajax({
-            url: "/api/efatura",
-            method: "POST",
-            contentType: "application/json",
-            data: JSON.stringify({serie_id: null, serie_tserie_id: $("#tipo_serie_efatura").find("li.active").attr("tipo_id"),
-                serie_espaco_id: $("#armazem_efatura").find("li.active").attr("armazem_id"),
-                serie_designacao: $("#designacao_serie_efatura").val().trim(),
-                serie_numero: $("#numero_serie_efatura").val().split("-")[1],
-                serie_quantidade: $("#quantidade_serie_efatura").val(),
-                serie_numatorizacao: $("#numero_autorizacao_serie").val(),
-                serie_numcertificacao: null}),
-            error(){
-                $("[bt_efatura]").prop("disabled", false).removeClass("loading")
             },
-            success(e) {
-                $("[bt_efatura]").prop("disabled", false).removeClass("loading");
-                if(e.result){
-                    efatura.listar();
-                    xAlert("Série", "Configuração de série para o armazém definida com sucesso!");
-                    $("#tipo_serie_efatura, #armazem_efatura").find("li").removeClass("active");
-                    $("#xModalEfatura input").val("");
-                    $("#numero_serie_efatura").attr("disabled", true);
-                    $("#xModalEfatura .hideTarget").click();
-                }
-                else{
-                    xAlert("Série", e.data, "error");
-                }
-            }
-        });
-    },
-    editar(){
-        $("[bt_efatura]").prop("disabled", true).addClass("loading");
-        $.ajax({
-            url: "/api/efatura",
-            method: "POST",
-            contentType: "application/json",
-            data: JSON.stringify({serie_id: efatura.selected.serie_id, serie_tserie_id: $("#tipo_serie_efatura").find("li.active").attr("tipo_id"),
-                serie_espaco_id: $("#armazem_efatura").find("li.active").attr("armazem_id"),
-                serie_designacao: $("#designacao_serie_efatura").val().trim(),
-                serie_numero: $("#numero_serie_efatura").val().split("-")[1],
-                serie_quantidade: $("#quantidade_serie_efatura").val(),
-                serie_numatorizacao: $("#numero_autorizacao_serie").val(),
-                serie_numcertificacao: null}),
-            error(){
-                $("[bt_efatura]").prop("disabled", false).removeClass("loading")
-            },
-            success(e) {
-                $("[bt_efatura]").prop("disabled", false).removeClass("loading");
-                if(e.result){
-                    efatura.listar();
-                    efatura.selected = null;
-                    xAlert("Série", "Configuração de série atualizada com sucesso!");
-                    $("#tipo_serie_efatura, #armazem_efatura").find("li").removeClass("active");
-                    $("#xModalEfatura input").val("");
-                    $("#numero_serie_efatura").attr("disabled", true);
-                    $("#xModalEfatura .hideTarget").click();
-
-                }
-                else{
-                    xAlert("Série", e.data, "error");
-                }
-            }
-        });
+        }
     }
 };
-efatura.listar();
+
+efatura.authorization.load();
 
 $("[novaSerieEfatura]").on("click", function () {
-    if(efatura.selected !== null){
-        $("#tipo_serie_efatura, #armazem_efatura").find("li").removeClass("active");
-        $("#xModalEfatura input").val("");
-    }
-   showTarget("xModalEfatura", "Adicionar série");
+    delete efatura.authorization.selected;
+    efatura.authorization.series = [];
+    $("#tipo_serie_efaturav2, #armazem_efaturav2").find("li").removeClass("active");
+    $("#xModalEfaturaV2 input").val("");
+    showTarget("xModalEfaturaV2", "Definições de Autorização / Serie");
+    $(`#tipo_serie_efaturav2 li`).show();
+    efatura.authorization.loadAllSerieaAdded();
 });
-$("#tipo_serie_efatura").on("mousedown", "li", function () {
+
+$("#tipo_serie_efatura, #tipo_serie_efaturav2").on("mousedown", "li", function () {
     efatura.current_type_serie = $(this).attr("tipo_sigla");
-    $("#numero_serie_efatura").val($(this).attr("tipo_sigla")).attr("disabled", false);
+    $("#numero_serie_efatura, #numero_serie_efaturav2").val($(this).attr("tipo_sigla")).attr("disabled", false);
 });
-$('#numero_serie_efatura').keyup(function() {
+
+$('#numero_serie_efatura, #numero_serie_efaturav2').keyup(function() {
     if($(this).val().includes(efatura.current_type_serie)) $(this).val($(this).val());
     else $(this).val( efatura.current_type_serie);
 });
 
-$("[bt_efatura]").on("click", function () {
-    if($("#tipo_serie_efatura").find("li.active").length === 0){
-        xAlert("Série", "Selecione o tipo de série!", "info");
-        return;
-    }
-    if($("#armazem_efatura").find("li.active").length === 0){
-        xAlert("Série", "Selecione o armazém!", "info");
-        return;
-    }
-    if(!validation1($("#designacao_serie_efatura, #numero_serie_efatura, #quantidade_serie_efatura, #numero_autorizacao_serie, #numero_certificacao_serie"))) return;
-    if($("#numero_serie_efatura").val().split("-")[1].length !== 7){
-        xAlert("Série", "O número de série deve ter sete (7) dígitos.", "error");
-        $("#numero_serie_efatura").focus();
-        return;
-    }
-    if($("#xModalEfatura").find("h3[targetTitle]").text().toLowerCase().includes("adicionar")) efatura.adicionar();
-    else efatura.editar();
-});
-$("#series_efatura").on("click", ".editar", function () {
-    efatura.selected = efatura.list[$(this).attr("i")].data;
-    let tipo_serie_efatura = $("#tipo_serie_efatura");
-    tipo_serie_efatura.find("li").removeClass("active");
-    tipo_serie_efatura.find(`li[tipo_id=${efatura.selected.serie_tserie_id}]`).addClass("active");
-    tipo_serie_efatura.parents(".xselect").find("input").val(   tipo_serie_efatura.find(`li[tipo_id=${efatura.selected.serie_tserie_id}]`).text());
-    let armazem_efatura = $("#armazem_efatura");
-    armazem_efatura.find("li").removeClass("active");
-    armazem_efatura.find(`li[armazem_id=${efatura.selected.serie_espaco_id}]`).addClass("active");
-    armazem_efatura.parents(".xselect").find("input").val(armazem_efatura.find(`li[armazem_id=${efatura.selected.serie_espaco_id}]`).text());
-    $("#designacao_serie_efatura").val(efatura.selected.serie_designacao);
-    $("#numero_serie_efatura").val( tipo_serie_efatura.find(`li[tipo_id=${efatura.selected.serie_tserie_id}]`).attr("tipo_sigla")
-        +efatura.selected.serie_numero).attr("disabled", false);
-    $("#quantidade_serie_efatura").val(efatura.selected.serie_quantidade);
-    $("#numero_autorizacao_serie").val((efatura.selected.serie_numatorizacao || ""));
-    $("#numero_certificacao_serie").val((efatura.selected.serie_numcertificacao || ""));
-    showTarget("xModalEfatura", "Editar série");
 
+$("[addMoreSerie]").on("click", function (){
+    let {authorization : {addSeries}} = efatura;
+    addSeries();
 });
+
+$("#ConfiguredSerie")
+    .on("click", ".edit", function (){
+        let index = $(this).closest("li").index();
+        let { authorization: { series, loadAllSerieaAdded } } = efatura;
+        let { 0 : { serie_tserie_id, serie_numerotext, serie_designacao, serie_quantidade, serie_numatorizacao } } = series.splice(index, 1);
+        $(`#tipo_serie_efaturav2 [tipo_id='${serie_tserie_id}']`).show().addClass("active").siblings().removeClass("active");
+        $('[inp="tipo_serie_efaturav2"]').val(serie_designacao);
+        $('#quantidade_serie_efaturav2').val(serie_quantidade);
+        $('#numero_autorizacao_seriev2').val(serie_numatorizacao);
+        $('#numero_serie_efaturav2').val(serie_numerotext);
+        loadAllSerieaAdded()
+    })
+    .on("click", ".delete", function (){
+        let index = $(this).closest("li").index();
+        let { authorization: { series, loadAllSerieaAdded } } = efatura;
+        let { 0: { serie_tserie_id } } = series.splice(index, 1);
+        $(`#tipo_serie_efaturav2 [tipo_id='${serie_tserie_id}']`).show().removeClass("active");
+        loadAllSerieaAdded()
+    })
+
+$("#series_efatura")
+    .on("click", ".edit", function (e){
+        let { authorization: { serie : { load }, list } } = efatura;
+        let index = $(this).closest("ul").index();
+        let { autorizacao_uid, espaco_nome, espaco_id } = list[index];
+        $(`#armazem_efaturav2 [id='${espaco_id}']`).show().addClass("active").siblings().removeClass("active");
+        $('[inp="armazem_efaturav2"]').val(espaco_nome);
+        load({  arg_autorizacao_id : autorizacao_uid })
+        e.stopPropagation();
+    })
+    .on("click", ".delete", function (){
+
+    })
+    .on("click", ".reload", function (){
+
+    })
+
+$("[btSetAturizacao]").on("click", function (){
+    let { authorization : { sets } } = efatura;
+    sets();
+})

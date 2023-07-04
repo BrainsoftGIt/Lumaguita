@@ -1,7 +1,12 @@
 import {app, storage} from '../../../service/storage.service';
-import {debugResponse} from "../../../service/database.service";
 import {clusterServer} from "../../../service/cluster.service";
-import {functLoadSeries, functLoadSeriesAvailable} from "../db/call-function-efatura";
+import {
+    functLoadEfacturaAuthorization,
+    functLoadSeries,
+    functLoadSeriesAvailable,
+    functRegEfacturaAuthorization,
+    functRegSerie
+} from "../db/call-function-efatura";
 
 app.post("/api/efatura", async (req, res) =>{
     const {functRegSerie} = require("../db/call-function-efatura");
@@ -38,4 +43,29 @@ app.post("/api/efatura/load", async (req, res) =>{
         });
         res.json({series: missing_serie});
     }
+});
+
+app.post("/api/efatura/authorization/reg", async (req, res) =>{
+    const {functRegEfacturaAuthorization} = require("../db/call-function-efatura");
+    let before =  await clusterServer.service.loadLocalCluster();
+    req.body.arg_colaborador_id = req.session.auth_data.auth.colaborador_id;
+    req.body.arg_espaco_auth = req.session.auth_data.auth.armazem_atual;
+    const { row : { main : { result, message } } } = await functRegEfacturaAuthorization(req.body);
+    let after = await clusterServer.service.loadLocalCluster();
+    res.json({result: result, data: message});
+    if(result && before.cluster_version < after.cluster_version){
+        clusterServer.notifyLocalChange({
+            event: "SERIE:INVOICE",
+            extras: null,
+            message: (req.body.serie_id === null ? "Série definida com sucesso!" : "Série atualizada com sucesso!")
+        });
+    }
+});
+
+app.post("/api/efatura/authorization/load", async (req, res) =>{
+    const {functLoadEfacturaAuthorization} = require("../db/call-function-efatura");
+    req.body.arg_colaborador_id = req.session.auth_data.auth.colaborador_id;
+    req.body.arg_espaco_auth = req.session.auth_data.auth.armazem_atual;
+    const { rows } = await functLoadEfacturaAuthorization(req.body);
+    res.json({datas: rows.map(({main}) => main)});
 });

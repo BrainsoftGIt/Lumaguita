@@ -22,3 +22,17 @@ export function functRegSerie(paramn) {
         sql `select * from tweeks.main( 'tweeks.funct_sets_serie', ${paramn}, ${  args.appMode})`
     );
 }
+
+export function functRegEfacturaAuthorization(paramn) {
+    const { sql } = factory.create(Templates.PARAMETERIZED);
+    return catchLast(
+        sql `select * from tweeks.main( 'tweeks.funct_sets_autorizacao', ${paramn}, ${  args.appMode})`
+    );
+}
+
+export function functLoadEfacturaAuthorization(paramn) {
+    const { sql } = factory.create(Templates.PARAMETERIZED);
+    return catchAll(
+        sql `select * from tweeks.main( 'tweeks.funct_load_autorizacao', ${paramn}, ${args.appMode})`
+    );
+}

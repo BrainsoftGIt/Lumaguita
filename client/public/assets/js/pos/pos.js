@@ -97,9 +97,9 @@ var pos = {
     },
     reduceQuantity(){
         let quantidadeCarrinho = Number(this.selectedCartElement.find("span.amount").text());
-        if((quantidadeCarrinho -1) !== 0) {
+        // if((quantidadeCarrinho -1) !== 0) {
             this.selectedCartElement.find("span.amount").text((Number(quantidadeCarrinho) -1));
-        }
+        // }
         this.determinateTotalValues();
     },
     addToCart(){

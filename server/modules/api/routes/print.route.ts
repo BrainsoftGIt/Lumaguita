@@ -192,15 +192,24 @@ app.post("/api/print/fecho/caixa/", async (req, res) =>{
 app.post("/api/print/kitchen", async (req, res) =>{
     const {printNetwork} = require("./functions/kitchenArticlesNetwork");
     const {create} = require("./functions/kitchenArticlesTalao");
-    let instituition = await load_space_configuration(req, false);
-     instituition = instituition[0].funct_load_espaco_configuracao.espaco;
 
-    if(!instituition?.espaco_configuracao?.impressoras_cozinha?.ip){
-        await create(instituition, req.body.articles, res, req.body.date, req.body.table, req.body.obs);
-    }
-    else if(instituition?.espaco_configuracao?.impressoras_cozinha?.ip){
-        await printNetwork({articles: req.body.articles, table: req.body.table,
-            idPrinter: instituition.espaco_configuracao.impressoras_cozinha.ip});
+    setTimeout(() => {
+        res.json("done");
+    }, 30 * 1000 )
+
+    try {
+        let instituition = await load_space_configuration(req, false);
+        instituition = instituition[0].funct_load_espaco_configuracao.espaco;
+
+        if(!instituition?.espaco_configuracao?.impressoras_cozinha?.ip){
+            await create(instituition, req.body.articles, res, req.body.date, req.body.table, req.body.obs);
+        }
+        else if(instituition?.espaco_configuracao?.impressoras_cozinha?.ip){
+            await printNetwork({articles: req.body.articles, table: req.body.table,
+                idPrinter: instituition.espaco_configuracao.impressoras_cozinha.ip});
+        }
+    }catch (e) {
+        res.json("done");
     }
 });
 
