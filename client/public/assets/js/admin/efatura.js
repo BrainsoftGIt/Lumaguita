@@ -200,7 +200,7 @@ var efatura = {
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16"> <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/> <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/> </svg>
                                     </a>`;
                             icon += `<a class="reload" title="Continuar">
-                                        <svg height="21" viewBox="0 0 21 21" width="21" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" transform="translate(2 2)"><path d="m12.5 1.5c2.4138473 1.37729434 4 4.02194088 4 7 0 4.418278-3.581722 8-8 8s-8-3.581722-8-8 3.581722-8 8-8"/><path d="m12.5 5.5v-4h4"/></g></svg>
+                                        <svg height="20" viewBox="0 0 21 21" width="20" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" transform="translate(2 2)"><path d="m12.5 1.5c2.4138473 1.37729434 4 4.02194088 4 7 0 4.418278-3.581722 8-8 8s-8-3.581722-8-8 3.581722-8 8-8"/><path d="m12.5 5.5v-4h4"/></g></svg>
                                      </a>`;
                         }
 
@@ -324,38 +324,49 @@ $("#ConfiguredSerie")
     })
 
 $("#series_efatura")
-    .on("click", ".edit", function (e){
+    .on("click", ".edit, .view", function (e){
         let { authorization: { serie : { load }, list } } = efatura;
         let index = $(this).closest("ul").index();
         let { autorizacao_uid, espaco_nome, espaco_id } = list[index];
         $(`#armazem_efaturav2 [id='${espaco_id}']`).show().addClass("active").siblings().removeClass("active");
         $('[inp="armazem_efaturav2"]').val(espaco_nome);
-        load({  arg_autorizacao_id : autorizacao_uid })
+        load({  arg_autorizacao_id : autorizacao_uid } )
         e.stopPropagation();
     })
-    .on("click", ".view", function (e){
-        let { authorization: { serie : { load }, list } } = efatura;
+    .on("click", ".delete, .reload", function (e){
+        let { authorization: { list } } = efatura;
         let index = $(this).closest("ul").index();
-        let { autorizacao_uid, espaco_nome, espaco_id } = list[index];
-        $(`#armazem_efaturav2 [id='${espaco_id}']`).show().addClass("active").siblings().removeClass("active");
-        $('[inp="armazem_efaturav2"]').val(espaco_nome);
-        load({  arg_autorizacao_id : autorizacao_uid })
+        let { autorizacao_uid } = list[index];
+        let status = $(this).attr("class");
+        let action = {
+            delete: {
+                title: "Fechar o Ano",
+                btattr: "closeyear"
+            },
+            reload: {
+                title: "Continuar com a mesma",
+                btattr: "reload"
+            }
+        }
+
+        showTarget("xModalSerieStatus", action[status].title);
+        $("[btSerieStatus]")
+            .attr("btSerieStatus", action[status].btattr)
+            .attr("autorizacao_uid", autorizacao_uid)
         e.stopPropagation();
-    })
-    .on("click", ".delete", function (){
-        let { authorization : { list, closeyear } } = efatura;
-        let index = $(this).closest("ul").index();
-        let { autorizacao_uid  } = list[index];
-        closeyear({ autorizacao_uid })
-    })
-    .on("click", ".reload", function (){
-        let { authorization : { list, reload }  } = efatura;
-        let index = $(this).closest("ul").index();
-        let { autorizacao_uid  } = list[index];
-        reload({ autorizacao_uid })
     })
 
-$("[btSetAturizacao]").on("click", function (){
-    let { authorization : { sets } } = efatura;
-    sets();
-})
+$("#xModalSerieStatus")
+    .on("click", "[btSerieStatus]", function (){
+        let { authorization : { list, closeyear, reload } } = efatura;
+        let action = { closeyear, reload };
+        let status = $(this).attr("btSerieStatus");
+        let autorizacao_uid = $(this).attr("autorizacao_uid");
+        action[status]({ autorizacao_uid })
+    })
+
+$("[btSetAturizacao]")
+    .on("click", function (){
+        let { authorization : { sets } } = efatura;
+        sets();
+    })
