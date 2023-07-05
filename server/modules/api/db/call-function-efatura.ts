@@ -38,14 +38,14 @@ export function functLoadEfacturaAuthorization(paramn) {
 }
 export function functChangeAuthorizationCloseYear(paramn) {
     const { sql } = factory.create(Templates.PARAMETERIZED);
-    return catchAll(
+    return catchLast(
         sql `select * from tweeks.main( 'tweeks.funct_change_autorizacao_closeyear', ${paramn}, ${args.appMode})`
     );
 }
 
 export function functSetsAuthorizatioContinue(paramn) {
     const { sql } = factory.create(Templates.PARAMETERIZED);
-    return catchAll(
+    return catchLast(
         sql `select * from tweeks.main( 'tweeks.funct_sets_autorizacao_continue', ${paramn}, ${args.appMode})`
     );
 }
