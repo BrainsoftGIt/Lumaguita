@@ -51,6 +51,13 @@ export function functLoadDadosEmpresa(args) {
         sql `select * from tweeks.funct_load_espaco_configuracao( ${ args })`
     );
 }
+
+export function functLoadTaxCodes() {
+    const {sql} = factory.create(Templates.PARAMETERIZED);
+    return catchAll(
+        sql `select * from codigoimposto`
+    );
+}
 export function functLoadClustersBranch(args) {
     const {sql} = factory.create(Templates.PARAMETERIZED);
     return catchAll(

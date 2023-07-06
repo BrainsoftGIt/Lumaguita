@@ -495,11 +495,15 @@ var settings = {
             contentType: "application/json",
             error(){$("[bt_posto]").attr("disabled", false).removeClass("loading")},
             data: JSON.stringify({arg_tposto_id: $("[tipoPosto]").find("li.active").attr("id"),
-                arg_espaco_destino: this.armazensSelecionados, arg_posto_id: null, posto_caixamode: $("[tipoCaixa]").find("li.active").attr("tipo"),
+                arg_espaco_destino: this.armazensSelecionados,
+                arg_posto_id: null, posto_caixamode: $("[tipoCaixa]").find("li.active").attr("tipo"),
                 posto_authmode: $("[pinAuthPOS]").find("li.active").attr("tipo"),
-                arg_posto_designacao: $("#posto_designacao").val().trim(), arg_posto_multiplecaixa: $("#posto_varias_caixas_abertas").hasClass("active"),
+                arg_posto_designacao: $("#posto_designacao").val().trim(),
+                arg_posto_multiplecaixa: $("#posto_varias_caixas_abertas").hasClass("active"),
+                posto_vermontatefaturado: $("#posto_ver_montate_faturado").hasClass("active"),
                 arg_posto_matricula: $("[codigos_posto]").find("li.active").attr("key"),
-                arg_posto_montanteinicial: 0}),
+                arg_posto_montanteinicial: 0
+            }),
             success(e) {
                 $("[bt_posto]").attr("disabled", false).removeClass("loading");
                 if(e.result){
@@ -569,15 +573,21 @@ var settings = {
             contentType: "application/json",
             error(){$("[bt_edit_posto]").attr("disabled", false).removeClass("loading")},
             data: JSON.stringify({arg_tposto_id: $("[tipoPostoEdit]").find("li.active").attr("tipo_id"),
-                arg_espaco_destino: this.armazensSelecionadosChange, arg_posto_id:  settings.selected.posto_id,
-                arg_posto_designacao: $("[postoDesignacao]").val().trim(), arg_posto_multiplecaixa: $("#posto_varias_caixas_abertas_edit").hasClass("active"),
-                arg_posto_matricula: null, posto_authmode: $("[pinAuthEdit]").find("li.active").attr("tipo"),
-                posto_caixamode:  $("[tipoCaixaEdit]").find("li.active").attr("tipo")}),
+                arg_espaco_destino: this.armazensSelecionadosChange,
+                arg_posto_id:  settings.selected.posto_id,
+                arg_posto_designacao: $("[postoDesignacao]").val().trim(),
+                arg_posto_multiplecaixa: $("#posto_varias_caixas_abertas_edit").hasClass("active"),
+                posto_vermontatefaturado: $("#posto_ver_montate_faturado").hasClass("active"),
+                arg_posto_matricula: null,
+                posto_authmode: $("[pinAuthEdit]").find("li.active").attr("tipo"),
+                posto_caixamode:  $("[tipoCaixaEdit]").find("li.active").attr("tipo")
+            }),
             success(e) {
                 $("[bt_edit_posto]").attr("disabled", false).removeClass("loading");
                 if(e.result){
                     $("[armazens_posto_edit], [tipoPostoEdit], [pinAuthEdit], [tipoCaixaEdit]").find("li").removeClass("active");
                     $("#posto_varias_caixas_abertas_edit").removeClass("active");
+                    $("#posto_ver_montate_faturado").removeClass("active");
                     $("#xModalCtrlEditPosto input").val("");
                     settings.listarPostos();
                     $("#xModalCtrlEditPosto").find(".hideTarget").click();
@@ -803,11 +813,15 @@ $(".list-postos").on("click", ".editar", function () {
     $("[postoDesignacao]").val(settings.selected.posto_designacao);
     $("[armazens_posto_edit], [tipoPostoEdit], [pinAuthEdit], [tipoCaixaEdit]").find("li").removeClass("active");
     $("#posto_varias_caixas_abertas_edit").removeClass("active");
+    $("#posto_ver_montate_faturado").removeClass("active");
     $("[postoTipoDesc]").val(settings.selected.tposto_designacao);
     $("#tipoCaixaDescEdit").val((settings.selected.posto_caixamode !== null ? $("[tipoCaixaEdit]").find(`li[tipo=${settings.selected.posto_caixamode}]`).text() : ""));
     $("#pinAuthDescEdit").val((settings.selected.posto_authmode !== null ? $("[pinAuthEdit]").find(`li[tipo=${settings.selected.posto_authmode}]`).text() : ""));
     if(settings.selected.posto_multiplecaixa){
         $("#posto_varias_caixas_abertas_edit").addClass("active");
+    }
+    if(settings.selected.posto_vermontatefaturado){
+        $("#posto_ver_montate_faturado").addClass("active");
     }
     $("[tipoPostoEdit]").find(`li[tipo_id=${settings.selected.tposto_id}]`).addClass("active");
     $("[tipoCaixaEdit]").find(`li[tipo=${settings.selected.posto_caixamode}]`).addClass("active");

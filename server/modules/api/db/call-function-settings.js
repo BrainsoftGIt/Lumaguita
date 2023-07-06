@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.functGetArticleTax = exports.functLoadImpostos = exports.functRegistarImposto = exports.functLoadSpaceMigrate = exports.functLoadClustersBranch = exports.functLoadDadosEmpresa = exports.functMigrarEspaco = exports.functAtualizarDadosEmpresa = exports.functLoadArmazens = exports.functLoadCambio = exports.functRegCambio = exports.functUpdateArmazem = exports.functRegArmazem = void 0;
+exports.functGetArticleTax = exports.functLoadImpostos = exports.functRegistarImposto = exports.functLoadSpaceMigrate = exports.functLoadClustersBranch = exports.functLoadTaxCodes = exports.functLoadDadosEmpresa = exports.functMigrarEspaco = exports.functAtualizarDadosEmpresa = exports.functLoadArmazens = exports.functLoadCambio = exports.functRegCambio = exports.functUpdateArmazem = exports.functRegArmazem = void 0;
 const zoo_pg_1 = require("zoo.pg");
 const database_service_1 = require("../../../service/database.service");
 const args_1 = require("../../../global/args");
@@ -44,6 +44,11 @@ function functLoadDadosEmpresa(args) {
     return (0, zoo_pg_1.catchAll)(sql `select * from tweeks.funct_load_espaco_configuracao( ${args})`);
 }
 exports.functLoadDadosEmpresa = functLoadDadosEmpresa;
+function functLoadTaxCodes() {
+    const { sql } = database_service_1.factory.create(zoo_pg_1.Templates.PARAMETERIZED);
+    return (0, zoo_pg_1.catchAll)(sql `select * from codigoimposto`);
+}
+exports.functLoadTaxCodes = functLoadTaxCodes;
 function functLoadClustersBranch(args) {
     const { sql } = database_service_1.factory.create(zoo_pg_1.Templates.PARAMETERIZED);
     return (0, zoo_pg_1.catchAll)(sql `select * from tweeks.funct_load_cluster_by_branch( ${args}) data`);
