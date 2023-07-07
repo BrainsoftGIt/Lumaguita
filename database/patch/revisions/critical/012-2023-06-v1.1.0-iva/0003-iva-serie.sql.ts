@@ -79,7 +79,7 @@ declare
   _data record;
 
 begin
-  arg_autorizacao_continue := coalesce( arg_autorizacao_continue, false);
+  arg_autorizacao_continue := coalesce( arg_autorizacao_continue, false );
   _autorizacao := jsonb_populate_record( _autorizacao, args );
   _autorizacao_continue := jsonb_populate_record( _autorizacao_continue, args->'arg_autorizacao_continue' );
   
