@@ -1,20 +1,20 @@
 import {block} from "../../../core/updater";
 
-block( module, { identifier: "iva-structure-nc", flags:[ "@unique" ]} ).sql`
+block( module, { identifier: "iva-structure-ncv2", flags:[ "@unique" ]} ).sql`
 do $$
 declare 
 begin
     perform map.constant('maguita_tserie_notacredito', 'int2', 4 );
-    begin
-      insert into tweeks.tserie( tserie_id, tserie_desc, tserie_code
-       ) values (
-        (map.constant()::map.constant).maguita_tserie_notacredito,
-        'Nota de credito',
-        'NC'
-      );
-    exception when others then null;
-    end;
-end
+  insert into tweeks.tserie( 
+    tserie_id, 
+    tserie_desc, 
+    tserie_code
+   ) values (
+    4,
+    'Nota de credito',
+    'NC'
+  );
+end;
 $$;
 `;
 
