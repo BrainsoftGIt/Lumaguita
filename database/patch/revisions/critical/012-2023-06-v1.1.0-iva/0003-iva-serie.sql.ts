@@ -4,7 +4,7 @@ block( module, { identifier: "iva-structure-nc", flags:[ "@unique" ]} ).sql`
 do $$
 declare 
 begin
-    select map.constant('maguita_tserie_notacredito', 'int2', 4 );
+    perform map.constant('maguita_tserie_notacredito', 'int2', 4 );
     begin
       insert into tweeks.tserie( tserie_id, tserie_desc, tserie_code
        ) values (
