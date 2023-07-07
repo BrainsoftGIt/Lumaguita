@@ -1,5 +1,23 @@
 import {block} from "../../../core/updater";
 
+block( module, { identifier: "iva-structure-nc", flags:[ "@unique" ]} ).sql`
+do $$
+declare 
+begin
+    select map.constant('maguita_tserie_notacredito', 'int2', 4 );
+    begin
+      insert into tweeks.tserie( tserie_id, tserie_desc, tserie_code
+       ) values (
+        (map.constant()::map.constant).maguita_tserie_notacredito,
+        'Nota de credito',
+        'NC'
+      );
+    exception when others then null;
+    end;
+end
+$$;
+
+`;
 block( module, { identifier: "iva-structure", flags:[ "@unique" ]} ).sql`
 select map.constant( 'maguita_autorizacao_estado_ativo', 'int2', 1 );
 select map.constant( 'maguita_autorizacao_estado_fechado', 'int2', 0 );
