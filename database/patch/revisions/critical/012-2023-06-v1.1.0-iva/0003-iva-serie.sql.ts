@@ -16,8 +16,9 @@ begin
     end;
 end
 $$;
-
 `;
+
+
 block( module, { identifier: "iva-structure", flags:[ "@unique" ]} ).sql`
 select map.constant( 'maguita_autorizacao_estado_ativo', 'int2', 1 );
 select map.constant( 'maguita_autorizacao_estado_fechado', 'int2', 0 );
