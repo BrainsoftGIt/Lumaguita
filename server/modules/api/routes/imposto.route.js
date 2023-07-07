@@ -39,6 +39,11 @@ storage_service_1.app.get("/api/impostos", (req, res) => __awaiter(void 0, void 
     let taplicar = JSON.parse(fs.readFileSync(path_1.default.join(__dirname, "../../../lib/json/taplicar.json")));
     res.json({ impostos: response.rows, taplicar_data: taplicar });
 }));
+storage_service_1.app.get("/api/impostos/codes", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { functLoadTaxCodes } = require("../db/call-function-settings");
+    const { rows: taxCodes } = yield functLoadTaxCodes();
+    res.json({ taxCodes });
+}));
 storage_service_1.app.post("/api/imposto/artigo", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { functGetArticleTax } = require("../db/call-function-settings");
     req.body.arg_espaco_auth = req.body.is_admin ? req.session.auth_data.auth.armazem_atual : req.session.user_pos.auth.armazem_atual;

@@ -12,6 +12,7 @@ var article = {
         this.loadExtraItems();
         this.loadWarehouses();
         this.loadSimpleTaxs();
+        this.loadTaxCode();
         if(currentSystem.type === "loja"){
             let xModalAllAboutArtigo = $("#xModalAllAboutArtigo");
             $("#artigo_confecionado, #hasExtraItem").remove();
@@ -87,6 +88,21 @@ var article = {
                 });
                 article.imposto_lista_tipo_aplicacao.forEach(value => {
                     artigo_aplicacao_imposto.append(`<li class="tgl" taplicar_id="${value.taplicar_id}">${value.taplicar_descricao}</li>`);
+                });
+            }
+        });
+    },
+    loadTaxCode(){
+        $.ajax({
+            url: "/api/impostos/codes",
+            method: "GET",
+            contentType: "application/json",
+            success({taxCodes}) {
+                let TaxCodes = $("#artigo_codigoimpostolist")
+                    .html(`<li class="tgl">(Sem imposto)</li>`);
+                article.taxCodes = taxCodes;
+                taxCodes.forEach(({codigoimposto_id, codigoimposto_descricao}) =>{
+                    TaxCodes.append(`<li class="tgl" codigoimposto_id="${codigoimposto_id}">${codigoimposto_descricao}</li>`);
                 });
             }
         });
@@ -370,7 +386,9 @@ var article = {
             artigo_codigo: ($("#artigo_codigo").val().trim() || generateCode()),
             artigo_nome: nomeArtigo, artigo_preparacao: $("#artigo_confecionado").hasClass("active"),
             artigo_stocknegativo: $("#artigo_stock_negativo").hasClass("active"), artigo_foto: null, artigo_descricao: ($("#artigo_observacao").val().trim() || null),
-            arg_items: this.selectedExtraItems, arg_imposto: article.impostos_selecionados, arg_links: this.selectedWarehouses, arg_ean_codes: this.addedEAN}));
+            arg_items: this.selectedExtraItems, arg_imposto: article.impostos_selecionados, arg_links: this.selectedWarehouses, arg_ean_codes: this.addedEAN,
+            artigo_codigoimposto: $("#artigo_codigoimposto").find("li.active").attr("codigoimposto_id") || null
+        }));
         formData.append("file",  $("#artigo_foto")[0].files[0]);
 
         $.ajax({
@@ -404,7 +422,9 @@ var article = {
             artigo_classe_id:  $(".listCats").find("div.active").attr("cat_id"), artigo_id: this.selected.artigo_id,
             artigo_codigo: article.selected.artigo_codigo, artigo_nome: $("#artigo_nome").val().trim(), artigo_preparacao: $("#artigo_confecionado").hasClass("active"),
             artigo_stocknegativo: $("#artigo_stock_negativo").hasClass("active"), artigo_foto: article.selected.artigo_foto, artigo_descricao: ($("#artigo_observacao").val().trim() || null),
-            arg_items: this.selectedExtraItems, arg_imposto: article.impostos_selecionados, arg_links: this.selectedWarehouses, arg_ean_codes: this.addedEAN}));
+            arg_items: this.selectedExtraItems, arg_imposto: article.impostos_selecionados, arg_links: this.selectedWarehouses, arg_ean_codes: this.addedEAN,
+            artigo_codigoimposto: $("#artigo_codigoimposto").find("li.active").attr("codigoimposto_id")
+        }));
         formData.append("file",  $("#artigo_foto")[0].files[0]);
 
         $.ajax({
