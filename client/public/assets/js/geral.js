@@ -94,12 +94,18 @@ function formattedString(nStr) {
 }
 
 $('*').on("keypress", ".integer", function (event) {
+    if (event.which === 46) {
+        event.which = 44;
+    }
     if ((event.which !== 44 || $(this).val().indexOf('/') !== -1) &&
         ((event.which < 48 || event.which > 57) &&
             (event.which !== 0 && event.which !== 8))) {
         event.preventDefault();
     }
 }).on("keypress", ".double", function (event) {
+    if (event.which === 46) {
+        event.which = 44;
+    }
     if ((event.which !== 44 || $(this).val().indexOf(',') !== -1) &&
         ((event.which < 48 || event.which > 57) &&
             (event.which !== 0 && event.which !== 8))) {
