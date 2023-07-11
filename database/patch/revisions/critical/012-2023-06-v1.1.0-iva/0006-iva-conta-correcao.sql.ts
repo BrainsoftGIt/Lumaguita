@@ -211,7 +211,7 @@ declare
           'deposito_referencia', lib.sets_ref( _conta ),
           'deposito_documento', _conta.conta_numerofatura,
           'deposito_serie', _conta.conta_serie,
-          'deposito_serie_id', _conta.deposito_serie_id,
+          'deposito_serie_id', _conta.conta_serie_id,
           '_raise', true
         ));
 
