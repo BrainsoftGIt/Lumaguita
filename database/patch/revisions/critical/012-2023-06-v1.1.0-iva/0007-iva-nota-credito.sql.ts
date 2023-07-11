@@ -1,6 +1,6 @@
 import {block} from "../../../core/updater";
 
-block( module, { identifier: "ivaContaCorrent", flags:["@unique"]}).sql`
+block( module, { identifier: "ivaNotaCredito", flags:["@unique"]}).sql`
 alter table tweeks.conta add column if not exists conta_conta_docorigin uuid default null;
 alter table tweeks.venda add column if not exists venda_venda_docorign uuid default null;
 
