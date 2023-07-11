@@ -4,6 +4,7 @@ const addInterMenus = function (typeMenu, code) {
     acesso.menusFaturasGuias.forEach((value) =>{
         value = acesso.showConfig ? value : value.data;
         if(typeMenu === "fatura"){
+            return
             if(value.menu_codigo === "maguita.fatura" || value.menu_codigo === "maguita.proforma" || value.menu_codigo === "maguita.notacredito")
                 menus_internos.append(`<li link="${value.menu_link}" code="${value.menu_codigo}" tipo="fatura">${value.menu_nome}</li>`);
         }

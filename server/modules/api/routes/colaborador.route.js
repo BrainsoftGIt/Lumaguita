@@ -139,27 +139,28 @@ web_service_1.app.post("/api/user/enable", (req, res) => __awaiter(void 0, void 
     }
 }));
 web_service_1.app.post("/api/user/logged/menus", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r;
     const espacoDefault = "00000000-0000-0000-0000-000000000001";
     const supportUser = "00000000-0000-0000-0000-000000000002";
     const { functLoadMenuGrants } = require("../db/call-function-colaborador");
     let response = null;
     let showConfigMenu = true;
-    if (req.session.auth_data.auth.branch_uuid) {
+    if ((_c = (_b = (_a = req === null || req === void 0 ? void 0 : req.session) === null || _a === void 0 ? void 0 : _a.auth_data) === null || _b === void 0 ? void 0 : _b.auth) === null || _c === void 0 ? void 0 : _c.branch_uuid) {
         showConfigMenu = false;
     }
-    if (req.session.auth_data.auth.armazem_atual !== espacoDefault) {
+    if (((_f = (_e = (_d = req === null || req === void 0 ? void 0 : req.session) === null || _d === void 0 ? void 0 : _d.auth_data) === null || _e === void 0 ? void 0 : _e.auth) === null || _f === void 0 ? void 0 : _f.armazem_atual) !== espacoDefault) {
         showConfigMenu = false;
     }
-    if (req.session.auth_data.auth.colaborador_id !== supportUser) {
+    if (((_j = (_h = (_g = req === null || req === void 0 ? void 0 : req.session) === null || _g === void 0 ? void 0 : _g.auth_data) === null || _h === void 0 ? void 0 : _h.auth) === null || _j === void 0 ? void 0 : _j.colaborador_id) !== supportUser) {
         showConfigMenu = false;
     }
     if (!showConfigMenu) {
-        req.body.arg_colaborador_id = req.session.auth_data.auth.colaborador_id;
-        req.body.arg_espaco_auth = req.session.auth_data.auth.armazem_atual;
+        req.body.arg_colaborador_id = (_m = (_l = (_k = req === null || req === void 0 ? void 0 : req.session) === null || _k === void 0 ? void 0 : _k.auth_data) === null || _l === void 0 ? void 0 : _l.auth) === null || _m === void 0 ? void 0 : _m.colaborador_id;
+        req.body.arg_espaco_auth = (_q = (_p = (_o = req.session) === null || _o === void 0 ? void 0 : _o.auth_data) === null || _p === void 0 ? void 0 : _p.auth) === null || _q === void 0 ? void 0 : _q.armazem_atual;
         response = yield functLoadMenuGrants(req.body);
         response = response.rows;
     }
-    res.json({ dados: req.session.auth_data, showConfigMenu: showConfigMenu, grants: response });
+    res.json({ dados: (_r = req.session) === null || _r === void 0 ? void 0 : _r.auth_data, showConfigMenu: showConfigMenu, grants: response });
 }));
 web_service_1.app.post("/api/menus/load", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { functLoadMenusBranch } = require("../db/call-function-colaborador");
@@ -183,7 +184,7 @@ web_service_1.app.post("/api/armazens/colaborador/load", (req, res) => __awaiter
     res.json({ armazens: response.rows });
 }));
 web_service_1.app.post("/api/login/admin", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a, _b, _c, _d;
+    var _s, _t, _u, _v;
     const { functLogin } = require("../db/call-function-colaborador");
     const response = yield functLogin(req.body);
     req.session.auth_data = undefined;
@@ -202,9 +203,9 @@ web_service_1.app.post("/api/login/admin", (req, res) => __awaiter(void 0, void 
             if (response.rows[0].data.auth.acesso.filter((ac => ac.menu_link !== null)).length > 0) {
                 req.session.auth_data = response.rows[0].data;
                 req.session.auth_data.auth.armazem_atual = response.rows[0].data.espaco_trabalha[0].espaco_id;
-                req.session.auth_data.auth.branch_uuid = ((_b = (_a = response === null || response === void 0 ? void 0 : response.rows[1]) === null || _a === void 0 ? void 0 : _a.data) === null || _b === void 0 ? void 0 : _b.branch_uid) || null;
+                req.session.auth_data.auth.branch_uuid = ((_t = (_s = response === null || response === void 0 ? void 0 : response.rows[1]) === null || _s === void 0 ? void 0 : _s.data) === null || _t === void 0 ? void 0 : _t.branch_uid) || null;
                 req.session.posto_admin = response.rows[0].data.espaco_trabalha[0].espaco_posto_admin;
-                req.session.auth_data.auth.branch_main_workspace = ((_d = (_c = response.rows[1]) === null || _c === void 0 ? void 0 : _c.data) === null || _d === void 0 ? void 0 : _d.branch_main_workspace) || null;
+                req.session.auth_data.auth.branch_main_workspace = ((_v = (_u = response.rows[1]) === null || _u === void 0 ? void 0 : _u.data) === null || _v === void 0 ? void 0 : _v.branch_main_workspace) || null;
                 cluster_service_1.clusterServer.notifyLocalChange({ event: "LOGIN:ADMIN", extras: null, message: "Login admin" });
                 req.session.save(() => {
                     res.json(Object.assign({ result: true }, (req.body.remote) ? response.rows[0].data : {}));

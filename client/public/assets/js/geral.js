@@ -448,7 +448,7 @@ function generateCode(length = 8){
         random_ascii = Math.floor((Math.random() * 25) + 97);
         random_string += String.fromCharCode(random_ascii)
     }
-    return getCurrentDate()+random_string;
+    return "ART-"+random_string.toUpperCase();
 }
 function getCurrentDate() {
     let date = new Date();

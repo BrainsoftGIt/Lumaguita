@@ -131,22 +131,22 @@ app.post("/api/user/logged/menus", async (req, res) =>{
     const {functLoadMenuGrants} = require("../db/call-function-colaborador");
     let response = null;
     let showConfigMenu = true;
-    if(req.session.auth_data.auth.branch_uuid){
+    if(req?.session?.auth_data?.auth?.branch_uuid){
         showConfigMenu = false;
     }
-    if(req.session.auth_data.auth.armazem_atual !== espacoDefault){
+    if(req?.session?.auth_data?.auth?.armazem_atual !== espacoDefault){
         showConfigMenu = false;
     }
-    if(req.session.auth_data.auth.colaborador_id !== supportUser){
+    if(req?.session?.auth_data?.auth?.colaborador_id !== supportUser){
         showConfigMenu = false;
     }
     if(!showConfigMenu){
-        req.body.arg_colaborador_id = req.session.auth_data.auth.colaborador_id;
-        req.body.arg_espaco_auth = req.session.auth_data.auth.armazem_atual;
+        req.body.arg_colaborador_id = req?.session?.auth_data?.auth?.colaborador_id;
+        req.body.arg_espaco_auth = req.session?.auth_data?.auth?.armazem_atual;
          response = await functLoadMenuGrants(req.body);
          response = response.rows;
     }
-    res.json({dados: req.session.auth_data, showConfigMenu: showConfigMenu, grants: response });
+    res.json({dados: req.session?.auth_data, showConfigMenu: showConfigMenu, grants: response });
 });
 app.post("/api/menus/load", async (req, res) =>{
     const {functLoadMenusBranch} = require("../db/call-function-colaborador");
