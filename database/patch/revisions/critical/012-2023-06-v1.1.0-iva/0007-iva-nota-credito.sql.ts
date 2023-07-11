@@ -28,7 +28,9 @@ declare
       conta_id: UID,
       conta_posto_id: UID
       itens: [
-        { venda_id:ID }
+        { venda_id:ID },
+        { venda_id:ID },
+        { venda_id:ID }...
       ]
     }
    */
