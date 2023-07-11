@@ -341,4 +341,65 @@ begin
   return _conta_close_res;
 end
 $$;
+
+
+create or replace function tweeks.funct_load_conta_notacredito( args jsonb )
+returns setof jsonb
+language plpgsql as $$
+declare
+  /**
+    args := {
+      arg_colaborador_id: UID
+      arg_espaco_auth: UID
+    }
+   */
+  arg_colaborador_id uuid default args->>'arg_colaborador_id';
+  arg_espaco_auth uuid default args->>'arg_espaco_auth';
+  arg_branch uuid default tweeks.__branch_uid( arg_colaborador_id, arg_espaco_auth );
+  _const map.constant;
+begin
+  _const := map.constant();
+  return query
+    with __venda as (
+      select
+          ve.*,
+          art.*,
+          sum( tx.taxa_taxa ) as taxa_taxa,
+          sum( tx.taxa_percentagem ) as taxa_percentagem
+        from tweeks.venda ve
+          inner join tweeks.artigo art on ve.venda_artigo_id = art.artigo_id
+          left join tweeks.taxa tx on tx.taxa_id = any( venda_taxas )
+        where ve._branch_uid  = arg_branch
+          and ve.venda_venda_id is null
+          and ve.venda_estado = _const.maguita_venda_estado_fechado
+        group by ve.venda_id,
+          art.artigo_id
+    ), __venda_group as (
+      select
+          _ve.venda_id,
+          _ve.venda_conta_id,
+          array_agg( to_jsonb( _vei ) ) as venda_itens
+        from __venda _ve
+          inner join __venda _vei on _ve.venda_id = _vei.venda_venda_id
+        where _ve.venda_venda_id is null
+        group by _ve.venda_id
+
+    ), __conta as (
+      select
+        ct.*,
+        array_agg( to_jsonb( _veg ) || to_jsonb( _ved ) ) as conta_vendas
+        from tweeks.conta ct
+          inner join __venda_group _veg on ct.conta_id = _veg.venda_conta_id
+          inner join __venda _ved on _veg.venda_id = _ved.venda_id
+          left join tweeks.venda venc on _veg.venda_id = venc.venda_venda_docorign
+            and venc.venda_estado = _const.maguita_venda_estado_fechado
+        where ct._branch_uid = arg_branch
+          and ct.conta_estado = _const.maguita_conta_estado_fechado
+          and venc.venda_id is null
+        group by ct.conta_id
+    ) select to_jsonb( _ct )
+        from __conta _ct
+  ;
+end;
+$$;
 `;
