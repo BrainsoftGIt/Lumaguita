@@ -37,6 +37,7 @@ var faturaAdmin = {
                                             <li>${art.venda_quantidade}</li>
                                             <li>${art.venda_lote || ""}</li>
                                             <li>${(art.venda_validade === null ? "" : alterFormatDate(art.venda_validade))}</li>
+                                            <li>${art.taxa_percentagem || art.taxat_taxa || ""} ${(!art.taxat_taxa && !art.taxa_percentagem) ? "" : (art.taxat_taxa) ? "STN" : "%"}</li>
                                             <li price="${art.venda_custounitario}">${art.venda_custounitario.formatter()+" STN"}</li>
                                             <li>${total_value+" STN"}</li>
                                             <li class="flex v-ct">
