@@ -11,6 +11,7 @@ declare
       arg = {
         arg_espaco_auth: ID,
         arg_colaborador_id: ID,
+        arg_tserie_id: ID,
 
         deposito:{
           deposito_cliente_id
@@ -53,6 +54,7 @@ declare
 
     arg_espaco_auth uuid not null default args->>'arg_espaco_auth';
     arg_colaborador_id uuid not null default args->>'arg_colaborador_id';
+    arg_tserie_id int2 not null default args->>'arg_tserie_id';
 
     arg_conta_id uuid default args->>'conta_id';
     arg_caixa_id uuid default args->>'de_caixa_id';
@@ -137,8 +139,15 @@ declare
       end if;
     end if;
 
-
-    if _conta._tgrupo_id = _const.maguita_tgrupo_cnormal then
+    
+    if arg_tserie_id is not null and arg_tserie_id = any( array[
+      _const.maguita_tserie_notacredito
+    ]::int2[] ) then
+      _rec := tweeks.__sets_generate_documento( arg_espaco_auth, arg_tserie_id );
+      _conta.conta_numerofatura := _rec.document;
+      _conta.conta_serie := to_json( _rec );
+      _conta.conta_serie_id = _rec.serie_id;
+    elseif _conta._tgrupo_id = _const.maguita_tgrupo_cnormal then
       _rec := tweeks.__sets_generate_documento( arg_espaco_auth, _const.maguita_tserie_faturarecibo );
       _conta.conta_numerofatura := _rec.document;
       _conta.conta_serie := to_json( _rec );
@@ -228,7 +237,6 @@ declare
       );
   end;
 $$;
-
 
 create or replace function tweeks.funct_pos_reg_deposito(args jsonb) returns lib.res
   language plpgsql
