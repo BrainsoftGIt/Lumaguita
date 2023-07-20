@@ -93,10 +93,11 @@ var categoriasArtigosPOS = {
                     }
                 }
 
+                let stock_quantidade = (art.artigo_stocknegativo) ? "&#x221E;" : art.stock_quantidade.dc();
                 $("[categoriasArtigos]").append(`<section class="waves-effect have-extra isArtigo ${esgotando}" i="${idx}">
                                                 <div class="img-container ${(art.artigo_foto ? "artigo" : "empty-artigo")}" style="background-image: url(${(art.artigo_foto ? "/storage/"+art.artigo_foto.split(";")[0] : "")})">
                                                     <span class="top is-money-text" coin="STN">${art.link_metadata.precario_custo.formatter()}</span>
-                                                    <span class="instock" title="Quantidade disponível">${art.stock_quantidade}</span>
+                                                    <span class="instock" title="Quantidade disponível">${stock_quantidade}</span>
                                                 </div>
                                                 <h4>${art.artigo_nome}</h4>
                                             </section>`);
@@ -127,10 +128,11 @@ var categoriasArtigosPOS = {
                         if(Number((art.link_metadata.stock_quantidade || 0)) < Number((art.link_metadata.stock_minimo || 0)))
                             stockMinimo = "off";
                     }
+                    let stock_quantidade = (art.artigo_stocknegativo) ? "&#x221E;" : art.stock_quantidade.dc();
                     $("[categoriasArtigos]").append(`<section class="waves-effect have-extra isArtigo ${stockMinimo}" i="${idx}">
                                                 <div class="img-container ${(art.artigo_foto ? "artigo" : "empty-artigo")}" style="background-image: url(${(art.artigo_foto ? "/storage/"+art.artigo_foto.split(";")[0] : "")})">
                                                     <span class="top is-money-text" coin="STN">${art.link_metadata.precario_custo.formatter()}</span>
-                                                    <span class="instock" title="Quantidade disponível">${art.stock_quantidade}</span>
+                                                    <span class="instock" title="Quantidade disponível">${stock_quantidade}</span>
                                                 </div>
                                                 <h4>${art.artigo_nome}</h4>
                                             </section>`);

@@ -58,6 +58,7 @@ var account = {
         $(".credentialPIN .pinput").find("span").remove();
         $(".list-users").find("li").css("pointer-events", "auto");
         $(".txtChangingPIN").text("Digite o seu PIN atual");
+        $(".list-users li").removeClass("active");
     },
     mostrarArmazens(){
         let armazens_pos = $("#armazens_pos");
@@ -193,9 +194,9 @@ var account = {
                                         </div>
                                 </li>`);
                     });
-                    if(e.usrs.length === 1){
+                    /*if(e.usrs.length === 1){
                         users.find("li").eq(0).addClass("active");
-                    }
+                    }*/
                     showTarget("MST-PIN");
                 }
                 else xAlert("Colaboradores POS", "Não há colaboradores registados com privilégio para realizar a operação.", "error");

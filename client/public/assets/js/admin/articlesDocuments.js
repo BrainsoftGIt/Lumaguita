@@ -88,7 +88,7 @@ var articlesDocuments = {
                                             <li>${ $("[description_article]").val()}</li>
                                             <li>${$("[amount_article]").val()}</li>
                                             <li price="${$("[price_article]").val().unFormatter()}">${$("[price_article]").val()+" STN"}</li>
-                                            <li>{(("[lote_article]").val().trim() || "")}</li>
+                                            <li>${($("[lote_article]").val().trim() || "")}</li>
                                             <li>${($("[date_expiration_article]").val() || "")}</li>
                                             <li>${$("[amount_packaging]").val()}</li>                                                         
                                             <li>${total_value+" STN"}</li>                              

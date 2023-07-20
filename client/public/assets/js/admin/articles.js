@@ -171,18 +171,20 @@ var article = {
                 else artigos.removeClass("empty");
 
                 article.list.forEach((art, idx) =>{
+                    console.log(art)
                     art = art.funct_load_artigo;
                     minimoAtingido = "";
                     articlesActions = "";
 
+                    let stock_quantidade = (art.artigo_stocknegativo) ? "&#x221E;" : art.stock_quantidade.dc();
                     if(art.artigo_foto){
                         fotoArtigo = `<div class="img-container artigo" style="background-image: url(${"/storage/"+art.artigo_foto.split(";")[0]})">
-                                        <span class="instock" title="Quantidade no stock">${art.stock_quantidade}</span>
+                                        <span class="instock" title="Quantidade no stock">${stock_quantidade}</span>
                                     </div>`;
                     }
                     else{
                         fotoArtigo = `<div class="img-container empty-artigo">
-                                        <span class="instock" title="Quantidade no stock">${art.stock_quantidade}</span>
+                                        <span class="instock" title="Quantidade no stock">${stock_quantidade}</span>
                                     </div>`;
                     }
                     if(!art.artigo_stocknegativo){
