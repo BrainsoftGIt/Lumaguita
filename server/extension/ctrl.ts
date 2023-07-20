@@ -138,9 +138,9 @@ export function ctrlBroadcast(event:string, ...data:any ){
 }
 
 function ___broadcasts ( socket:net.Socket, text:string){
-        console.log( `BroadCsatNext|${text}`)
-        if( !socket[ "connected" ] ) return;
-        socket.write( text+"\n" );
+    console.log( `BroadCsatNext|${text}`)
+    if( !socket[ "connected" ] ) return;
+    socket.write( text+"\n" );
 }
 
 export function detectServer():Promise<Socket>{
@@ -155,7 +155,7 @@ export function detectServer():Promise<Socket>{
         });
         connection.on( "connect", () => {
             console.log( "Detect server... [ok]")
-            resolve(connection)
+            resolve( connection )
         });
     });
 }

@@ -54,7 +54,7 @@ declare
 
     arg_espaco_auth uuid not null default args->>'arg_espaco_auth';
     arg_colaborador_id uuid not null default args->>'arg_colaborador_id';
-    arg_tserie_id int2 not null default args->>'arg_tserie_id';
+    arg_tserie_id int2 default args->>'arg_tserie_id';
 
     arg_conta_id uuid default args->>'conta_id';
     arg_caixa_id uuid default args->>'de_caixa_id';
@@ -515,7 +515,8 @@ begin
 end
 $$;
 
-create or replace  function tweeks.funct_load_artigo(args jsonb) returns SETOF jsonb
+
+create or replace function tweeks.funct_load_artigo(args jsonb) returns SETOF jsonb
   language plpgsql
 as
 $$
@@ -555,7 +556,17 @@ begin
      */
     return query
         with
-          __artigo as (
+          __stock as (
+            select
+                fluxo_artigo_id as stock_artigo_id,
+                fluxo_espaco_id as stock_espaco_id,
+                fluxo_resultado as stock_quantidade
+              from tweeks.__fluxo_scan(
+                _branch := _branch,
+                _espaco_id := arg_espaco_auth,
+                _resume := true
+              )
+          ), __artigo as (
             select
                 art.artigo_id,
                 art.artigo_codigo,
@@ -565,7 +576,7 @@ begin
                 art.artigo_artigo_id,
 
                 art.artigo_espaco_auth = any( arg_espaco_childs ) as artigo_owner,
-                s.stock_quantidade,
+                coalesce( s.stock_quantidade, 0 ) as stock_quantidade,
                 art.artigo_foto,
                 art.artigo_espaco_auth,
                 art.artigo_classe_id,
@@ -590,7 +601,7 @@ begin
                   and l.link_espaco_destino = any( arg_espaco_childs )
                   and l.link_tlink_id = _const.maguita_tlink_preco
                   and l._branch_uid = _branch
-                left join tweeks.stock s on art.artigo_id = s.artigo_id and s.espaco_id = arg_espaco_auth
+                left join __stock s on art.artigo_id = s.stock_artigo_id and s.stock_espaco_id = arg_espaco_auth
               where art._branch_uid = _branch
               group by art.artigo_id,
                  origin.artigo_id,
@@ -639,6 +650,7 @@ begin
     ;
 end
 $$;
+
 `;
 
 block( module, { identifier: "correct-conta", flags:[ "@unique" ]}).sql`
