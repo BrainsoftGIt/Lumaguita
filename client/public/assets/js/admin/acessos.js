@@ -20,7 +20,10 @@ var acesso = {
             let colaborador_logado_armazens = $("#colaborador_logado_armazens");
             let menus = e.showConfigMenu ? e.dados.auth.acesso : e.grants;
             acesso.showConfig = e.showConfigMenu;
-            menuAcessos.empty();
+            menuAcessos.html(`<li class="tgl flex v-ct active" link="../includes/home.html" title="Home">
+                                            <svg enable-background="new 0 0 511.414 511.414" viewBox="0 0 511.414 511.414"><path d="m497.695 108.838c0-6.488-3.919-12.334-9.92-14.8l-225.988-92.838c-3.896-1.6-8.264-1.6-12.16 0l-225.988 92.838c-6.001 2.465-9.92 8.312-9.92 14.8v293.738c0 6.488 3.918 12.334 9.92 14.8l225.988 92.838c3.854 1.583 8.186 1.617 12.14-.001.193-.064-8.363 3.445 226.008-92.837 6.002-2.465 9.92-8.312 9.92-14.8zm-241.988 76.886-83.268-34.207 179.951-78.501 88.837 36.495zm-209.988-51.67 71.841 29.513v83.264c0 8.836 7.164 16 16 16s16-7.164 16-16v-70.118l90.147 37.033v257.797l-193.988-79.692zm209.988-100.757 55.466 22.786-179.951 78.501-61.035-25.074zm16 180.449 193.988-79.692v257.797l-193.988 79.692z"></path></svg>
+                                        <span>Home</span>
+                                    </li>`);
             colaborador_logado_armazens.empty();
               $("[colaborador_logado]").text(e.dados.auth.colaborador_nome+" "+(e.dados.auth.colaborador_apelido === null ? "" : e.dados.auth.colaborador_apelido.split(" ").pop()));
               $("[colaborador_logado_email]").text(e.dados.auth.colaborador_email);

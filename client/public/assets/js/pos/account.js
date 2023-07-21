@@ -44,6 +44,7 @@ var account = {
         });
     },
     resetModalAuthentication(){
+        $("#pos_valorSubtotal, #pos_valorTotal").text("0,00");
         $('.credentialPIN').find(".pinkey li").css("pointer-events", "auto");
         $(".credentialPIN .user-selected").text("");
         $(".fkinputs .table, .changeBox").css("display", "");
