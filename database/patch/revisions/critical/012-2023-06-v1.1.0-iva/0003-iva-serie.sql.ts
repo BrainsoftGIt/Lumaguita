@@ -56,7 +56,7 @@ block( module, { identifier: "iva-structure-serie_fechoautorizacao", flags:[ "@u
 
 
 
-block( module, { identifier: "iva-serie-functions", flags:[]}).sql
+block( module, { identifier: "iva-serie-function:funct_sets_autorizacao", flags:[]}).sql
 `
 create or replace function tweeks.funct_sets_autorizacao(args jsonb) returns lib.res
   language plpgsql
@@ -156,7 +156,9 @@ begin
   ));
 end;
 $$;
+`
 
+block( module, { identifier: "iva-serie-function:closeyear", flags:[]}).sql`
 create or replace function tweeks.__get_autorizacao( uuid )
   returns tweeks.autorizacao
   immutable
@@ -214,9 +216,10 @@ begin
   ));
 end;
 $$;
+`
 
 
-
+block( module, { identifier: "iva-serie-function:load_autorizacao", flags:[]}).sql`
 create or replace function tweeks.funct_load_autorizacao( args jsonb )
 returns setof jsonb
 language plpgsql as $$
