@@ -124,6 +124,7 @@ begin
           and a._branch_uid = arg_branch_uid
           and a.autorizacao_ano = _autorizacao.autorizacao_ano
           and a.autorizacao_espaco_auth = arg_espaco_auth
+          and a.autorizacao_uid != _autorizacao_continue.autorizacao_uid
   ) then
     return lib.res_false( 'Já existe serie com essa numeração registrada' );
   end if;
