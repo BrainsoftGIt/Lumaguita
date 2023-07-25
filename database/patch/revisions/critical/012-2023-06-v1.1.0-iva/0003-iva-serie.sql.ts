@@ -56,7 +56,7 @@ block( module, { identifier: "iva-structure-serie_fechoautorizacao", flags:[ "@u
 
 
 
-block( module, { identifier: "iva-serie-function:funct_sets_autorizacao", flags:[]}).sql
+block( module, { identifier: "iva-serie-function:funct_sets_autorizacao-v23", flags:[]}).sql
 `
 create or replace function tweeks.funct_sets_autorizacao(args jsonb) returns lib.res
   language plpgsql
@@ -124,7 +124,7 @@ begin
           and a._branch_uid = arg_branch_uid
           and a.autorizacao_ano = _autorizacao.autorizacao_ano
           and a.autorizacao_espaco_auth = arg_espaco_auth
-          and a.autorizacao_uid != _autorizacao_continue.autorizacao_uid
+      where a.autorizacao_uid != _autorizacao_continue.autorizacao_uid
   ) then
     return lib.res_false( 'Já existe serie com essa numeração registrada' );
   end if;
