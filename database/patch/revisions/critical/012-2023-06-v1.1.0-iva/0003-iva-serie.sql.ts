@@ -1,6 +1,6 @@
 import {block} from "../../../core/updater";
 
-block( module, { identifier: "iva-structure-ncv2", flags:[ "@unique" ]} ).sql`
+block( module, { identifier: "iva-structure-ncv2", flags:[ "@unique"]} ).sql`
 do $$
 declare 
 begin
@@ -56,7 +56,7 @@ block( module, { identifier: "iva-structure-serie_fechoautorizacao", flags:[ "@u
 
 
 
-block( module, { identifier: "iva-serie-functions", flags:[]}).sql
+block( module, { identifier: "iva-serie-function:funct_sets_autorizacao-v23", flags:[]}).sql
 `
 create or replace function tweeks.funct_sets_autorizacao(args jsonb) returns lib.res
   language plpgsql
@@ -91,16 +91,14 @@ declare
   _autorizacao_continue tweeks.autorizacao;
   arg_colaborador_id uuid not null default args->>'arg_colaborador_id';
   arg_espaco_auth uuid not null default args->>'arg_espaco_auth';
-  arg_autorizacao_continue boolean default args->>'arg_autorizacao_continue';
   arg_branch_uid uuid default tweeks.__branch_uid( arg_colaborador_id, arg_espaco_auth );
   _res_serie jsonb default jsonb_build_array();
   _next record;
   _data record;
 
 begin
-  arg_autorizacao_continue := coalesce( arg_autorizacao_continue, false );
   _autorizacao := jsonb_populate_record( _autorizacao, args );
-  _autorizacao_continue := jsonb_populate_record( _autorizacao_continue, args->'arg_autorizacao_continue' );
+  _autorizacao_continue := jsonb_populate_record( _autorizacao_continue, args->'_autorizacao_continue' );
   
   if _autorizacao.autorizacao_uid is null then
     _autorizacao.autorizacao_colaborador_uid := arg_colaborador_id;
@@ -125,6 +123,7 @@ begin
           and a._branch_uid = arg_branch_uid
           and a.autorizacao_ano = _autorizacao.autorizacao_ano
           and a.autorizacao_espaco_auth = arg_espaco_auth
+      where a.autorizacao_uid != _autorizacao_continue.autorizacao_uid
   ) then
     return lib.res_false( 'Já existe serie com essa numeração registrada' );
   end if;
@@ -157,7 +156,9 @@ begin
   ));
 end;
 $$;
+`
 
+block( module, { identifier: "iva-serie-function:closeyear", flags:[]}).sql`
 create or replace function tweeks.__get_autorizacao( uuid )
   returns tweeks.autorizacao
   immutable
@@ -215,9 +216,10 @@ begin
   ));
 end;
 $$;
+`
 
 
-
+block( module, { identifier: "iva-serie-function:load_autorizacao", flags:[]}).sql`
 create or replace function tweeks.funct_load_autorizacao( args jsonb )
 returns setof jsonb
 language plpgsql as $$
@@ -369,7 +371,7 @@ begin
   return tweeks.funct_sets_autorizacao( jsonb_build_object(
     'arg_colaborador_id', arg_colaborador_id,
     'arg_espaco_auth', arg_espaco_auth,
-    'arg_autorizacao_continue', _autorizacao,
+    '_autorizacao_continue', _autorizacao,
     'autorizacao_uid', null,
     'autorizacao_espaco_uid', _autorizacao.autorizacao_espaco_uid,
     'autorizacao_designacao', _autorizacao.autorizacao_designacao,
