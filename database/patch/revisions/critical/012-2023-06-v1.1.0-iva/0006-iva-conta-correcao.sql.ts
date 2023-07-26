@@ -423,19 +423,20 @@ begin
         a.artigo_codigo,
         a.artigo_compostoquantidade,
         a.artigo_artigo_id,
-        sum( tx.taxa_percentagem ) as taxa_percentagem,
-        sum( tx.taxa_taxa ) as taxat_taxa
+        tx.taxa_percentagem,
+        tx.taxa_taxa,
+        tip.tipoimposto_id,
+        tip.tipoimposto_codigo,
+        tip.tipoimposto_nome
       from tweeks.venda v
         inner join tweeks.artigo a on v.venda_artigo_id = a.artigo_id
         left join tweeks.taxa tx on tx.taxa_id = any ( v.venda_taxas )
+        left join tweeks.tipoimposto tip on tx.taxa_tipoimposto_id = tip.tipoimposto_id
       where v._branch_uid = ___branch
         and v.venda_estado in (
            _const.maguita_venda_estado_aberto,
            _const.maguita_venda_estado_fechado
         )
-      group by 
-        v.venda_id,
-        a.artigo_id       
     ), __venda_group as (
       select
           v.venda_id as _venda_id,
