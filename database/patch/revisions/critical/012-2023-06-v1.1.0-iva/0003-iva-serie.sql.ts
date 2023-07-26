@@ -1,6 +1,6 @@
 import {block} from "../../../core/updater";
 
-block( module, { identifier: "iva-structure-ncv2", flags:[ "@unique" ]} ).sql`
+block( module, { identifier: "iva-structure-ncv2", flags:[ "@unique"]} ).sql`
 do $$
 declare 
 begin
@@ -91,7 +91,6 @@ declare
   _autorizacao_continue tweeks.autorizacao;
   arg_colaborador_id uuid not null default args->>'arg_colaborador_id';
   arg_espaco_auth uuid not null default args->>'arg_espaco_auth';
-  _autorizacao_continue tweeks.autorizacao;
   arg_branch_uid uuid default tweeks.__branch_uid( arg_colaborador_id, arg_espaco_auth );
   _res_serie jsonb default jsonb_build_array();
   _next record;
