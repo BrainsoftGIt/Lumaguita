@@ -91,11 +91,11 @@ let create = (instituition, account_content, res, user, date, num_autorization) 
                 margin: [0, 7, 0, 5],
                 fontSize: 9.5,
                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
-                text: formattedString(cont.venda_montantecomimposto.toFixed(2) + "") + " STN",
+                text: formattedString(cont.venda_montantesemimposto.toFixed(2) + "") + " STN",
                 alignment: "right"
             }
         ]);
-        subtotal = Number(subtotal) + Number(cont.venda_montantecomimposto);
+        subtotal = Number(subtotal) + Number(cont.venda_montantesemimposto);
     });
     let hasPersonalizadoHarder = (((_c = instituition === null || instituition === void 0 ? void 0 : instituition.espaco_configuracao) === null || _c === void 0 ? void 0 : _c.cabecalho_referencia) === null ? "" : cluster_service_1.clusterServer.res.resolve((_d = instituition === null || instituition === void 0 ? void 0 : instituition.espaco_configuracao) === null || _d === void 0 ? void 0 : _d.cabecalho_referencia));
     let docDefinition = Object.assign({ compress: true, info: {
@@ -271,7 +271,7 @@ let create = (instituition, account_content, res, user, date, num_autorization) 
                                 margin: [0, 7, 0, 5],
                                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
                                 fillColor: '#3C0097',
-                                text: "Valor",
+                                text: "Subtotal",
                                 color: "#ffffff",
                                 alignment: "right"
                             }

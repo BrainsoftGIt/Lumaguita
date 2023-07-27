@@ -117,7 +117,7 @@ export let create = async (instituition, account_content, res, user, date, print
                         columns: [
                             {text: "Qtd. x Preço + Taxa"},
                             {
-                                text: "Total",
+                                text: "Subtotal",
                                 alignment: "right",
                             },
                         ]
@@ -144,7 +144,7 @@ export let create = async (instituition, account_content, res, user, date, print
                         sumImpost[cont.tipoimposto_id].sum += cont.venda_imposto;
                     }
 
-                    subtotal = Number(subtotal) + Number(cont.venda_montantecomimposto);
+                    subtotal = Number(subtotal) + Number(cont.venda_montantesemimposto);
 
                     return {
                         lineHeight: 1,
@@ -155,7 +155,7 @@ export let create = async (instituition, account_content, res, user, date, print
                                 columns: [
                                     {text : `${cont.venda_quantidade} x ${formattedString(preco_artigo.toFixed(2))+" STN"} + ${formattedString(cont.venda_imposto.toFixed(2))}`},
                                     {
-                                        text: formattedString(cont?.venda_montantecomimposto.toFixed(2)+"")+" STN",
+                                        text: formattedString(cont?.venda_montantesemimposto.toFixed(2)+"")+" STN",
                                         alignment: "right"
                                     }
                                 ]

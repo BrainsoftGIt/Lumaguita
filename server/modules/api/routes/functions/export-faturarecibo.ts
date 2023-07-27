@@ -88,12 +88,12 @@ export let create = async (instituition, account_content, res, user, date, num_a
                 margin : [0, 7, 0, 5],
                 fontSize : 9.5,
                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
-                text : formattedString(cont.venda_montantecomimposto.toFixed(2)+"")+" STN",
+                text : formattedString(cont.venda_montantesemimposto.toFixed(2)+"")+" STN",
                 alignment : "right"
             }
         ]);
         valorTotalImpostos = Number(valorTotalImpostos) + Number(cont.venda_imposto);
-        subtotal = Number(subtotal) + Number(cont.venda_montantecomimposto);
+        subtotal = Number(subtotal) + Number(cont.venda_montantesemimposto);
     });
     let docDefinition = {
         compress: true,
@@ -329,56 +329,12 @@ export let create = async (instituition, account_content, res, user, date, num_a
                                 margin : [0, 7, 0, 5],
                                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
                                 fillColor: '#3C0097',
-                                text: "Valor",
+                                text: "Subtotal",
                                 color: "#ffffff",
                                 alignment : "right"
                             }
                         ],
                         ...artigosConta,
-                        [
-                            {
-                                border: [false, false, false, false],
-                                text : "", colSpan: 4, fillColor : "#ffffff"
-                            },
-                            {text : ""},
-                            {text : ""},
-                            {text : ""},
-                            {
-                                fontSize : 9.5,
-                                border: [false, false, false, false],
-                                margin : [0, 7, 0, 5],
-                                text: "Valor Pago"
-                            },
-                            {
-                                fontSize : 9.5,
-                                border: [false, false, false, false],
-                                margin : [0, 7, 0, 5],
-                                text : formattedString(account_content[1]?.main?.deposito_montantemoeda.toFixed(2)+"")+" "+account_content[1]?.main.currency_code,
-                                alignment: "right"
-                            },
-                        ],
-                        [
-                            {
-                                border: [false, false, false, false],
-                                text : "", colSpan: 4, fillColor : "#ffffff"
-                            },
-                            {text : ""},
-                            {text : ""},
-                            {text : ""},
-                            {
-                                fontSize : 9.5,
-                                border: [false, false, false, false],
-                                margin : [0, 7, 0, 5],
-                                text: "Troco",
-                            },
-                            {
-                                fontSize : 9.5,
-                                border: [false, false, false, false],
-                                margin : [0, 7, 0, 5],
-                                text : formattedString(account_content[1].main.deposito_montantetroco.toFixed(2)+"")+" STN",
-                                alignment: "right"
-                            }
-                        ],
                         [
                             {
                                 border: [false, false, false, false],
@@ -452,7 +408,51 @@ export let create = async (instituition, account_content, res, user, date, num_a
                                 text : formattedString(account_content[0]?.main?.conta_montante.toFixed(2)+"")+" STN",
                                 alignment: "right"
                             }
-                        ]
+                        ],
+                        [
+                            {
+                                border: [false, false, false, false],
+                                text : "", colSpan: 4, fillColor : "#ffffff"
+                            },
+                            {text : ""},
+                            {text : ""},
+                            {text : ""},
+                            {
+                                fontSize : 9.5,
+                                border: [false, false, false, false],
+                                margin : [0, 7, 0, 5],
+                                text: "Valor Pago"
+                            },
+                            {
+                                fontSize : 9.5,
+                                border: [false, false, false, false],
+                                margin : [0, 7, 0, 5],
+                                text : formattedString(account_content[1]?.main?.deposito_montantemoeda.toFixed(2)+"")+" "+account_content[1]?.main.currency_code,
+                                alignment: "right"
+                            },
+                        ],
+                        [
+                            {
+                                border: [false, false, false, false],
+                                text : "", colSpan: 4, fillColor : "#ffffff"
+                            },
+                            {text : ""},
+                            {text : ""},
+                            {text : ""},
+                            {
+                                fontSize : 9.5,
+                                border: [false, false, false, false],
+                                margin : [0, 7, 0, 5],
+                                text: "Troco",
+                            },
+                            {
+                                fontSize : 9.5,
+                                border: [false, false, false, false],
+                                margin : [0, 7, 0, 5],
+                                text : formattedString(account_content[1].main.deposito_montantetroco.toFixed(2)+"")+" STN",
+                                alignment: "right"
+                            }
+                        ],
                     ]
                 }
             }

@@ -80,11 +80,11 @@ export let create = async (instituition,  account_content, res, user, date, num_
                 margin : [0, 7, 0, 5],
                 fontSize : 9.5,
                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
-                text : formattedString(cont.venda_montantecomimposto.toFixed(2)+"")+" STN",
+                text : formattedString(cont.venda_montantesemimposto.toFixed(2)+"")+" STN",
                 alignment : "right"
             }
         ]);
-        subtotal = Number(subtotal) + Number(cont.venda_montantecomimposto);
+        subtotal = Number(subtotal) + Number(cont.venda_montantesemimposto);
     });
 
     let hasPersonalizadoHarder = (instituition?.espaco_configuracao?.cabecalho_referencia === null ? "" : clusterServer.res.resolve(instituition?.espaco_configuracao?.cabecalho_referencia));
@@ -265,7 +265,7 @@ export let create = async (instituition,  account_content, res, user, date, num_
                                 margin : [0, 7, 0, 5],
                                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
                                 fillColor: '#3C0097',
-                                text: "Valor",
+                                text: "Subtotal",
                                 color: "#ffffff",
                                 alignment : "right"
                             }

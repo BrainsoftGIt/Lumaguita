@@ -83,7 +83,7 @@ let create = (instituition, account_content, res, user, date, num_autorization) 
                 margin: [0, 7, 0, 5],
                 fontSize: 9.5,
                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
-                text: formattedString(cont.venda_montantecomimposto.toFixed(2) + "") + " STN",
+                text: formattedString(cont.venda_montantesemimposto.toFixed(2) + "") + " STN",
                 alignment: "right"
             }
         ]);
@@ -96,7 +96,7 @@ let create = (instituition, account_content, res, user, date, num_autorization) 
             }
             sumImpost[cont.tipoimposto_id].sum += cont.venda_imposto;
         }
-        subtotal = Number(subtotal) + Number(cont.venda_montantecomimposto);
+        subtotal = Number(subtotal) + Number(cont.venda_montantesemimposto);
     });
     let docDefinition = Object.assign({ compress: true, info: {
             title: 'Fatura',
@@ -309,7 +309,7 @@ let create = (instituition, account_content, res, user, date, num_autorization) 
                                 margin: [0, 7, 0, 5],
                                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
                                 fillColor: '#3C0097',
-                                text: "Valor",
+                                text: "Subtotal",
                                 color: "#ffffff",
                                 alignment: "right"
                             }

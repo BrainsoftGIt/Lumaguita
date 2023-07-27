@@ -178,7 +178,7 @@ let create = (instituition, account_content, res, user, date, printer_name, num_
                         columns: [
                             { text: "Qtd. x Preço + Taxa" },
                             {
-                                text: "Total",
+                                text: "Subtotal",
                                 alignment: "right",
                             },
                         ]
@@ -202,7 +202,7 @@ let create = (instituition, account_content, res, user, date, printer_name, num_
                         }
                         sumImpost[cont.tipoimposto_id].sum += cont.venda_imposto;
                     }
-                    subtotal = Number(subtotal) + Number(cont.venda_montantecomimposto);
+                    subtotal = Number(subtotal) + Number(cont.venda_montantesemimposto);
                     preco_artigo = cont.venda_montantesemimposto / cont.venda_quantidade;
                     return {
                         lineHeight: 1,
@@ -213,7 +213,7 @@ let create = (instituition, account_content, res, user, date, printer_name, num_
                                 columns: [
                                     { text: `${cont.venda_quantidade} x ${formattedString(preco_artigo.toFixed(2)) + " STN"} + ${formattedString(cont.venda_imposto.toFixed(2))}` },
                                     {
-                                        text: formattedString(cont.venda_montantecomimposto.toFixed(2) + "") + " STN",
+                                        text: formattedString(cont.venda_montantesemimposto.toFixed(2) + "") + " STN",
                                         alignment: "right"
                                     }
                                 ]
