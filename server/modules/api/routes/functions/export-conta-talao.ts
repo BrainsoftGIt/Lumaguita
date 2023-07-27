@@ -12,13 +12,14 @@ export let create = async (instituition, account_content, res, user, date, print
     const {formattedString} = require("./formatValue");
     pdfMake.vfs = pdfFonts.pdfMake.vfs;
     pdfMake.fonts = getFonts();
-    let valorTotalImpostos = 0;
     let subtotal = 0;
     let preco_artigo = 0;
     const footerSystem =  instituition.espaco_configuracao.certification !== null ? "Documento emitido por sistema informático com o nº de certificado "+instituition.espaco_configuracao.certification
       : "";
 
     let logoTipo = clusterServer.res.resolve(instituition?.espaco_configuracao?.logo_referencia);
+
+    let sumImpost = {};
 
     let docDefinition = {
         compress: true,
@@ -114,7 +115,7 @@ export let create = async (instituition, account_content, res, user, date, print
                     {text: "Descrição"},
                     {
                         columns: [
-                            {text: "Qtd. x Preço"},
+                            {text: "Qtd. x Preço + Taxa"},
                             {
                                 text: "Total",
                                 alignment: "right",
@@ -122,6 +123,7 @@ export let create = async (instituition, account_content, res, user, date, print
                         ]
                     },
                     {
+                        alignment: "center",
                         canvas: [ { type: 'rect', x: -3, y: 0, w: 195, h: 0, dash: { length: 9 }, lineWidth: 0.5} ],
                         margin: [0, 3, 0, 2],
                     }
@@ -129,9 +131,21 @@ export let create = async (instituition, account_content, res, user, date, print
             },
             ...(() => {
                 return (account_content?.main?.conta_vendas || []).map((cont) =>{
-                    valorTotalImpostos = Number(valorTotalImpostos) + Number(cont.venda_imposto);
-                    subtotal = Number(subtotal) + Number(cont.venda_montantesemimposto);
+
                     preco_artigo = cont.venda_montantesemimposto/cont.venda_quantidade;
+                    if(!!cont.tipoimposto_id) {
+                        if (!sumImpost[cont.tipoimposto_id]) {
+                            sumImpost[cont.tipoimposto_id] = {
+                                sum: 0,
+                                name: cont.tipoimposto_nome
+                            }
+                        }
+
+                        sumImpost[cont.tipoimposto_id].sum += cont.venda_imposto;
+                    }
+
+                    subtotal = Number(subtotal) + Number(cont.venda_montantecomimposto);
+
                     return {
                         lineHeight: 1,
                         style : "normal",
@@ -139,14 +153,15 @@ export let create = async (instituition, account_content, res, user, date, print
                             {text: cont.artigo_nome},
                             {
                                 columns: [
-                                    {text : `${cont.venda_quantidade} x ${formattedString(preco_artigo.toFixed(2)+"")+" STN"}`},
+                                    {text : `${cont.venda_quantidade} x ${formattedString(preco_artigo.toFixed(2))+" STN"} + ${formattedString(cont.venda_imposto.toFixed(2))}`},
                                     {
-                                        text: formattedString((Number(cont?.venda_quantidade) * Number(preco_artigo)).toFixed(2)+"")+" STN",
+                                        text: formattedString(cont?.venda_montantecomimposto.toFixed(2)+"")+" STN",
                                         alignment: "right"
                                     }
                                 ]
                             },
                             {
+                                alignment: "center",
                                 canvas: [ { type: 'rect', x: -3, y: 0, w: 195, h: 0, dash: { length: 9 }, lineWidth: 0.5} ],
                                 margin: [0, 2, 0, 2],
                             }
@@ -169,17 +184,19 @@ export let create = async (instituition, account_content, res, user, date, print
                             }
                         ],
                     },
-                    {
-                        columns : [
-                            {
-                                text : "Imposto",
-                            },
-                            {
-                                text : formattedString(valorTotalImpostos.toFixed(2)+"")+" STN",
-                                alignment : "right"
-                            }
-                        ],
-                    },
+                    ...Object.keys(sumImpost).map((key) => {
+                        return {
+                            columns : [
+                                {
+                                    text :  `${sumImpost[key].name}`
+                                },
+                                {
+                                    text : formattedString(sumImpost[key].sum.toFixed(2)+"")+" STN",
+                                    alignment : "right"
+                                }
+                            ],
+                        }
+                    }),
                     {
                         columns : [
                             {

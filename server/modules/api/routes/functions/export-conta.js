@@ -40,10 +40,19 @@ let create = (instituition, account_content, res, user, date, num_autorization) 
     pdfMake.fonts = (0, estruture_1.getFonts)();
     let logoTipo = cluster_service_1.clusterServer.res.resolve((_a = instituition === null || instituition === void 0 ? void 0 : instituition.espaco_configuracao) === null || _a === void 0 ? void 0 : _a.logo_referencia);
     let artigosConta = [];
-    let valorTotalImpostos = 0;
     let subtotal = 0;
     let preco_artigo = 0;
+    let sumImpost = {};
     (((_b = account_content === null || account_content === void 0 ? void 0 : account_content.main) === null || _b === void 0 ? void 0 : _b.conta_vendas) || []).forEach((cont) => {
+        if (!!cont.tipoimposto_id) {
+            if (!sumImpost[cont.tipoimposto_id]) {
+                sumImpost[cont.tipoimposto_id] = {
+                    sum: 0,
+                    name: cont.tipoimposto_nome
+                };
+            }
+            sumImpost[cont.tipoimposto_id].sum += cont.venda_imposto;
+        }
         preco_artigo = cont.venda_montantesemimposto / cont.venda_quantidade;
         artigosConta.push([
             {
@@ -68,6 +77,13 @@ let create = (instituition, account_content, res, user, date, num_autorization) 
                 margin: [0, 7, 0, 5],
                 fontSize: 9.5,
                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
+                text: `${formattedString(cont.venda_imposto.toFixed(2))} STN`,
+                alignment: "right"
+            },
+            {
+                margin: [0, 7, 0, 5],
+                fontSize: 9.5,
+                borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
                 text: formattedString(preco_artigo.toFixed(2) + "") + " STN",
                 alignment: "right"
             },
@@ -75,12 +91,11 @@ let create = (instituition, account_content, res, user, date, num_autorization) 
                 margin: [0, 7, 0, 5],
                 fontSize: 9.5,
                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
-                text: formattedString((Number(cont.venda_quantidade) * Number(preco_artigo)).toFixed(2) + "") + " STN",
+                text: formattedString(cont.venda_montantecomimposto.toFixed(2) + "") + " STN",
                 alignment: "right"
             }
         ]);
-        valorTotalImpostos = Number(valorTotalImpostos) + Number(cont.venda_imposto);
-        subtotal = Number(subtotal) + Number(cont.venda_montantesemimposto);
+        subtotal = Number(subtotal) + Number(cont.venda_montantecomimposto);
     });
     let hasPersonalizadoHarder = (((_c = instituition === null || instituition === void 0 ? void 0 : instituition.espaco_configuracao) === null || _c === void 0 ? void 0 : _c.cabecalho_referencia) === null ? "" : cluster_service_1.clusterServer.res.resolve((_d = instituition === null || instituition === void 0 ? void 0 : instituition.espaco_configuracao) === null || _d === void 0 ? void 0 : _d.cabecalho_referencia));
     let docDefinition = Object.assign({ compress: true, info: {
@@ -212,7 +227,7 @@ let create = (instituition, account_content, res, user, date, num_autorization) 
                 },
                 table: {
                     headerRows: 1,
-                    widths: ["10%", "44%", "8%", "17%", "21%"],
+                    widths: ["10%", "39%", "8%", "11%", "14%", "18%"],
                     body: [
                         [
                             {
@@ -240,6 +255,14 @@ let create = (instituition, account_content, res, user, date, num_autorization) 
                                 margin: [0, 7, 0, 5],
                                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
                                 fillColor: '#3C0097',
+                                text: "Taxa",
+                                color: "#ffffff",
+                                alignment: "right"
+                            },
+                            {
+                                margin: [0, 7, 0, 5],
+                                borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
+                                fillColor: '#3C0097',
                                 text: "Valor Unit.",
                                 color: "#ffffff",
                                 alignment: "right"
@@ -257,8 +280,9 @@ let create = (instituition, account_content, res, user, date, num_autorization) 
                         [
                             {
                                 border: [false, false, false, false],
-                                text: "", colSpan: 3, fillColor: "#ffffff"
+                                text: "", colSpan: 4, fillColor: "#ffffff"
                             },
+                            { text: "" },
                             { text: "" },
                             { text: "" },
                             {
@@ -275,32 +299,36 @@ let create = (instituition, account_content, res, user, date, num_autorization) 
                                 alignment: "right"
                             },
                         ],
+                        ...Object.keys(sumImpost).map((key) => {
+                            return [
+                                {
+                                    border: [false, false, false, false],
+                                    text: "", colSpan: 4, fillColor: "#ffffff"
+                                },
+                                { text: "" },
+                                { text: "" },
+                                { text: "" },
+                                {
+                                    fontSize: 9.5,
+                                    border: [false, false, false, false],
+                                    margin: [0, 7, 0, 5],
+                                    text: `${sumImpost[key].name}`,
+                                },
+                                {
+                                    fontSize: 9.5,
+                                    border: [false, false, false, false],
+                                    margin: [0, 7, 0, 5],
+                                    text: formattedString(sumImpost[key].sum.toFixed(2) + "") + " STN",
+                                    alignment: "right"
+                                }
+                            ];
+                        }),
                         [
                             {
                                 border: [false, false, false, false],
-                                text: "", colSpan: 3, fillColor: "#ffffff"
+                                text: "", colSpan: 4, fillColor: "#ffffff"
                             },
                             { text: "" },
-                            { text: "" },
-                            {
-                                fontSize: 9.5,
-                                border: [false, false, false, false],
-                                margin: [0, 7, 0, 5],
-                                text: "Imposto",
-                            },
-                            {
-                                fontSize: 9.5,
-                                border: [false, false, false, false],
-                                margin: [0, 7, 0, 5],
-                                text: formattedString(valorTotalImpostos.toFixed(2) + "") + " STN",
-                                alignment: "right"
-                            }
-                        ],
-                        [
-                            {
-                                border: [false, false, false, false],
-                                text: "", colSpan: 3, fillColor: "#ffffff"
-                            },
                             { text: "" },
                             { text: "" },
                             {

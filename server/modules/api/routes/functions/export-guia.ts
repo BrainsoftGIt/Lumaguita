@@ -1,4 +1,3 @@
-import {storage} from '../../../../service/storage.service';
 import path from "path";
 import fs from "fs";
 import {getFonts, structure, photoResize, getImage} from "./estruture";

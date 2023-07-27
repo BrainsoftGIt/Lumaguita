@@ -279,33 +279,6 @@ export let create = async (instituition, account_content, res, user, num_autoriz
                             }
                         ],
                         ...artigosConta
-                        // [
-                        //     {
-                        //         border: [false, false, false, false],
-                        //         text : "", colSpan: 3, fillColor : "#ffffff"
-                        //     },
-                        //     {text : ""},
-                        //     {text : ""},
-                        //     {
-                        //         fontSize : 9.5,
-                        //         border: [false, false, false, false],
-                        //         fillColor: "#3C0097",
-                        //         color: "#ffffff",
-                        //         margin : [0, 7, 0, 5],
-                        //         bold: true,
-                        //         text: "Total",
-                        //     },
-                        //     {
-                        //         fontSize : 9.5,
-                        //         border: [false, false, false, false],
-                        //         fillColor: "#3C0097",
-                        //         color: "#ffffff",
-                        //         margin : [0, 7, 0, 5],
-                        //         bold: true,
-                        //         text: formattedString(account_content?.main?.conta_montante+"")+" STN",
-                        //         alignment: "right"
-                        //     }
-                        // ]
                     ]
                 }
             },
