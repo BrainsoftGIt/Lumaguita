@@ -176,8 +176,17 @@ let create = (instituition, account_content, res, user, date, printer_name, num_
                     { text: "Descrição" },
                     {
                         columns: [
-                            { text: "Qtd. x Preço - Taxa" },
                             {
+                                width: "35%",
+                                text: "Qtd. x Preço"
+                            },
+                            {
+                                width: "32.5%",
+                                text: "Taxa",
+                                alignment: "center"
+                            },
+                            {
+                                width: "32.5%",
                                 text: "Subtotal",
                                 alignment: "right",
                             },
@@ -211,8 +220,17 @@ let create = (instituition, account_content, res, user, date, printer_name, num_
                             { text: cont.artigo_nome },
                             {
                                 columns: [
-                                    { text: `${cont.venda_quantidade} x ${formattedString(preco_artigo.toFixed(2)) + " STN"} - ${formattedString(cont.venda_imposto.toFixed(2))}` },
                                     {
+                                        width: "35%",
+                                        text: `${cont.venda_quantidade} x ${formattedString(preco_artigo.toFixed(2)) + " STN"} `
+                                    },
+                                    {
+                                        alignment: "center",
+                                        width: "32.5%",
+                                        text: `${formattedString(cont.venda_imposto.toFixed(2))} STN`
+                                    },
+                                    {
+                                        width: "32.5%",
                                         text: formattedString(cont.venda_montantesemimposto.toFixed(2) + "") + " STN",
                                         alignment: "right"
                                     }
@@ -256,6 +274,7 @@ let create = (instituition, account_content, res, user, date, printer_name, num_
                         };
                     }),
                     {
+                        style: "bold",
                         columns: [
                             {
                                 text: "Total",

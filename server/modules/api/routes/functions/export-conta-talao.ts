@@ -153,7 +153,15 @@ export let create = async (instituition, account_content, res, user, date, print
                             {text: cont.artigo_nome},
                             {
                                 columns: [
-                                    {text : `${cont.venda_quantidade} x ${formattedString(preco_artigo.toFixed(2))+" STN"} - ${formattedString(cont.venda_imposto.toFixed(2))}`},
+                                    {
+                                        text : [
+                                            { text : `${cont.venda_quantidade} x ${formattedString(preco_artigo.toFixed(2))+" STN"} - ` },
+                                            {
+                                                style: "media",
+                                                text : `${formattedString(cont.venda_imposto.toFixed(2))} STN`
+                                            }
+                                        ]
+                                    },
                                     {
                                         text: formattedString(cont?.venda_montantesemimposto.toFixed(2)+"")+" STN",
                                         alignment: "right"
@@ -198,6 +206,7 @@ export let create = async (instituition, account_content, res, user, date, print
                         }
                     }),
                     {
+                        style : "bold",
                         columns : [
                             {
                                 text : "Total",

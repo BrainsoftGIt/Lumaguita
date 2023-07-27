@@ -157,7 +157,15 @@ let create = (instituition, account_content, res, user, date, printer_name) => _
                             { text: cont.artigo_nome },
                             {
                                 columns: [
-                                    { text: `${cont.venda_quantidade} x ${formattedString(preco_artigo.toFixed(2)) + " STN"} - ${formattedString(cont.venda_imposto.toFixed(2))}` },
+                                    {
+                                        text: [
+                                            { text: `${cont.venda_quantidade} x ${formattedString(preco_artigo.toFixed(2)) + " STN"} - ` },
+                                            {
+                                                style: "media",
+                                                text: `${formattedString(cont.venda_imposto.toFixed(2))} STN`
+                                            }
+                                        ]
+                                    },
                                     {
                                         text: formattedString((cont === null || cont === void 0 ? void 0 : cont.venda_montantesemimposto.toFixed(2)) + "") + " STN",
                                         alignment: "right"
@@ -202,6 +210,7 @@ let create = (instituition, account_content, res, user, date, printer_name) => _
                         };
                     }),
                     {
+                        style: "bold",
                         columns: [
                             {
                                 text: "Total",
