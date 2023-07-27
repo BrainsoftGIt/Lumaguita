@@ -151,7 +151,7 @@ let create = (instituition, account_content, res, user, date, printer_name, num_
                     { text: "Descrição" },
                     {
                         columns: [
-                            { text: "Qtd. x Preço + Taxa" },
+                            { text: "Qtd. x Preço - Taxa" },
                             {
                                 text: "Subtotal",
                                 alignment: "right",
@@ -186,7 +186,7 @@ let create = (instituition, account_content, res, user, date, printer_name, num_
                             { text: (cont.venda_descricao === null ? cont.artigo_nome : cont.venda_descricao) },
                             {
                                 columns: [
-                                    { text: `${cont.venda_quantidade} x ${formattedString(preco_artigo.toFixed(2)) + " STN"} + ${formattedString(cont.venda_imposto.toFixed(2))}` },
+                                    { text: `${cont.venda_quantidade} x ${formattedString(preco_artigo.toFixed(2)) + " STN"} - ${formattedString(cont.venda_imposto.toFixed(2))}` },
                                     {
                                         text: formattedString(cont.venda_montantesemimposto.toFixed(2) + "") + " STN",
                                         alignment: "right"
