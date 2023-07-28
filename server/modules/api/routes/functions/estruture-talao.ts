@@ -26,6 +26,9 @@ export let structure = (user) => {
                 alignment : "center",
                 lineHeight: 1.2
             },
+            media: {
+                fontSize: 7
+            },
             normal: {
                 fontSize: 8
             },

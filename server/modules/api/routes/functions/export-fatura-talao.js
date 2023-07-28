@@ -38,7 +38,6 @@ let create = (instituition, account_content, res, user, date, printer_name, num_
     const { formattedString } = require("./formatValue");
     pdfMake.vfs = pdfFonts.pdfMake.vfs;
     pdfMake.fonts = (0, estruture_talao_1.getFonts)();
-    let valorTotalImpostos = 0;
     let subtotal = 0;
     let footerSystem;
     let preco_artigo = 0;
@@ -49,6 +48,7 @@ let create = (instituition, account_content, res, user, date, printer_name, num_
     else
         footerSystem = "Documento emitido por sistema informático com o nº de autorização " + num_autorization;
     let logoTipo = cluster_service_1.clusterServer.res.resolve((_a = instituition === null || instituition === void 0 ? void 0 : instituition.espaco_configuracao) === null || _a === void 0 ? void 0 : _a.logo_referencia);
+    let sumImpost = {};
     let docDefinition = Object.assign({ compress: true, info: {
             title: 'Fatura',
             author: 'maguita',
@@ -151,14 +151,15 @@ let create = (instituition, account_content, res, user, date, printer_name, num_
                     { text: "Descrição" },
                     {
                         columns: [
-                            { text: "Qtd. x Preço" },
+                            { text: "Qtd. x Preço - Taxa" },
                             {
-                                text: "Total",
+                                text: "Subtotal",
                                 alignment: "right",
                             },
                         ]
                     },
                     {
+                        alignment: "center",
                         canvas: [{ type: 'rect', x: -3, y: 0, w: 195, h: 0, dash: { length: 9 }, lineWidth: 0.5 }],
                         margin: [0, 3, 0, 2],
                     }
@@ -167,7 +168,15 @@ let create = (instituition, account_content, res, user, date, printer_name, num_
             ...(() => {
                 var _a;
                 return (((_a = account_content === null || account_content === void 0 ? void 0 : account_content.main) === null || _a === void 0 ? void 0 : _a.conta_vendas) || []).map((cont) => {
-                    valorTotalImpostos = Number(valorTotalImpostos) + Number(cont.venda_imposto);
+                    if (!!cont.tipoimposto_id) {
+                        if (!sumImpost[cont.tipoimposto_id]) {
+                            sumImpost[cont.tipoimposto_id] = {
+                                sum: 0,
+                                name: cont.tipoimposto_nome
+                            };
+                        }
+                        sumImpost[cont.tipoimposto_id].sum += cont.venda_imposto;
+                    }
                     subtotal = Number(subtotal) + Number(cont.venda_montantesemimposto);
                     preco_artigo = cont.venda_montantesemimposto / cont.venda_quantidade;
                     return {
@@ -177,14 +186,23 @@ let create = (instituition, account_content, res, user, date, printer_name, num_
                             { text: (cont.venda_descricao === null ? cont.artigo_nome : cont.venda_descricao) },
                             {
                                 columns: [
-                                    { text: `${cont.venda_quantidade} x ${formattedString(preco_artigo.toFixed(2) + "") + " STN"}` },
                                     {
-                                        text: formattedString((Number(cont === null || cont === void 0 ? void 0 : cont.venda_quantidade) * Number(preco_artigo)).toFixed(2) + "") + " STN",
+                                        text: [
+                                            { text: `${cont.venda_quantidade} x ${formattedString(preco_artigo.toFixed(2)) + " STN"} - ` },
+                                            {
+                                                style: "media",
+                                                text: `${formattedString(cont.venda_imposto.toFixed(2))} STN`
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        text: formattedString(cont.venda_montantesemimposto.toFixed(2) + "") + " STN",
                                         alignment: "right"
                                     }
                                 ]
                             },
                             {
+                                alignment: "center",
                                 canvas: [{ type: 'rect', x: -3, y: 0, w: 195, h: 0, dash: { length: 9 }, lineWidth: 0.5 }],
                                 margin: [0, 2, 0, 2],
                             }
@@ -207,18 +225,21 @@ let create = (instituition, account_content, res, user, date, printer_name, num_
                             }
                         ]
                     },
+                    ...Object.keys(sumImpost).map((key) => {
+                        return {
+                            columns: [
+                                {
+                                    text: `${sumImpost[key].name}`
+                                },
+                                {
+                                    text: formattedString(sumImpost[key].sum.toFixed(2) + "") + " STN",
+                                    alignment: "right"
+                                }
+                            ],
+                        };
+                    }),
                     {
-                        columns: [
-                            {
-                                text: "Imposto",
-                            },
-                            {
-                                text: formattedString(valorTotalImpostos.toFixed(2) + "") + " STN",
-                                alignment: "right"
-                            }
-                        ]
-                    },
-                    {
+                        style: "bold",
                         columns: [
                             {
                                 text: "Total",

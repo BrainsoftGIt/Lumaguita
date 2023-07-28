@@ -336,6 +336,22 @@ var report = {
                 open("/api/report/download/"+e.file);
             }
         });
+    },
+    iExport: () => {
+        $("body").addClass("loading");
+        $.ajax({
+            url: "/api/report/export/imposto",
+            method: "POST",
+            contentType: "application/json",
+            data: JSON.stringify({
+                arg_datainicio: "2023-02-01",
+                arg_datafim: "2023-08-01",
+            }),
+            success(e) {
+                $("body").removeClass("loading");
+                open("/api/report/download/"+e.file);
+            }
+        });
     }
 };
 
@@ -519,8 +535,11 @@ $("[bt_config]").on("click", function () {
         $("[bt_footer_table]").click();
     }
 });
-$(".eximport").on("click", function () {
+$("[export-report-normal]").on("click", function () {
     report.export();
+});
+$("[export-report-imposto]").on("click", function () {
+    report.iExport();
 });
 $("[body-report-list]").on("click", ".report_footer", function () {
     let footer_values_type = $("#footer_values_type");

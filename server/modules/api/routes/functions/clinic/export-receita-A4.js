@@ -118,10 +118,10 @@ let create = (instituition, res, user, client, utente, tratamento) => __awaiter(
                         [
                             {
                                 border: [false, false, true, false],
-                                borderColor: ['#3C0097', '#3C0097', '#3C0097', '#3C0097'],
+                                borderColor: ['#000000', '#000000', '#000000', '#000000'],
                                 stack: [
                                     {
-                                        color: '#3C0097',
+                                        color: '#000000',
                                         text: `Receita`,
                                         bold: true,
                                         fontSize: 20,
@@ -130,7 +130,7 @@ let create = (instituition, res, user, client, utente, tratamento) => __awaiter(
                                         text: [
                                             {
                                                 bold: true,
-                                                color: '#3C0097',
+                                                color: '#000000',
                                                 text: `Cliente: `
                                             },
                                             client.cliente_titular
@@ -140,7 +140,7 @@ let create = (instituition, res, user, client, utente, tratamento) => __awaiter(
                                         text: [
                                             {
                                                 bold: true,
-                                                color: '#3C0097',
+                                                color: '#000000',
                                                 text: `NIF: `
                                             },
                                             (client.cliente_nif || "---------------")
@@ -150,7 +150,7 @@ let create = (instituition, res, user, client, utente, tratamento) => __awaiter(
                                         text: [
                                             {
                                                 bold: true,
-                                                color: '#3C0097',
+                                                color: '#000000',
                                                 text: `Email: `
                                             },
                                             (client.cliente_mail || "---------------")
@@ -161,19 +161,19 @@ let create = (instituition, res, user, client, utente, tratamento) => __awaiter(
                             {
                                 alignment: "right",
                                 border: [true, false, false, false],
-                                borderColor: ['#3C0097', '#3C0097', '#3C0097', '#3C0097'],
+                                borderColor: ['#000000', '#000000', '#000000', '#000000'],
                                 stack: [
                                     {
                                         bold: true,
                                         fontSize: 20,
-                                        color: '#3C0097',
+                                        color: '#000000',
                                         text: "Utente"
                                     },
                                     {
                                         text: [
                                             {
                                                 bold: true,
-                                                color: '#3C0097',
+                                                color: '#000000',
                                                 text: `Nome: `
                                             },
                                             (utente.patient_name || "---------------")
@@ -183,7 +183,7 @@ let create = (instituition, res, user, client, utente, tratamento) => __awaiter(
                                         text: [
                                             {
                                                 bold: true,
-                                                color: '#3C0097',
+                                                color: '#000000',
                                                 text: `Codígo: `
                                             },
                                             (((_j = utente.patient_metadata) === null || _j === void 0 ? void 0 : _j.code) || "---------------")
@@ -193,7 +193,7 @@ let create = (instituition, res, user, client, utente, tratamento) => __awaiter(
                                         text: [
                                             {
                                                 bold: true,
-                                                color: '#3C0097',
+                                                color: '#000000',
                                                 text: `Raça: `
                                             },
                                             (utente.patient_metadata.raca || "---------------")
@@ -210,7 +210,7 @@ let create = (instituition, res, user, client, utente, tratamento) => __awaiter(
                 margin: [0, 25, 0, 5],
             },
             {
-                color: '#3C0097',
+                color: '#000000',
                 fontSize: 25,
                 alignment: "center",
                 text: "Receituário",

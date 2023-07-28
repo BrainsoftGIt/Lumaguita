@@ -40,7 +40,7 @@ let create = (instituition, account_content, res, user, date, num_autorization) 
     pdfMake.fonts = (0, estruture_1.getFonts)();
     let logoTipo = cluster_service_1.clusterServer.res.resolve((_a = instituition === null || instituition === void 0 ? void 0 : instituition.espaco_configuracao) === null || _a === void 0 ? void 0 : _a.logo_referencia);
     let artigosConta = [];
-    let valorTotalImpostos = 0;
+    let sumImpost = {};
     let subtotal = 0;
     let preco_artigo = 0;
     let hasPersonalizadoHarder = (((_b = instituition === null || instituition === void 0 ? void 0 : instituition.espaco_configuracao) === null || _b === void 0 ? void 0 : _b.cabecalho_referencia) === null ? "" : cluster_service_1.clusterServer.res.resolve((_c = instituition === null || instituition === void 0 ? void 0 : instituition.espaco_configuracao) === null || _c === void 0 ? void 0 : _c.cabecalho_referencia));
@@ -69,6 +69,13 @@ let create = (instituition, account_content, res, user, date, num_autorization) 
                 margin: [0, 7, 0, 5],
                 fontSize: 9.5,
                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
+                text: `${formattedString(cont.venda_imposto.toFixed(2))} STN`,
+                alignment: "right"
+            },
+            {
+                margin: [0, 7, 0, 5],
+                fontSize: 9.5,
+                borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
                 text: formattedString(preco_artigo.toFixed(2) + "") + " STN",
                 alignment: "right"
             },
@@ -76,11 +83,19 @@ let create = (instituition, account_content, res, user, date, num_autorization) 
                 margin: [0, 7, 0, 5],
                 fontSize: 9.5,
                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
-                text: formattedString((Number(cont === null || cont === void 0 ? void 0 : cont.venda_quantidade) * Number(preco_artigo.toFixed(2))) + "") + " STN",
+                text: formattedString(cont.venda_montantesemimposto.toFixed(2) + "") + " STN",
                 alignment: "right"
             }
         ]);
-        valorTotalImpostos = Number(valorTotalImpostos) + Number(cont.venda_imposto);
+        if (!!cont.tipoimposto_id) {
+            if (!sumImpost[cont.tipoimposto_id]) {
+                sumImpost[cont.tipoimposto_id] = {
+                    sum: 0,
+                    name: cont.tipoimposto_nome
+                };
+            }
+            sumImpost[cont.tipoimposto_id].sum += cont.venda_imposto;
+        }
         subtotal = Number(subtotal) + Number(cont.venda_montantesemimposto);
     });
     let docDefinition = Object.assign({ compress: true, info: {
@@ -162,10 +177,10 @@ let create = (instituition, account_content, res, user, date, num_autorization) 
                         [
                             {
                                 border: [false, false, true, false],
-                                borderColor: ['#3C0097', '#3C0097', '#3C0097', '#3C0097'],
+                                borderColor: ['#000000', '#000000', '#000000', '#000000'],
                                 stack: [
                                     {
-                                        color: '#3C0097',
+                                        color: '#000000',
                                         text: `FATURA`,
                                         bold: true,
                                         fontSize: 20,
@@ -174,7 +189,7 @@ let create = (instituition, account_content, res, user, date, num_autorization) 
                                         text: [
                                             {
                                                 bold: true,
-                                                color: '#3C0097',
+                                                color: '#000000',
                                                 text: `Cliente: `
                                             },
                                             account_content.main.cliente_titular
@@ -184,7 +199,7 @@ let create = (instituition, account_content, res, user, date, num_autorization) 
                                         text: [
                                             {
                                                 bold: true,
-                                                color: '#3C0097',
+                                                color: '#000000',
                                                 text: `NIF: `
                                             },
                                             (account_content.main.cliente_nif || "---------------")
@@ -194,7 +209,7 @@ let create = (instituition, account_content, res, user, date, num_autorization) 
                                         text: [
                                             {
                                                 bold: true,
-                                                color: '#3C0097',
+                                                color: '#000000',
                                                 text: `Email: `
                                             },
                                             (account_content.main.cliente_mail || "---------------")
@@ -204,12 +219,12 @@ let create = (instituition, account_content, res, user, date, num_autorization) 
                             },
                             {
                                 border: [true, false, false, false],
-                                borderColor: ['#3C0097', '#3C0097', '#3C0097', '#3C0097'],
+                                borderColor: ['#000000', '#000000', '#000000', '#000000'],
                                 stack: [
                                     {
                                         bold: true,
                                         fontSize: 14,
-                                        color: '#3C0097',
+                                        color: '#000000',
                                         text: "Nº da FATURA"
                                     },
                                     {
@@ -217,7 +232,7 @@ let create = (instituition, account_content, res, user, date, num_autorization) 
                                         text: account_content.main.conta_serie.document,
                                     },
                                     {
-                                        color: '#3C0097',
+                                        color: '#000000',
                                         text: "Data de emissâo"
                                     },
                                     {
@@ -250,34 +265,42 @@ let create = (instituition, account_content, res, user, date, num_autorization) 
                 },
                 table: {
                     headerRows: 1,
-                    widths: ["10%", "44%", "8%", "17%", "21%"],
+                    widths: ["10%", "39%", "8%", "11%", "14%", "18%"],
                     body: [
                         [
                             {
                                 margin: [0, 7, 0, 5],
                                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
-                                fillColor: '#3C0097',
+                                fillColor: '#000000',
                                 text: "Código",
                                 color: "#ffffff"
                             },
                             {
                                 margin: [0, 7, 0, 5],
                                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
-                                fillColor: '#3C0097',
+                                fillColor: '#000000',
                                 text: "Descrição",
                                 color: "#ffffff"
                             },
                             {
                                 margin: [0, 7, 0, 5],
                                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
-                                fillColor: '#3C0097',
+                                fillColor: '#000000',
                                 text: "Qtd",
                                 color: "#ffffff"
                             },
                             {
                                 margin: [0, 7, 0, 5],
                                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
-                                fillColor: '#3C0097',
+                                fillColor: '#000000',
+                                text: "Taxa",
+                                color: "#ffffff",
+                                alignment: "right"
+                            },
+                            {
+                                margin: [0, 7, 0, 5],
+                                borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
+                                fillColor: '#000000',
                                 text: "Valor Unit.",
                                 color: "#ffffff",
                                 alignment: "right"
@@ -285,8 +308,8 @@ let create = (instituition, account_content, res, user, date, num_autorization) 
                             {
                                 margin: [0, 7, 0, 5],
                                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
-                                fillColor: '#3C0097',
-                                text: "Valor",
+                                fillColor: '#000000',
+                                text: "Subtotal",
                                 color: "#ffffff",
                                 alignment: "right"
                             }
@@ -295,8 +318,9 @@ let create = (instituition, account_content, res, user, date, num_autorization) 
                         [
                             {
                                 border: [false, false, false, false],
-                                text: "", colSpan: 3, fillColor: "#ffffff"
+                                text: "", colSpan: 4, fillColor: "#ffffff"
                             },
+                            { text: "" },
                             { text: "" },
                             { text: "" },
                             {
@@ -313,38 +337,42 @@ let create = (instituition, account_content, res, user, date, num_autorization) 
                                 alignment: "right"
                             },
                         ],
+                        ...Object.keys(sumImpost).map((key) => {
+                            return [
+                                {
+                                    border: [false, false, false, false],
+                                    text: "", colSpan: 4, fillColor: "#ffffff"
+                                },
+                                { text: "" },
+                                { text: "" },
+                                { text: "" },
+                                {
+                                    fontSize: 9.5,
+                                    border: [false, false, false, false],
+                                    margin: [0, 7, 0, 5],
+                                    text: `${sumImpost[key].name}`,
+                                },
+                                {
+                                    fontSize: 9.5,
+                                    border: [false, false, false, false],
+                                    margin: [0, 7, 0, 5],
+                                    text: formattedString(sumImpost[key].sum.toFixed(2) + "") + " STN",
+                                    alignment: "right"
+                                }
+                            ];
+                        }),
                         [
                             {
                                 border: [false, false, false, false],
-                                text: "", colSpan: 3, fillColor: "#ffffff"
+                                text: "", colSpan: 4, fillColor: "#ffffff"
                             },
+                            { text: "" },
                             { text: "" },
                             { text: "" },
                             {
                                 fontSize: 9.5,
                                 border: [false, false, false, false],
-                                margin: [0, 7, 0, 5],
-                                text: "Imposto",
-                            },
-                            {
-                                fontSize: 9.5,
-                                border: [false, false, false, false],
-                                margin: [0, 7, 0, 5],
-                                text: formattedString(valorTotalImpostos.toFixed(2) + "") + " STN",
-                                alignment: "right"
-                            }
-                        ],
-                        [
-                            {
-                                border: [false, false, false, false],
-                                text: "", colSpan: 3, fillColor: "#ffffff"
-                            },
-                            { text: "" },
-                            { text: "" },
-                            {
-                                fontSize: 9.5,
-                                border: [false, false, false, false],
-                                fillColor: "#3C0097",
+                                fillColor: "#000000",
                                 color: "#ffffff",
                                 margin: [0, 7, 0, 5],
                                 bold: true,
@@ -353,7 +381,7 @@ let create = (instituition, account_content, res, user, date, num_autorization) 
                             {
                                 fontSize: 9.5,
                                 border: [false, false, false, false],
-                                fillColor: "#3C0097",
+                                fillColor: "#000000",
                                 color: "#ffffff",
                                 margin: [0, 7, 0, 5],
                                 bold: true,

@@ -33,7 +33,7 @@ let getValueInList = (list, value, { nameLists, keyId, keyValue }) => {
 };
 // structure.footer()
 let create = (instituition, account, account_content, res, user, date, num_autorization) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p;
+    var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q;
     const pdfMake = require("../../../../../libs/js/pdfmake/pdfmake");
     const pdfFonts = require('../../../../../libs/js/pdfmake/vfs_fonts');
     const { formattedString } = require("./formatValue");
@@ -41,11 +41,22 @@ let create = (instituition, account, account_content, res, user, date, num_autor
     pdfMake.fonts = (0, estruture_1.getFonts)();
     let logoTipo = cluster_service_1.clusterServer.res.resolve((_a = instituition === null || instituition === void 0 ? void 0 : instituition.espaco_configuracao) === null || _a === void 0 ? void 0 : _a.logo_referencia);
     let artigosConta = [];
-    let valorTotalImpostos = 0;
+    // let valorTotalImpostos = 0;
     let subtotal = 0;
     let preco_artigo = 0;
     let hasPersonalizadoHarder = (((_b = instituition === null || instituition === void 0 ? void 0 : instituition.espaco_configuracao) === null || _b === void 0 ? void 0 : _b.cabecalho_referencia) === null ? "" : cluster_service_1.clusterServer.res.resolve((_c = instituition === null || instituition === void 0 ? void 0 : instituition.espaco_configuracao) === null || _c === void 0 ? void 0 : _c.cabecalho_referencia));
-    (((_d = account_content === null || account_content === void 0 ? void 0 : account_content.main) === null || _d === void 0 ? void 0 : _d.conta_vendas) || []).forEach((cont) => {
+    let sumImpost = {};
+    console.log({ conta_vendas: JSON.stringify((_d = account_content === null || account_content === void 0 ? void 0 : account_content.main) === null || _d === void 0 ? void 0 : _d.conta_vendas) });
+    (((_e = account_content === null || account_content === void 0 ? void 0 : account_content.main) === null || _e === void 0 ? void 0 : _e.conta_vendas) || []).forEach((cont) => {
+        if (!!cont.tipoimposto_id) {
+            if (!sumImpost[cont.tipoimposto_id]) {
+                sumImpost[cont.tipoimposto_id] = {
+                    sum: 0,
+                    name: cont.tipoimposto_nome
+                };
+            }
+            sumImpost[cont.tipoimposto_id].sum += cont.venda_imposto;
+        }
         preco_artigo = cont.venda_montantesemimposto / cont.venda_quantidade;
         artigosConta.push([
             {
@@ -70,6 +81,13 @@ let create = (instituition, account, account_content, res, user, date, num_autor
                 margin: [0, 7, 0, 5],
                 fontSize: 9.5,
                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
+                text: `${formattedString(cont.venda_imposto.toFixed(2))} STN`,
+                alignment: "right"
+            },
+            {
+                margin: [0, 7, 0, 5],
+                fontSize: 9.5,
+                borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
                 text: formattedString(preco_artigo.toFixed(2) + "") + " STN",
                 alignment: "right"
             },
@@ -77,11 +95,10 @@ let create = (instituition, account, account_content, res, user, date, num_autor
                 margin: [0, 7, 0, 5],
                 fontSize: 9.5,
                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
-                text: formattedString((Number(cont.venda_quantidade) * Number(preco_artigo)).toFixed(2) + "") + " STN",
+                text: formattedString(cont.venda_montantesemimposto.toFixed(2) + "") + " STN",
                 alignment: "right"
             }
         ]);
-        valorTotalImpostos = Number(valorTotalImpostos) + Number(cont.venda_imposto);
         subtotal = Number(subtotal) + Number(cont.venda_montantesemimposto);
     });
     let docDefinition = Object.assign({ compress: true, info: {
@@ -102,7 +119,7 @@ let create = (instituition, account, account_content, res, user, date, num_autor
                         alignment: "right",
                         stack: [
                             {
-                                text: `${(_e = instituition === null || instituition === void 0 ? void 0 : instituition.espaco_configuracao) === null || _e === void 0 ? void 0 : _e.empresa_nome}`,
+                                text: `${(_f = instituition === null || instituition === void 0 ? void 0 : instituition.espaco_configuracao) === null || _f === void 0 ? void 0 : _f.empresa_nome}`,
                                 bold: true,
                                 fontSize: 16,
                             },
@@ -110,7 +127,7 @@ let create = (instituition, account, account_content, res, user, date, num_autor
                                 columns: [
                                     {
                                         margin: [0, 0, 10, 0],
-                                        text: `${(_f = instituition === null || instituition === void 0 ? void 0 : instituition.espaco_configuracao) === null || _f === void 0 ? void 0 : _f.empresa_nif} `
+                                        text: `${(_g = instituition === null || instituition === void 0 ? void 0 : instituition.espaco_configuracao) === null || _g === void 0 ? void 0 : _g.empresa_nif} `
                                     },
                                     (0, estruture_1.getImage)("nif.png", 12)
                                 ]
@@ -119,7 +136,7 @@ let create = (instituition, account, account_content, res, user, date, num_autor
                                 columns: [
                                     {
                                         margin: [0, 0, 10, 0],
-                                        text: `${(_g = instituition === null || instituition === void 0 ? void 0 : instituition.espaco_configuracao) === null || _g === void 0 ? void 0 : _g.empresa_endereco}`
+                                        text: `${(_h = instituition === null || instituition === void 0 ? void 0 : instituition.espaco_configuracao) === null || _h === void 0 ? void 0 : _h.empresa_endereco}`
                                     },
                                     (0, estruture_1.getImage)("point.png", 12)
                                 ]
@@ -128,7 +145,7 @@ let create = (instituition, account, account_content, res, user, date, num_autor
                                 columns: [
                                     {
                                         margin: [0, 0, 10, 0],
-                                        text: `${(_h = instituition === null || instituition === void 0 ? void 0 : instituition.espaco_configuracao) === null || _h === void 0 ? void 0 : _h.empresa_telef}`
+                                        text: `${(_j = instituition === null || instituition === void 0 ? void 0 : instituition.espaco_configuracao) === null || _j === void 0 ? void 0 : _j.empresa_telef}`
                                     },
                                     (0, estruture_1.getImage)("phone.png", 12)
                                 ]
@@ -137,7 +154,7 @@ let create = (instituition, account, account_content, res, user, date, num_autor
                                 columns: [
                                     {
                                         margin: [0, 0, 10, 0],
-                                        text: `${(_j = instituition === null || instituition === void 0 ? void 0 : instituition.espaco_configuracao) === null || _j === void 0 ? void 0 : _j.empresa_email}`
+                                        text: `${(_k = instituition === null || instituition === void 0 ? void 0 : instituition.espaco_configuracao) === null || _k === void 0 ? void 0 : _k.empresa_email}`
                                     },
                                     (0, estruture_1.getImage)("mail.png", 12)
                                 ]
@@ -156,10 +173,10 @@ let create = (instituition, account, account_content, res, user, date, num_autor
                         [
                             {
                                 border: [false, false, true, false],
-                                borderColor: ['#3C0097', '#3C0097', '#3C0097', '#3C0097'],
+                                borderColor: ['#000000', '#000000', '#000000', '#000000'],
                                 stack: [
                                     {
-                                        color: '#3C0097',
+                                        color: '#000000',
                                         text: `FATURA PROFORMA`,
                                         bold: true,
                                         fontSize: 20,
@@ -168,7 +185,7 @@ let create = (instituition, account, account_content, res, user, date, num_autor
                                         text: [
                                             {
                                                 bold: true,
-                                                color: '#3C0097',
+                                                color: '#000000',
                                                 text: `Cliente: `
                                             },
                                             account === null || account === void 0 ? void 0 : account.cliente_titular
@@ -178,7 +195,7 @@ let create = (instituition, account, account_content, res, user, date, num_autor
                                         text: [
                                             {
                                                 bold: true,
-                                                color: '#3C0097',
+                                                color: '#000000',
                                                 text: `NIF: `
                                             },
                                             ((account === null || account === void 0 ? void 0 : account.cliente_nif) || "---------")
@@ -188,7 +205,7 @@ let create = (instituition, account, account_content, res, user, date, num_autor
                                         text: [
                                             {
                                                 bold: true,
-                                                color: '#3C0097',
+                                                color: '#000000',
                                                 text: `Contacto: `
                                             },
                                             account === null || account === void 0 ? void 0 : account.cliente_contacto
@@ -198,7 +215,7 @@ let create = (instituition, account, account_content, res, user, date, num_autor
                                         text: [
                                             {
                                                 bold: true,
-                                                color: '#3C0097',
+                                                color: '#000000',
                                                 text: `Email: `
                                             },
                                             ((account === null || account === void 0 ? void 0 : account.cliente_email) || "---------")
@@ -208,30 +225,30 @@ let create = (instituition, account, account_content, res, user, date, num_autor
                             },
                             {
                                 border: [true, false, false, false],
-                                borderColor: ['#3C0097', '#3C0097', '#3C0097', '#3C0097'],
+                                borderColor: ['#000000', '#000000', '#000000', '#000000'],
                                 stack: [
                                     {
                                         bold: true,
                                         fontSize: 14,
-                                        color: '#3C0097',
+                                        color: '#000000',
                                         text: "Nº de Fatura"
                                     },
                                     {
                                         margin: [0, 0, 0, 15],
-                                        text: (_k = account_content === null || account_content === void 0 ? void 0 : account_content.main) === null || _k === void 0 ? void 0 : _k.conta_numero,
+                                        text: (_l = account_content === null || account_content === void 0 ? void 0 : account_content.main) === null || _l === void 0 ? void 0 : _l.conta_numero,
                                     },
                                     {
                                         columns: [
                                             {
                                                 bold: true,
                                                 width: "50%",
-                                                color: '#3C0097',
+                                                color: '#000000',
                                                 text: "Data de emissão"
                                             },
                                             {
                                                 bold: true,
                                                 width: "50%",
-                                                color: '#3C0097',
+                                                color: '#000000',
                                                 text: "Data de vencimento",
                                             }
                                         ],
@@ -275,34 +292,42 @@ let create = (instituition, account, account_content, res, user, date, num_autor
                 },
                 table: {
                     headerRows: 1,
-                    widths: ["10%", "44%", "8%", "17%", "21%"],
+                    widths: ["10%", "39%", "8%", "11%", "14%", "18%"],
                     body: [
                         [
                             {
                                 margin: [0, 7, 0, 5],
                                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
                                 color: "#ffffff",
-                                fillColor: '#3C0097',
+                                fillColor: '#000000',
                                 text: "Código"
                             },
                             {
                                 margin: [0, 7, 0, 5],
                                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
-                                fillColor: '#3C0097',
+                                fillColor: '#000000',
                                 text: "Descrição",
                                 color: "#ffffff"
                             },
                             {
                                 margin: [0, 7, 0, 5],
                                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
-                                fillColor: '#3C0097',
+                                fillColor: '#000000',
                                 text: "Qtd",
                                 color: "#ffffff"
                             },
                             {
                                 margin: [0, 7, 0, 5],
                                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
-                                fillColor: '#3C0097',
+                                fillColor: '#000000',
+                                text: "Taxa",
+                                color: "#ffffff",
+                                alignment: "right"
+                            },
+                            {
+                                margin: [0, 7, 0, 5],
+                                borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
+                                fillColor: '#000000',
                                 text: "Valor Unit.",
                                 color: "#ffffff",
                                 alignment: "right"
@@ -310,8 +335,8 @@ let create = (instituition, account, account_content, res, user, date, num_autor
                             {
                                 margin: [0, 7, 0, 5],
                                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
-                                fillColor: '#3C0097',
-                                text: "Valor",
+                                fillColor: '#000000',
+                                text: "Subtotal",
                                 color: "#ffffff",
                                 alignment: "right"
                             }
@@ -320,8 +345,9 @@ let create = (instituition, account, account_content, res, user, date, num_autor
                         [
                             {
                                 border: [false, false, false, false],
-                                text: "", colSpan: 3, fillColor: "#ffffff"
+                                text: "", colSpan: 4, fillColor: "#ffffff"
                             },
+                            { text: "" },
                             { text: "" },
                             { text: "" },
                             {
@@ -338,38 +364,42 @@ let create = (instituition, account, account_content, res, user, date, num_autor
                                 alignment: "right"
                             },
                         ],
+                        ...Object.keys(sumImpost).map((key) => {
+                            return [
+                                {
+                                    border: [false, false, false, false],
+                                    text: "", colSpan: 4, fillColor: "#ffffff"
+                                },
+                                { text: "" },
+                                { text: "" },
+                                { text: "" },
+                                {
+                                    fontSize: 9.5,
+                                    border: [false, false, false, false],
+                                    margin: [0, 7, 0, 5],
+                                    text: `${sumImpost[key].name}`,
+                                },
+                                {
+                                    fontSize: 9.5,
+                                    border: [false, false, false, false],
+                                    margin: [0, 7, 0, 5],
+                                    text: formattedString(sumImpost[key].sum.toFixed(2) + "") + " STN",
+                                    alignment: "right"
+                                }
+                            ];
+                        }),
                         [
                             {
                                 border: [false, false, false, false],
-                                text: "", colSpan: 3, fillColor: "#ffffff"
+                                text: "", colSpan: 4, fillColor: "#ffffff"
                             },
+                            { text: "" },
                             { text: "" },
                             { text: "" },
                             {
                                 fontSize: 9.5,
                                 border: [false, false, false, false],
-                                margin: [0, 7, 0, 5],
-                                text: "Imposto",
-                            },
-                            {
-                                fontSize: 9.5,
-                                border: [false, false, false, false],
-                                margin: [0, 7, 0, 5],
-                                text: formattedString(valorTotalImpostos.toFixed(2) + "") + " STN",
-                                alignment: "right"
-                            }
-                        ],
-                        [
-                            {
-                                border: [false, false, false, false],
-                                text: "", colSpan: 3, fillColor: "#ffffff"
-                            },
-                            { text: "" },
-                            { text: "" },
-                            {
-                                fontSize: 9.5,
-                                border: [false, false, false, false],
-                                fillColor: "#3C0097",
+                                fillColor: "#000000",
                                 color: "#ffffff",
                                 margin: [0, 7, 0, 5],
                                 bold: true,
@@ -378,18 +408,18 @@ let create = (instituition, account, account_content, res, user, date, num_autor
                             {
                                 fontSize: 9.5,
                                 border: [false, false, false, false],
-                                fillColor: "#3C0097",
+                                fillColor: "#000000",
                                 color: "#ffffff",
                                 margin: [0, 7, 0, 5],
                                 bold: true,
-                                text: formattedString(((_l = account_content === null || account_content === void 0 ? void 0 : account_content.main) === null || _l === void 0 ? void 0 : _l.conta_montante.toFixed(2)) + "") + " STN",
+                                text: formattedString(((_m = account_content === null || account_content === void 0 ? void 0 : account_content.main) === null || _m === void 0 ? void 0 : _m.conta_montante.toFixed(2)) + "") + " STN",
                                 alignment: "right"
                             }
                         ]
                     ]
                 }
             },
-            (((_m = account === null || account === void 0 ? void 0 : account.conta_proformaextras) === null || _m === void 0 ? void 0 : _m.termos) !== null ? {
+            (((_o = account === null || account === void 0 ? void 0 : account.conta_proformaextras) === null || _o === void 0 ? void 0 : _o.termos) !== null ? {
                 margin: [0, 50, 0, 0],
                 stack: [
                     {
@@ -404,7 +434,7 @@ let create = (instituition, account, account_content, res, user, date, num_autor
                     }
                 ]
             } : "")
-        ] }, (0, estruture_1.structure)(user, num_autorization, instituition.espaco_configuracao.certification, (((_o = instituition === null || instituition === void 0 ? void 0 : instituition.espaco_configuracao) === null || _o === void 0 ? void 0 : _o.cabecalho_referencia) === null ? "" : cluster_service_1.clusterServer.res.resolve((_p = instituition === null || instituition === void 0 ? void 0 : instituition.espaco_configuracao) === null || _p === void 0 ? void 0 : _p.cabecalho_referencia))));
+        ] }, (0, estruture_1.structure)(user, num_autorization, instituition.espaco_configuracao.certification, (((_p = instituition === null || instituition === void 0 ? void 0 : instituition.espaco_configuracao) === null || _p === void 0 ? void 0 : _p.cabecalho_referencia) === null ? "" : cluster_service_1.clusterServer.res.resolve((_q = instituition === null || instituition === void 0 ? void 0 : instituition.espaco_configuracao) === null || _q === void 0 ? void 0 : _q.cabecalho_referencia))));
     const pdfDocGenerator = pdfMake.createPdf(docDefinition);
     pdfDocGenerator.getBuffer((buffer) => {
         let filename = "Proforma_" + (new Date().getTime() + Math.random()) + ".pdf";

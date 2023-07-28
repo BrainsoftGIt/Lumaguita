@@ -1,6 +1,6 @@
 import path from "path";
 import fs from "fs";
-import {getFonts, structure, photoResize} from "./estruture-talao";
+import {getFonts, structure} from "./estruture-talao";
 import {formattedString} from "./formatValue";
 import {folders} from "../../../../global/project";
 import {print} from "./printer";
@@ -25,7 +25,6 @@ export let create = async (instituition, account_content, res, user, date, print
     pdfMake.vfs = pdfFonts.pdfMake.vfs;
     pdfMake.fonts = getFonts();
 
-    let valorTotalImpostos = 0;
     let subtotal = 0;
     let footerSystem;
     let preco_artigo = 0;
@@ -37,6 +36,8 @@ export let create = async (instituition, account_content, res, user, date, print
         footerSystem = "Documento emitido por sistema informático com o nº de autorização "+num_autorization;
 
     let logoTipo = clusterServer.res.resolve(instituition?.espaco_configuracao?.logo_referencia);
+
+    let sumImpost = {};
 
     let docDefinition = {
         compress: true,
@@ -143,14 +144,15 @@ export let create = async (instituition, account_content, res, user, date, print
                     {text: "Descrição"},
                     {
                         columns: [
-                            {text: "Qtd. x Preço"},
+                            {text: "Qtd. x Preço - Taxa"},
                             {
-                                text: "Total",
+                                text: "Subtotal",
                                 alignment: "right",
                             },
                         ]
                     },
                     {
+                        alignment: "center",
                         canvas: [ { type: 'rect', x: -3, y: 0, w: 195, h: 0, dash: { length: 9 }, lineWidth: 0.5} ],
                         margin: [0, 3, 0, 2],
                     }
@@ -158,7 +160,18 @@ export let create = async (instituition, account_content, res, user, date, print
             },
             ...(() => {
                 return (account_content?.main?.conta_vendas || []).map((cont) =>{
-                    valorTotalImpostos = Number(valorTotalImpostos) + Number(cont.venda_imposto);
+
+                    if(!!cont.tipoimposto_id) {
+                        if (!sumImpost[cont.tipoimposto_id]) {
+                            sumImpost[cont.tipoimposto_id] = {
+                                sum: 0,
+                                name: cont.tipoimposto_nome
+                            }
+                        }
+
+                        sumImpost[cont.tipoimposto_id].sum += cont.venda_imposto;
+                    }
+
                     subtotal = Number(subtotal) + Number(cont.venda_montantesemimposto);
                     preco_artigo = cont.venda_montantesemimposto/cont.venda_quantidade;
                     return {
@@ -168,14 +181,23 @@ export let create = async (instituition, account_content, res, user, date, print
                             {text: (cont.venda_descricao === null ? cont.artigo_nome : cont.venda_descricao )},
                             {
                                 columns: [
-                                    {text : `${cont.venda_quantidade} x ${formattedString(preco_artigo.toFixed(2)+"")+" STN"}`},
                                     {
-                                        text: formattedString((Number(cont?.venda_quantidade) * Number(preco_artigo)).toFixed(2)+"")+" STN",
+                                        text : [
+                                            { text : `${cont.venda_quantidade} x ${formattedString(preco_artigo.toFixed(2))+" STN"} - ` },
+                                            {
+                                                style: "media",
+                                                text : `${formattedString(cont.venda_imposto.toFixed(2))} STN`
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        text: formattedString(cont.venda_montantesemimposto.toFixed(2)+"")+" STN",
                                         alignment: "right"
                                     }
                                 ]
                             },
                             {
+                                alignment: "center",
                                 canvas: [ { type: 'rect', x: -3, y: 0, w: 195, h: 0, dash: { length: 9 }, lineWidth: 0.5} ],
                                 margin: [0, 2, 0, 2],
                             }
@@ -198,18 +220,21 @@ export let create = async (instituition, account_content, res, user, date, print
                             }
                         ]
                     },
+                    ...Object.keys(sumImpost).map((key) => {
+                        return {
+                            columns : [
+                                {
+                                    text :  `${sumImpost[key].name}`
+                                },
+                                {
+                                    text : formattedString(sumImpost[key].sum.toFixed(2)+"")+" STN",
+                                    alignment : "right"
+                                }
+                            ],
+                        }
+                    }),
                     {
-                        columns : [
-                            {
-                                text : "Imposto",
-                            },
-                            {
-                                text : formattedString(valorTotalImpostos.toFixed(2)+"")+" STN",
-                                alignment : "right"
-                            }
-                        ]
-                    },
-                    {
+                        style : "bold",
                         columns : [
                             {
                                 text : "Total",

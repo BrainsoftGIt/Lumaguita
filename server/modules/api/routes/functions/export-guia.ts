@@ -1,7 +1,6 @@
-import {storage} from '../../../../service/storage.service';
 import path from "path";
 import fs from "fs";
-import {getFonts, structure, photoResize, getImage} from "./estruture";
+import {getFonts, structure, getImage} from "./estruture";
 import moment from "moment";
 import {folders} from "../../../../global/project";
 import {clusterServer} from "../../../../service/cluster.service";
@@ -155,10 +154,10 @@ export let create = async (instituition, fornecedor, guia, artigos, res, user, c
                         [
                             {
                                 border: [false, false, true, false],
-                                borderColor: ['#3C0097', '#3C0097', '#3C0097', '#3C0097'],
+                                borderColor: ['#000000', '#000000', '#000000', '#000000'],
                                 stack: [
                                     {
-                                        color : '#3C0097',
+                                        color : '#000000',
                                         text: `Fornecedor`,
                                         bold: true,
                                         fontSize: 15,
@@ -167,7 +166,7 @@ export let create = async (instituition, fornecedor, guia, artigos, res, user, c
                                         text: [
                                             {
                                                 bold: true,
-                                                color : '#3C0097',
+                                                color : '#000000',
                                                 text : `Código: `
                                             },
                                             fornecedor.fornecedor_code
@@ -177,7 +176,7 @@ export let create = async (instituition, fornecedor, guia, artigos, res, user, c
                                         text: [
                                             {
                                                 bold: true,
-                                                color : '#3C0097',
+                                                color : '#000000',
                                                 text : `Nome: `
                                             },
                                             fornecedor.fornecedor_nome
@@ -187,7 +186,7 @@ export let create = async (instituition, fornecedor, guia, artigos, res, user, c
                                         text: [
                                             {
                                                 bold: true,
-                                                color : '#3C0097',
+                                                color : '#000000',
                                                 text : `NIF: `
                                             },
                                             (fornecedor.fornecedor_nif || "---------")
@@ -197,7 +196,7 @@ export let create = async (instituition, fornecedor, guia, artigos, res, user, c
                                         text: [
                                             {
                                                 bold: true,
-                                                color: '#3C0097',
+                                                color: '#000000',
                                                 text: `Endereço: `
                                             },
                                             (fornecedor.fornecedor_email || "---------")
@@ -207,12 +206,12 @@ export let create = async (instituition, fornecedor, guia, artigos, res, user, c
                             },
                            {
                                border: [true, false, false, false],
-                               borderColor: ['#3C0097', '#3C0097', '#3C0097', '#3C0097'],
+                               borderColor: ['#000000', '#000000', '#000000', '#000000'],
                                 stack: [
                                     {
                                         bold: true,
                                         fontSize: 20,
-                                        color : '#3C0097',
+                                        color : '#000000',
                                         text : "Guia de Entrada"
                                     },
                                     {
@@ -224,19 +223,19 @@ export let create = async (instituition, fornecedor, guia, artigos, res, user, c
                                             {
                                                 bold: true,
                                                 width: "33.333333333%",
-                                                color : '#3C0097',
+                                                color : '#000000',
                                                 text : "Data de Guia"
                                             },
                                             {
                                                 bold: true,
                                                 width: "33.333333333%",
-                                                color : '#3C0097',
+                                                color : '#000000',
                                                 text : "Nº de Documento",
                                             },
                                             {
                                                 bold: true,
                                                 width: "33.333333333%",
-                                                color : '#3C0097',
+                                                color : '#000000',
                                                 text : "Data de Doc. Fornecedor",
                                             }
                                         ],
@@ -291,34 +290,34 @@ export let create = async (instituition, fornecedor, guia, artigos, res, user, c
                                 margin: [0, 7, 0, 5],
                                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
                                 color: "#ffffff",
-                                fillColor: '#3C0097',
+                                fillColor: '#000000',
                                 text: "Código"
                             },
                             {
                                 margin : [0, 7, 0, 5],
                                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
-                                fillColor: '#3C0097',
+                                fillColor: '#000000',
                                 text : "Descrição",
                                 color: "#ffffff"
                             },
                             {
                                 margin : [0, 7, 0, 5],
                                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
-                                fillColor: '#3C0097',
+                                fillColor: '#000000',
                                 text: "Lote",
                                 color: "#ffffff"
                             },
                             {
                                 margin : [0, 7, 0, 5],
                                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
-                                fillColor: '#3C0097',
+                                fillColor: '#000000',
                                 text: "Qtd",
                                 color: "#ffffff"
                             },
                             {
                                 margin : [0, 7, 0, 5],
                                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
-                                fillColor: '#3C0097',
+                                fillColor: '#000000',
                                 text: "Valor Unit.",
                                 color: "#ffffff",
                                 alignment : "right"
@@ -326,7 +325,7 @@ export let create = async (instituition, fornecedor, guia, artigos, res, user, c
                             {
                                 margin : [0, 7, 0, 5],
                                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
-                                fillColor: '#3C0097',
+                                fillColor: '#000000',
                                 text: "Valor",
                                 color: "#ffffff",
                                 alignment : "right"
@@ -388,7 +387,7 @@ export let create = async (instituition, fornecedor, guia, artigos, res, user, c
                             {
                                 fontSize : 9.5,
                                 border: [false, false, false, false],
-                                fillColor: "#3C0097",
+                                fillColor: "#000000",
                                 color: "#ffffff",
                                 margin : [0, 7, 0, 5],
                                 bold: true,
@@ -397,7 +396,7 @@ export let create = async (instituition, fornecedor, guia, artigos, res, user, c
                             {
                                 fontSize : 9.5,
                                 border: [false, false, false, false],
-                                fillColor: "#3C0097",
+                                fillColor: "#000000",
                                 color: "#ffffff",
                                 margin : [0, 7, 0, 5],
                                 bold: true,

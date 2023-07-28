@@ -62,6 +62,10 @@
   background: #f6fdf9;
   border: 2px #36d278 solid;
 }
+.__included__.report ._head .eximport span.excel.imposto {
+  background: white;
+  border: 2px #ffb733 solid;
+}
 .__included__.report ._head .eximport span.pdf {
   background: #fff6f4;
   border: 2px #ffa494 solid;
