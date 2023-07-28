@@ -338,18 +338,24 @@ var report = {
         });
     },
     iExport: () => {
+        if(!validation1($("#xModalExportFileFinanca input"))){
+            xAlert("Exporta relatório imposto", "Por favor preencha corretamente as datas!", "error");
+            return
+        }
         $("body").addClass("loading");
         $.ajax({
             url: "/api/report/export/imposto",
             method: "POST",
             contentType: "application/json",
             data: JSON.stringify({
-                arg_datainicio: "2023-02-01",
-                arg_datafim: "2023-08-01",
+                arg_datainicio: $("#financa_report_start").val().stringToDate().getDateEn(),
+                arg_datafim: $("#financa_report_end").val().stringToDate().getDateEn(),
             }),
             success(e) {
                 $("body").removeClass("loading");
+                $("#xModalExportFileFinanca").removeClass("show");
                 open("/api/report/download/"+e.file);
+                $("#xModalExportFileFinanca input").val("")
             }
         });
     }
@@ -576,3 +582,5 @@ $("#desselecionarColunas").on("click", function () {
 $("#footer_values_type").on("click", "li", function () {
     $(this).addClass('active').siblings().removeClass('active');
 });
+
+$('[data-inputmask-alias]').inputmask();
