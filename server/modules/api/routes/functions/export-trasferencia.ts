@@ -131,10 +131,10 @@ export let create = async (instituition, artigos_transferencia:any, armazens, re
                         [
                             {
                                 border: [false, false, true, false],
-                                borderColor: ['#3C0097', '#3C0097', '#3C0097', '#3C0097'],
+                                borderColor: ['#000000', '#000000', '#000000', '#000000'],
                                 stack: [
                                     {
-                                        color: '#3C0097',
+                                        color: '#000000',
                                         text: `TRANSFERÊNCIA DE ARTIGOS`,
                                         bold: true,
                                         fontSize: 16,
@@ -143,10 +143,10 @@ export let create = async (instituition, artigos_transferencia:any, armazens, re
                             },
                             {
                                 border: [true, false, false, false],
-                                borderColor: ['#3C0097', '#3C0097', '#3C0097', '#3C0097'],
+                                borderColor: ['#000000', '#000000', '#000000', '#000000'],
                                 stack: [
                                     {
-                                        color: '#3C0097',
+                                        color: '#000000',
                                         text: "Data de transferência"
                                     },
                                     {
@@ -174,7 +174,7 @@ export let create = async (instituition, artigos_transferencia:any, armazens, re
                                         text: [
                                             {
                                                 bold: true,
-                                                color : '#3C0097',
+                                                color : '#000000',
                                                 text : "Armazém de Saída: "
                                             },
                                             `${armazens.armazem_origem}`
@@ -186,7 +186,7 @@ export let create = async (instituition, artigos_transferencia:any, armazens, re
                                         text: [
                                             {
                                                 bold: true,
-                                                color : '#3C0097',
+                                                color : '#000000',
                                                 text : "Cód. Armazém de Saída: "
                                             },
                                             `${armazens.armazem_origem_codigo}`
@@ -210,7 +210,7 @@ export let create = async (instituition, artigos_transferencia:any, armazens, re
                                         text: [
                                             {
                                                 bold: true,
-                                                color : '#3C0097',
+                                                color : '#000000',
                                                 text : "Armazém de Entrada: "
                                             },
                                             `${armazens.armazem_destino}`
@@ -222,7 +222,7 @@ export let create = async (instituition, artigos_transferencia:any, armazens, re
                                         text: [
                                             {
                                                 bold: true,
-                                                color : '#3C0097',
+                                                color : '#000000',
                                                 text : "Cód. Armazém de Entrada: "
                                             },
                                             `${armazens.armazem_destino_codigo}`
@@ -262,20 +262,20 @@ export let create = async (instituition, artigos_transferencia:any, armazens, re
                                 margin: [0, 7, 0, 5],
                                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
                                 color: "#ffffff",
-                                fillColor: '#3C0097',
+                                fillColor: '#000000',
                                 text: "Código"
                             },
                             {
                                 margin : [0, 7, 0, 5],
                                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
-                                fillColor: '#3C0097',
+                                fillColor: '#000000',
                                 text : "Descrição",
                                 color: "#ffffff"
                             },
                             {
                                 margin : [0, 7, 0, 5],
                                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
-                                fillColor: '#3C0097',
+                                fillColor: '#000000',
                                 text: "Quantidade",
                                 color: "#ffffff"
                             }

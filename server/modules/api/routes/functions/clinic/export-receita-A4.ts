@@ -109,10 +109,10 @@ export let create = async (instituition, res, user, client, utente, tratamento) 
                         [
                             {
                                 border: [false, false, true, false],
-                                borderColor: ['#3C0097', '#3C0097', '#3C0097', '#3C0097'],
+                                borderColor: ['#000000', '#000000', '#000000', '#000000'],
                                 stack: [
                                     {
-                                        color: '#3C0097',
+                                        color: '#000000',
                                         text: `Receita`,
                                         bold: true,
                                         fontSize: 20,
@@ -121,7 +121,7 @@ export let create = async (instituition, res, user, client, utente, tratamento) 
                                         text: [
                                             {
                                                 bold: true,
-                                                color: '#3C0097',
+                                                color: '#000000',
                                                 text: `Cliente: `
                                             },
                                             client.cliente_titular
@@ -131,7 +131,7 @@ export let create = async (instituition, res, user, client, utente, tratamento) 
                                         text: [
                                             {
                                                 bold: true,
-                                                color: '#3C0097',
+                                                color: '#000000',
                                                 text: `NIF: `
                                             },
                                             (client.cliente_nif || "---------------")
@@ -141,7 +141,7 @@ export let create = async (instituition, res, user, client, utente, tratamento) 
                                         text: [
                                             {
                                                 bold: true,
-                                                color: '#3C0097',
+                                                color: '#000000',
                                                 text: `Email: `
                                             },
                                             (client.cliente_mail || "---------------")
@@ -152,19 +152,19 @@ export let create = async (instituition, res, user, client, utente, tratamento) 
                             {
                                 alignment: "right",
                                 border: [true, false, false, false],
-                                borderColor: ['#3C0097', '#3C0097', '#3C0097', '#3C0097'],
+                                borderColor: ['#000000', '#000000', '#000000', '#000000'],
                                 stack: [
                                     {
                                         bold: true,
                                         fontSize: 20,
-                                        color : '#3C0097',
+                                        color : '#000000',
                                         text : "Utente"
                                     },
                                     {
                                         text: [
                                             {
                                                 bold: true,
-                                                color: '#3C0097',
+                                                color: '#000000',
                                                 text: `Nome: `
                                             },
                                             (utente.patient_name || "---------------")
@@ -174,7 +174,7 @@ export let create = async (instituition, res, user, client, utente, tratamento) 
                                         text: [
                                             {
                                                 bold: true,
-                                                color: '#3C0097',
+                                                color: '#000000',
                                                 text: `Codígo: `
                                             },
                                             (utente.patient_metadata?.code || "---------------")
@@ -184,7 +184,7 @@ export let create = async (instituition, res, user, client, utente, tratamento) 
                                         text: [
                                             {
                                                 bold: true,
-                                                color: '#3C0097',
+                                                color: '#000000',
                                                 text: `Raça: `
                                             },
                                             (utente.patient_metadata.raca || "---------------")
@@ -201,7 +201,7 @@ export let create = async (instituition, res, user, client, utente, tratamento) 
                 margin: [0, 25, 0, 5],
             },
             {
-                color: '#3C0097',
+                color: '#000000',
                 fontSize: 25,
                 alignment : "center",
                 text : "Receituário",

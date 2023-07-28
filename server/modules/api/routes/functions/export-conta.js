@@ -178,13 +178,13 @@ let create = (instituition, account_content, res, user, date, num_autorization) 
                         [
                             {
                                 border: [false, false, true, false],
-                                borderColor: ['#3C0097', '#3C0097', '#3C0097', '#3C0097'],
+                                borderColor: ['#000000', '#000000', '#000000', '#000000'],
                                 stack: [
                                     {
                                         bold: true,
                                         fontSize: 16,
                                         text: "CONTA",
-                                        color: "#3C0097"
+                                        color: "#000000"
                                     },
                                     {
                                         columns: [
@@ -233,28 +233,28 @@ let create = (instituition, account_content, res, user, date, num_autorization) 
                             {
                                 margin: [0, 7, 0, 5],
                                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
-                                fillColor: '#3C0097',
+                                fillColor: '#000000',
                                 text: "Código",
                                 color: "#ffffff"
                             },
                             {
                                 margin: [0, 7, 0, 5],
                                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
-                                fillColor: '#3C0097',
+                                fillColor: '#000000',
                                 text: "Descrição",
                                 color: "#ffffff"
                             },
                             {
                                 margin: [0, 7, 0, 5],
                                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
-                                fillColor: '#3C0097',
+                                fillColor: '#000000',
                                 text: "Qtd",
                                 color: "#ffffff"
                             },
                             {
                                 margin: [0, 7, 0, 5],
                                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
-                                fillColor: '#3C0097',
+                                fillColor: '#000000',
                                 text: "Taxa",
                                 color: "#ffffff",
                                 alignment: "right"
@@ -262,7 +262,7 @@ let create = (instituition, account_content, res, user, date, num_autorization) 
                             {
                                 margin: [0, 7, 0, 5],
                                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
-                                fillColor: '#3C0097',
+                                fillColor: '#000000',
                                 text: "Valor Unit.",
                                 color: "#ffffff",
                                 alignment: "right"
@@ -270,7 +270,7 @@ let create = (instituition, account_content, res, user, date, num_autorization) 
                             {
                                 margin: [0, 7, 0, 5],
                                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
-                                fillColor: '#3C0097',
+                                fillColor: '#000000',
                                 text: "Subtotal",
                                 color: "#ffffff",
                                 alignment: "right"
@@ -334,7 +334,7 @@ let create = (instituition, account_content, res, user, date, num_autorization) 
                             {
                                 fontSize: 9.5,
                                 border: [false, false, false, false],
-                                fillColor: "#3C0097",
+                                fillColor: "#000000",
                                 color: "#ffffff",
                                 margin: [0, 7, 0, 5],
                                 bold: true,
@@ -343,7 +343,7 @@ let create = (instituition, account_content, res, user, date, num_autorization) 
                             {
                                 fontSize: 9.5,
                                 border: [false, false, false, false],
-                                fillColor: "#3C0097",
+                                fillColor: "#000000",
                                 color: "#ffffff",
                                 margin: [0, 7, 0, 5],
                                 bold: true,

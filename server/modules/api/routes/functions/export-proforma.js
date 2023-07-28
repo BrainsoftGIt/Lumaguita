@@ -173,10 +173,10 @@ let create = (instituition, account, account_content, res, user, date, num_autor
                         [
                             {
                                 border: [false, false, true, false],
-                                borderColor: ['#3C0097', '#3C0097', '#3C0097', '#3C0097'],
+                                borderColor: ['#000000', '#000000', '#000000', '#000000'],
                                 stack: [
                                     {
-                                        color: '#3C0097',
+                                        color: '#000000',
                                         text: `FATURA PROFORMA`,
                                         bold: true,
                                         fontSize: 20,
@@ -185,7 +185,7 @@ let create = (instituition, account, account_content, res, user, date, num_autor
                                         text: [
                                             {
                                                 bold: true,
-                                                color: '#3C0097',
+                                                color: '#000000',
                                                 text: `Cliente: `
                                             },
                                             account === null || account === void 0 ? void 0 : account.cliente_titular
@@ -195,7 +195,7 @@ let create = (instituition, account, account_content, res, user, date, num_autor
                                         text: [
                                             {
                                                 bold: true,
-                                                color: '#3C0097',
+                                                color: '#000000',
                                                 text: `NIF: `
                                             },
                                             ((account === null || account === void 0 ? void 0 : account.cliente_nif) || "---------")
@@ -205,7 +205,7 @@ let create = (instituition, account, account_content, res, user, date, num_autor
                                         text: [
                                             {
                                                 bold: true,
-                                                color: '#3C0097',
+                                                color: '#000000',
                                                 text: `Contacto: `
                                             },
                                             account === null || account === void 0 ? void 0 : account.cliente_contacto
@@ -215,7 +215,7 @@ let create = (instituition, account, account_content, res, user, date, num_autor
                                         text: [
                                             {
                                                 bold: true,
-                                                color: '#3C0097',
+                                                color: '#000000',
                                                 text: `Email: `
                                             },
                                             ((account === null || account === void 0 ? void 0 : account.cliente_email) || "---------")
@@ -225,12 +225,12 @@ let create = (instituition, account, account_content, res, user, date, num_autor
                             },
                             {
                                 border: [true, false, false, false],
-                                borderColor: ['#3C0097', '#3C0097', '#3C0097', '#3C0097'],
+                                borderColor: ['#000000', '#000000', '#000000', '#000000'],
                                 stack: [
                                     {
                                         bold: true,
                                         fontSize: 14,
-                                        color: '#3C0097',
+                                        color: '#000000',
                                         text: "Nº de Fatura"
                                     },
                                     {
@@ -242,13 +242,13 @@ let create = (instituition, account, account_content, res, user, date, num_autor
                                             {
                                                 bold: true,
                                                 width: "50%",
-                                                color: '#3C0097',
+                                                color: '#000000',
                                                 text: "Data de emissão"
                                             },
                                             {
                                                 bold: true,
                                                 width: "50%",
-                                                color: '#3C0097',
+                                                color: '#000000',
                                                 text: "Data de vencimento",
                                             }
                                         ],
@@ -299,27 +299,27 @@ let create = (instituition, account, account_content, res, user, date, num_autor
                                 margin: [0, 7, 0, 5],
                                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
                                 color: "#ffffff",
-                                fillColor: '#3C0097',
+                                fillColor: '#000000',
                                 text: "Código"
                             },
                             {
                                 margin: [0, 7, 0, 5],
                                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
-                                fillColor: '#3C0097',
+                                fillColor: '#000000',
                                 text: "Descrição",
                                 color: "#ffffff"
                             },
                             {
                                 margin: [0, 7, 0, 5],
                                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
-                                fillColor: '#3C0097',
+                                fillColor: '#000000',
                                 text: "Qtd",
                                 color: "#ffffff"
                             },
                             {
                                 margin: [0, 7, 0, 5],
                                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
-                                fillColor: '#3C0097',
+                                fillColor: '#000000',
                                 text: "Taxa",
                                 color: "#ffffff",
                                 alignment: "right"
@@ -327,7 +327,7 @@ let create = (instituition, account, account_content, res, user, date, num_autor
                             {
                                 margin: [0, 7, 0, 5],
                                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
-                                fillColor: '#3C0097',
+                                fillColor: '#000000',
                                 text: "Valor Unit.",
                                 color: "#ffffff",
                                 alignment: "right"
@@ -335,7 +335,7 @@ let create = (instituition, account, account_content, res, user, date, num_autor
                             {
                                 margin: [0, 7, 0, 5],
                                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
-                                fillColor: '#3C0097',
+                                fillColor: '#000000',
                                 text: "Subtotal",
                                 color: "#ffffff",
                                 alignment: "right"
@@ -399,7 +399,7 @@ let create = (instituition, account, account_content, res, user, date, num_autor
                             {
                                 fontSize: 9.5,
                                 border: [false, false, false, false],
-                                fillColor: "#3C0097",
+                                fillColor: "#000000",
                                 color: "#ffffff",
                                 margin: [0, 7, 0, 5],
                                 bold: true,
@@ -408,7 +408,7 @@ let create = (instituition, account, account_content, res, user, date, num_autor
                             {
                                 fontSize: 9.5,
                                 border: [false, false, false, false],
-                                fillColor: "#3C0097",
+                                fillColor: "#000000",
                                 color: "#ffffff",
                                 margin: [0, 7, 0, 5],
                                 bold: true,

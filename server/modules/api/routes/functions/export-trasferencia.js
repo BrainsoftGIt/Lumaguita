@@ -141,10 +141,10 @@ let create = (instituition, artigos_transferencia, armazens, res, user, date) =>
                         [
                             {
                                 border: [false, false, true, false],
-                                borderColor: ['#3C0097', '#3C0097', '#3C0097', '#3C0097'],
+                                borderColor: ['#000000', '#000000', '#000000', '#000000'],
                                 stack: [
                                     {
-                                        color: '#3C0097',
+                                        color: '#000000',
                                         text: `TRANSFERÊNCIA DE ARTIGOS`,
                                         bold: true,
                                         fontSize: 16,
@@ -153,10 +153,10 @@ let create = (instituition, artigos_transferencia, armazens, res, user, date) =>
                             },
                             {
                                 border: [true, false, false, false],
-                                borderColor: ['#3C0097', '#3C0097', '#3C0097', '#3C0097'],
+                                borderColor: ['#000000', '#000000', '#000000', '#000000'],
                                 stack: [
                                     {
-                                        color: '#3C0097',
+                                        color: '#000000',
                                         text: "Data de transferência"
                                     },
                                     {
@@ -184,7 +184,7 @@ let create = (instituition, artigos_transferencia, armazens, res, user, date) =>
                                         text: [
                                             {
                                                 bold: true,
-                                                color: '#3C0097',
+                                                color: '#000000',
                                                 text: "Armazém de Saída: "
                                             },
                                             `${armazens.armazem_origem}`
@@ -196,7 +196,7 @@ let create = (instituition, artigos_transferencia, armazens, res, user, date) =>
                                         text: [
                                             {
                                                 bold: true,
-                                                color: '#3C0097',
+                                                color: '#000000',
                                                 text: "Cód. Armazém de Saída: "
                                             },
                                             `${armazens.armazem_origem_codigo}`
@@ -220,7 +220,7 @@ let create = (instituition, artigos_transferencia, armazens, res, user, date) =>
                                         text: [
                                             {
                                                 bold: true,
-                                                color: '#3C0097',
+                                                color: '#000000',
                                                 text: "Armazém de Entrada: "
                                             },
                                             `${armazens.armazem_destino}`
@@ -232,7 +232,7 @@ let create = (instituition, artigos_transferencia, armazens, res, user, date) =>
                                         text: [
                                             {
                                                 bold: true,
-                                                color: '#3C0097',
+                                                color: '#000000',
                                                 text: "Cód. Armazém de Entrada: "
                                             },
                                             `${armazens.armazem_destino_codigo}`
@@ -272,20 +272,20 @@ let create = (instituition, artigos_transferencia, armazens, res, user, date) =>
                                 margin: [0, 7, 0, 5],
                                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
                                 color: "#ffffff",
-                                fillColor: '#3C0097',
+                                fillColor: '#000000',
                                 text: "Código"
                             },
                             {
                                 margin: [0, 7, 0, 5],
                                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
-                                fillColor: '#3C0097',
+                                fillColor: '#000000',
                                 text: "Descrição",
                                 color: "#ffffff"
                             },
                             {
                                 margin: [0, 7, 0, 5],
                                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
-                                fillColor: '#3C0097',
+                                fillColor: '#000000',
                                 text: "Quantidade",
                                 color: "#ffffff"
                             }

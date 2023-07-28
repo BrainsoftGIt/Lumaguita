@@ -186,7 +186,7 @@ let create = (instituition, deposito, cliente, res, user, date, num_autorization
                         [
                             {
                                 border: [false, false, true, false],
-                                borderColor: ['#3C0097', '#3C0097', '#3C0097', '#3C0097'],
+                                borderColor: ['#000000', '#000000', '#000000', '#000000'],
                                 stack: [
                                     {
                                         text: `Cliente`,
@@ -197,7 +197,7 @@ let create = (instituition, deposito, cliente, res, user, date, num_autorization
                                         text: [
                                             {
                                                 bold: true,
-                                                color: '#3C0097',
+                                                color: '#000000',
                                                 text: `Cliente: `
                                             },
                                             `${cliente === null || cliente === void 0 ? void 0 : cliente.cliente_titular}`
@@ -207,7 +207,7 @@ let create = (instituition, deposito, cliente, res, user, date, num_autorization
                                         text: [
                                             {
                                                 bold: true,
-                                                color: '#3C0097',
+                                                color: '#000000',
                                                 text: `NIF: `
                                             },
                                             `${((cliente === null || cliente === void 0 ? void 0 : cliente.cliente_nif) || "---------")}`
@@ -217,7 +217,7 @@ let create = (instituition, deposito, cliente, res, user, date, num_autorization
                                         text: [
                                             {
                                                 bold: true,
-                                                color: '#3C0097',
+                                                color: '#000000',
                                                 text: `Contacto: `
                                             },
                                             `${(_j = cliente === null || cliente === void 0 ? void 0 : cliente.cliente_contactos) === null || _j === void 0 ? void 0 : _j[0]}`
@@ -227,7 +227,7 @@ let create = (instituition, deposito, cliente, res, user, date, num_autorization
                                         text: [
                                             {
                                                 bold: true,
-                                                color: '#3C0097',
+                                                color: '#000000',
                                                 text: `Email: `
                                             },
                                             `${(cliente === null || cliente === void 0 ? void 0 : cliente.cliente_mail) || "------"}`
@@ -237,10 +237,10 @@ let create = (instituition, deposito, cliente, res, user, date, num_autorization
                             },
                             {
                                 border: [true, false, false, false],
-                                borderColor: ['#3C0097', '#3C0097', '#3C0097', '#3C0097'],
+                                borderColor: ['#000000', '#000000', '#000000', '#000000'],
                                 stack: [
                                     {
-                                        color: '#3C0097',
+                                        color: '#000000',
                                         bold: true,
                                         fontSize: 14,
                                         text: "Nº do Recibo"
@@ -251,13 +251,13 @@ let create = (instituition, deposito, cliente, res, user, date, num_autorization
                                     {
                                         columns: [
                                             {
-                                                color: '#3C0097',
+                                                color: '#000000',
                                                 width: "50%",
                                                 bold: true,
                                                 text: "Forma de Pagamento"
                                             },
                                             {
-                                                color: '#3C0097',
+                                                color: '#000000',
                                                 bold: true,
                                                 width: "50%",
                                                 text: "Data de Emissão",
@@ -308,21 +308,21 @@ let create = (instituition, deposito, cliente, res, user, date, num_autorization
                             {
                                 margin: [0, 7, 0, 5],
                                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
-                                fillColor: '#3C0097',
+                                fillColor: '#000000',
                                 text: "Documento",
                                 color: "#ffffff"
                             },
                             {
                                 margin: [0, 7, 0, 5],
                                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
-                                fillColor: '#3C0097',
+                                fillColor: '#000000',
                                 text: "Descrição",
                                 color: "#ffffff"
                             },
                             {
                                 margin: [0, 7, 0, 5],
                                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
-                                fillColor: '#3C0097',
+                                fillColor: '#000000',
                                 text: "Data",
                                 color: "#ffffff",
                                 alignment: "center"
@@ -330,7 +330,7 @@ let create = (instituition, deposito, cliente, res, user, date, num_autorization
                             {
                                 margin: [0, 7, 0, 5],
                                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
-                                fillColor: '#3C0097',
+                                fillColor: '#000000',
                                 text: "Valor Doc.",
                                 color: "#ffffff",
                                 alignment: "center"
@@ -338,7 +338,7 @@ let create = (instituition, deposito, cliente, res, user, date, num_autorization
                             {
                                 margin: [0, 7, 0, 5],
                                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
-                                fillColor: '#3C0097',
+                                fillColor: '#000000',
                                 text: "Valor Recebido",
                                 color: "#ffffff",
                                 alignment: "center"

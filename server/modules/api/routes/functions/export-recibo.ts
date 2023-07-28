@@ -177,7 +177,7 @@ export let create = async (instituition, deposito, cliente, res, user, date, num
                         [
                             {
                                 border: [false, false, true, false],
-                                borderColor: ['#3C0097', '#3C0097', '#3C0097', '#3C0097'],
+                                borderColor: ['#000000', '#000000', '#000000', '#000000'],
                                 stack: [
                                     {
                                         text: `Cliente`,
@@ -188,7 +188,7 @@ export let create = async (instituition, deposito, cliente, res, user, date, num
                                         text: [
                                             {
                                                 bold: true,
-                                                color : '#3C0097',
+                                                color : '#000000',
                                                 text : `Cliente: `
                                             },
                                             `${cliente?.cliente_titular}`
@@ -198,7 +198,7 @@ export let create = async (instituition, deposito, cliente, res, user, date, num
                                         text: [
                                             {
                                                 bold: true,
-                                                color : '#3C0097',
+                                                color : '#000000',
                                                 text : `NIF: `
                                             },
                                             `${(cliente?.cliente_nif || "---------")}`
@@ -208,7 +208,7 @@ export let create = async (instituition, deposito, cliente, res, user, date, num
                                         text: [
                                             {
                                                 bold: true,
-                                                color : '#3C0097',
+                                                color : '#000000',
                                                 text : `Contacto: `
                                             },
                                             `${cliente?.cliente_contactos?.[0]}`
@@ -218,7 +218,7 @@ export let create = async (instituition, deposito, cliente, res, user, date, num
                                         text: [
                                             {
                                                 bold: true,
-                                                color : '#3C0097',
+                                                color : '#000000',
                                                 text : `Email: `
                                             },
                                             `${cliente?.cliente_mail || "------"}`
@@ -228,10 +228,10 @@ export let create = async (instituition, deposito, cliente, res, user, date, num
                             },
                             {
                                 border: [true, false, false, false],
-                                borderColor: ['#3C0097', '#3C0097', '#3C0097', '#3C0097'],
+                                borderColor: ['#000000', '#000000', '#000000', '#000000'],
                                 stack: [
                                     {
-                                        color : '#3C0097',
+                                        color : '#000000',
                                         bold: true,
                                         fontSize: 14,
                                         text: "Nº do Recibo"
@@ -242,13 +242,13 @@ export let create = async (instituition, deposito, cliente, res, user, date, num
                                     {
                                         columns: [
                                             {
-                                                color : '#3C0097',
+                                                color : '#000000',
                                                 width: "50%",
                                                 bold: true,
                                                 text: "Forma de Pagamento"
                                             },
                                             {
-                                                color : '#3C0097',
+                                                color : '#000000',
                                                 bold: true,
                                                 width: "50%",
                                                 text: "Data de Emissão",
@@ -299,21 +299,21 @@ export let create = async (instituition, deposito, cliente, res, user, date, num
                             {
                                 margin: [0, 7, 0, 5],
                                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
-                                fillColor: '#3C0097',
+                                fillColor: '#000000',
                                 text: "Documento",
                                 color: "#ffffff"
                             },
                             {
                                 margin : [0, 7, 0, 5],
                                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
-                                fillColor: '#3C0097',
+                                fillColor: '#000000',
                                 text : "Descrição",
                                 color: "#ffffff"
                             },
                             {
                                 margin : [0, 7, 0, 5],
                                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
-                                fillColor: '#3C0097',
+                                fillColor: '#000000',
                                 text: "Data",
                                 color: "#ffffff",
                                 alignment : "center"
@@ -321,7 +321,7 @@ export let create = async (instituition, deposito, cliente, res, user, date, num
                             {
                                 margin : [0, 7, 0, 5],
                                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
-                                fillColor: '#3C0097',
+                                fillColor: '#000000',
                                 text: "Valor Doc.",
                                 color: "#ffffff",
                                 alignment : "center"
@@ -329,7 +329,7 @@ export let create = async (instituition, deposito, cliente, res, user, date, num
                             {
                                 margin : [0, 7, 0, 5],
                                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
-                                fillColor: '#3C0097',
+                                fillColor: '#000000',
                                 text: "Valor Recebido",
                                 color: "#ffffff",
                                 alignment : "center"

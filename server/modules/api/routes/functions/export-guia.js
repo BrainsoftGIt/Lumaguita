@@ -165,10 +165,10 @@ let create = (instituition, fornecedor, guia, artigos, res, user, custo_guia) =>
                         [
                             {
                                 border: [false, false, true, false],
-                                borderColor: ['#3C0097', '#3C0097', '#3C0097', '#3C0097'],
+                                borderColor: ['#000000', '#000000', '#000000', '#000000'],
                                 stack: [
                                     {
-                                        color: '#3C0097',
+                                        color: '#000000',
                                         text: `Fornecedor`,
                                         bold: true,
                                         fontSize: 15,
@@ -177,7 +177,7 @@ let create = (instituition, fornecedor, guia, artigos, res, user, custo_guia) =>
                                         text: [
                                             {
                                                 bold: true,
-                                                color: '#3C0097',
+                                                color: '#000000',
                                                 text: `Código: `
                                             },
                                             fornecedor.fornecedor_code
@@ -187,7 +187,7 @@ let create = (instituition, fornecedor, guia, artigos, res, user, custo_guia) =>
                                         text: [
                                             {
                                                 bold: true,
-                                                color: '#3C0097',
+                                                color: '#000000',
                                                 text: `Nome: `
                                             },
                                             fornecedor.fornecedor_nome
@@ -197,7 +197,7 @@ let create = (instituition, fornecedor, guia, artigos, res, user, custo_guia) =>
                                         text: [
                                             {
                                                 bold: true,
-                                                color: '#3C0097',
+                                                color: '#000000',
                                                 text: `NIF: `
                                             },
                                             (fornecedor.fornecedor_nif || "---------")
@@ -207,7 +207,7 @@ let create = (instituition, fornecedor, guia, artigos, res, user, custo_guia) =>
                                         text: [
                                             {
                                                 bold: true,
-                                                color: '#3C0097',
+                                                color: '#000000',
                                                 text: `Endereço: `
                                             },
                                             (fornecedor.fornecedor_email || "---------")
@@ -217,12 +217,12 @@ let create = (instituition, fornecedor, guia, artigos, res, user, custo_guia) =>
                             },
                             {
                                 border: [true, false, false, false],
-                                borderColor: ['#3C0097', '#3C0097', '#3C0097', '#3C0097'],
+                                borderColor: ['#000000', '#000000', '#000000', '#000000'],
                                 stack: [
                                     {
                                         bold: true,
                                         fontSize: 20,
-                                        color: '#3C0097',
+                                        color: '#000000',
                                         text: "Guia de Entrada"
                                     },
                                     {
@@ -234,19 +234,19 @@ let create = (instituition, fornecedor, guia, artigos, res, user, custo_guia) =>
                                             {
                                                 bold: true,
                                                 width: "33.333333333%",
-                                                color: '#3C0097',
+                                                color: '#000000',
                                                 text: "Data de Guia"
                                             },
                                             {
                                                 bold: true,
                                                 width: "33.333333333%",
-                                                color: '#3C0097',
+                                                color: '#000000',
                                                 text: "Nº de Documento",
                                             },
                                             {
                                                 bold: true,
                                                 width: "33.333333333%",
-                                                color: '#3C0097',
+                                                color: '#000000',
                                                 text: "Data de Doc. Fornecedor",
                                             }
                                         ],
@@ -301,34 +301,34 @@ let create = (instituition, fornecedor, guia, artigos, res, user, custo_guia) =>
                                 margin: [0, 7, 0, 5],
                                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
                                 color: "#ffffff",
-                                fillColor: '#3C0097',
+                                fillColor: '#000000',
                                 text: "Código"
                             },
                             {
                                 margin: [0, 7, 0, 5],
                                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
-                                fillColor: '#3C0097',
+                                fillColor: '#000000',
                                 text: "Descrição",
                                 color: "#ffffff"
                             },
                             {
                                 margin: [0, 7, 0, 5],
                                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
-                                fillColor: '#3C0097',
+                                fillColor: '#000000',
                                 text: "Lote",
                                 color: "#ffffff"
                             },
                             {
                                 margin: [0, 7, 0, 5],
                                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
-                                fillColor: '#3C0097',
+                                fillColor: '#000000',
                                 text: "Qtd",
                                 color: "#ffffff"
                             },
                             {
                                 margin: [0, 7, 0, 5],
                                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
-                                fillColor: '#3C0097',
+                                fillColor: '#000000',
                                 text: "Valor Unit.",
                                 color: "#ffffff",
                                 alignment: "right"
@@ -336,7 +336,7 @@ let create = (instituition, fornecedor, guia, artigos, res, user, custo_guia) =>
                             {
                                 margin: [0, 7, 0, 5],
                                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
-                                fillColor: '#3C0097',
+                                fillColor: '#000000',
                                 text: "Valor",
                                 color: "#ffffff",
                                 alignment: "right"
@@ -398,7 +398,7 @@ let create = (instituition, fornecedor, guia, artigos, res, user, custo_guia) =>
                             {
                                 fontSize: 9.5,
                                 border: [false, false, false, false],
-                                fillColor: "#3C0097",
+                                fillColor: "#000000",
                                 color: "#ffffff",
                                 margin: [0, 7, 0, 5],
                                 bold: true,
@@ -407,7 +407,7 @@ let create = (instituition, fornecedor, guia, artigos, res, user, custo_guia) =>
                             {
                                 fontSize: 9.5,
                                 border: [false, false, false, false],
-                                fillColor: "#3C0097",
+                                fillColor: "#000000",
                                 color: "#ffffff",
                                 margin: [0, 7, 0, 5],
                                 bold: true,

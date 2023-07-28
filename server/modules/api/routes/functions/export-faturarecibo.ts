@@ -177,10 +177,10 @@ export let create = async (instituition, account_content, res, user, date, num_a
                         [
                             {
                                 border: [false, false, true, false],
-                                borderColor: ['#3C0097', '#3C0097', '#3C0097', '#3C0097'],
+                                borderColor: ['#000000', '#000000', '#000000', '#000000'],
                                 stack: [
                                     {
-                                        color : '#3C0097',
+                                        color : '#000000',
                                         text: `FATURA/RECIBO`,
                                         bold: true,
                                         fontSize: 20,
@@ -189,7 +189,7 @@ export let create = async (instituition, account_content, res, user, date, num_a
                                         text: [
                                             {
                                                 bold: true,
-                                                color : '#3C0097',
+                                                color : '#000000',
                                                 text : `Cliente: `
                                             },
                                             account_content[0].main.cliente_titular
@@ -199,7 +199,7 @@ export let create = async (instituition, account_content, res, user, date, num_a
                                         text: [
                                             {
                                                 bold: true,
-                                                color : '#3C0097',
+                                                color : '#000000',
                                                 text: `NIF: `
                                             },
                                             (account_content[0].main.cliente_nif || "---------------")
@@ -209,7 +209,7 @@ export let create = async (instituition, account_content, res, user, date, num_a
                                         text: [
                                             {
                                                 bold: true,
-                                                color : '#3C0097',
+                                                color : '#000000',
                                                 text: `Morada: `
                                             },
                                             (/*account_content[0].main.cliente_nif ||*/ "---------------")
@@ -219,12 +219,12 @@ export let create = async (instituition, account_content, res, user, date, num_a
                             },
                             {
                                 border: [true, false, false, false],
-                                borderColor: ['#3C0097', '#3C0097', '#3C0097', '#3C0097'],
+                                borderColor: ['#000000', '#000000', '#000000', '#000000'],
                                 stack: [
                                     {
                                         bold: true,
                                         fontSize: 14,
-                                        color : '#3C0097',
+                                        color : '#000000',
                                         text: "Nº da Fatura"
                                     },
                                     {
@@ -236,13 +236,13 @@ export let create = async (instituition, account_content, res, user, date, num_a
                                             {
                                                 bold: true,
                                                 width: "50%",
-                                                color : '#3C0097',
+                                                color : '#000000',
                                                 text: "M. Pagamento"
                                             },
                                             {
                                                 bold: true,
                                                 width: "50%",
-                                                color : '#3C0097',
+                                                color : '#000000',
                                                 text: "Data de emissão",
                                             }
                                         ],
@@ -291,28 +291,28 @@ export let create = async (instituition, account_content, res, user, date, num_a
                             {
                                 margin: [0, 7, 0, 5],
                                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
-                                fillColor: '#3C0097',
+                                fillColor: '#000000',
                                 text: "Código",
                                 color: "#ffffff"
                             },
                             {
                                 margin : [0, 7, 0, 5],
                                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
-                                fillColor: '#3C0097',
+                                fillColor: '#000000',
                                 text : "Descrição",
                                 color: "#ffffff"
                             },
                             {
                                 margin : [0, 7, 0, 5],
                                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
-                                fillColor: '#3C0097',
+                                fillColor: '#000000',
                                 text: "Qtd",
                                 color: "#ffffff"
                             },
                             {
                                 margin : [0, 7, 0, 5],
                                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
-                                fillColor: '#3C0097',
+                                fillColor: '#000000',
                                 text: "Taxa",
                                 color: "#ffffff",
                                 alignment : "right"
@@ -320,7 +320,7 @@ export let create = async (instituition, account_content, res, user, date, num_a
                             {
                                 margin : [0, 7, 0, 5],
                                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
-                                fillColor: '#3C0097',
+                                fillColor: '#000000',
                                 text: "Valor Unit.",
                                 color: "#ffffff",
                                 alignment : "right"
@@ -328,7 +328,7 @@ export let create = async (instituition, account_content, res, user, date, num_a
                             {
                                 margin : [0, 7, 0, 5],
                                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
-                                fillColor: '#3C0097',
+                                fillColor: '#000000',
                                 text: "Subtotal",
                                 color: "#ffffff",
                                 alignment : "right"
@@ -392,7 +392,7 @@ export let create = async (instituition, account_content, res, user, date, num_a
                             {
                                 fontSize : 9.5,
                                 border: [false, false, false, false],
-                                fillColor: "#3C0097",
+                                fillColor: "#000000",
                                 color: "#ffffff",
                                 margin : [0, 7, 0, 5],
                                 bold: true,
@@ -401,7 +401,7 @@ export let create = async (instituition, account_content, res, user, date, num_a
                             {
                                 fontSize : 9.5,
                                 border: [false, false, false, false],
-                                fillColor: "#3C0097",
+                                fillColor: "#000000",
                                 color: "#ffffff",
                                 margin : [0, 7, 0, 5],
                                 bold: true,
