@@ -37,7 +37,7 @@ begin
          coalesce( ve.venda_descricao, ar.artigo_nome ) desc_itens,
          ctorigin.conta_numerofatura numero_documento_origem,
          ctorigin.conta_data data_documento_origem,
-         ts.tserie_code as tipo_documento_origem,
+         tsorigin.tserie_code as tipo_documento_origem,
          ts.tserie_code,
          ct.conta_id,
          ve.venda_id,
