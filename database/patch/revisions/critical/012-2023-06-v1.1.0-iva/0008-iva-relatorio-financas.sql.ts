@@ -38,6 +38,7 @@ begin
          ctorigin.conta_numerofatura numero_documento_origem,
          ctorigin.conta_data data_documento_origem,
          ts.tserie_code as tipo_documento_origem,
+         ts.tserie_code,
          ct.conta_id,
          ve.venda_id,
          cli.cliente_id,
@@ -45,9 +46,6 @@ begin
          se.serie_id,
          ar.artigo_id,
          ct.conta_conta_docorigin,
-         ts.tserie_id,
-         ts.tserie_code,
-         ts.tserie_desc,
          ct._branch_uid
       from tweeks.conta ct
         left join tweeks.cliente cli on ct.conta_cliente_id = cli.cliente_id
