@@ -1,7 +1,7 @@
 
 import path from "path";
 import fs from "fs";
-import {getFonts, structure, photoResize, getImage} from "./estruture";
+import {getFonts, structure, getImage} from "./estruture";
 import {folders} from "../../../../global/project";
 import {clusterServer} from "../../../../service/cluster.service";
 import {formattedString} from "./formatValue";

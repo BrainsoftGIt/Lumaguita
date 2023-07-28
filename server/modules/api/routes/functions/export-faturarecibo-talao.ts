@@ -1,6 +1,6 @@
 import path from "path";
 import fs from "fs";
-import {getFonts, structure, photoResize} from "./estruture-talao";
+import {getFonts, structure} from "./estruture-talao";
 import {formattedString} from "./formatValue";
 import {folders} from "../../../../global/project";
 import {clusterServer} from "../../../../service/cluster.service";
