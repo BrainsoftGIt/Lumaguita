@@ -56,8 +56,8 @@ begin
         inner join tweeks.taxa tx on tx.taxa_id = any( ve.venda_taxas )
         inner join tweeks.artigo ar on ve.venda_artigo_id = ar.artigo_id
         left join tweeks.conta ctorigin on ct.conta_conta_docorigin = ctorigin.conta_id
-        left join json_populate_record( null::tweeks.serie, ctorigin.conta_serie ) se on true
-        left join tweeks.tserie tsorigin on se.serie_tserie_id = ts.tserie_id
+        left join json_populate_record( null::tweeks.serie, ctorigin.conta_serie ) seorign on true
+        left join tweeks.tserie tsorigin on seorign.serie_tserie_id = ts.tserie_id
 
       where ve._branch_uid = arg_branch_uid
         and ct._branch_uid = arg_branch_uid
