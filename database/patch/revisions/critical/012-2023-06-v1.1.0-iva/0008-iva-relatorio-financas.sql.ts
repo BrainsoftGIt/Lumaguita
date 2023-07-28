@@ -1,9 +1,10 @@
 import {block} from "../../../core/updater";
 
 block( module, { identifier: "financas-report", flags:[]}).sql`
-create or replace function report.vreport_imposto_financas( args jsonb )
-returns setof jsonb
-language plpgsql as $$
+create or replace function report.vreport_imposto_financas(args jsonb) returns SETOF jsonb
+  language plpgsql
+as
+$$
 declare
   /*
     args := {
@@ -36,6 +37,7 @@ begin
          coalesce( ve.venda_descricao, ar.artigo_nome ) desc_itens,
          ctorigin.conta_numerofatura numero_documento_origem,
          ctorigin.conta_data data_documento_origem,
+         ts.tserie_code as tipo_documento_origem,
          ct.conta_id,
          ve.venda_id,
          cli.cliente_id,
@@ -43,15 +45,22 @@ begin
          se.serie_id,
          ar.artigo_id,
          ct.conta_conta_docorigin,
+         ts.tserie_id,
+         ts.tserie_code,
+         ts.tserie_desc,
          ct._branch_uid
       from tweeks.conta ct
         left join tweeks.cliente cli on ct.conta_cliente_id = cli.cliente_id
         inner join json_populate_record( null::tweeks.serie, ct.conta_serie ) se on true
+        inner join tweeks.tserie ts on se.serie_tserie_id = ts.tserie_id
         inner join tweeks.venda ve on ct.conta_id = ve.venda_conta_id
           and ve.venda_estado = _const.maguita_venda_estado_fechado
         inner join tweeks.taxa tx on tx.taxa_id = any( ve.venda_taxas )
         inner join tweeks.artigo ar on ve.venda_artigo_id = ar.artigo_id
         left join tweeks.conta ctorigin on ct.conta_conta_docorigin = ctorigin.conta_id
+        left join json_populate_record( null::tweeks.serie, ctorigin.conta_serie ) se on true
+        left join tweeks.tserie tsorigin on se.serie_tserie_id = ts.tserie_id
+
       where ve._branch_uid = arg_branch_uid
         and ct._branch_uid = arg_branch_uid
         and ct.conta_estado = _const.maguita_conta_estado_fechado
