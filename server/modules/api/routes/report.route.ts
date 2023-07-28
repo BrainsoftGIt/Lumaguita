@@ -104,6 +104,7 @@ app.post("/api/report/export/imposto", async (req, res) =>{
 
     let ordenList = {};
     list.forEach(({vreport_imposto_financas: {...artigo}}) => {
+        console.log(artigo);
         if(!ordenList[artigo.conta_id]){
             ordenList[artigo.conta_id] = []
         }
@@ -113,22 +114,22 @@ app.post("/api/report/export/imposto", async (req, res) =>{
 
     const json = Object.keys(ordenList).map((key) => {
         return {
-            "numDocumento": ordenList[key][0].documento_numero,
-            "dtEmissaoDocumento": ordenList[key][0].documento_data,
-            "nifConsumidor": ordenList[key][0].nif_consumidor,
-            "numSerieDocumento": "FT0000419",
-            "tbItensDocumentoGerados": ordenList[key].map(({codigo_isento, desc_itens, total_valor_itens, taxa_aplicavel_itens, quant_itens, numero_documento_origem}) =>  {
+            "numDocumento": ordenList[key][0].documento_numero || "",
+            "dtEmissaoDocumento": ordenList[key][0].documento_data || "",
+            "nifConsumidor": ordenList[key][0].nif_consumidor || "",
+            "numSerieDocumento": `${ordenList[key][0].tserie_code || ""}${ordenList[key][0].documento_serie || ""}`,
+            "tbItensDocumentoGerados": ordenList[key].map(({tipo_documento_origem, data_documento_origem, codigo_isento, desc_itens, total_valor_itens, taxa_aplicavel_itens, quant_itens, numero_documento_origem}) =>  {
                 return {
-                    "codigoIsencao": codigo_isento,
-                    "quantItens": quant_itens,
-                    "descItens": desc_itens,
-                    "valorItens": total_valor_itens,
-                    "valorTaxaAplicavel": taxa_aplicavel_itens,
+                    "codigoIsencao": codigo_isento || "",
+                    "quantItens": quant_itens || "",
+                    "descItens": desc_itens || "",
+                    "valorItens": total_valor_itens || "",
+                    "valorTaxaAplicavel": taxa_aplicavel_itens || "",
                     "tbDocumentoOrigems": (!!numero_documento_origem) ? [
                         {
-                            "dtDocumentoOrigem": "2019-05-22",
-                            "numDocumentoOrigem": numero_documento_origem,
-                            "siglaTipoDocumentoEmissao": "FS"
+                            "dtDocumentoOrigem": data_documento_origem || "",
+                            "numDocumentoOrigem": numero_documento_origem || "",
+                            "siglaTipoDocumentoEmissao": tipo_documento_origem
                         }
                     ] : []
                 }
