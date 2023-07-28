@@ -34,7 +34,7 @@ app.post("/api/report/filter", async (req, res) => {
     const {functFilterReport} = require("../db/call-function-report");
     req.body._branch_uid = req.session.auth_data.auth.branch_uuid;
     const response = await functFilterReport(req.body);
-    response.notices.forEach( value => console.log( value.message ) );
+    // response.notices.forEach( value => console.log( value.message ) );
     res.json({reportData: response.rows});
 });
 app.get("/api/date/representation", async (req, res) => {
@@ -92,6 +92,58 @@ app.post("/api/report/export", async (req, res) =>{
     await workBook.xlsx.writeFile(reportPath).then(() =>{
         res.json({file: filename})
     });
+});
+app.post("/api/report/export/imposto", async (req, res) =>{
+    const {functReportFinanca} = require("../db/call-function-report");
+    req.body.arg_colaborador_id = req.session.auth_data.auth.colaborador_id;
+    let { rows : list } = await functReportFinanca(req.body);
+
+    const filename = "Luma - report - financa - "+moment(new Date()).format( "DD-MM-YYYY h_mm_ss" )+".json";
+    fs.mkdirSync(path.join(folders.temp, 'multer'), {recursive: true});
+    let reportPath = path.join( folders.temp, 'multer', filename );
+
+    let ordenList = {};
+    list.forEach(({vreport_imposto_financas: {...artigo}}) => {
+        if(!ordenList[artigo.conta_id]){
+            ordenList[artigo.conta_id] = []
+        }
+
+        ordenList[artigo.conta_id].push(artigo);
+    })
+
+    const json = Object.keys(ordenList).map((key) => {
+        return {
+            "numDocumento": ordenList[key][0].documento_numero,
+            "dtEmissaoDocumento": ordenList[key][0].documento_data,
+            "nifConsumidor": ordenList[key][0].nif_consumidor,
+            "numSerieDocumento": "FT0000419",
+            "tbItensDocumentoGerados": ordenList[key].map(({codigo_isento, desc_itens, total_valor_itens, taxa_aplicavel_itens, quant_itens, numero_documento_origem}) =>  {
+                return {
+                    "codigoIsencao": codigo_isento,
+                    "quantItens": quant_itens,
+                    "descItens": desc_itens,
+                    "valorItens": total_valor_itens,
+                    "valorTaxaAplicavel": taxa_aplicavel_itens,
+                    "tbDocumentoOrigems": (!!numero_documento_origem) ? [
+                        {
+                            "dtDocumentoOrigem": "2019-05-22",
+                            "numDocumentoOrigem": numero_documento_origem,
+                            "siglaTipoDocumentoEmissao": "FS"
+                        }
+                    ] : []
+                }
+            })
+        }
+    })
+
+    fs.writeFile(reportPath, JSON.stringify(json, null, 2), (err) => {
+        if (err) {
+            console.error('Erro ao salvar o documento:', err);
+        } else {
+            res.json({file: filename})
+        }
+    });
+
 });
 app.get("/api/report/download/:report_name", async (req, res) =>{
     let filename = req.params.report_name;

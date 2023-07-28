@@ -14,3 +14,10 @@ export function functFilterReport(paramn) {
         sql `select * from report.engine( ${ paramn } ) with ordinality r( data )`
     );
 }
+
+export function functReportFinanca(paramn) {
+    const {sql} = factory.create(Templates.PARAMETERIZED);
+    return catchAll(
+        sql `select * from report.vreport_imposto_financas( ${ paramn } )`
+    );
+}

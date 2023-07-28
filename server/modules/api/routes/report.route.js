@@ -8,6 +8,17 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __rest = (this && this.__rest) || function (s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
+    return t;
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -46,7 +57,7 @@ web_service_1.app.post("/api/report/filter", (req, res) => __awaiter(void 0, voi
     const { functFilterReport } = require("../db/call-function-report");
     req.body._branch_uid = req.session.auth_data.auth.branch_uuid;
     const response = yield functFilterReport(req.body);
-    response.notices.forEach(value => console.log(value.message));
+    // response.notices.forEach( value => console.log( value.message ) );
     res.json({ reportData: response.rows });
 }));
 web_service_1.app.get("/api/date/representation", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -108,6 +119,54 @@ web_service_1.app.post("/api/report/export", (req, res) => __awaiter(void 0, voi
     let reportPath = path_1.default.join(project_1.folders.temp, 'multer', filename);
     yield workBook.xlsx.writeFile(reportPath).then(() => {
         res.json({ file: filename });
+    });
+}));
+web_service_1.app.post("/api/report/export/imposto", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { functReportFinanca } = require("../db/call-function-report");
+    req.body.arg_colaborador_id = req.session.auth_data.auth.colaborador_id;
+    let { rows: list } = yield functReportFinanca(req.body);
+    const filename = "Luma - report - financa - " + (0, moment_1.default)(new Date()).format("DD-MM-YYYY h_mm_ss") + ".json";
+    fs_1.default.mkdirSync(path_1.default.join(project_1.folders.temp, 'multer'), { recursive: true });
+    let reportPath = path_1.default.join(project_1.folders.temp, 'multer', filename);
+    let ordenList = {};
+    list.forEach((_a) => {
+        var artigo = __rest(_a.vreport_imposto_financas, []);
+        if (!ordenList[artigo.conta_id]) {
+            ordenList[artigo.conta_id] = [];
+        }
+        ordenList[artigo.conta_id].push(artigo);
+    });
+    const json = Object.keys(ordenList).map((key) => {
+        return {
+            "numDocumento": ordenList[key][0].documento_numero,
+            "dtEmissaoDocumento": ordenList[key][0].documento_data,
+            "nifConsumidor": ordenList[key][0].nif_consumidor,
+            "numSerieDocumento": "FT0000419",
+            "tbItensDocumentoGerados": ordenList[key].map(({ codigo_isento, desc_itens, total_valor_itens, taxa_aplicavel_itens, quant_itens, numero_documento_origem }) => {
+                return {
+                    "codigoIsencao": codigo_isento,
+                    "quantItens": quant_itens,
+                    "descItens": desc_itens,
+                    "valorItens": total_valor_itens,
+                    "valorTaxaAplicavel": taxa_aplicavel_itens,
+                    "tbDocumentoOrigems": (!!numero_documento_origem) ? [
+                        {
+                            "dtDocumentoOrigem": "2019-05-22",
+                            "numDocumentoOrigem": numero_documento_origem,
+                            "siglaTipoDocumentoEmissao": "FS"
+                        }
+                    ] : []
+                };
+            })
+        };
+    });
+    fs_1.default.writeFile(reportPath, JSON.stringify(json, null, 2), (err) => {
+        if (err) {
+            console.error('Erro ao salvar o documento:', err);
+        }
+        else {
+            res.json({ file: filename });
+        }
     });
 }));
 web_service_1.app.get("/api/report/download/:report_name", (req, res) => __awaiter(void 0, void 0, void 0, function* () {

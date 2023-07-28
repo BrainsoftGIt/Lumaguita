@@ -61,6 +61,10 @@
                 &.excel {
                     background: lighten($green, 56%);
                     border: 2px lighten($green, 10%) solid;
+                    &.imposto {
+                        background: lighten($orange, 56%);
+                        border: 2px lighten($orange, 10%) solid;
+                    }
                 }
                 &.pdf {
                     background: lighten(tomato, 34%);
