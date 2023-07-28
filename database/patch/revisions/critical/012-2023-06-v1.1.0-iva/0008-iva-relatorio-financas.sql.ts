@@ -50,7 +50,8 @@ begin
          
       from tweeks.conta ct
         inner join json_populate_record( null::tweeks.serie, ct.conta_serie ) se on true
-        inner join tweeks.tserie ts on se.serie_tserie_id = ts.tserie_id
+        inner join tweeks.serie _se on se.serie_id = _se.serie_id
+        inner join tweeks.tserie ts on _se.serie_tserie_id = ts.tserie_id
         inner join tweeks.venda ve on ct.conta_id = ve.venda_conta_id
           and ve.venda_estado = _const.maguita_venda_estado_fechado
           and ve.venda_venda_id is null
@@ -58,7 +59,8 @@ begin
         inner join tweeks.artigo ar on ve.venda_artigo_id = ar.artigo_id
         left join tweeks.conta ctorigin on ct.conta_conta_docorigin = ctorigin.conta_id
         left join json_populate_record( null::tweeks.serie, ctorigin.conta_serie ) seorign on true
-        left join tweeks.tserie tsorigin on seorign.serie_tserie_id = tsorigin.tserie_id
+        left join tweeks.serie _seorign on seorign.serie_id = _seorign.serie_id
+        left join tweeks.tserie tsorigin on _seorign.serie_tserie_id = tsorigin.tserie_id
         left join tweeks.cliente cli on ct.conta_cliente_id = cli.cliente_id
 
       where ve._branch_uid = arg_branch_uid
