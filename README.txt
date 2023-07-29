@@ -64,3 +64,10 @@ or maguita.exe
 --appUser Corresponde ao nome do ulizador do aplicativo
                 # Default is current os session user name
 --appDebug appresentar os resultados na consola
+
+
+
+[INSTALLER-BUILD]
+npm run compile:nexe #create a nexe file
+npn run compile:build #buid dist of project
+npn run compile:release #create installer of dist project
