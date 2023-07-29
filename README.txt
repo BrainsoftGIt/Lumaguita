@@ -70,4 +70,4 @@ or maguita.exe
 [INSTALLER-BUILD]
 npm run compile:nexe #create a nexe file
 npn run compile:build #buid dist of project
-npn run compile:release #create installer of dist project
+npn run compile:win32:release #create installer of dist project
