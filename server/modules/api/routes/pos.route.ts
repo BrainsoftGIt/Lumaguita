@@ -33,7 +33,9 @@ app.post("/api/pos/conta", async (req, res) =>{
     req.body.arg_colaborador_id = req.body.admin === undefined ? req.session.user_pos.auth.colaborador_id : req.session.auth_data.auth.colaborador_id;
     req.body.arg_espaco_auth = req.body.admin === undefined ? req.session.user_pos.auth.armazem_atual : req.session.auth_data.auth.armazem_atual;
     req.body.conta_posto_id = req.body.admin === undefined ? req.session.posto.posto_id : req.session.posto_admin;
+    console.log( JSON.stringify( req.body, null, 2 ) );
     const response = await functRegConta(req.body );
+    console.log( response );
     let after = await clusterServer.service.loadLocalCluster();
     res.json({result: response.row.result, data: response.row});
     if(response.row.result && before.cluster_version < after.cluster_version){
