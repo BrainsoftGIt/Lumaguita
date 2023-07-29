@@ -26,7 +26,7 @@ app.post("/api/efatura", async (req, res) =>{
 });
 app.post("/api/efatura/load", async (req, res) =>{
     req.body.arg_espaco_auth = req.body.place === "admin" ? req.session.auth_data.auth.armazem_atual : req.session.user_pos.auth.armazem_atual;
-    req.body.arg_colaborador_id = req.session.auth_data.auth.colaborador_id;
+    req.body.arg_colaborador_id = req.body.place === "admin" ? req.session.auth_data.auth.colaborador_id : req.session.user_pos.auth.colaborador_id;
 
     if(req.body.list_type_series === undefined) {
         const {functLoadSeries} = require("../db/call-function-efatura");
