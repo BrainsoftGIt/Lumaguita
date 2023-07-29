@@ -44,7 +44,7 @@ export let structure = (user) => {
         pageMargins: [ 20, 3, 20, 50 ],
         pageSize: {
             width : 263.78,
-            height: 'auto'
+            height: 595 * 2
         },
         background: function (page) {
             return []
