@@ -1,7 +1,8 @@
 import {block} from "../../../../core/updater";
 
-block( module, { identifier: "report:source|fluxo", flags:[ "@force" ] }).sql`
+block( module, { identifier: "report:source|fluxo" }).sql`
 drop view if exists report.vreport_fluxo;
+
 create or replace view report.vreport_fluxo as
   select
       top.toperacao_designacao as "OPERAÇÃO",

@@ -1,7 +1,8 @@
 import {block} from "../../../../core/updater";
 
-block( module, { identifier: "report:source|fatura", flags:[ "@force" ]}).sql`
+block( module, { identifier: "report:source|fatura" }).sql`
 drop view if exists report.vreport_fatura;
+
 create or replace view report.vreport_fatura as
 with _const as (
   select * from map.constant()

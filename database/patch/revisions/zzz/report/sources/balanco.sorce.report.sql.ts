@@ -1,7 +1,8 @@
 import {block} from "../../../../core/updater";
 
-block( module, { identifier: "report:source|balanco", flags:[ "@force" ]}).sql`
+block( module, { identifier: "report:source|balanco"}).sql`
 drop view if exists report.vreport_balanco;
+
 create or replace view report.vreport_balanco as
 with
   _const as ( select * from map.constant() ),

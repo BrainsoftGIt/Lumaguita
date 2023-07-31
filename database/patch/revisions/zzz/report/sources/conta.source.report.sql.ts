@@ -1,7 +1,8 @@
 import {block} from "../../../../core/updater";
 
-block( module, { identifier: "report:source|conta", flags:[ "@force" ]}).sql`
+block( module, { identifier: "report:source|conta"}).sql`
 drop view if exists report.vreport_conta;
+
 create view report.vreport_conta as
 with _const as (
   select

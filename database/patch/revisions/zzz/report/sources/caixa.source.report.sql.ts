@@ -1,7 +1,8 @@
 import {block} from "../../../../core/updater";
 
-block(module, { identifier: "report:source|caixa", flags:[ "@force" ]} ).sql`
+block(module, { identifier: "report:source|caixa" } ).sql`
 drop view if exists report.vreport_caixa;
+
 create view report.vreport_caixa as
 
 with _const as (
