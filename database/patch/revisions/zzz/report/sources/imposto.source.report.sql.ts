@@ -1,6 +1,6 @@
 import {block} from "../../../../core/updater";
 
-block( module, { identifier: "report:source|imposto"}).sql`
+block( module, { identifier: "report:source|imposto", flags:[ "@force" ]}).sql`
 
 drop view if exists report.vreport_imposto;
 create or replace view report.vreport_imposto as
