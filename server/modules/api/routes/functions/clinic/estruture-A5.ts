@@ -45,7 +45,7 @@ export let structure = (user, num_certification,  imageCabecalho = "") => {
                     margin: [30, 0, 35, 0],
                     stack :[
                         {
-                            color: "#3C0097",
+                            color: "#000000",
                             columns: [
                                 {
                                     width: "60%",
