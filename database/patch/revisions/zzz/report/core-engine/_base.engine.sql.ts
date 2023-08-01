@@ -568,4 +568,598 @@ from __class
 $$;
 
 
+create or replace function report.source_filter(args jsonb) returns SETOF jsonb
+  language plpgsql
+as
+$$
+declare
+    _source text default args->>'source';
+    _user uuid default args->>'user';
+    _space uuid default args->>'space';
+    _branch uuid default args->>'branch';
+    _const map.constant;
+  begin
+    _const := map.constant();
+
+    if _source = 'tweeks.posto' then
+      return query
+        with __posto as (
+          select
+              s.posto_id as id,
+              s.posto_designacao as label
+            from tweeks.posto s
+            where s._branch_uid = _branch
+        ) select to_jsonb( _p )
+          from __posto _p;
+    end if;
+
+    if _source = 'auth.colaborador' then
+      return query
+        with __posto as (
+          select
+            s.colaborador_id as id,
+            s.colaborador_nome as label
+          from auth.colaborador s
+          where s._branch_uid = _branch
+        ) select to_jsonb( _p )
+        from __posto _p;
+    end if;
+
+    if _source = 'tweeks.espaco' then
+      return query
+        with __posto as (
+          select
+            s.espaco_id as id,
+            s.espaco_nome as label
+          from tweeks.espaco s
+          where s.espaco_branch_uid = _branch
+        ) select to_jsonb( _p )
+        from __posto _p;
+    end if;
+
+    if _source = 'geoinfo.currency' then
+      return query
+        with __posto as (
+          select
+            s.currency_id as id,
+            s.currency_code as label
+          from geoinfo.currency s
+          where currency_code in ( 'STN', 'EUR', 'USD' )
+        ) select to_jsonb( _p )
+        from __posto _p;
+    end if;
+
+    if _source = 'tweeks.artigo' then
+      return query
+        with __posto as (
+          select
+            s.artigo_id as id,
+            s.artigo_nome as label
+          from tweeks.artigo s
+          where s._branch_uid = _branch
+        ) select to_jsonb( _p )
+        from __posto _p;
+    end if;
+
+    if _source = 'boolean|Y/N' then
+      return query
+        with __yes_no ( id, label ) as (
+          values ( true, 'SIM' )
+          union all values ( false, 'NÃO')
+        ) select to_jsonb( _p )
+        from __yes_no _p;
+    end if;
+
+    if _source = 'boolean|ON/OFF' then
+      return query
+        with __yes_no ( id, label ) as (
+          values ( true, 'ATIVO' )
+          union all values ( false, 'DESATIVO')
+        ) select to_jsonb( _p )
+        from __yes_no _p;
+    end if;
+
+    if _source = 'STATUS' then
+      return query
+        with __yes_no ( id, label ) as (
+          values ( 0, 'DESATIVO' )
+          union all values ( 1, 'ATIVO' )
+          union all values ( 2, 'PENDENTE' )
+          union all values ( -1, 'ANULADO' )
+        ) select to_jsonb( _p )
+        from __yes_no _p;
+    end if;
+
+    if _source = 'tweeks.toperacao' then
+      return query
+        with __posto as (
+          select
+            s.toperacao_id as id,
+            s.toperacao_designacao as label
+          from tweeks.toperacao s
+        ) select to_jsonb( _p )
+        from __posto _p;
+    end if;
+
+
+    if _source = 'tweeks.tgroup' then
+      return query
+        with __tgroup as (
+          select
+            s.tgrupo_id as id,
+            s.tgrupo_desc as label
+          from tweeks.tgrupo s
+        ) select to_jsonb( _p )
+        from __tgroup _p;
+    end if;
+
+    if _source = 'tweeks.tpaga' then
+      return query
+        with __posto as (
+          select
+            s.tpaga_id as id,
+            s.tpaga_designacao as label
+          from tweeks.tpaga s
+        ) select to_jsonb( _p )
+        from __posto _p;
+    end if;
+
+    if _source = 'tweeks.cliente' then
+      return query
+        with __posto as (
+          select
+            s.cliente_id as id,
+            s.cliente_titular as label
+          from tweeks.cliente s
+          where s._branch_uid = _branch
+        ) select to_jsonb( _p )
+        from __posto _p;
+    end if;
+
+    if _source = 'tweeks.fornecedor' then
+      return query
+        with __posto as (
+          select
+            s.fornecedor_id as id,
+            s.fornecedor_nome as label
+          from tweeks.fornecedor s
+          where s._branch_uid = _branch
+        ) select to_jsonb( _p )
+        from __posto _p;
+    end if;
+
+    if _source = 'tweeks.tipoimposto' then
+      return query
+        with __source as (
+          select
+            s.tipoimposto_id as id,
+            s.tipoimposto_codigo as label
+          from tweeks.tipoimposto s
+          where s._branch_uid = _branch
+        ) select to_jsonb( _s )
+        from __source _s;
+    end if;
+
+    if _source = 'tweeks.serie' then
+      return query
+        with __source as (
+          select
+            s.serie_id as id,
+            format( '%s (%s)', ts.tserie_desc,  s.serie_numero) as label
+          from tweeks.serie s
+            inner join tweeks.tserie ts on s.serie_tserie_id = ts.tserie_id
+          where s._branch_uid = _branch
+        ) select to_jsonb( _s )
+        from __source _s;
+    end if;
+
+    if _source = 'tweeks.tserie' then
+      return query
+        with __source as (
+          select
+            s.tserie_id as id,
+            s.tserie_desc as label
+          from tweeks.tserie s
+        ) select to_jsonb( _s )
+        from __source _s;
+    end if;
+
+    if _source = 'tweeks.caixa::estado' then
+      return query
+        with __source( id, label ) as (
+          values ( _const.maguita_caixa_estado_ativo, 'ABERTA' )
+          union all values ( _const.maguita_caixa_estado_fechado, 'FECHADA' )
+        ) select to_jsonb( _s )
+        from __source _s;
+    end if;
+
+    if _source = 'tweeks.lancamento::mode' then
+      return query
+        with __source( id, label ) as (
+          values ( _const.maguita_lancamento_mode_automatic, 'AUTOMATICO' )
+          union all values ( _const.maguita_lancamento_mode_manual, 'MANUAL' )
+        ) select to_jsonb( _s )
+        from __source _s;
+    end if;
+
+    if _source = 'tweeks.tlancamento' then
+      return query
+        with __source( id, label ) as (
+          select tlancamento_id, tlancamento_desc
+            from tweeks.tlancamento
+        ) select to_jsonb( _s )
+        from __source _s;
+    end if;
+
+    if _source = 'tweeks.tmovimento' then
+      return query
+        with __source( id, label ) as (
+          select tmovimento_multiplo, tmovimento_designacao
+            from tweeks.tmovimento
+        ) select to_jsonb( _s )
+        from __source _s;
+    end if;
+
+  end;
+$$;
+
+
+create or replace function report.__template_of(ref jsonb, colconfigs jsonb) returns jsonb
+  language plpgsql
+as
+$$
+declare
+    refname text;
+    args jsonb;
+    _name text;
+    _type text;
+  begin
+    if ref is null then return null; end if;
+    if jsonb_typeof( ref ) = 'object' then return ref; end if;
+    if jsonb_typeof( ref ) = 'string' then refname = ref->>0;
+    elseif jsonb_typeof( ref ) = 'array' then
+      refname := ref->>0;
+      args := ref->1;
+    end if;
+
+    if args is not null and jsonb_typeof( args ) != 'object' then raise exception 'args is not object, %', args ; end if;
+    _type := (regexp_split_to_array( refname, '\\.' ))[1];
+    _name := (
+      select string_agg( u.text, '.' )
+      from  unnest( ( regexp_split_to_array( refname, '\\.' ))[2:] ) u( text)
+    );
+
+--  raise exception 'type: %, _name: %, LENGTH: %', _type, _name, array_length (regexp_split_to_array( refname, '\\.' ), 1);
+
+    if _type is null or _name is null or array_length(regexp_split_to_array( refname, '\\.' ), 1)  < 2 then
+      raise exception 'Type or name indeterminated %: ', ref;
+    end if;
+
+    declare
+      _template record;
+      _i record;
+      _j record;
+      _obj jsonb default jsonb_build_object();
+      _conversion text;
+      _value jsonb;
+    begin
+      select * into _template
+        from report.template t
+        where type = _type
+          and t.name = _name;
+
+      if _template.name is null then raise exception 'Template not found with ref: %', ref; end if;
+      for _i in
+        select
+            e.key,
+            e.value,
+            jsonb_typeof( e.value ) as type,
+            case
+              when jsonb_typeof( e.value ) in ( 'object', 'array' ) then e.value::text
+              else e.value->>0
+            end as text
+          from jsonb_each( _template.configs ) e
+      loop
+        if _i.type in ( 'string', 'boolean', 'null', 'number' ) then _value := _i.value;
+        elsif _i.type = 'object' and (_i.value->>'$template')::boolean then
+          _conversion := _i.value->>'$structure';
+          if _conversion is null then raise exception 'Null AQUI 452739'; end if;
+          for _j in
+            select
+              e.key,
+              e.value,
+              jsonb_typeof( e.value ) as type,
+              case
+                when jsonb_typeof( e.value ) in ( 'object', 'array' ) then e.value::text
+                else e.value->>0
+                end as text
+            from jsonb_each( colConfigs ) e
+          loop
+              _conversion := replace( _conversion, format( '${%s}', _j.key ), coalesce( _j.text, '' ) );
+              if _conversion is null then raise exception 'Null AQUI 77736'; end if;
+          end loop;
+
+          for _j in
+            select
+              e.key,
+              e.value,
+              jsonb_typeof( e.value ) as type,
+              case
+                when jsonb_typeof( e.value ) in ( 'object', 'array' ) then e.value::text
+                else e.value->>0
+                end as text
+            from jsonb_each( args ) e
+          loop
+            _conversion := replace( _conversion, format( '${args. % s}', _j.key ), coalesce( _j.text, '' ) );
+            if _conversion is null then raise exception 'Null AQUI kjskdhs'; end if;
+          end loop;
+
+          _conversion := coalesce( _conversion, _i.value->>'$default', _i.value->>'$defaults' );
+          if _conversion is null then raise exception '#C001 Conversion is null template: %; key: %; value %; args <= %', _template.name , _j.key, _j.value, args; end if;
+          if _conversion = _i.value->>'$structure' then _conversion := coalesce(  _i.value->>'$default', _i.value->>'$defaults' ); end if;
+          if _conversion is null then raise exception '#C002 Conversion is null template: %; key: %; value %; args <= %', _template.name , _j.key, _j.value, args;  end if;
+
+          if _i.value->>'$type' in ( 'string', 'text', 'varchar', 'character varying' ) then
+            _value := to_jsonb( _conversion );
+          elseif _i.value->>'$type' in ( 'number', 'numeric', 'int', 'integer', 'double', 'double precision' ) then
+            _value := to_jsonb( _conversion::numeric );
+
+          elseif _i.value->>'$type' in ( 'bool', 'boolean' ) then
+            _value := to_jsonb( _conversion::boolean );
+          else
+            _value := to_jsonb( _conversion );
+          end if;
+        else _value := _i.value;
+        end if;
+
+        _obj := _obj || jsonb_build_object(
+          _i.key,
+          _value
+        );
+
+        if _obj is null then raise exception 'Object is null in {%:%} args: % base: %', _i.key, _i.value, args, colConfigs; end if;
+        if _value is null then raise exception 'Object.value is null in {%:%} args: % base: %', _i.key, _i.value, args, colConfigs; end if;
+        if jsonb_typeof(_value) = 'null' then raise exception 'Type Object.value is null in {%:%} args: % base: %', _i.key, _i.value, args, colConfigs; end if;
+      end loop;
+      return _obj;
+    end;
+  end
+$$;
+
+
+create or replace function report.source_filter(args jsonb) returns SETOF jsonb
+  language plpgsql
+as
+$$
+declare
+    _source text default args->>'source';
+    _user uuid default args->>'user';
+    _space uuid default args->>'space';
+    _branch uuid default args->>'branch';
+    _const map.constant;
+  begin
+    _const := map.constant();
+
+    if _source = 'tweeks.posto' then
+      return query
+        with __posto as (
+          select
+              s.posto_id as id,
+              s.posto_designacao as label
+            from tweeks.posto s
+            where s._branch_uid = _branch
+        ) select to_jsonb( _p )
+          from __posto _p;
+    end if;
+
+    if _source = 'auth.colaborador' then
+      return query
+        with __posto as (
+          select
+            s.colaborador_id as id,
+            s.colaborador_nome as label
+          from auth.colaborador s
+          where s._branch_uid = _branch
+        ) select to_jsonb( _p )
+        from __posto _p;
+    end if;
+
+    if _source = 'tweeks.espaco' then
+      return query
+        with __posto as (
+          select
+            s.espaco_id as id,
+            s.espaco_nome as label
+          from tweeks.espaco s
+          where s.espaco_branch_uid = _branch
+        ) select to_jsonb( _p )
+        from __posto _p;
+    end if;
+
+    if _source = 'geoinfo.currency' then
+      return query
+        with __posto as (
+          select
+            s.currency_id as id,
+            s.currency_code as label
+          from geoinfo.currency s
+          where currency_code in ( 'STN', 'EUR', 'USD' )
+        ) select to_jsonb( _p )
+        from __posto _p;
+    end if;
+
+    if _source = 'tweeks.artigo' then
+      return query
+        with __posto as (
+          select
+            s.artigo_id as id,
+            s.artigo_nome as label
+          from tweeks.artigo s
+          where s._branch_uid = _branch
+        ) select to_jsonb( _p )
+        from __posto _p;
+    end if;
+
+    if _source = 'boolean|Y/N' then
+      return query
+        with __yes_no ( id, label ) as (
+          values ( true, 'SIM' )
+          union all values ( false, 'NÃO')
+        ) select to_jsonb( _p )
+        from __yes_no _p;
+    end if;
+
+    if _source = 'boolean|ON/OFF' then
+      return query
+        with __yes_no ( id, label ) as (
+          values ( true, 'ATIVO' )
+          union all values ( false, 'DESATIVO')
+        ) select to_jsonb( _p )
+        from __yes_no _p;
+    end if;
+
+    if _source = 'STATUS' then
+      return query
+        with __yes_no ( id, label ) as (
+          values ( 0, 'DESATIVO' )
+          union all values ( 1, 'ATIVO' )
+          union all values ( 2, 'PENDENTE' )
+          union all values ( -1, 'ANULADO' )
+        ) select to_jsonb( _p )
+        from __yes_no _p;
+    end if;
+
+    if _source = 'tweeks.toperacao' then
+      return query
+        with __posto as (
+          select
+            s.toperacao_id as id,
+            s.toperacao_designacao as label
+          from tweeks.toperacao s
+        ) select to_jsonb( _p )
+        from __posto _p;
+    end if;
+
+
+    if _source = 'tweeks.tgroup' then
+      return query
+        with __tgroup as (
+          select
+            s.tgrupo_id as id,
+            s.tgrupo_desc as label
+          from tweeks.tgrupo s
+        ) select to_jsonb( _p )
+        from __tgroup _p;
+    end if;
+
+    if _source = 'tweeks.tpaga' then
+      return query
+        with __posto as (
+          select
+            s.tpaga_id as id,
+            s.tpaga_designacao as label
+          from tweeks.tpaga s
+        ) select to_jsonb( _p )
+        from __posto _p;
+    end if;
+
+    if _source = 'tweeks.cliente' then
+      return query
+        with __posto as (
+          select
+            s.cliente_id as id,
+            s.cliente_titular as label
+          from tweeks.cliente s
+          where s._branch_uid = _branch
+        ) select to_jsonb( _p )
+        from __posto _p;
+    end if;
+
+    if _source = 'tweeks.fornecedor' then
+      return query
+        with __posto as (
+          select
+            s.fornecedor_id as id,
+            s.fornecedor_nome as label
+          from tweeks.fornecedor s
+          where s._branch_uid = _branch
+        ) select to_jsonb( _p )
+        from __posto _p;
+    end if;
+
+    if _source = 'tweeks.tipoimposto' then
+      return query
+        with __source as (
+          select
+            s.tipoimposto_id as id,
+            s.tipoimposto_codigo as label
+          from tweeks.tipoimposto s
+          where s._branch_uid = _branch
+        ) select to_jsonb( _s )
+        from __source _s;
+    end if;
+
+    if _source = 'tweeks.serie' then
+      return query
+        with __source as (
+          select
+            s.serie_id as id,
+            format( '%s (%s)', ts.tserie_desc,  s.serie_numero) as label
+          from tweeks.serie s
+            inner join tweeks.tserie ts on s.serie_tserie_id = ts.tserie_id
+          where s._branch_uid = _branch
+        ) select to_jsonb( _s )
+        from __source _s;
+    end if;
+
+    if _source = 'tweeks.tserie' then
+      return query
+        with __source as (
+          select
+            s.tserie_id as id,
+            s.tserie_desc as label
+          from tweeks.tserie s
+        ) select to_jsonb( _s )
+        from __source _s;
+    end if;
+
+    if _source = 'tweeks.caixa::estado' then
+      return query
+        with __source( id, label ) as (
+          values ( _const.maguita_caixa_estado_ativo, 'ABERTA' )
+          union all values ( _const.maguita_caixa_estado_fechado, 'FECHADA' )
+        ) select to_jsonb( _s )
+        from __source _s;
+    end if;
+
+    if _source = 'tweeks.lancamento::mode' then
+      return query
+        with __source( id, label ) as (
+          values ( _const.maguita_lancamento_mode_automatic, 'AUTOMATICO' )
+          union all values ( _const.maguita_lancamento_mode_manual, 'MANUAL' )
+        ) select to_jsonb( _s )
+        from __source _s;
+    end if;
+
+    if _source = 'tweeks.tlancamento' then
+      return query
+        with __source( id, label ) as (
+          select tlancamento_id, tlancamento_desc
+            from tweeks.tlancamento
+        ) select to_jsonb( _s )
+        from __source _s;
+    end if;
+
+    if _source = 'tweeks.tmovimento' then
+      return query
+        with __source( id, label ) as (
+          select tmovimento_multiplo, tmovimento_designacao
+            from tweeks.tmovimento
+        ) select to_jsonb( _s )
+        from __source _s;
+    end if;
+
+  end;
+$$;
+
 `;
