@@ -537,4 +537,32 @@ begin
 end;
 $_$;
 
+
+create or replace function report.source_map(regclass)
+  returns TABLE(source_name character varying, source_schema character varying, source_class regclass, source_format character varying, type text)
+  language sql
+as
+$$
+with __class as (
+  select
+         pc.tablename::text,
+         pc.schemaname::text,
+         format( '%s.%s', pc.schemaname::regnamespace::text, pc.tablename )::regclass,
+         format( '%s.%s', pc.schemaname::regnamespace::text, pc.tablename ),
+         'table'
+  from pg_tables pc
+  where (format( '%s.%s', pc.schemaname::regnamespace::text, pc.tablename )::regclass = $1)
+  union all
+  select pv.viewname::text,
+         pv.schemaname::text,
+         format( '%s.%s', pv.schemaname::regnamespace::text, pv.viewname )::regclass,
+         format( '%s.%s', pv.schemaname::regnamespace::text, pv.viewname ),
+         'view'
+  from pg_views pv
+  where (format( '%s.%s', pv.schemaname::regnamespace::text, pv.viewname )::regclass = $1)
+) select *
+from __class
+$$;
+
+
 `;
