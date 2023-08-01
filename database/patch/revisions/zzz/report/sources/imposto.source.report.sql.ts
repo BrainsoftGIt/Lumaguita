@@ -1,7 +1,8 @@
 import {block} from "../../../../core/updater";
 
-block( module, { identifier: "report:source|imposto"}).sql`
-
+block( module, { identifier: "report:source|imposto"})
+    //language=PostgreSQL
+    .sql`
 drop view if exists report.vreport_imposto;
 
 create or replace view report.vreport_imposto as
@@ -17,10 +18,12 @@ with __imposto_report as (
       ct.conta_titular as "CLIENTE",
       ct.conta_titularnif as "NIF",
       ct.conta_numerofatura as "FATURA",
+      
       case
         when tx.taxa_percentagem is not null then format( '%s %s', tx.taxa_percentagem, '%' )
         else format( '%s %s', tx.taxa_taxa, 'STN' )
       end as "TAXA",
+    
       ve.venda_impostoadicionar as "+$ IMPOSTO",
       ve.venda_impostoretirar as "-$ IMPOSTO",
       ve.venda_imposto as "$ IMPOSTO",

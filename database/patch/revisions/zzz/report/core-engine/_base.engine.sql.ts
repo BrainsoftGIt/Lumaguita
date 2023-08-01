@@ -1,3 +1,6 @@
+/**
+ * @author Zoads
+ */
 import {block} from "../../../../core/updater"
 
 block(module, { identifier: "report:engine|base"} )
@@ -488,8 +491,8 @@ begin
 
 
   delete from report.vcolumn r
-  where r.name != all ( _rec.columns )
-    and source = _source.source_format
+    where r.name != all ( _rec.columns )
+      and source = _source.source_format
   ;
 
 
@@ -498,8 +501,8 @@ begin
       n.doc->>'column_name' as name,
       n.doc->>'column_type' as type
     from unnest( _rec.configs ) n ( doc )
-           left join report.vcolumn rc on n.doc->>'column_name' = rc.name
-      and rc.source = _source.source_format
+      left join report.vcolumn rc on n.doc->>'column_name' = rc.name
+        and rc.source = _source.source_format
     where rc.name is null
   )
   insert into report.vcolumn (

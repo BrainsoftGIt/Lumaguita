@@ -1,6 +1,8 @@
 import {block} from "../../../../core/updater";
 
-block( module, { identifier: "report:source|fluxo" }).sql`
+block( module, { identifier: "report:source|fluxo" })
+    //language=PostgreSQL
+    .sql`
 drop view if exists report.vreport_fluxo;
 
 create or replace view report.vreport_fluxo as
@@ -26,6 +28,7 @@ create or replace view report.vreport_fluxo as
         when ain.artigo_id = aou.artigo_id then f.fluxo_quantidadein::text
         else format( '%s ==> %s', f.fluxo_quantidadeout, f.fluxo_quantidadein )
       end as "QT",
+    
       f.fluxo_documento as "DOCUMENTO",
       coalesce( f.fluxo_data, f.fluxo_dataregistro::date ) as "DATA",
       c.colaborador_nome as "COLABORADOR",

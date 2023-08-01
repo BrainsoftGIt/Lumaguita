@@ -1,6 +1,8 @@
 import {block} from "../../../../core/updater";
 
-block(module, { identifier: "report:source|caixa" } ).sql`
+block(module, { identifier: "report:source|caixa" } )
+    //language=PostgreSQL
+    .sql`
 drop view if exists report.vreport_caixa;
 
 create view report.vreport_caixa as
@@ -26,6 +28,7 @@ with _const as (
       case
         when coclose.colaborador_id is not null then cx.caixa_dataatualizacao
       end as "FECHO",
+    
       case
         when cx.caixa_estado = _const.maguita_caixa_estado_fechado then 'FECHADO'
         when cx.caixa_estado = _const.maguita_caixa_estado_ativo then 'ABERTA'
