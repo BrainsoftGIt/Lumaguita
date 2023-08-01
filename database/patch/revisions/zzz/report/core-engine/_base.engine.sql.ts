@@ -809,56 +809,56 @@ create or replace function report.__template_of(ref jsonb, colconfigs jsonb) ret
 as
 $$
 declare
-    refname text;
-    args jsonb;
-    _name text;
-    _type text;
+  refname text;
+  args jsonb;
+  _name text;
+  _type text;
+begin
+  if ref is null then return null; end if;
+  if jsonb_typeof( ref ) = 'object' then return ref; end if;
+  if jsonb_typeof( ref ) = 'string' then refname = ref->>0;
+  elseif jsonb_typeof( ref ) = 'array' then
+    refname := ref->>0;
+    args := ref->1;
+  end if;
+
+  if args is not null and jsonb_typeof( args ) != 'object' then raise exception 'args is not object, %', args ; end if;
+  _type := (regexp_split_to_array( refname, '\.' ))[1];
+  _name := (
+    select string_agg( u.text, '.' )
+    from  unnest( ( regexp_split_to_array( refname, '\.' ))[2:] ) u( text)
+  );
+
+--  raise exception 'type: %, _name: %, LENGTH: %', _type, _name, array_length (regexp_split_to_array( refname, '\.' ), 1);
+
+  if _type is null or _name is null or array_length(regexp_split_to_array( refname, '\.' ), 1)  < 2 then
+    raise exception 'Type or name indeterminated %: ', ref;
+  end if;
+
+  declare
+    _template record;
+    _i record;
+    _j record;
+    _obj jsonb default jsonb_build_object();
+    _conversion text;
+    _value jsonb;
   begin
-    if ref is null then return null; end if;
-    if jsonb_typeof( ref ) = 'object' then return ref; end if;
-    if jsonb_typeof( ref ) = 'string' then refname = ref->>0;
-    elseif jsonb_typeof( ref ) = 'array' then
-      refname := ref->>0;
-      args := ref->1;
-    end if;
+    select * into _template
+    from report.template t
+    where type = _type
+      and t.name = _name;
 
-    if args is not null and jsonb_typeof( args ) != 'object' then raise exception 'args is not object, %', args ; end if;
-    _type := (regexp_split_to_array( refname, '\\.' ))[1];
-    _name := (
-      select string_agg( u.text, '.' )
-      from  unnest( ( regexp_split_to_array( refname, '\\.' ))[2:] ) u( text)
-    );
-
---  raise exception 'type: %, _name: %, LENGTH: %', _type, _name, array_length (regexp_split_to_array( refname, '\\.' ), 1);
-
-    if _type is null or _name is null or array_length(regexp_split_to_array( refname, '\\.' ), 1)  < 2 then
-      raise exception 'Type or name indeterminated %: ', ref;
-    end if;
-
-    declare
-      _template record;
-      _i record;
-      _j record;
-      _obj jsonb default jsonb_build_object();
-      _conversion text;
-      _value jsonb;
-    begin
-      select * into _template
-        from report.template t
-        where type = _type
-          and t.name = _name;
-
-      if _template.name is null then raise exception 'Template not found with ref: %', ref; end if;
-      for _i in
-        select
-            e.key,
-            e.value,
-            jsonb_typeof( e.value ) as type,
-            case
-              when jsonb_typeof( e.value ) in ( 'object', 'array' ) then e.value::text
-              else e.value->>0
-            end as text
-          from jsonb_each( _template.configs ) e
+    if _template.name is null then raise exception 'Template not found with ref: %', ref; end if;
+    for _i in
+      select
+        e.key,
+        e.value,
+        jsonb_typeof( e.value ) as type,
+        case
+          when jsonb_typeof( e.value ) in ( 'object', 'array' ) then e.value::text
+          else e.value->>0
+          end as text
+      from jsonb_each( _template.configs ) e
       loop
         if _i.type in ( 'string', 'boolean', 'null', 'number' ) then _value := _i.value;
         elsif _i.type = 'object' and (_i.value->>'$template')::boolean then
@@ -874,10 +874,10 @@ declare
                 else e.value->>0
                 end as text
             from jsonb_each( colConfigs ) e
-          loop
-              _conversion := replace( _conversion, format( '${%s}', _j.key ), coalesce( _j.text, '' ) );
+            loop
+              _conversion := replace( _conversion, format( '${"${%s}"}', _j.key ), coalesce( _j.text, '' ) );
               if _conversion is null then raise exception 'Null AQUI 77736'; end if;
-          end loop;
+            end loop;
 
           for _j in
             select
@@ -889,10 +889,10 @@ declare
                 else e.value->>0
                 end as text
             from jsonb_each( args ) e
-          loop
-            _conversion := replace( _conversion, format( '${args. % s}', _j.key ), coalesce( _j.text, '' ) );
-            if _conversion is null then raise exception 'Null AQUI kjskdhs'; end if;
-          end loop;
+            loop
+              _conversion := replace( _conversion, format( '${"${args.%s}"}', _j.key ), coalesce( _j.text, '' ) );
+              if _conversion is null then raise exception 'Null AQUI kjskdhs'; end if;
+            end loop;
 
           _conversion := coalesce( _conversion, _i.value->>'$default', _i.value->>'$defaults' );
           if _conversion is null then raise exception '#C001 Conversion is null template: %; key: %; value %; args <= %', _template.name , _j.key, _j.value, args; end if;
@@ -915,15 +915,15 @@ declare
         _obj := _obj || jsonb_build_object(
           _i.key,
           _value
-        );
+          );
 
         if _obj is null then raise exception 'Object is null in {%:%} args: % base: %', _i.key, _i.value, args, colConfigs; end if;
         if _value is null then raise exception 'Object.value is null in {%:%} args: % base: %', _i.key, _i.value, args, colConfigs; end if;
         if jsonb_typeof(_value) = 'null' then raise exception 'Type Object.value is null in {%:%} args: % base: %', _i.key, _i.value, args, colConfigs; end if;
       end loop;
-      return _obj;
-    end;
-  end
+    return _obj;
+  end;
+end
 $$;
 
 
