@@ -122,9 +122,6 @@ begin
   ),__deposito_caixa as (
       select
           dep.deposito_caixa_id,
-          dep.currency_id,
-          dep.currency_name,
-          dep.currency_code,
           sum( dep.deposito_montantefinal ) as deposito_montantefinal,
           jsonb_object_agg(
               dep.currency_code, jsonb_build_object(
@@ -135,14 +132,11 @@ begin
               )
           ) as deposito_montantemoeda,
           sum( dep.deposito_montante ) as deposito_montante,
-          sum( dep.deposito_montantemoeda ) as deposito_montantemoeda,
+          sum( dep.deposito_montantefinal ) as deposito_montantefinal,
           sum( dep.deposito_montantetroco ) as deposito_montantetroco
         from __deposito dep
         group by
-          dep.deposito_caixa_id,
-          dep.currency_id,
-          dep.currency_name,
-          dep.currency_code
+          dep.deposito_caixa_id
   ),__posto as (
     select
         c.caixa_id,
