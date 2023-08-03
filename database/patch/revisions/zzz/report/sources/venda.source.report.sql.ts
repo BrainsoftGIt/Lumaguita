@@ -1,7 +1,10 @@
 import {block} from "../../../../core/updater";
 
-block( module, { identifier: "report:source|venda"}).sql`
+block( module, { identifier: "report:source|venda"})
+    //language=PostgreSQL
+    .sql`
 drop view if exists report.vreport_venda;
+
 create view report.vreport_venda as
 with _const as ( select * from map.constant() )
   select
@@ -63,9 +66,6 @@ with _const as ( select * from map.constant() )
       cat.classe_id,
       aut.colaborador_id
 ;
-
-
-select * from report.vreport_venda;
 
 select * from report.sync( 'report.vreport_venda', 'RELATÓRIO DE VENDAS', 1000 );
 

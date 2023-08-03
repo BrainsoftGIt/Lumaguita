@@ -1,7 +1,10 @@
 import {block} from "../../../../core/updater";
 
-block( module, { identifier: "report:source|balanco"}).sql`
+block( module, { identifier: "report:source|balanco"})
+    //language=PostgreSQL
+    .sql`
 drop view if exists report.vreport_balanco;
+
 create or replace view report.vreport_balanco as
 with
   _const as ( select * from map.constant() ),
@@ -96,6 +99,7 @@ with
       _un._branch_uid,
       _un.classe_nome as "CATEGORIA",
       _un.data as "DATA",
+      
       sum( _un.despesa_quantidade ) as "QT. ENTRADA",
       sum( _un.receita_montanteefetivo ) as "$ RECEITA EFET.",
       sum( _un.receita_montanteprevisto ) as "$ RECEITA PREV.",
@@ -157,8 +161,6 @@ UPDATE report.vcolumn SET position = 47, show = true, init = true, format = 'mon
 UPDATE report.vcolumn SET position = 1996, show = true, init = true, format = 'name', filter = '[]', agg = '[]', noagg = null, gen = '[]', rename = null, type = 'character varying' WHERE source = 'report.vreport_balanco' AND name = 'ARTIGO';
 UPDATE report.vcolumn SET position = 1994, show = true, init = false, format = 'name:short', filter = '[]', agg = '[]', noagg = null, gen = '[]', rename = null, type = 'character varying' WHERE source = 'report.vreport_balanco' AND name = 'CATEGORIA';
 UPDATE report.vcolumn SET position = 1895, show = true, init = true, format = 'name:short', filter = '[]', agg = '[]', noagg = null, gen = '[]', rename = null, type = 'character varying' WHERE source = 'report.vreport_balanco' AND name = 'ARMAZÉM';
-
-
 
 select * from report.vcolumn
 where source = 'report.vreport_balanco'

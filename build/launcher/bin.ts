@@ -9,7 +9,7 @@ let paths = process.env["Path"].split( Path.delimiter );
 paths.unshift( msbuildPath );
 process.env[ "Path" ] = paths.join( Path.delimiter );
 
-require("./launcherCompiler").checkCscInPath( true ).then( value => {
+require("./launcherCompiler" ).checkCscInPath( true ).then( value => {
 
     let math = /(^)*.csproj$/
     fs.readdirSync( Path.join( __dirname, "csproj")).filter( value1 => math.test( value1 ) )

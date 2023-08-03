@@ -11,7 +11,8 @@ export function cleanJs( dirname ){
         { basename: /*language=file-reference*/ "/server", math: /.*.js$/, },
         { basename: /*language=file-reference*/ "/server", math: /.*.js.map$/, },
         { basename: /*language=file-reference*/ "/build", math: /.*.js$/, },
-        { basename: /*language=file-reference*/ "/build", math: /.*.js.map$/ },
+        { basename: /*language=file-reference*/ "/database", math: /.*.js$/, },
+        { basename: /*language=file-reference*/ "/database", math: /.*.js.map$/ },
 
     ].forEach( (value, index) => {
         FileUtil.scanFiles( path.join( dirname, value.basename ), value.math, path1 => {

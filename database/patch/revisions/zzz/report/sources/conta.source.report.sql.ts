@@ -1,7 +1,10 @@
 import {block} from "../../../../core/updater";
 
-block( module, { identifier: "report:source|conta"}).sql`
+block( module, { identifier: "report:source|conta"})
+    //language=PostgreSQL
+    .sql`
 drop view if exists report.vreport_conta;
+
 create view report.vreport_conta as
 with _const as (
   select
@@ -23,6 +26,7 @@ with _const as (
       l.regula_montante as "$ REGULARIZADO",
       tlanc.tlancamento_desc as "TIPO",
       tg.tgrupo_desc as "CONTA",
+      
       case
         when lanc.lancamento_operacao =  1 then 'CREDITO'
         when lanc.lancamento_operacao = -1 then 'DEBITO'
@@ -31,6 +35,7 @@ with _const as (
         when lanc.lancamento_mode = _const.maguita_lancamento_mode_manual then 'MANUAL'
         when lanc.lancamento_mode = _const.maguita_lancamento_mode_automatic then 'AUTOMATICO'
         end as "MODO",
+    
       col.colaborador_nome as "COLABORADOR",
       l.lancamento_data as "DATA",
       l.lancamento_time as "REGISTRO",

@@ -5,6 +5,7 @@ package-lock.json
 bin/*.js
 server/**/*.js
 build/**/*.js
+database/**/*.js
 *.js.map
 server/global/autogen/*
 server/global/storage/*

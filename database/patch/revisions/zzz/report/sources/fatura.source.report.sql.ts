@@ -1,7 +1,10 @@
 import {block} from "../../../../core/updater";
 
-block( module, { identifier: "report:source|fatura"}).sql`
+block( module, { identifier: "report:source|fatura" })
+    //language=PostgreSQL
+    .sql`
 drop view if exists report.vreport_fatura;
+
 create or replace view report.vreport_fatura as
 with _const as (
   select * from map.constant()
@@ -16,6 +19,7 @@ select
       when ct.conta_proforma then 'SIM'
       else 'NÃO'
     end as "PROFOMA",
+  
     ct.conta_proforma,
     case
       when ct.conta_estado = _const.maguita_conta_estado_fechado then 'FECHADO'
@@ -48,6 +52,7 @@ select
     col_vend.colaborador_id as colaborador_vendor,
     ts.tserie_id,
     s.serie_id
+
   from _const, tweeks.conta ct
     inner join tweeks.tgrupo tc on ct._tgrupo_id = tc.tgrupo_id
     inner join tweeks.posto p on ct.conta_posto_fecho = p.posto_id
