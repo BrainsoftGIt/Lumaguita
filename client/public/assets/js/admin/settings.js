@@ -577,7 +577,7 @@ var settings = {
                 arg_posto_id:  settings.selected.posto_id,
                 arg_posto_designacao: $("[postoDesignacao]").val().trim(),
                 arg_posto_multiplecaixa: $("#posto_varias_caixas_abertas_edit").hasClass("active"),
-                posto_vermontatefaturado: $("#posto_ver_montate_faturado").hasClass("active"),
+                posto_vermontatefaturado: $("#posto_ver_montate_faturado_edit").hasClass("active"),
                 arg_posto_matricula: null,
                 posto_authmode: $("[pinAuthEdit]").find("li.active").attr("tipo"),
                 posto_caixamode:  $("[tipoCaixaEdit]").find("li.active").attr("tipo")
@@ -587,7 +587,7 @@ var settings = {
                 if(e.result){
                     $("[armazens_posto_edit], [tipoPostoEdit], [pinAuthEdit], [tipoCaixaEdit]").find("li").removeClass("active");
                     $("#posto_varias_caixas_abertas_edit").removeClass("active");
-                    $("#posto_ver_montate_faturado").removeClass("active");
+                    $("#posto_ver_montate_faturado_edit").removeClass("active");
                     $("#xModalCtrlEditPosto input").val("");
                     settings.listarPostos();
                     $("#xModalCtrlEditPosto").find(".hideTarget").click();
@@ -794,6 +794,9 @@ $("body").on("mousedown", "[postos_criados] li", function () {
          if(posto[0].funct_load_posto.posto_multiplecaixa){
              $("#posto_varias_caixas_abertas").addClass("active");
          }
+        if(posto[0].funct_load_posto.posto_vermontatefaturado){
+            $("#posto_ver_montate_faturado").addClass("active");
+        }
          $("#tipoCaixaDesc").val((posto[0].funct_load_posto.posto_caixamode !== null ? $("[tipoCaixa]").find(`li[tipo=${posto[0].funct_load_posto.posto_caixamode}]`).text() : "")).attr("disabled", true);
          $("#tipoAuthPOS").val((posto[0].funct_load_posto.posto_authmode !== null ? $("[pinAuthPOS]").find(`li[tipo=${posto[0].funct_load_posto.posto_authmode}]`).text() : "")).attr("disabled", true);
          $("[tipoposto]").find(`li[id=${posto[0].funct_load_posto.tposto_id}]`).addClass("active");
@@ -813,7 +816,7 @@ $(".list-postos").on("click", ".editar", function () {
     $("[postoDesignacao]").val(settings.selected.posto_designacao);
     $("[armazens_posto_edit], [tipoPostoEdit], [pinAuthEdit], [tipoCaixaEdit]").find("li").removeClass("active");
     $("#posto_varias_caixas_abertas_edit").removeClass("active");
-    $("#posto_ver_montate_faturado").removeClass("active");
+    $("#posto_ver_montate_faturado_edit").removeClass("active");
     $("[postoTipoDesc]").val(settings.selected.tposto_designacao);
     $("#tipoCaixaDescEdit").val((settings.selected.posto_caixamode !== null ? $("[tipoCaixaEdit]").find(`li[tipo=${settings.selected.posto_caixamode}]`).text() : ""));
     $("#pinAuthDescEdit").val((settings.selected.posto_authmode !== null ? $("[pinAuthEdit]").find(`li[tipo=${settings.selected.posto_authmode}]`).text() : ""));
@@ -821,7 +824,7 @@ $(".list-postos").on("click", ".editar", function () {
         $("#posto_varias_caixas_abertas_edit").addClass("active");
     }
     if(settings.selected.posto_vermontatefaturado){
-        $("#posto_ver_montate_faturado").addClass("active");
+        $("#posto_ver_montate_faturado_edit").addClass("active");
     }
     $("[tipoPostoEdit]").find(`li[tipo_id=${settings.selected.tposto_id}]`).addClass("active");
     $("[tipoCaixaEdit]").find(`li[tipo=${settings.selected.posto_caixamode}]`).addClass("active");
