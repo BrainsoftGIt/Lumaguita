@@ -162,4 +162,46 @@ begin
     from __posto p;
 end;
 $$;
+
+
+create or replace function tweeks.funct_pos_report_venda(
+  args jsonb
+)
+returns setof jsonb
+language plpgsql as $$
+declare
+  arg_colaborador_id uuid default args->>'arg_colaborador_id';
+  arg_espaco_id uuid default args->>'arg_espaco_id';
+  arg_posto_id uuid default args->>'arg_posto_id';
+  arg_date_start date default args->>'arg_date_start';
+  arg_date_end date default args->>'arg_date_end';
+  branch uuid default tweeks.__branch_uid( arg_colaborador_id, arg_espaco_id );
+  _const map.constant;
+begin
+  _const := map.constant();
+  return query
+    with __venda as (
+      select
+          art.artigo_id,
+          art.artigo_nome,
+          v.venda_custounitario,
+          sum( v.venda_quantidade ) as venda_quantidade,
+          sum( v.venda_montantecomimposto ) as venda_montantecomimposto,
+          sum( v.venda_montantesemimposto ) as venda_montantesemimposto
+        from tweeks.venda v
+          inner join tweeks.artigo art on v.venda_artigo_id = art.artigo_id
+          inner join tweeks.conta ct on v.venda_conta_id = ct.conta_id
+        where v._branch_uid = branch
+          and v.venda_estado = _const.maguita_venda_estado_fechado
+          and ct.conta_estado = _const.maguita_conta_estado_fechado
+          and v.venda_dataregistro::date >= coalesce( arg_date_start, v.venda_dataregistro::date )
+          and v.venda_dataregistro::date <= coalesce( arg_date_end, v.venda_dataregistro::date )
+          and ct.conta_posto_fecho = arg_posto_id
+        group by art.artigo_id,
+          v.venda_custounitario
+    ) select to_jsonb( v2 )
+        from __venda v2
+    ;
+end;
+$$
 `;
