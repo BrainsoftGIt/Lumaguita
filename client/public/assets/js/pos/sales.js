@@ -45,7 +45,7 @@ var sales = {
     }
 };
 
-
+$('[data-inputmask-alias]').inputmask();
 
 $("[sales]").on("click", function () {
     if(account.hasValidPost()){
@@ -58,7 +58,7 @@ $("[sales]").on("click", function () {
 $("#filtro_data_vendas").on("click", "li", function () {
     $(this).addClass('active').siblings().removeClass('active');
     $("#filtro_data_vendas_atual").text($(this).text());
-    sales.load( getDateParameter($(this).attr("date"))[0]);
+    sales.load( getDateParameter($(this).attr("date")) );
 });
 $("#vendasPosto").on("click", ".reimprimir", function () {
     spaceConfig.loadConfig().then(value => {
@@ -71,3 +71,7 @@ $("#vendasPosto").on("click", ".reimprimir", function () {
         }
     });
 });
+
+$("#printReportVenda").on("click", function (){
+    spaceConfig.report_venda.print();
+})

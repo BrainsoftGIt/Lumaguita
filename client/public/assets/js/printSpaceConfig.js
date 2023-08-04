@@ -110,6 +110,24 @@ var spaceConfig = {
             });
         }
     },
+    "report_venda":{
+        print(){
+            $("body").addClass("loading");
+            $.ajax({
+                url: "/api/print/report/venda",
+                method: "POST",
+                contentType: "application/json",
+                data: JSON.stringify({
+                    arg_date_start: $("#rp-vendas-start").val().stringToDate().getDateEn(),
+                    arg_date_end: $("#rp-vendas-end").val().stringToDate().getDateEn()
+                }),
+                complete(){ $("body").removeClass("loading"); },
+                success(e) {
+                    $("#xModalReportVenda").removeClass("show")
+                }
+            });
+        }
+    },
     "recibo":{
         print(){
             open("/api/print/recibo/"+JSON.stringify({deposito: spaceConfig.deposito, client: contacorrente.clienteSelecionado,

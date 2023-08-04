@@ -392,28 +392,10 @@ function determine_difference_day_dates(startDate, endDate) {
 }
 
 
-function getDateParameter(selectedDate = "today"){
+function getDateParameter(selectedDate = "0"){
     let date = new Date();
-    let datesBeginEnd = [];
-    if(selectedDate === "today"){
-        datesBeginEnd.push(alterFormatDate(getFormattedDate(date)));
-        datesBeginEnd.push(alterFormatDate(getFormattedDate(date)));
-        return datesBeginEnd;
-    }
-    else if(selectedDate === "yesterday"){
-        date.setDate(date.getDate() - 1);
-        datesBeginEnd.push(alterFormatDate(getFormattedDate(date)));
-        datesBeginEnd.push(alterFormatDate(getFormattedDate(date)));
-        return datesBeginEnd;
-    }
-    else if(selectedDate === "one_week_ago"){
-        let oneWeekAgoDate = date.getDate() - 7;
-        date.setDate(oneWeekAgoDate);
-        datesBeginEnd.push(alterFormatDate(getFormattedDate(date)));
-        date = new Date();
-        datesBeginEnd.push(alterFormatDate(getFormattedDate(date)));
-        return datesBeginEnd;
-    }
+    date.setDate(date.getDate() - selectedDate);
+    return date.getDateEn()
 }
 
 function getFormattedDate(date) {
@@ -825,7 +807,7 @@ if(!String.prototype.stringToDate) {
      * @param delimiter
      * @return {Date}
      */
-    String.prototype.stringToDate = function (format, delimiter) {
+    String.prototype.stringToDate = function (format = undefined, delimiter = undefined) {
         if(!this.toString()){
             return null;
         }

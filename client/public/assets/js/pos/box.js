@@ -32,26 +32,35 @@ var box = {
             url: "/api/posto/caixa/load",
             method: "POST",
             contentType: "application/json",
-            success(e) {
+            data: JSON.stringify({
+                vermontatefaturado: account.post.posto_vermontatefaturado
+            }),
+            success({ caixas : { 0 : xCaixa }}) {
+                let { data : caixa } = xCaixa || {};
+
                 if(efetuarPagamento){
-                    if(e.caixas.length === 0){
+                    if(!caixa){
                         showTarget("xModalOpenBox");
                     }
                     else{
-                        box.id = e.caixas[0].data.caixa_id;
+                        box.id = caixa.caixa_id;
                         payment.mostrarDadosModalPagamento();
                     }
                 }
                 else{
-                    if(e.caixas.length === 0){
+                    if(!caixa){
                         xAlert("Fecho de caixa", "Não há caixa aberta!", "error");
                         $("#MST-PIN").find(".hideTarget").click();
                     }
                     else{
-                        box.id = e.caixas[0].data.caixa_id;
-                        box.montante_inicial = e.caixas[0].data.caixa_montanteinicial;
-                        $("#valorTotalCaixaFaturado, #totalChequesCaixaFaturado, #caixa_fechar_obs").val("");
-                        $("#caixa_montanteinicial").text("STN "+e.caixas[0].data.caixa_montanteinicial.formatter());
+                        box.id = caixa.caixa_id;
+                        box.montante_inicial = caixa.caixa_montanteinicial;
+                        $("#valorTotalCaixaFaturado").val((caixa.caixa_montanteinicial + caixa.deposito_montantefinal).formatter() || "");
+                        if(account.post.posto_vermontatefaturado) {
+                            $("[for='valorTotalCaixaFaturado']").addClass("active");
+                        }
+                        $("#totalChequesCaixaFaturado, #caixa_fechar_obs").val("");
+                        $("#caixa_montanteinicial").text("STN "+caixa.caixa_montanteinicial.formatter());
                         $("#MST-PIN").find(".hideTarget").click();
                         showTarget("xModalCloseBox");
                     }

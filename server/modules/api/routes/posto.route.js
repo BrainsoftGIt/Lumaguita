@@ -153,11 +153,24 @@ storage_service_1.app.post("/api/posto/associar", (req, res) => __awaiter(void 0
 }));
 storage_service_1.app.post("/api/posto/caixa/load", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { functLoadCaixa } = require("../db/call-function-posto");
+    let { vermontatefaturado } = req.body;
     req.body.arg_espaco_auth = req.session.user_pos.auth.armazem_atual;
     req.body.arg_colaborador_id = req.session.user_pos.auth.colaborador_id;
     req.body.arg_posto_id = req.session.posto.posto_id;
     const response = yield functLoadCaixa(req.body);
-    res.json({ caixas: response.rows });
+    let caixas = response.rows.map((caixas) => {
+        if (!vermontatefaturado) {
+            let newData = {};
+            Object.keys(caixas.data).forEach((key) => {
+                if (!key.includes("deposito_montante")) {
+                    newData[key] = caixas.data[key];
+                }
+            });
+            caixas.data = newData;
+        }
+        return caixas;
+    });
+    res.json({ caixas });
 }));
 storage_service_1.app.post("/api/post/box/open", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { functAbrirCaixa } = require("../db/call-function-posto");

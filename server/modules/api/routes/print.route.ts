@@ -2,6 +2,7 @@ import {app} from '../../../service/web.service';
 import {functLoadContaData} from "../db/call-function-pos";
 import {printNetwork} from "./functions/kitchenArticlesNetwork";
 import {create} from "./functions/kitchenArticlesTalao";
+import {functReportVendaPOS} from "../db/call-function-report";
 
 export async function load_space_configuration(req, admin) {
     const {functLoadDadosEmpresa} = require("../db/call-function-settings");
@@ -189,6 +190,23 @@ app.post("/api/print/fecho/caixa/", async (req, res) =>{
     const printer_name = get_printer_name(instituition.espaco_configuracao.configuracao_impressoras, "caixa");
     await file.create(instituition, req.body, res, user, printer_name);
 });
+
+app.post("/api/print/report/venda", async (req, res) =>{
+    const file = require("./functions/export-report-vendas-talao");
+    let instituition = await load_space_configuration(req, false);
+    instituition = instituition[0].funct_load_espaco_configuracao.espaco;
+    let user = req.session.user_pos.auth.colaborador_nome+" "+(req.session.user_pos.auth.colaborador_apelido === null ? "" : req.session.user_pos.auth.colaborador_apelido.split(" ").pop());
+    const printer_name = get_printer_name(instituition.espaco_configuracao.configuracao_impressoras, "report_venda");
+
+    req.body.arg_colaborador_id = req.session.user_pos.auth.colaborador_id;
+    req.body.arg_espaco_auth = req.session.user_pos.auth.armazem_atual;
+    req.body.arg_posto_id = req.session.posto.posto_id;
+    let { rows} = await functReportVendaPOS(req.body);
+    let { arg_date_end, arg_date_start } = req.body;
+
+    await file.create(instituition, rows, res, user, printer_name, arg_date_start, arg_date_end);
+});
+
 app.post("/api/print/kitchen", async (req, res) =>{
     const {printNetwork} = require("./functions/kitchenArticlesNetwork");
     const {create} = require("./functions/kitchenArticlesTalao");

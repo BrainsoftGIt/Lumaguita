@@ -171,11 +171,11 @@ returns setof jsonb
 language plpgsql as $$
 declare
   arg_colaborador_id uuid default args->>'arg_colaborador_id';
-  arg_espaco_id uuid default args->>'arg_espaco_id';
+  arg_espaco_auth uuid default args->>'arg_espaco_auth';
   arg_posto_id uuid default args->>'arg_posto_id';
   arg_date_start date default args->>'arg_date_start';
   arg_date_end date default args->>'arg_date_end';
-  branch uuid default tweeks.__branch_uid( arg_colaborador_id, arg_espaco_id );
+  branch uuid default tweeks.__branch_uid( arg_colaborador_id, arg_espaco_auth );
   _const map.constant;
 begin
   _const := map.constant();

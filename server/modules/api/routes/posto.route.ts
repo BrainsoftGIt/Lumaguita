@@ -146,11 +146,27 @@ app.post("/api/posto/associar", async (req, res) =>{
 });
 app.post("/api/posto/caixa/load", async (req, res) =>{
     const {functLoadCaixa} = require("../db/call-function-posto");
+
+    let { vermontatefaturado } = req.body;
+
     req.body.arg_espaco_auth = req.session.user_pos.auth.armazem_atual;
     req.body.arg_colaborador_id = req.session.user_pos.auth.colaborador_id;
     req.body.arg_posto_id = req.session.posto.posto_id;
     const response = await functLoadCaixa(req.body);
-    res.json({caixas: response.rows});
+
+    let caixas = response.rows.map((caixas) => {
+        if(!vermontatefaturado){
+            let newData = {}
+            Object.keys(caixas.data).forEach((key) => {
+                if(!key.includes("deposito_montante")){
+                    newData[key] = caixas.data[key];
+                }
+            })
+            caixas.data = newData;
+        }
+        return caixas
+    })
+    res.json({caixas});
 });
 app.post("/api/post/box/open", async (req, res) =>{
     const {functAbrirCaixa} = require("../db/call-function-posto");

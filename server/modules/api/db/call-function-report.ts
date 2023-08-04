@@ -21,3 +21,10 @@ export function functReportFinanca(paramn) {
         sql `select * from report.vreport_imposto_financas( ${ paramn } )`
     );
 }
+
+export function functReportVendaPOS(paramn) {
+    const {sql} = factory.create(Templates.PARAMETERIZED);
+    return catchAll(
+        sql `select * from tweeks.funct_pos_report_venda( ${ paramn } ) as data`
+    );
+}
