@@ -112,6 +112,14 @@ var spaceConfig = {
     },
     "report_venda":{
         print(){
+            if(!$("#xModalReportVenda input")){
+                xAlert("POS", "Preencha os campos corretamente!", "error");
+                return;
+            }
+            if($(" #rp-vendas-start ").val().stringToDate().getDateEn() > $(" #rp-vendas-end ").val().stringToDate().getDateEn()){
+                xAlert("POS", "A data de fim não pode maior que a data de incio!", "error");
+                return
+            }
             $("body").addClass("loading");
             $.ajax({
                 url: "/api/print/report/venda",
