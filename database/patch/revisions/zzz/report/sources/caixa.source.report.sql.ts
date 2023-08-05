@@ -1,6 +1,6 @@
 import {block} from "../../../../core/updater";
 
-block(module, { identifier: "report:source|caixa" } )
+block(module, { identifier: "report:source|caixa", flags:["@force"]} )
     //language=PostgreSQL
     .sql`
 drop view if exists report.vreport_caixa;

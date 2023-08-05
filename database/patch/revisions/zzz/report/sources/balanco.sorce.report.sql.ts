@@ -1,6 +1,6 @@
 import {block} from "../../../../core/updater";
 
-block( module, { identifier: "report:source|balanco"})
+block( module, { identifier: "report:source|balanco", flags:["@force"]})
     //language=PostgreSQL
     .sql`
 drop view if exists report.vreport_balanco;

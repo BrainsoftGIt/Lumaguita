@@ -1,6 +1,6 @@
 import {block} from "../../../../core/updater";
 
-block( module, { identifier: "report:source|venda"})
+block( module, { identifier: "report:source|venda", flags:["@force"]})
     //language=PostgreSQL
     .sql`
 drop view if exists report.vreport_venda;

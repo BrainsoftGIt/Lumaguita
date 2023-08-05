@@ -143,8 +143,6 @@ INSERT INTO report.mask (type, mask, name, description, representation, function
 INSERT INTO report.mask (type, mask, name, description, representation, function, priority) VALUES ('{date,timestamp,timestamptz}', 'YYYY-MM-W', 'SEMANAL MENSAL', 'APRESENTAÇÃO SEMANAL MENSAL', 'W"ª SEM" "DE" MON YYYY', 'to_char', 49);
 INSERT INTO report.mask (type, mask, name, description, representation, function, priority) VALUES ('{date,timestamp,timestamptz}', 'YYYY-MM-DD HH:MI', 'MOMENTANIO', 'APRESENTACÃO DIÁRIO INCLUINDO HORA E MINUTO', 'DD-MM-YYYY HH:MI', 'to_char', null);
 
-select * from report.mask;
-
 
 create or replace function report.____tg_report_format() returns trigger
   language plpgsql
@@ -214,9 +212,6 @@ INSERT INTO report.var ( var_key, var_description, var_type, var_expression ) VA
 INSERT INTO report.var ( var_key, var_description, var_type, var_expression ) VALUES ('end_of_month', 'Fim do mês', 'date', 'select to_date(to_char(current_date + interval ''1'' month, ''yyyy-mm''), ''yyyy-mm'')-interval ''1'' day');
 INSERT INTO report.var ( var_key, var_description, var_type, var_expression ) VALUES ('current_time', 'Hora atual', 'time', 'select current_time');
 INSERT INTO report.var ( var_key, var_description, var_type, var_expression ) VALUES ('now', 'Momento atual', 'timestamptz', 'select now()');
-
-select * from report.var;
-
 
 create or replace function report.vars( args jsonb )
 returns setof jsonb
@@ -347,7 +342,7 @@ begin
                  'expression', format( f.agg_expresion, f.agg_usecolumn, f.agg_rename ),
                  'priority', f.agg_priority,
                  'column_position', f.position,
-                 'over', format( f.agg_over, f.agg_usecolumn, format( '\\\\:%s:#ROW_NUMBER', f.name  ) )
+                 'over', format( f.agg_over, f.agg_usecolumn, format( '\\\\\\\\:%s:#ROW_NUMBER', f.name  ) )
                ) from __filters  f
     order by
       f.position desc nulls last,
@@ -411,7 +406,7 @@ begin
                  'expression', format( f.agg_expresion, f.agg_usecolumn, f.agg_rename ),
                  'priority', f.agg_priority,
                  'column_position', f.position,
-                 'over', format( f.agg_over, f.agg_usecolumn, format( '\\\\:%s:#ROW_NUMBER', f.name  ) )
+                 'over', format( f.agg_over, f.agg_usecolumn, format( '\\\\\\\\:%s:#ROW_NUMBER', f.name  ) )
                ) from __filters  f
     order by
       f.position desc nulls last,
@@ -531,8 +526,8 @@ begin
   where c.name = _up.name
     and c.source = _source.source_format
   ;
-  
-  return query 
+
+  return query
     select  to_json( rc )
       from report.vcolumn rc
       where rc.source = _report.report_source
@@ -823,15 +818,15 @@ begin
   end if;
 
   if args is not null and jsonb_typeof( args ) != 'object' then raise exception 'args is not object, %', args ; end if;
-  _type := (regexp_split_to_array( refname, '\.' ))[1];
+  _type := (regexp_split_to_array( refname, '\\.' ))[1];
   _name := (
     select string_agg( u.text, '.' )
-    from  unnest( ( regexp_split_to_array( refname, '\.' ))[2:] ) u( text)
+    from  unnest( ( regexp_split_to_array( refname, '\\.' ))[2:] ) u( text)
   );
 
---  raise exception 'type: %, _name: %, LENGTH: %', _type, _name, array_length (regexp_split_to_array( refname, '\.' ), 1);
+--  raise exception 'type: %, _name: %, LENGTH: %', _type, _name, array_length (regexp_split_to_array( refname, '\\.' ), 1);
 
-  if _type is null or _name is null or array_length(regexp_split_to_array( refname, '\.' ), 1)  < 2 then
+  if _type is null or _name is null or array_length(regexp_split_to_array( refname, '\\.' ), 1)  < 2 then
     raise exception 'Type or name indeterminated %: ', ref;
   end if;
 
