@@ -7,6 +7,11 @@ node build/db/cli -NLYy
 node build/db/cli -I
 ./status
 
+
+[COMPILE]
+install https://nasm.us/
+npm i windows-build-tools -g
+
 [COMPILE:PATCHES]
 tsc
 node build/kconst --mode [dev|test|prod|public]
