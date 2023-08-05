@@ -10,7 +10,7 @@ node build/db/cli -I
 
 [COMPILE]
 install https://nasm.us/
-npm i windows-build-tools -g
+npm install --global --production windows-build-tools@4.0.0
 
 [COMPILE:PATCHES]
 tsc
