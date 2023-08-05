@@ -511,7 +511,7 @@ $("#tiposPagamento").on("click", "li", function () {
 
 });
 $("[btCliente]").on("click", function () {
-    if(!validation1($("#cliente_codigo_contacorrente, #cliente_nome_contacorrente, #cliente_telefone_contacorrente"))) return;
+    if(!validation1($("#cliente_nome_contacorrente, #cliente_telefone_contacorrente"))) return;
     if($("#cliente_email_contacorrente").val().trim() !== ""){
         if(!isMailValid($("#cliente_email_contacorrente"))){
             xAlert("Registar cliente", "Email inválido.", "error");
