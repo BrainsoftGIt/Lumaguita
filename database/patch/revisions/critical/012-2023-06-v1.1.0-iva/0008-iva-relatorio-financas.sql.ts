@@ -67,8 +67,8 @@ begin
         and ct._branch_uid = arg_branch_uid
         and ct.conta_estado = _const.maguita_conta_estado_fechado
         and ve.venda_estado = _const.maguita_venda_estado_fechado
-        and ct.conta_data >= coalesce( arg_datainicio, ct.conta_data )
-        and ct.conta_data <= coalesce( arg_datafim, ct.conta_data )
+        and ct.conta_datafecho >= coalesce( arg_datainicio, ct.conta_data )
+        and ct.conta_datafecho <= coalesce( arg_datafim, ct.conta_data )
     ) select to_jsonb( _de ) from __declaracao _de
   ;
 end;
