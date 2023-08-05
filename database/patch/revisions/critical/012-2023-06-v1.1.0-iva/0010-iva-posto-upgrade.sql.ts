@@ -194,8 +194,8 @@ begin
         where v._branch_uid = branch
           and v.venda_estado = _const.maguita_venda_estado_fechado
           and ct.conta_estado = _const.maguita_conta_estado_fechado
-          and v.venda_dataregistro::date >= coalesce( arg_date_start, v.venda_dataregistro::date )
-          and v.venda_dataregistro::date <= coalesce( arg_date_end, v.venda_dataregistro::date )
+          and ct.conta_datafecho::date >= coalesce( arg_date_start, ct.conta_datafecho::date )
+          and ct.conta_datafecho::date <= coalesce( arg_date_end, ct.conta_datafecho::date )
           and ct.conta_posto_fecho = arg_posto_id
         group by art.artigo_id,
           v.venda_custounitario
