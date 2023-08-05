@@ -41,7 +41,7 @@ export let structure = (user) => {
                 bold: true,
             },
         },
-        pageMargins: [ 10, 0, 30, 0 ],
+        pageMargins: [ 5, 0, 60, 0 ],
         pageSize: {
             width : 226.772,
             height: 595 * 2

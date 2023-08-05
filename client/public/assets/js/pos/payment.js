@@ -139,7 +139,8 @@ var payment = {
             contentType: "application/json",
             data: JSON.stringify({cliente_titular: $("#cliente_nome_contacorrente").val().trim(),
                 cliente_code: $("#cliente_codigo_contacorrente").val().trim() || generateCodeClient(),
-                cliente_nif: ($("#cliente_nif_contacorrente").val() || null), cliente_contactos: [$("#cliente_telefone_contacorrente").val()],
+                cliente_nif: ($("#cliente_nif_contacorrente").val() || null),
+                cliente_contactos: [$("#cliente_telefone_contacorrente").val()],
                 cliente_mail: ($("#cliente_email_contacorrente").val().trim() || null)}),
             error(){  $("[btCliente]").prop("disabled", false).removeClass("loading")},
             success(e) {
@@ -511,7 +512,7 @@ $("#tiposPagamento").on("click", "li", function () {
 
 });
 $("[btCliente]").on("click", function () {
-    if(!validation1($("#cliente_nome_contacorrente, #cliente_telefone_contacorrente"))) return;
+    if(!validation1($("#cliente_nome_contacorrente"))) return;
     if($("#cliente_email_contacorrente").val().trim() !== ""){
         if(!isMailValid($("#cliente_email_contacorrente"))){
             xAlert("Registar cliente", "Email inválido.", "error");

@@ -77,7 +77,7 @@ export let create = async (instituition, accounts, res, user, printer_name, arg_
                                 text: "Qtd. x Preço"
                             },
                             {
-                                text: "Subtotal",
+                                text: "Total",
                                 alignment: "right",
                             }
                         ]

@@ -134,7 +134,7 @@ $("[novoCliente]").on("click", function () {
 });
 $("[bt_cliente]").on("click", function () {
     let xModalCRUCustomer = $("#xModalCRUCustomer");
-    if(!validation1($("#cliente_nome, #cliente_telefone"))) return;
+    if(!validation1($("#cliente_nome"))) return;
     if($("#cliente_email").val().trim() !== ""){
         if(!isMailValid($("#cliente_email"))){
             xAlert("Registar cliente", "Email inválido.", "error");

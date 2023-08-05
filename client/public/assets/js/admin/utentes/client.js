@@ -23,7 +23,7 @@ var client = {
             data: JSON.stringify({
                 cliente_id: client?.seleted?.cliente_id,
                 cliente_titular: $("[utente_reg_cliente_nome]").val(),
-                cliente_contactos: [$("[utente_reg_cliente_telefone]").val()],
+                cliente_contactos: [$("[utente_reg_cliente_telefone]").val() || ""],
                 cliente_mail: $("[utente_reg_cliente_email]").val() || null,
                 cliente_code: $("[utente_reg_cliente_codigo]").val(),
                 cliente_nif: $("[utente_reg_cliente_nif]").val() || null,
