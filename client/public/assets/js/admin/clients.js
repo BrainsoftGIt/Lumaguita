@@ -64,7 +64,7 @@ var clients = {
             method: "POST",
             contentType: "application/json",
             data: JSON.stringify({cliente_titular: $("#cliente_nome").val().trim(), cliente_nif: ($("#cliente_nif").val() || null),
-                cliente_code: $("#cliente_codigo").val().trim(),
+                cliente_code: $("#cliente_codigo").val().trim() || generateCodeClient(),
                 cliente_contactos: [$("#cliente_telefone").val()],
                 cliente_mail: ($("#cliente_email").val().trim() || null)}),
             error(){  $("[bt_cliente]").prop("disabled", false).removeClass("loading")},
@@ -88,7 +88,7 @@ var clients = {
             method: "POST",
             contentType: "application/json",
             data: JSON.stringify({cliente_titular: $("#cliente_nome").val().trim(), cliente_nif: ($("#cliente_nif").val() || null),
-                cliente_code: $("#cliente_codigo").val().trim(),
+                cliente_code: $("#cliente_codigo").val().trim() || generateCodeClient(),
                 cliente_contactos: [$("#cliente_telefone").val()], cliente_id: clients.selected.cliente_id,
                 cliente_mail: ($("#cliente_email").val().trim() || null)}),
             error(){  $("[bt_cliente]").prop("disabled", false).removeClass("loading")},
@@ -134,7 +134,7 @@ $("[novoCliente]").on("click", function () {
 });
 $("[bt_cliente]").on("click", function () {
     let xModalCRUCustomer = $("#xModalCRUCustomer");
-    if(!validation1($("#cliente_codigo, #cliente_nome, #cliente_telefone"))) return;
+    if(!validation1($("#cliente_nome, #cliente_telefone"))) return;
     if($("#cliente_email").val().trim() !== ""){
         if(!isMailValid($("#cliente_email"))){
             xAlert("Registar cliente", "Email inválido.", "error");
