@@ -138,7 +138,7 @@ var payment = {
             method: "POST",
             contentType: "application/json",
             data: JSON.stringify({cliente_titular: $("#cliente_nome_contacorrente").val().trim(),
-                cliente_code: $("#cliente_codigo_contacorrente").val().trim(),
+                cliente_code: $("#cliente_codigo_contacorrente").val().trim() || generateCodeClient(),
                 cliente_nif: ($("#cliente_nif_contacorrente").val() || null), cliente_contactos: [$("#cliente_telefone_contacorrente").val()],
                 cliente_mail: ($("#cliente_email_contacorrente").val().trim() || null)}),
             error(){  $("[btCliente]").prop("disabled", false).removeClass("loading")},

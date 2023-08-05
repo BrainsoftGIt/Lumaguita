@@ -432,6 +432,17 @@ function generateCode(length = 8){
     }
     return "ART-"+random_string.toUpperCase();
 }
+
+function generateCodeClient(length = 8){
+    let random_string = "";
+    let random_ascii;
+    for(let i = 0; i < length; i++) {
+        random_ascii = Math.floor((Math.random() * 25) + 97);
+        random_string += String.fromCharCode(random_ascii)
+    }
+    return "CLI-"+random_string.toUpperCase();
+}
+
 function getCurrentDate() {
     let date = new Date();
     return (date.getDate()> 10 ? date.getDate() : "0"+date.getDate())+((date.getMonth() + 1) > 10 ? (date.getMonth() + 1)
