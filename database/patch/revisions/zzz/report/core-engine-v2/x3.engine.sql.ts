@@ -2,7 +2,7 @@ import {block} from "../../../../core/updater";
 
 block( module, { identifier: "report:function|3x"}).sql`
 
-drop function report."3x"( report jsonb );
+drop function if exists report."3x"( report jsonb );
 drop function if exists report."xxx"( report jsonb );
 create or replace function report."3x"( report jsonb )
 returns setof json
@@ -117,6 +117,7 @@ end;
 $$;
 
 
+/*
 select * from report."3x"('{
     "groups": [
       {
@@ -168,4 +169,5 @@ select * from report."3x"('{
     "column_order": "asc",
     "aggregation": "#SUMOF $ TOTAL"
   }');
+ */
 `;

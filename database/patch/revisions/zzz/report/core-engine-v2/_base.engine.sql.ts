@@ -1157,4 +1157,29 @@ declare
   end;
 $$;
 
+create or replace function report.columns(regclass)
+  returns TABLE(column_name text, column_type text, column_basetype text, column_default text, is_array boolean, is_generated boolean)
+  strict
+  language sql
+as
+$$
+select
+    col.column_name::text,
+    format_type( pt.oid, atttypmod )::text column_type,
+    case
+      when col.data_type = 'ARRAY' then format_type( pt.typelem, atttypmod )
+      else format_type( pt.oid, atttypmod )
+    end as column_basetype,
+    col.column_default::text,
+    col.data_type = 'ARRAY' as is_array,
+    col.is_generated = 'ALWAYS' as is_generated
+  from information_schema.columns col
+         inner join report.source_map( $1 ) c on c.source_name = col.table_name
+    and col.table_schema::regnamespace = c.source_schema::regnamespace
+         inner join pg_attribute att on col.column_name = att.attname
+    and att.attrelid = format( '%s.%s', col.table_schema, col.table_name )::regclass::oid
+         inner join pg_type pt on att.atttypid = pt.oid
+  where format('%s.%s', c.source_schema, c.source_name)::regclass = $1
+$$;
+
 `;
