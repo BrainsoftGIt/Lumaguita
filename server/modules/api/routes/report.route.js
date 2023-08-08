@@ -137,38 +137,7 @@ web_service_1.app.post("/api/report/export/imposto", (req, res) => __awaiter(voi
         }
         ordenList[artigo.conta_id].push(artigo);
     });
-    const json = Object.keys(ordenList).map((key) => {
-        return {
-            "numDocumento": ordenList[key][0].documento_numero || "",
-            "dtEmissaoDocumento": ordenList[key][0].documento_data || "",
-            "nifConsumidor": ordenList[key][0].nif_consumidor || "",
-            "numSerieDocumento": `${ordenList[key][0].tserie_code || ""}${ordenList[key][0].documento_serie || ""}`,
-            "tbItensDocumentoGerados": ordenList[key].map(({ tipo_documento_origem, data_documento_origem, codigo_isento, desc_itens, total_valor_itens, taxa_aplicavel_itens, quant_itens, numero_documento_origem }) => {
-                return {
-                    "codigoIsencao": codigo_isento || "",
-                    "quantItens": quant_itens || "",
-                    "descItens": desc_itens || "",
-                    "valorItens": total_valor_itens || "",
-                    "valorTaxaAplicavel": taxa_aplicavel_itens || "",
-                    "tbDocumentoOrigems": (!!numero_documento_origem) ? [
-                        {
-                            "dtDocumentoOrigem": data_documento_origem || "",
-                            "numDocumentoOrigem": numero_documento_origem || "",
-                            "siglaTipoDocumentoEmissao": tipo_documento_origem
-                        }
-                    ] : []
-                };
-            })
-        };
-    });
-    fs_1.default.writeFile(reportPath, JSON.stringify(json, null, 2), (err) => {
-        if (err) {
-            console.error('Erro ao salvar o documento:', err);
-        }
-        else {
-            res.json({ file: filename });
-        }
-    });
+    res.json(ordenList);
 }));
 web_service_1.app.get("/api/report/download/:report_name", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     let filename = req.params.report_name;

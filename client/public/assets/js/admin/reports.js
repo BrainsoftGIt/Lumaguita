@@ -342,6 +342,7 @@ var report = {
             xAlert("Exporta relatório imposto", "Por favor preencha corretamente as datas!", "error");
             return
         }
+
         $("body").addClass("loading");
         $.ajax({
             url: "/api/report/export/imposto",
@@ -351,13 +352,68 @@ var report = {
                 arg_datainicio: $("#financa_report_start").val().stringToDate().getDateEn(),
                 arg_datafim: $("#financa_report_end").val().stringToDate().getDateEn(),
             }),
-            success(e) {
+            success(ordenList) {
                 $("body").removeClass("loading");
-                $("#xModalExportFileFinanca").removeClass("show");
-                open("/api/report/download/"+e.file);
-                $("#xModalExportFileFinanca input").val("")
+                report.iOrdenList = ordenList;
+
+                Object.keys(ordenList).forEach((key) => {
+                    ordenList[key].forEach(({desc_itens, total_valor_itens, taxa_aplicavel_itens, quant_itens, numero_documento_origem}) => {
+                        $("[listIReport]").append(`<ul>
+                                <li>${ordenList[key][0].documento_numero || "N/A"}</li>
+                                <li>${ordenList[key][0].documento_data || "N/A"}</li>
+                                <li>${ordenList[key][0].nif_consumidor || "N/A"}</li>
+                                <li>${ordenList[key][0].tserie_code || "N/A"}${ordenList[key][0].documento_serie || ""}</li>
+                                <li>${quant_itens || "N/A"}</li>
+                                <li>${desc_itens || "N/A"}</li>
+                                <li>${total_valor_itens || "N/A"}</li>
+                                <li>${taxa_aplicavel_itens || "N/A"}</li>
+                                <li>${numero_documento_origem || "N/A"}</li>
+                            </ul>`)
+                    })
+                })
+                xTableGenerate();
             }
         });
+    },
+    doIExport : () => {
+        let {iOrdenList: ordenList} = report;
+        if(!ordenList){
+            return;
+        }
+
+        const json = Object.keys(ordenList).map((key) => {
+            return {
+                "numDocumento": ordenList[key][0].documento_numero || "",
+                "dtEmissaoDocumento": ordenList[key][0].documento_data || "",
+                "nifConsumidor": ordenList[key][0].nif_consumidor || "",
+                "numSerieDocumento": `${ordenList[key][0].tserie_code || ""}${ordenList[key][0].documento_serie || ""}`,
+                "tbItensDocumentoGerados": ordenList[key].map(({tipo_documento_origem, data_documento_origem, codigo_isento, desc_itens, total_valor_itens, taxa_aplicavel_itens, quant_itens, numero_documento_origem}) =>  {
+                    return {
+                        "codigoIsencao": codigo_isento || "",
+                        "quantItens": quant_itens || "",
+                        "descItens": desc_itens || "",
+                        "valorItens": total_valor_itens || "",
+                        "valorTaxaAplicavel": taxa_aplicavel_itens || "",
+                        "tbDocumentoOrigems": (!!numero_documento_origem) ? [
+                            {
+                                "dtDocumentoOrigem": data_documento_origem || "",
+                                "numDocumentoOrigem": numero_documento_origem || "",
+                                "siglaTipoDocumentoEmissao": tipo_documento_origem
+                            }
+                        ] : []
+                    }
+                })
+            }
+        })
+
+        let data = JSON.stringify(json, null, 2);
+        const blob = new Blob([data], { type: 'application/javascript' });
+        const url = window.URL.createObjectURL(blob)
+        const a = document.createElement('a')
+        a.setAttribute('href', url)
+        a.setAttribute('target', "_blank")
+        a.setAttribute('download', 'download.csv');
+        a.click()
     }
 };
 
@@ -545,6 +601,9 @@ $("[export-report-normal]").on("click", function () {
     report.export();
 });
 $("[export-report-imposto]").on("click", function () {
+    report.doIExport();
+});
+$("[load-report-imposto]").on("click", function () {
     report.iExport();
 });
 $("[body-report-list]").on("click", ".report_footer", function () {
