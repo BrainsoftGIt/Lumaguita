@@ -411,7 +411,7 @@ var report = {
         const a = document.createElement('a')
         a.setAttribute('href', url)
         a.setAttribute('target', "_blank")
-        a.setAttribute('download', 'download.csv');
+        a.setAttribute('download', 'download.json');
         a.click()
     }
 };
