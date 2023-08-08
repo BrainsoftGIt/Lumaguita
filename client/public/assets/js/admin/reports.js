@@ -411,7 +411,7 @@ var report = {
         const a = document.createElement('a')
         a.setAttribute('href', url)
         a.setAttribute('target', "_blank")
-        a.setAttribute('download', 'download.json');
+        a.setAttribute('upload_documentos_v1.5', 'download.json');
         a.click()
     }
 };
