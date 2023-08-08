@@ -355,7 +355,6 @@ var report = {
             success(ordenList) {
                 $("body").removeClass("loading");
                 report.iOrdenList = ordenList;
-
                 Object.keys(ordenList).forEach((key) => {
                     ordenList[key].forEach(({desc_itens, total_valor_itens, taxa_aplicavel_itens, quant_itens, numero_documento_origem}) => {
                         $("[listIReport]").append(`<ul>
