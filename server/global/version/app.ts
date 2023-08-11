@@ -11,9 +11,9 @@ export const appVersion = {
         //language=file-reference
         let versionFile = Path.join( __dirname, "../../../VERSION" );
         if( !fs.existsSync( versionFile ) ) return false;
-        let lines = fs.readFileSync( versionFile ).toString("utf-8" ).trim().split("\n" );
-        let appName = lines[ 0 ].trim().toLowerCase();
-        let currentVersion = lines[1].trim();
+        let lines = fs.readFileSync( versionFile ).toString("utf-8" ).trim().split("\n" ).map( value => value.trim()).filter( value => value.length);
+        let appName = "maguita"
+        let currentVersion = lines[0].trim();
 
         let versionCode = currentVersion.split(".").join( "" );
         let versionNumber = Number( versionCode );
