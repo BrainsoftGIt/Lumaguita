@@ -1,4 +1,5 @@
 import moment from "moment";
+import {VERSION} from "./version";
 
 let instante = moment();
 let date = instante.format('YYYYMMDD' );
@@ -7,7 +8,7 @@ export const installerDirective = `
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Luma"
-#define MyAppVersion "0.1"
+#define MyAppVersion "${VERSION}"
 #define PublisherNameSA "BrainsoftSTP, LTD"
 #define PublisherNameSpace "BrainsoftSTP"
 #define LumaAbout "https://brainsoftstp.com/luma"
@@ -40,7 +41,7 @@ AllowNoIcons=yes
 ;PrivilegesRequired=lowest
 PrivilegesRequiredOverridesAllowed=dialog
 OutputDir={#MyAppDir}\\..\\release
-OutputBaseFilename=LumaGuitaWinSetup_${date}_x64
+OutputBaseFilename=LumaGuitaWinSetup_v${VERSION}_${date}_x64
 SetupIconFile={#MyAppDir}\\server\\resources\\fav\\fav.ico
 SolidCompression=yes
 Compression=lzma2/ultra64
