@@ -355,21 +355,35 @@ var report = {
             success(ordenList) {
                 $("body").removeClass("loading");
                 report.iOrdenList = ordenList;
+                let sumatorio = 0;
                 Object.keys(ordenList).forEach((key) => {
                     ordenList[key].forEach(({desc_itens, total_valor_itens, taxa_aplicavel_itens, quant_itens, numero_documento_origem}) => {
                         $("[listIReport]").append(`<ul>
-                                <li>${ordenList[key][0].documento_numero || "N/A"}</li>
-                                <li>${ordenList[key][0].documento_data || "N/A"}</li>
-                                <li>${ordenList[key][0].nif_consumidor || "N/A"}</li>
-                                <li>${ordenList[key][0].tserie_code || "N/A"}${ordenList[key][0].documento_serie || ""}</li>
-                                <li>${quant_itens || "N/A"}</li>
-                                <li>${desc_itens || "N/A"}</li>
-                                <li>${total_valor_itens || "N/A"}</li>
-                                <li>${taxa_aplicavel_itens || "N/A"}</li>
-                                <li>${numero_documento_origem || "N/A"}</li>
-                            </ul>`)
+                                <li>${ordenList[key][0].documento_numero ?? "N/A"}</li>
+                                <li>${ordenList[key][0].documento_data ?? "N/A"}</li>
+                                <li>${ordenList[key][0].nif_consumidor ?? "N/A"}</li>
+                                <li>${ordenList[key][0].tserie_code || "N/A"}${ordenList[key][0].documento_serie ?? ""}</li>
+                                <li>${quant_itens ?? "N/A"}</li>
+                                <li>${desc_itens ?? "N/A"}</li>
+                                <li>${total_valor_itens ?? "N/A"}</li>
+                                <li>${taxa_aplicavel_itens ?? "N/A"}</li>
+                                <li>${numero_documento_origem ?? "N/A"}</li>
+                            </ul>`);
+                        sumatorio += total_valor_itens;
                     })
                 })
+
+                $("[listIReport]").append(`<ul>
+                                <li>${"Total"}</li>
+                                <li></li>
+                                <li></li>
+                                <li></li>
+                                <li></li>
+                                <li></li>
+                                <li>${sumatorio}</li>
+                                <li></li>
+                                <li></li>
+                            </ul>`);
                 xTableGenerate();
             }
         });
