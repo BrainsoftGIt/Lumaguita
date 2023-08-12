@@ -1,5 +1,5 @@
 import moment from "moment";
-import {VERSION} from "./version";
+import {VERSION} from "../../server/version";
 
 let instante = moment();
 let date = instante.format('YYYYMMDD' );
