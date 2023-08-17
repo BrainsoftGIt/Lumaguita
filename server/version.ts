@@ -10,8 +10,19 @@ export let VERSION = {
         .filter( value => value.length )
         [ 0 ],
 
-    incrementor(){
-        if( incremented ) return false;
+    LOOK: Path.join( __dirname, "../VERSION.look" ),
+
+    looked(){
+        return fs.existsSync( VERSION.LOOK );
+    },
+
+    unlock(){
+        if( fs.existsSync( VERSION.LOOK ) ) fs.unlinkSync( VERSION.LOOK );
+    },
+
+    increment(){
+        if(  VERSION.looked() ) return false;
+        fs.writeFileSync( VERSION.LOOK, "" );
         let versionsParts = VERSION.NUMBER.split("." ).map( value => Number(value ) );
         versionsParts[2]++;
         VERSION.NUMBER = versionsParts.join(".");

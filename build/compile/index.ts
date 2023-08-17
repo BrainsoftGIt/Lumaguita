@@ -17,6 +17,7 @@ import {promiseResolve } from "../../server/lib/utils/promise";
 import {appToaster} from "../../server/lib/toaster";
 import * as Path from "path";
 import {installerDirective} from "./installer.iss.js";
+import {VERSION} from "../../server/version";
 
 export type CompileArgs = {
     full:boolean
@@ -181,7 +182,11 @@ function release( args:CompileArgs  ){
     linkedSpawn( "iscc", [
         //language=file-reference
         path.join( __dirname, "./installer.iss" )
-    ], { pipeConsole: true })
+    ], { pipeConsole: true }).linkSpawn( (code, signal, error, errs) => {
+        if( error ) console.log( error );
+        console.log( "RELEASE END WITH CODE", code );
+        VERSION.unlock();
+    });
 }
 
 function patches( args:CompileArgs  ){
@@ -234,6 +239,7 @@ line.defineCommand( { name: "nexe", callback: receiver => {
 }})
 
 line.defineCommand( { name: "start", callback: receiver => {
+    VERSION.increment();
     build( receiver.options ).then()
 }})
 
