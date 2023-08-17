@@ -6,14 +6,13 @@ export function cleanJs( dirname ){
     //language=file-reference
     if( !dirname ) dirname = path.join( __dirname, "../" );
     [
-        { basename: /*language=file-reference*/ "/client/app", math: /.*.js$/, },
-        { basename: /*language=file-reference*/ "/client/app", math: /.*.js.map$/, },
-        { basename: /*language=file-reference*/ "/server", math: /.*.js$/, },
-        { basename: /*language=file-reference*/ "/server", math: /.*.js.map$/, },
-        { basename: /*language=file-reference*/ "/build", math: /.*.js$/, },
-        { basename: /*language=file-reference*/ "/database", math: /.*.js$/, },
-        { basename: /*language=file-reference*/ "/database", math: /.*.js.map$/ },
-
+        { basename: /*language=file-reference*/ "/client/app",  math: /.*.js$/, },
+        { basename: /*language=file-reference*/ "/client/app",  math: /.*.js.map$/, },
+        { basename: /*language=file-reference*/ "/server",      math: /.*.js$/, },
+        { basename: /*language=file-reference*/ "/server",      math: /.*.js.map$/, },
+        { basename: /*language=file-reference*/ "/build",       math: /.*.js$/, },
+        { basename: /*language=file-reference*/ "/database",    math: /.*.js$/, },
+        { basename: /*language=file-reference*/ "/database",    math: /.*.js.map$/ },
     ].forEach( (value, index) => {
         FileUtil.scanFiles( path.join( dirname, value.basename ), value.math, path1 => {
             if( path1.path === __filename ) return;
