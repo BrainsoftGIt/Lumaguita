@@ -1,10 +1,19 @@
 import fs from "fs"
 import * as Path from "path";
+let incremented = false;
 //language=file-reference
-export const VERSION = fs.readFileSync( Path.join( __dirname, "../VERSION")).toString("utf-8")
+export let VERSION = fs.readFileSync( Path.join( __dirname, "../VERSION")).toString("utf-8")
     .trim()
     .split("\n")
     .map( value => value.trim() )
     .filter( value => value.length )
     [ 0 ]
 ;
+
+export function incrementVersion(){
+    if( incremented ) return false;
+    let versionsParts = VERSION.split("." ).map( value => Number(value ) );
+    versionsParts[2]++;
+    VERSION = versionsParts.join(".");
+    return  VERSION;
+}
