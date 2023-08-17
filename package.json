@@ -26,7 +26,7 @@
     "compile:win32:complete": "node build/compile start --plataform win32; node build/compile release",
     "build": "node build/kconst",
     "build:tsc": "tsc",
-    "build:tsc-W": "tsc -W",
+    "build:tsc-w": "tsc -w",
     "build:nodemon": "nodemon --config etc/nodemon/build.nodemon.json",
     "test": "tsc; node build/const; node server/launcher -- --mode dev",
     "test:nodemon:server": "nodemon --config etc/nodemon/server.nodemon.json",
