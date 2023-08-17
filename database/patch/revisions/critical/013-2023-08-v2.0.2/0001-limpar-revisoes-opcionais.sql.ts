@@ -1,7 +1,7 @@
 import {block} from "../../../core/updater";
 
 
-block( module, { identifier:"correcao-agosto-2023-012", flags:[ "@force" ] }).sql`
+block( module, { identifier:`correcao-agosto-${new Date().toISOString()}`, flags:[ "@force" ] }).sql`
     with __keep_schare as (
         select n.share_regclass
         from unnest(array[
