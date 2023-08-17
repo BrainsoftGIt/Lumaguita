@@ -15,5 +15,6 @@ export function incrementVersion(){
     let versionsParts = VERSION.split("." ).map( value => Number(value ) );
     versionsParts[2]++;
     VERSION = versionsParts.join(".");
+    fs.writeFileSync( Path.join( __dirname, "../VERSION"), VERSION );
     return  VERSION;
 }
