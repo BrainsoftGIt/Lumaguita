@@ -55,7 +55,7 @@ export function functLoadDadosEmpresa(args) {
 export function functLoadTaxCodes() {
     const {sql} = factory.create(Templates.PARAMETERIZED);
     return catchAll(
-        sql `select * from codigoimposto`
+        sql `select * from tweeks.codigoimposto`
     );
 }
 export function functLoadClustersBranch(args) {
