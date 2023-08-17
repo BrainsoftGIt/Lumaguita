@@ -40,7 +40,7 @@ app.post("/api/post/key", async (req, res) =>{
             if(before.cluster_version < after.cluster_version){
                 clusterServer.notifyLocalChange({event: "kEY:POST", extras: null, message: "Chave de posto gerada."});
             }
-            if(_data[0].row.chave_definitiva !== null)
+            if(!!_data[0]?.row?.chave_definitiva)
                 res.json({key: _data[0].row.posto_designacao, statusCluster: clusterServer.online, cluster_status:  cluster_status});
             else
                 res.json({key: _data[0].row.chave_temporarai, statusCluster: clusterServer.online, cluster_status:  cluster_status});
