@@ -53,7 +53,7 @@
     "exceljs": "^4.3.0",
     "express": "^4.17.1",
     "express-fileupload": "^1.2.0",
-    "express-session": "^1.17.1",
+    "express-session": "^1.17.3",
     "global": "^4.4.0",
     "http-proxy-middleware": "^2.0.6",
     "ini": "^3.0.0",
