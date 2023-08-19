@@ -21,10 +21,7 @@ export function prepareDatabase(){
     return dumpNow(null, { suffix: "before-upgrade" }).then( value => {
         return promiseResolve( applyDatabasePatches() ).then( value => {
             if( value.success ) {
-                serverNotify.loadingBlockItem(  "Criando copia de segurança final..." );
-                dumpNow(null, { suffix: "before-upgrade" }).then( value1 => {
-                    autoDumpService().then()
-                });
+                autoDumpService().then()
                 return Promise.resolve( "ok" );
             } else {
                 serverNotify.loading( "FAILED!" );
