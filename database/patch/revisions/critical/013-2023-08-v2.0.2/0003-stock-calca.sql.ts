@@ -283,4 +283,54 @@ begin
   ) select to_jsonb( a ) from __artigo a;
 end;
 $$;
-`
+`;
+
+
+block( module, { identifier: "stock-class"}).sql`
+create or replace function tweeks.funct_pos_load_class(args jsonb) returns SETOF jsonb
+    language plpgsql
+as
+$$
+declare
+  /**
+    args := {
+      arg_espaco_auth: UID,
+      arg_colaborador_id: UID
+    }
+   */
+  arg_espaco_auth uuid not null default args->>'arg_espaco_auth';
+  arg_colaborador_id uuid not null default args->>'arg_colaborador_id';
+  _branch uuid not null default tweeks.__branch_uid( arg_colaborador_id, arg_espaco_auth );
+  _const map.constant;
+begin
+  _const := map.constant();
+
+  return query with
+    __classe as (
+      select
+          c.classe_id,
+          c.classe_classe_id,
+          c.classe_nome,
+          c.classe_codigo,
+          c.classe_foto,
+          count( distinct lart.link_id ) filter ( where lart.link_id is not null ) as classe_artigos
+        from tweeks.classe c
+          inner join tweeks.link lcla on c.classe_id = (lcla.link_referencia->>'classe_id')::uuid
+            and lcla.link_estado = _const.maguita_link_estado_ativo
+          inner join tweeks.artigo art on c.classe_id = art.artigo_classe_id
+            and art.artigo_estado = _const.artigo_estado_ativo
+          inner join tweeks.link lart on art.artigo_id = ( lart.link_referencia->>'artigo_id' )::uuid
+            and lart.link_estado = _const.maguita_link_estado_ativo
+            and lart.link_espaco_destino = artigo_espaco_auth
+        where lcla.link_espaco_destino = arg_espaco_auth
+          and lcla.link_tlink_id = _const.maguita_tlink_classe
+          and c._branch_uid = _branch
+          and art._branch_uid = _branch
+          and lcla._branch_uid = c._branch_uid
+          and lart._branch_uid = c._branch_uid
+        group by c.classe_id
+    ) select  to_jsonb( c )
+      from __classe c;
+end;
+$$;
+`;
