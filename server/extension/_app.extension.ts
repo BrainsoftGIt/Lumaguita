@@ -9,26 +9,34 @@ import fs from "fs";
 import {folders} from "../global/project";
 import {applyDatabasePatches} from "../../database/patch";
 import {promiseResolve} from "../lib/utils/promise";
-import {autoDumpService, dumpNow} from "../service/database.service/dumps";
+import {autoDumpService, create_dump, dumpNow} from "../service/database.service/dumps";
 
 export function getSys(){
     return require("../global/sys").sys;
 }
 
-export function prepareDatabase(){
+export function prepareDatabase():Promise<boolean>{
     serverNotify.loadingBlock( "Manutenção de banco de dados" );
     serverNotify.loadingBlockItem( "Criando copia de segurança preventiva..." );
-    return dumpNow(null, { suffix: "before-upgrade" }).then( value => {
-        return promiseResolve( applyDatabasePatches() ).then( value => {
-            if( value.success ) {
-                autoDumpService().then()
-                return Promise.resolve( "ok" );
-            } else {
+    let dayNumber = new Date().getDay();
+    return new Promise( resolve => {
+        create_dump( path.join( folders.dumps, `before-upgrade-day-${dayNumber}.base.sql` ) ).on("close", (code, signal) => {
+            promiseResolve( applyDatabasePatches() ).then( value => {
+                if( value.success ) {
+                    autoDumpService().then( () =>{} ).catch( () => {})
+                    return resolve( true );
+                } else {
+                    serverNotify.loading( "FAILED!" );
+                    serverNotify.loadingBlock( "Database upgrade patches... [FAILED]" );
+                    serverNotify.loadingBlockItem( "Falha ao aplicar atualização criticas de banco de dados." );
+                }
+            }).catch( reason => {
                 serverNotify.loading( "FAILED!" );
                 serverNotify.loadingBlock( "Database upgrade patches... [FAILED]" );
                 serverNotify.loadingBlockItem( "Falha ao aplicar atualização criticas de banco de dados." );
-            }
-        })
+                resolve( false );
+            })
+        });
     })
 }
 
@@ -97,6 +105,9 @@ function proceedPlay(){
             startApplicationDatabase()
                 .then( value => {
                     prepareDatabase().then( value1 => {
+                        if( !value ){
+                            return process.exit(-1 );
+                        }
                         serverNotify.loadingBlock( "A iniciar o servidor..." );
                         startServer( serverNotify.ready );
                     })
@@ -105,6 +116,9 @@ function proceedPlay(){
         } else if( args.dbMode === "system" ){
             serverNotify.loadingBlock( "A iniciar o servidor..." );
             prepareDatabase().then( value1 => {
+                if( !value1 ){
+                    return process.exit(-1 );
+                }
                 serverNotify.loadingBlock( "A iniciar o servidor..." );
                 startServer( serverNotify.ready );
             })
@@ -112,6 +126,9 @@ function proceedPlay(){
             return;
         } else{
             prepareDatabase().then( value1 => {
+                if( !value1 ){
+                    return process.exit( -1 );
+                }
                 serverNotify.loadingBlock( "A iniciar o servidor..." );
                 startServer( serverNotify.ready );
             })
