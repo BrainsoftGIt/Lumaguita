@@ -73,7 +73,7 @@ function dargs( filename ):[PostgresDumpArgs, PostgresOptions ]{
 
 export function create_dump( fileName:string ){
     if( !fs.existsSync( path.dirname( fileName ) ) ) fs.mkdirSync( path.dirname( fileName ) );
-    return pg_dump( ...dargs( fileName ) );
+    return pg_dump( ...dargs( fileName ) )
 }
 
 export function create_dump_sync(filename:string ){
