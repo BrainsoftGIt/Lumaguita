@@ -28,27 +28,25 @@ export function dumpNow( instant?: moment.Moment, opts?:Options ){
         let dumps  =intervalNames( instant,  { prefix: `${args.dbName}${prefix}${suffix}.`, suffix: ".base.db" })
             .filter( value => acceptsInterval.includes( value.intervalName ) );
 
-        console.log( "[MAGUITA] Dump> start at ", instant );
 
-        const next =  ()=>{
-            let _next = dumps.shift();
-            if( !_next ) {
-                console.log( "[MAGUITA] Dump> auto start database dumps... ", instant.toString() , "end!" );
-                return resolve(  true )
-            }
+        let lastFile =path.join( folders.dumps, `last-${Math.random()}.base.db` );
 
-            let dumpFile = instant.format( _next.format ).toLowerCase();
-            console.log( `[MAGUITA] Dump> ${ _next.intervalName } ->> `, dumpFile, "next!" );
-            const out = create_dump( path.join( folders.dumps, dumpFile ) );
-            out.stdout.on( "data", chunk => {}  )
-            out.stderr.on( "data", chunk => {}  );
-            process.stdin.pipe( out.stdin );
+        const out = create_dump( lastFile );
+        out.stdout.on( "data", chunk => {}  )
+        out.stderr.on( "data", chunk => {}  );
+        process.stdin.pipe( out.stdin );
 
-            out.on("close", (code, signal) => {
-                next();
-            })
-        }
-        next();
+        out.on("close", (code, signal) => {
+            dumps.forEach( next => {
+                let dumpFile = instant.format( next.format ).toLowerCase();
+                let copyFile = path.join( folders.dumps, dumpFile );
+                console.log( "CREATE DUMP ", copyFile, " USING ", lastFile );
+                fs.cpSync( lastFile, copyFile );
+            });
+            console.log( "DROP DUMP FILE ", lastFile )
+            fs.unlinkSync( lastFile );
+            resolve( true );
+        });
     });
 }
 
