@@ -15,28 +15,23 @@ export function getSys(){
     return require("../global/sys").sys;
 }
 
-export function prepareDatabase():Promise<boolean>{
+export function prepareDatabase(){
     serverNotify.loadingBlock( "Manutenção de banco de dados" );
     serverNotify.loadingBlockItem( "Criando copia de segurança preventiva..." );
-    let dayNumber = new Date().getDay();
-    return new Promise( resolve => {
-        create_dump( path.join( folders.dumps, `before-upgrade-day-${dayNumber}.base.sql` ) ).on("close", (code, signal) => {
-            promiseResolve( applyDatabasePatches() ).then( value => {
-                if( value.success ) {
-                    autoDumpService().then( () =>{} ).catch( () => {})
-                    return resolve( true );
-                } else {
-                    serverNotify.loading( "FAILED!" );
-                    serverNotify.loadingBlock( "Database upgrade patches... [FAILED]" );
-                    serverNotify.loadingBlockItem( "Falha ao aplicar atualização criticas de banco de dados." );
-                }
-            }).catch( reason => {
+    return dumpNow(null, { suffix: "before-upgrade" }).then( value => {
+        return promiseResolve( applyDatabasePatches() ).then( value => {
+            if( value.success ) {
+                serverNotify.loadingBlockItem(  "Criando copia de segurança final..." );
+                dumpNow(null, { suffix: "before-upgrade" }).then( value1 => {
+                    autoDumpService().then()
+                });
+                return Promise.resolve( "ok" );
+            } else {
                 serverNotify.loading( "FAILED!" );
                 serverNotify.loadingBlock( "Database upgrade patches... [FAILED]" );
                 serverNotify.loadingBlockItem( "Falha ao aplicar atualização criticas de banco de dados." );
-                resolve( false );
-            })
-        });
+            }
+        })
     })
 }
 
@@ -95,10 +90,11 @@ function proceedPlay(){
 
         serverNotify.loadingBlock( "A iniciar o tray..." );
         const { systrayStart } = require( "../global/systray" );
-        systrayStart()
+        systrayStart();
 
         fs.writeFileSync( path.join( folders.home, "current.pid" ), String( process.pid ) );
 
+        console.log( args.dbMode );
         if( args.dbMode === "app" ){
             args.dbPort = args.dbPortDatabaseApp;
             serverNotify.loadingBlock( "A Recuperar base de dados..." );
@@ -116,6 +112,7 @@ function proceedPlay(){
         } else if( args.dbMode === "system" ){
             serverNotify.loadingBlock( "A iniciar o servidor..." );
             prepareDatabase().then( value1 => {
+                console.log( { preparedValue: value1 })
                 if( !value1 ){
                     return process.exit(-1 );
                 }
@@ -125,6 +122,7 @@ function proceedPlay(){
 
             return;
         } else{
+            console.log( { prepareDb:true })
             prepareDatabase().then( value1 => {
                 if( !value1 ){
                     return process.exit( -1 );
