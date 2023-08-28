@@ -3,6 +3,7 @@ import {functLoadScheduler, functSetScheduler} from "../../db/clinic/call-functi
 import cron from "node-cron";
 import moment from "moment";
 import {Schedule} from "./functions/calendar";
+import {args} from "../../../../global/args";
 let noLoadAlerts = true;
 let forceReloadAlerts = false;
 let typeEvent = "920eb08f-5f59-47bb-9d48-32da83bf83eb";
@@ -83,9 +84,11 @@ let funLoadSchedules = () => {
     });
 }
 
-cron.schedule('0 0 0 * * *', async () => {
-    funLoadSchedules()
-});
+if ( args.appMode !== "public" ){
+    cron.schedule('0 0 0 * * *', async () => {
+        funLoadSchedules()
+    });
+}
 
 
 setInterval(() => {
