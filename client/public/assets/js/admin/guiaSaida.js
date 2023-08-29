@@ -2,6 +2,22 @@ var guiaSaida = {
     tipo_pagamento: 1,
     tipo_grupo: 2,
     stn_currency_id: 141,
+    loadAccountKey : () => {
+        return new Promise((resolve, reject) =>{
+            $.ajax({
+                url: "/api/account/key",
+                method: "POST",
+                contentType: "application/json",
+                data: JSON.stringify({admin: true}),
+                success(data) {
+                    resolve(data);
+                },
+                error(error){
+                    reject(error);
+                }
+            });
+        });
+    },
     get articles_added(){
         let articles_table = [];
         let montanteQuantidade = 0;
@@ -36,6 +52,7 @@ var guiaSaida = {
         conta.conta_mesa = {numero: null, descricao: null, lotacao: null};
         conta.conta_extension = {};
         conta.arg_vendas = this.articles_added;
+        conta.conta_chave = guiaSaida.key;
         conta.admin = true;
         $("#finalizar_guia_saida").attr("disabled", true).addClass("loading");
         $.ajax({
@@ -119,7 +136,13 @@ $("#finalizar_guia_saida").on("click", function () {
                 xAlert("Guia de Saída", "Adicione artigos na tabela!", "info");
                 return;
             }
-            guiaSaida.addAccount();
+
+            guiaSaida.loadAccountKey().then(value =>{
+                guiaSaida.key = value.accountKey;
+                guiaSaida.addAccount();
+            }).catch(err =>{
+                $("#finalizar_fatura").attr("disabled", false).removeClass("loading");
+            });
         }
     });
 });

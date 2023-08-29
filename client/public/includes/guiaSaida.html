@@ -19,45 +19,49 @@
             <h3></h3>
             <div class="flex">
                 <div class="inputs flex xform">
-                    <div class="xinput w25">
-                        <input type="text" placeholder="Pesquisar cliente" search_customer list="guiaSaidaClientes">
-                        <label>Pesquisar cliente</label>
+                    <div class="w100">
+                        <div class="xinput w25">
+                            <input type="text" placeholder="Pesquisar cliente" search_customer list="guiaSaidaClientes">
+                            <label>Pesquisar cliente</label>
+                        </div>
+                        <div class="xinput w25">
+                            <input type="text" disabled cliente_titular>
+                            <label>Nome do cliente</label>
+                        </div>
+                        <div class="xinput w15">
+                            <input type="text" placeholder="NIF" maxlength="9" disabled cliente_nif _noObrigatory="true">
+                            <label>NIF</label>
+                        </div>
+                        <div class="xinput w15" >
+                            <input type="text" placeholder="Telefone" disabled cliente_contacto _noObrigatory="true">
+                            <label>Telefone</label>
+                        </div>
                     </div>
-                    <div class="xinput w25">
-                        <input type="text" disabled cliente_titular>
-                        <label>Nome do cliente</label>
-                    </div>
-                    <div class="xinput w15">
-                        <input type="text" placeholder="NIF" maxlength="9" disabled cliente_nif _noObrigatory="true">
-                        <label>NIF</label>
-                    </div>
-                    <div class="xinput w15" >
-                        <input type="text" placeholder="Telefone" disabled cliente_contacto _noObrigatory="true">
-                        <label>Telefone</label>
-                    </div>
-                    <div class="xinput w25">
-                        <input type="text" placeholder="Pesquisar artigo" search_article list="guiaSaidaArtigos">
-                        <label>Pesquisar artigo (nome ou código)</label>
-                    </div>
-                    <div class="xinput w25">
-                        <input type="text" placeholder="Descrição" description_article>
-                        <label>Descrição</label>
-                    </div>
-                    <div class="xinput w8">
-                        <input type="text" placeholder="Quantidade" class="double" amount_article>
-                        <label>Qtd</label>
-                    </div>
-                    <div class="xinput w15">
-                        <input type="text" placeholder="Valor unitário" class="double formatNumber" price_article>
-                        <label>Valor unitário</label>
-                    </div>
-                    <div class="xinput w15">
-                        <input type="text" placeholder="Lote" lote_article _noObrigatory="true">
-                        <label>Lote</label>
-                    </div>
-                    <div class="xinput w15">
-                        <input type="text" placeholder="Data de validade" data-inputmask-alias="dd-mm-yyyy" data-val="true" date_expiration_article _noObrigatory="true">
-                        <label>Data de validade</label>
+                    <div class="w100">
+                        <div class="xinput w25">
+                            <input type="text" placeholder="Pesquisar artigo" search_article list="guiaSaidaArtigos">
+                            <label>Pesquisar artigo (nome ou código)</label>
+                        </div>
+                        <div class="xinput w25">
+                            <input type="text" placeholder="Descrição" description_article>
+                            <label>Descrição</label>
+                        </div>
+                        <div class="xinput w8">
+                            <input type="text" placeholder="Quantidade" class="double" amount_article>
+                            <label>Qtd</label>
+                        </div>
+                        <div class="xinput w15">
+                            <input type="text" placeholder="Valor unitário" class="double formatNumber" price_article>
+                            <label>Valor unitário</label>
+                        </div>
+                        <div class="xinput w15">
+                            <input type="text" placeholder="Lote" lote_article _noObrigatory="true">
+                            <label>Lote</label>
+                        </div>
+                        <div class="xinput w15">
+                            <input type="text" placeholder="Data de validade" data-inputmask-alias="dd-mm-yyyy" data-val="true" date_expiration_article _noObrigatory="true">
+                            <label>Data de validade</label>
+                        </div>
                     </div>
                     <div class="flex h-sb v-ct">
                         <button class="xbtn" addArticleTable>Lançar</button>
