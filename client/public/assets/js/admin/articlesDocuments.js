@@ -46,7 +46,7 @@ var articlesDocuments = {
                 datalistArtigos.empty();
                 if(e.artcls.length > 1) {
                     e.artcls.forEach((art) => {
-                        datalistArtigos.append(`<option  data-id=${art.funct_load_artigo.artigo_id} data-value=${art.funct_load_artigo.artigo_nome.toLowerCase().trim()}>${art.funct_load_artigo.artigo_nome}</option>`);
+                        datalistArtigos.append(`<option value="${art.funct_load_artigo.artigo_nome}" data-id=${art.funct_load_artigo.artigo_id} data-value=${art.funct_load_artigo.artigo_nome.toLowerCase().trim()}>${art.funct_load_artigo.artigo_codigo}</option>`);
                     });
                 }
                 else if(e.artcls.length === 1){
