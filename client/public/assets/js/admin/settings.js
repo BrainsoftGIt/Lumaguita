@@ -159,11 +159,13 @@ var settings = {
                         }
                         else{
                             if(settings.empresa.impressoras_cozinha.nome !== null || settings.empresa.impressoras_cozinha.ip !== null){
-                                $("#nome_impressora_cozinha").val((settings.empresa.impressoras_cozinha.nome || ""));
-                                $("#ip_impressora_cozinha").val((settings.empresa.impressoras_cozinha.ip || ""));
-                                $("#hasKuchen").mousedown();
+                                $("#nome_impressora_cozinha").val(settings.empresa.impressoras_cozinha.nome || "");
+                                $("#ip_impressora_cozinha").val(settings.empresa.impressoras_cozinha.ip || "");
+                                $("#hasKuchen").addClass("active");
                             }
                         }
+
+                        $("#printTalaoA5").addClass(settings.empresa.printTalaoA5 ? "active" : "");
                         if(emp.configuracao_impressoras.length === 0) impressorasEstrutura.addClass("empty");
                         else impressorasEstrutura.removeClass("empty");
 
@@ -403,6 +405,8 @@ var settings = {
         dados.logo_referencia = this.empresa?.logo_referencia || null;
         dados.certification = $("#empresa_certificacao").val().trim() || null;
         dados.configuracao_impressoras = this.empresa?.configuracao_impressoras || [];
+        dados.impressoras_cozinha = this.empresa?.impressoras_cozinha || {};
+        dados.printTalaoA5 = !!this.empresa?.printTalaoA5;
 
         let formData = new FormData();
         formData.append("data", JSON.stringify({dados_empresa: dados}));
