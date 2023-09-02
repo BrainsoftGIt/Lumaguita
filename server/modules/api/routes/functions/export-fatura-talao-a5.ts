@@ -1,22 +1,9 @@
 import path from "path";
 import fs from "fs";
 import {getFonts, structure} from "./estruture-talao-a5";
-import {formattedString} from "./formatValue";
 import {folders} from "../../../../global/project";
 import {print} from "./printer";
 import {clusterServer} from "../../../../service/cluster.service";
-
-let getValueInList = (list, value, {nameLists, keyId, keyValue}) => {
-    let rt;
-    for (let i = 0; i < nameLists.length; i++) {
-        let nameList = nameLists[i];
-        rt = (list[nameList].find((data) => { return (data[keyId] + "") === (value + ""); })?.[keyValue]) || rt
-        if (rt){
-            break;
-        }
-    }
-    return rt;
-}
 
 export let create = async (instituition, account_content, res, user, date, printer_name, num_autorization) => {
     const pdfMake = require("../../../../../libs/js/pdfmake/pdfmake");

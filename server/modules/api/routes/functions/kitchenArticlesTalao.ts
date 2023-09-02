@@ -3,8 +3,6 @@ import fs from "fs";
 import {getFonts, structure} from "./estruture-talao";
 import {folders} from "../../../../global/project";
 import {print} from "./printer";
-import {clusterServer} from "../../../../service/cluster.service";
-
 export let create = async (instituition, articles, res, date, table, obs) => {
     const pdfMake = require("../../../../../libs/js/pdfmake/pdfmake");
     const pdfFonts = require('../../../../../libs/js/pdfmake/vfs_fonts');

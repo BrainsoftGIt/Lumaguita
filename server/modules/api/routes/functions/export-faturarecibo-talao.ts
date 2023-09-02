@@ -1,22 +1,9 @@
 import path from "path";
 import fs from "fs";
 import {getFonts, structure} from "./estruture-talao";
-import {formattedString} from "./formatValue";
 import {folders} from "../../../../global/project";
 import {clusterServer} from "../../../../service/cluster.service";
 import {print} from "./printer";
-
-let getValueInList = (list, value, {nameLists, keyId, keyValue}) => {
-    let rt;
-    for (let i = 0; i < nameLists.length; i++) {
-        let nameList = nameLists[i];
-        rt = (list[nameList].find((data) => { return (data[keyId] + "") === (value + ""); })?.[keyValue]) || rt
-        if (rt){
-            break;
-        }
-    }
-    return rt;
-}
 
 function getTypePayment(tipo_id){
     if(tipo_id === 1) return "Cash";

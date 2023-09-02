@@ -1,23 +1,6 @@
 import fs from "fs";
 import path from "path";
 
-import sharp from 'sharp';
-export let photoResize = async (pathPhoto, resize = 90) => {
-    pathPhoto = path.resolve(__dirname, pathPhoto)
-    if (fs.existsSync(pathPhoto)) {
-        try {
-            return (await sharp(pathPhoto)
-                .rotate()
-                .resize(resize)
-                .png()
-                .toBuffer()).toString('base64');
-        }catch (e) {
-            console.log(e)
-        }
-    }
-    return null
-}
-
 export let structure = (user, num_autorization, num_certification,  imageCabecalho = "") => {
     let footerSystem;
 
