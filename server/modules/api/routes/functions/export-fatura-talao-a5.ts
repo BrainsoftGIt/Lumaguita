@@ -1,6 +1,6 @@
 import path from "path";
 import fs from "fs";
-import {getFonts, structure} from "./estruture-talao";
+import {getFonts, structure} from "./estruture-talao-a5";
 import {formattedString} from "./formatValue";
 import {folders} from "../../../../global/project";
 import {print} from "./printer";
@@ -56,9 +56,9 @@ export let create = async (instituition, account_content, res, user, date, print
                         alignment: "center",
                         stack: [
                             (logoTipo && instituition?.espaco_configuracao.logo_talao ? {
-                                margin: [0, 10, 0, 5],
+                                margin: [0, 0, 0, 5],
                                 image:  'data:image/png;base64,' + fs.readFileSync(logoTipo).toString('base64'),
-                                width: 100,
+                                width: 60,
                             } : {}),
                             {
                                 style : "bold",
@@ -162,7 +162,7 @@ export let create = async (instituition, account_content, res, user, date, print
                     },
                     {
                         alignment: "center",
-                        canvas: [ { type: 'rect', x: -3, y: 0, w: 195, h: 0, dash: { length: 9 }, lineWidth: 0.5} ],
+                        canvas: [ { type: 'rect', x: -3, y: 0, w: 350, h: 0, dash: { length: 9 }, lineWidth: 0.5} ],
                         margin: [0, 3, 0, 2],
                     }
                 ]
@@ -208,7 +208,7 @@ export let create = async (instituition, account_content, res, user, date, print
                             },
                             {
                                 alignment: "center",
-                                canvas: [ { type: 'rect', x: -3, y: 0, w: 195, h: 0, dash: { length: 9 }, lineWidth: 0.5} ],
+                                canvas: [ { type: 'rect', x: -3, y: 0, w: 350, h: 0, dash: { length: 9 }, lineWidth: 0.5} ],
                                 margin: [0, 2, 0, 2],
                             }
                         ]
