@@ -65,7 +65,7 @@ export let create = async (instituition, account_content, res, user, date, print
                             (logoTipo && instituition?.espaco_configuracao.logo_talao ? {
                                 margin: [0, 10, 0, 5],
                                 image:  'data:image/png;base64,' + fs.readFileSync(logoTipo).toString('base64'),
-                                width: 50,
+                                width: 100,
                             } : {}),
                             {
                                 text: `${instituition?.espaco_configuracao?.empresa_nome}`

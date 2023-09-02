@@ -18,14 +18,12 @@ const fs_1 = __importDefault(require("fs"));
 const estruture_talao_1 = require("./estruture-talao");
 const project_1 = require("../../../../global/project");
 const printer_1 = require("./printer");
-const cluster_service_1 = require("../../../../service/cluster.service");
 let create = (instituition, articles, res, date, table, obs) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a, _b, _c, _d, _e, _f;
+    var _a, _b, _c, _d, _e;
     const pdfMake = require("../../../../../libs/js/pdfmake/pdfmake");
     const pdfFonts = require('../../../../../libs/js/pdfmake/vfs_fonts');
     pdfMake.vfs = pdfFonts.pdfMake.vfs;
     pdfMake.fonts = (0, estruture_talao_1.getFonts)();
-    let logoTipo = cluster_service_1.clusterServer.res.resolve((_a = instituition === null || instituition === void 0 ? void 0 : instituition.espaco_configuracao) === null || _a === void 0 ? void 0 : _a.logo_referencia);
     let docDefinition = Object.assign({ compress: true, info: {
             title: '',
             author: 'luma',
@@ -39,25 +37,20 @@ let create = (instituition, articles, res, date, table, obs) => __awaiter(void 0
                         style: "grande",
                         alignment: "center",
                         stack: [
-                            /*(logoTipo && instituition?.espaco_configuracao.logo_talao ? {
-                                margin: [0, 10, 0, 5],
-                                image:  'data:image/png;base64,' + fs.readFileSync(logoTipo).toString('base64'),
-                                width: 50,
-                            } : {}),*/
                             {
-                                text: `${(_b = instituition === null || instituition === void 0 ? void 0 : instituition.espaco_configuracao) === null || _b === void 0 ? void 0 : _b.empresa_nome}`
+                                text: `${(_a = instituition === null || instituition === void 0 ? void 0 : instituition.espaco_configuracao) === null || _a === void 0 ? void 0 : _a.empresa_nome}`
                             },
                             {
-                                text: `${(_c = instituition === null || instituition === void 0 ? void 0 : instituition.espaco_configuracao) === null || _c === void 0 ? void 0 : _c.empresa_endereco}`
+                                text: `${(_b = instituition === null || instituition === void 0 ? void 0 : instituition.espaco_configuracao) === null || _b === void 0 ? void 0 : _b.empresa_endereco}`
                             },
                             {
-                                text: `Cont: ${(_d = instituition === null || instituition === void 0 ? void 0 : instituition.espaco_configuracao) === null || _d === void 0 ? void 0 : _d.empresa_telef}`
+                                text: `Cont: ${(_c = instituition === null || instituition === void 0 ? void 0 : instituition.espaco_configuracao) === null || _c === void 0 ? void 0 : _c.empresa_telef}`
                             },
                             {
-                                text: `NIF: ${(_e = instituition === null || instituition === void 0 ? void 0 : instituition.espaco_configuracao) === null || _e === void 0 ? void 0 : _e.empresa_nif} `
+                                text: `NIF: ${(_d = instituition === null || instituition === void 0 ? void 0 : instituition.espaco_configuracao) === null || _d === void 0 ? void 0 : _d.empresa_nif} `
                             },
                             {
-                                text: `Email: ${(_f = instituition === null || instituition === void 0 ? void 0 : instituition.espaco_configuracao) === null || _f === void 0 ? void 0 : _f.empresa_email}`
+                                text: `Email: ${(_e = instituition === null || instituition === void 0 ? void 0 : instituition.espaco_configuracao) === null || _e === void 0 ? void 0 : _e.empresa_email}`
                             },
                         ]
                     }

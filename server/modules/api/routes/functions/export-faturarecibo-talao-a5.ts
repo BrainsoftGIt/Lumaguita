@@ -3,8 +3,8 @@ import fs from "fs";
 import {getFonts, structure} from "./estruture-talao";
 import {formattedString} from "./formatValue";
 import {folders} from "../../../../global/project";
-import {print} from "./printer";
 import {clusterServer} from "../../../../service/cluster.service";
+import {print} from "./printer";
 
 let getValueInList = (list, value, {nameLists, keyId, keyValue}) => {
     let rt;
@@ -18,34 +18,41 @@ let getValueInList = (list, value, {nameLists, keyId, keyValue}) => {
     return rt;
 }
 
+function getTypePayment(tipo_id){
+    if(tipo_id === 1) return "Cash";
+    else if(tipo_id === 4) return "Cheque";
+    else if(tipo_id === 2) return "Depósito";
+    else return "Transferência";
+}
 export let create = async (instituition, account_content, res, user, date, printer_name, num_autorization) => {
     const pdfMake = require("../../../../../libs/js/pdfmake/pdfmake");
     const pdfFonts = require('../../../../../libs/js/pdfmake/vfs_fonts');
     const {formattedString} = require("./formatValue");
     pdfMake.vfs = pdfFonts.pdfMake.vfs;
     pdfMake.fonts = getFonts();
+    let logoTipo = clusterServer.res.resolve(instituition?.espaco_configuracao?.logo_referencia);
 
-    let subtotal = 0;
     let footerSystem;
+    let valorTotalImpostos = 0;
+    let subtotal = 0;
     let preco_artigo = 0;
+    // let mostrar_logo = instituition.espaco_configuracao.certification?.logo_talao ? instituition.espaco_configuracao.certification?.logo_talao : false;
     if(num_autorization !== null && instituition.espaco_configuracao.certification !== null)
-        footerSystem = "Documento emitido por sistema informático com o nº de autorização "+num_autorization+" e de certificado "+num_autorization;
+        footerSystem = "Documento emitido por sistema informático com o nº de autorização "+num_autorization+" e de certificado "+instituition.espaco_configuracao.certification;
     else if(num_autorization === null && instituition.espaco_configuracao.certification !== null)
         footerSystem = "Documento emitido por sistema informático com o nº de certificado "+instituition.espaco_configuracao.certification;
     else
         footerSystem = "Documento emitido por sistema informático com o nº de autorização "+num_autorization;
-
-    let logoTipo = clusterServer.res.resolve(instituition?.espaco_configuracao?.logo_referencia);
 
     let sumImpost = {};
 
     let docDefinition = {
         compress: true,
         info: {
-            title: 'Fatura',
-            author: 'maguita',
-            subject: 'Fatura',
-            keywords: 'luma, fatura, recibo, brainsoft',
+            title: 'Fatura/Recibo',
+            author: 'luma',
+            subject: 'Fatura/Recibo',
+            keywords: 'luma, fatura/recibo, brainsoft',
         },
         content: [
             {
@@ -61,7 +68,6 @@ export let create = async (instituition, account_content, res, user, date, print
                                 width: 100,
                             } : {}),
                             {
-                                style : "bold",
                                 text: `${instituition?.espaco_configuracao?.empresa_nome}`
                             },
                             {
@@ -92,11 +98,25 @@ export let create = async (instituition, account_content, res, user, date, print
                                     {
                                         width: "50%",
                                         bold: false,
-                                        text : "FATURA"
+                                        text : "FATURA/RECIBO"
                                     },
                                     {
                                         width: "50%",
-                                        text : account_content.main.conta_serie.document,
+                                        text : account_content[0].main.conta_serie.document,
+                                        alignment : "right"
+                                    }
+                                ],
+                            },
+                            {
+                                columns: [
+                                    {
+                                        width: "40%",
+                                        bold: false,
+                                        text : "M. Pagamento"
+                                    },
+                                    {
+                                        width: "60%",
+                                        text : getTypePayment(account_content[0].main.deposito_tpaga_id),
                                         alignment : "right"
                                     }
                                 ],
@@ -127,10 +147,10 @@ export let create = async (instituition, account_content, res, user, date, print
                     {
                         stack: [
                             {
-                                text: `NIF: ${(account_content?.main?.cliente_nif || "---------------")}`
+                                text: `NIF: ${(account_content[0]?.main?.cliente_nif || "---------------")}`
                             },
                             {
-                                text: `Nome: ${account_content?.main?.cliente_titular}`
+                                text: `Nome: ${account_content[0]?.main?.cliente_titular}`
                             },
                         ]
                     },
@@ -168,7 +188,7 @@ export let create = async (instituition, account_content, res, user, date, print
                 ]
             },
             ...(() => {
-                return (account_content?.main?.conta_vendas || []).map((cont) =>{
+                return (account_content[0]?.main?.conta_vendas || []).map((cont) =>{
 
                     if(!!cont.tipoimposto_id) {
                         if (!sumImpost[cont.tipoimposto_id]) {
@@ -187,7 +207,7 @@ export let create = async (instituition, account_content, res, user, date, print
                         lineHeight: 1,
                         style : "normal",
                         stack: [
-                            {text: (cont.venda_descricao === null ? cont.artigo_nome : cont.venda_descricao )},
+                            {text: cont.artigo_nome},
                             {
                                 columns: [
                                     {
@@ -228,7 +248,7 @@ export let create = async (instituition, account_content, res, user, date, print
                                 text : formattedString(subtotal.toFixed(2)+"")+" STN",
                                 alignment : "right"
                             }
-                        ]
+                        ],
                     },
                     ...Object.keys(sumImpost).map((key) => {
                         return {
@@ -250,8 +270,30 @@ export let create = async (instituition, account_content, res, user, date, print
                                 text : "Total",
                             },
                             {
-                                text : formattedString(account_content.main.conta_montante.toFixed(2)+"")+" STN",
+                                text : formattedString(account_content[0]?.main?.conta_montante.toFixed(2)+"")+" STN",
                                 alignment : "right"
+                            }
+                        ],
+                    },
+                    {
+                        columns: [
+                            {
+                                text: "Valor pago",
+                            },
+                            {
+                                text: formattedString(account_content[1]?.main?.deposito_montantemoeda.toFixed(2)+"")+" "+account_content[1]?.main.currency_code,
+                                alignment: "right"
+                            }
+                        ]
+                    },
+                    {
+                        columns: [
+                            {
+                                text: "Troco",
+                            },
+                            {
+                                text: formattedString(account_content[1].main.deposito_montantetroco.toFixed(2)+"")+" STN",
+                                alignment: "right"
                             }
                         ]
                     }
@@ -278,15 +320,15 @@ export let create = async (instituition, account_content, res, user, date, print
         ],
         ...structure(user)
     };
-
     const pdfDocGenerator = pdfMake.createPdf(docDefinition);
     pdfDocGenerator.getBuffer((buffer) => {
-        let filename = "FaturaTalao_"+(new Date().getTime()+Math.random())+".pdf";
+        let filename = "FaturaReciboTalao_"+(new Date().getTime()+Math.random())+".pdf";
         fs.mkdirSync(path.join(folders.temp, 'multer'), {recursive: true});
         fs.writeFile(path.join(folders.temp, 'multer/'+filename), buffer, function (err) {
             if (err) return console.log(err);
             else{
-                print(printer_name, path.resolve(path.join(folders.temp, 'multer/'+filename)));
+                let paper = instituition.espaco_configuracao.printTalaoA5 ? "A5" : "POS";
+                print(printer_name, path.resolve(path.join(folders.temp, 'multer/'+filename)), paper);
                 res.json("done");
             }
         });

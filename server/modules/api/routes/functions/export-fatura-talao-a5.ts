@@ -286,7 +286,8 @@ export let create = async (instituition, account_content, res, user, date, print
         fs.writeFile(path.join(folders.temp, 'multer/'+filename), buffer, function (err) {
             if (err) return console.log(err);
             else{
-                print(printer_name, path.resolve(path.join(folders.temp, 'multer/'+filename)));
+                let paper = instituition.espaco_configuracao.printTalaoA5 ? "A5" : "POS";
+                print(printer_name, path.resolve(path.join(folders.temp, 'multer/'+filename)), paper);
                 res.json("done");
             }
         });
