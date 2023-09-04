@@ -3,7 +3,6 @@ import fs from "fs";
 import {getFonts, structure, getImage} from "./estruture";
 import {clusterServer} from "../../../../service/cluster.service";
 import {folders} from "../../../../global/project";
-import {formattedString} from "./formatValue";
 import moment from "moment";
 
 

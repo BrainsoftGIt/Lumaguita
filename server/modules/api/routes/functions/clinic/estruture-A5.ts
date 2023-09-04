@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
-
 import sharp from 'sharp';
+
 export let photoResize = async (pathPhoto, resize = 90) => {
     pathPhoto = path.resolve(__dirname, pathPhoto)
     if (fs.existsSync(pathPhoto)) {

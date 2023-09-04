@@ -13,7 +13,7 @@ export const app:Express = express();
 
 //////////////////// MIDDLEWARES ////////////////////
 
-import "./middlewares/remote/route.remote";
+// import "./middlewares/remote/route.remote";
 
 import '../../modules/api/routes/check-static';
 import {E_TAG_VERSION} from "./etag";

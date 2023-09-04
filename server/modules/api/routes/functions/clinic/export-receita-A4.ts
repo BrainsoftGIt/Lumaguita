@@ -4,18 +4,6 @@ import {getFonts, structure, photoResize, getImage} from "./estruture-A4";
 import {folders} from "../../../../../global/project";
 import {clusterServer} from "../../../../../service/cluster.service";
 
-let getValueInList = (list, value, {nameLists, keyId, keyValue}) => {
-    let rt;
-    for (let i = 0; i < nameLists.length; i++) {
-        let nameList = nameLists[i];
-        rt = (list[nameList].find((data) => { return (data[keyId] + "") === (value + ""); })?.[keyValue]) || rt
-        if (rt){
-            break;
-        }
-    }
-    return rt;
-}
-
 export let create = async (instituition, res, user, client, utente, tratamento) => {
     const pdfMake = require("../../../../../../libs/js/pdfmake/pdfmake");
     const pdfFonts = require('../../../../../../libs/js/pdfmake/vfs_fonts');

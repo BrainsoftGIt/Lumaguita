@@ -4,21 +4,7 @@ import {getFonts, structure, getImage} from "./estruture";
 import moment from "moment";
 import {folders} from "../../../../global/project";
 import {clusterServer} from "../../../../service/cluster.service";
-import {formattedString} from "./formatValue";
 
-let getValueInList = (list, value, {nameLists, keyId, keyValue}) => {
-    let rt;
-    for (let i = 0; i < nameLists.length; i++) {
-        let nameList = nameLists[i];
-        rt = (list[nameList].find((data) => { return (data[keyId] + "") === (value + ""); })?.[keyValue]) || rt
-        if (rt){
-            break;
-        }
-    }
-    return rt;
-}
-
-// structure.footer()
 export let create = async (instituition, account, account_content, res, user, date, num_autorization) => {
     const pdfMake = require("../../../../../libs/js/pdfmake/pdfmake");
     const pdfFonts = require('../../../../../libs/js/pdfmake/vfs_fonts');

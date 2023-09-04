@@ -15,12 +15,13 @@ var efatura = {
 
             let armazem_efatura = $("#armazem_efaturav2").find("li.active").attr("armazem_id")
 
+            let {autorizacao_uid} = efatura;
             $.ajax({
                 url: "/api/efatura/authorization/reg",
                 method: "POST",
                 contentType: "application/json",
                 data: JSON.stringify({
-                    autorizacao_uid: null,
+                    autorizacao_uid,
                     autorizacao_espaco_uid: armazem_efatura,
                     autorizacao_designacao: "",
                     autorizacao_numero: new Date().getTime().toString(),
@@ -41,6 +42,7 @@ var efatura = {
                         $("#xModalEfatura input").val("");
                         $("#numero_serie_efatura").attr("disabled", true);
                         $("#xModalEfatura .hideTarget").click();
+                        $("#xModalEfaturaV2").removeClass("show")
                     }
                     else{
                         xAlert("Série", e.data, "error");
@@ -66,6 +68,7 @@ var efatura = {
                     if(e.result){
                         load();
                         efatura.authorization.selected = null;
+                        $("#xModalSerieStatus").removeClass("show")
                         xAlert("Série", "Configuração de série atualizada com sucesso!");
                     }
                     else{
@@ -92,6 +95,7 @@ var efatura = {
                     if(e.result){
                         load();
                         efatura.authorization.selected = null;
+                        $("#xModalSerieStatus").removeClass("show")
                         xAlert("Série", "Configuração de série atualizada com sucesso!");
                     }
                     else{
@@ -328,7 +332,8 @@ $("#series_efatura")
         let { authorization: { serie : { load }, list } } = efatura;
         let index = $(this).closest("ul").index();
         let { autorizacao_uid, espaco_nome, espaco_id } = list[index];
-        $(`#armazem_efaturav2 [id='${espaco_id}']`).show().addClass("active").siblings().removeClass("active");
+        efatura.autorizacao_uid = autorizacao_uid;
+        $(`#armazem_efaturav2 [armazem_id='${espaco_id}']`).show().addClass("active").siblings().removeClass("active");
         $('[inp="armazem_efaturav2"]').val(espaco_nome);
         load({  arg_autorizacao_id : autorizacao_uid } )
         e.stopPropagation();

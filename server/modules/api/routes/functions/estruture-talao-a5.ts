@@ -21,11 +21,8 @@ export let structure = (user) => {
                 bold: true,
             },
         },
-        pageMargins: [ 5, 0, 60, 0 ],
-        pageSize: {
-            width : 226.772,
-            height: 595 * 2
-        },
+        pageMargins: [ 35, 20, 55, 20 ],
+        pageSize: "A5",
         background: function (page) {
             return []
         },

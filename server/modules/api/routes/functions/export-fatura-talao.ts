@@ -1,22 +1,9 @@
 import path from "path";
 import fs from "fs";
 import {getFonts, structure} from "./estruture-talao";
-import {formattedString} from "./formatValue";
 import {folders} from "../../../../global/project";
 import {print} from "./printer";
 import {clusterServer} from "../../../../service/cluster.service";
-
-let getValueInList = (list, value, {nameLists, keyId, keyValue}) => {
-    let rt;
-    for (let i = 0; i < nameLists.length; i++) {
-        let nameList = nameLists[i];
-        rt = (list[nameList].find((data) => { return (data[keyId] + "") === (value + ""); })?.[keyValue]) || rt
-        if (rt){
-            break;
-        }
-    }
-    return rt;
-}
 
 export let create = async (instituition, account_content, res, user, date, printer_name, num_autorization) => {
     const pdfMake = require("../../../../../libs/js/pdfmake/pdfmake");
@@ -58,7 +45,7 @@ export let create = async (instituition, account_content, res, user, date, print
                             (logoTipo && instituition?.espaco_configuracao.logo_talao ? {
                                 margin: [0, 10, 0, 5],
                                 image:  'data:image/png;base64,' + fs.readFileSync(logoTipo).toString('base64'),
-                                width: 50,
+                                width: 100,
                             } : {}),
                             {
                                 style : "bold",

@@ -1,6 +1,6 @@
 import path from "path";
 import fs from "fs";
-import {getFonts, structure} from "./estruture-talao";
+import {getFonts, structure} from "./estruture-talao-a5";
 import {folders} from "../../../../global/project";
 import {print} from "./printer";
 import {clusterServer} from "../../../../service/cluster.service";
@@ -31,9 +31,9 @@ export let create = async (instituition, caixa, res, user, printer_name) => {
                         alignment: "center",
                         stack: [
                             (logoTipo && instituition?.espaco_configuracao.logo_talao ? {
-                                margin: [0, 10, 0, 5],
+                                margin: [0, 0, 0, 5],
                                 image:  'data:image/png;base64,' + fs.readFileSync(logoTipo).toString('base64'),
-                                width: 100,
+                                width: 60,
                             } : {}),
                             {
                                 text: `${instituition?.espaco_configuracao?.empresa_nome}`
@@ -127,7 +127,8 @@ export let create = async (instituition, caixa, res, user, printer_name) => {
         fs.writeFile(path.join(folders.temp, 'multer/'+filename), buffer, function (err) {
             if (err) return console.log(err);
             else{
-                print(printer_name, path.resolve(path.join(folders.temp, 'multer/'+filename)));
+                let paper = instituition.espaco_configuracao.printTalaoA5 ? "A5" : "POS";
+                print(printer_name, path.resolve(path.join(folders.temp, 'multer/'+filename)), paper);
                 res.json("done");
             }
         });

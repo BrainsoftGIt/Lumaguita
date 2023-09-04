@@ -1,8 +1,9 @@
 import path from "path";
 import fs from "fs";
-import {getFonts, structure} from "./estruture-talao";
+import {getFonts, structure} from "./estruture-talao-a5";
 import {folders} from "../../../../global/project";
 import {print} from "./printer";
+
 export let create = async (instituition, articles, res, date, table, obs) => {
     const pdfMake = require("../../../../../libs/js/pdfmake/pdfmake");
     const pdfFonts = require('../../../../../libs/js/pdfmake/vfs_fonts');
@@ -106,7 +107,7 @@ export let create = async (instituition, articles, res, date, table, obs) => {
                         ]
                     },
                     {
-                        canvas: [ { type: 'rect', x: -3, y: 0, w: 195, h: 0, dash: { length: 9 }, lineWidth: 0.5} ],
+                        canvas: [ { type: 'rect', x: -3, y: 0, w: 350, h: 0, dash: { length: 9 }, lineWidth: 0.5} ],
                         margin: [0, 3, 0, 2],
                     }
                 ]
@@ -131,7 +132,7 @@ export let create = async (instituition, articles, res, date, table, obs) => {
                                 ]
                             },
                             {
-                                canvas: [ { type: 'rect', x: -3, y: 0, w: 195, h: 0, dash: { length: 9 }, lineWidth: 0.5} ],
+                                canvas: [ { type: 'rect', x: -3, y: 0, w: 350, h: 0, dash: { length: 9 }, lineWidth: 0.5} ],
                                 margin: [0, 2, 0, 2],
                             }
                         ]
@@ -166,7 +167,8 @@ export let create = async (instituition, articles, res, date, table, obs) => {
         fs.writeFile(path.join(folders.temp, 'multer/'+filename), buffer, function (err) {
             if (err) return console.log(err);
             else{
-                print(printerName, path.resolve(path.join(folders.temp, 'multer/'+filename)));
+                let paper = instituition.espaco_configuracao.printTalaoA5 ? "A5" : "POS";
+                print(printerName, path.resolve(path.join(folders.temp, 'multer/'+filename)), paper);
                 res.json("done");
             }
         });
