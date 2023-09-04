@@ -99,12 +99,16 @@ function proceedPlay() {
         const { systrayStart } = require("../global/systray");
         systrayStart();
         fs_1.default.writeFileSync(path_1.default.join(project_1.folders.home, "current.pid"), String(process.pid));
+        console.log(args_1.args.dbMode);
         if (args_1.args.dbMode === "app") {
             args_1.args.dbPort = args_1.args.dbPortDatabaseApp;
             snotify_1.serverNotify.loadingBlock("A Recuperar base de dados...");
             startApplicationDatabase()
                 .then(value => {
                 prepareDatabase().then(value1 => {
+                    if (!value) {
+                        return process.exit(-1);
+                    }
                     snotify_1.serverNotify.loadingBlock("A iniciar o servidor...");
                     startServer(snotify_1.serverNotify.ready);
                 });
@@ -113,13 +117,21 @@ function proceedPlay() {
         else if (args_1.args.dbMode === "system") {
             snotify_1.serverNotify.loadingBlock("A iniciar o servidor...");
             prepareDatabase().then(value1 => {
+                console.log({ preparedValue: value1 });
+                if (!value1) {
+                    return process.exit(-1);
+                }
                 snotify_1.serverNotify.loadingBlock("A iniciar o servidor...");
                 startServer(snotify_1.serverNotify.ready);
             });
             return;
         }
         else {
+            console.log({ prepareDb: true });
             prepareDatabase().then(value1 => {
+                if (!value1) {
+                    return process.exit(-1);
+                }
                 snotify_1.serverNotify.loadingBlock("A iniciar o servidor...");
                 startServer(snotify_1.serverNotify.ready);
             });

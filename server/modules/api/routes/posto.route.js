@@ -41,12 +41,13 @@ storage_service_1.app.post("/api/post/key", (req, res) => __awaiter(void 0, void
             _data.push(data);
         }).catch(err => {
         }).finally(function () {
+            var _a, _b;
             return __awaiter(this, void 0, void 0, function* () {
                 let after = yield cluster_service_1.clusterServer.service.loadLocalCluster();
                 if (before.cluster_version < after.cluster_version) {
                     cluster_service_1.clusterServer.notifyLocalChange({ event: "kEY:POST", extras: null, message: "Chave de posto gerada." });
                 }
-                if (_data[0].row.chave_definitiva !== null)
+                if (!!((_b = (_a = _data[0]) === null || _a === void 0 ? void 0 : _a.row) === null || _b === void 0 ? void 0 : _b.chave_definitiva))
                     res.json({ key: _data[0].row.posto_designacao, statusCluster: cluster_service_1.clusterServer.online, cluster_status: cluster_status });
                 else
                     res.json({ key: _data[0].row.chave_temporarai, statusCluster: cluster_service_1.clusterServer.online, cluster_status: cluster_status });

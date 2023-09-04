@@ -21,15 +21,33 @@ kconst.declares( (exports, override, SELF_NAME, props) => {
 kconst.declares( (exports, override, SELF_NAME, props) => {
     override( () => {
         K.dbConfig = {
-            // database: "maguita_dps_cafepark", // database name,
-            database: "maguita_dev", // database name,
-            user: "maguita_dev", //user name database connection
-            userClone: "maguita_dev_clone", //user name database connection
+            // // database: "maguita_dps_cafepark", // database name,
+            // database: "maguita_dev", // database name,
+            // user: "maguita_dev", //user name database connection
+            // userClone: "maguita_dev_clone", //user name database connection
+            // password: "1234", // password database connection
+            // // host: "192.168.88.112", //host database connection
+            // host: "localhost", //host database connection
+            // port: 5432, // port database connection
+            // portDatabaseApp: 54433, // port database connection
+            // superuser:"postgres",
+            // passwordClone:"1234",
+            // passwordSuperUser:"1234",
+            //
+            // databaseClinic: "clinic", // database name,
+            // userClinic: "clinic", // database name,
+            // passwordClinic: "1234@cli", // database name,
+            // hostClinic: "216.137.179.55", // database name,
+
+
+
+            database: `maguita_dev`, // database name,
+            user: `maguita_dev`, //user name database connection
+            userClone: `postgres`, //user name database connection
             password: "1234", // password database connection
-            // host: "192.168.88.112", //host database connection
-            host: "localhost", //host database connection
+            host: "127.0.0.1", //host database connection
             port: 5432, // port database connection
-            portDatabaseApp: 54433, // port database connection
+            portDatabaseApp: 5432, // port database connection
             superuser:"postgres",
             passwordClone:"1234",
             passwordSuperUser:"1234",
@@ -187,4 +205,5 @@ kconst.declares( (exports, override, SELF_NAME, props) => {
         }; exports( targets.dbConnection );
     })
 }, { mode: [ "public", "exe" ] })
+//Configuração de banco de dados em modo produção
 

@@ -28,6 +28,7 @@ const call_function_schedule_1 = require("../../db/clinic/call-function-schedule
 const node_cron_1 = __importDefault(require("node-cron"));
 const moment_1 = __importDefault(require("moment"));
 const calendar_1 = require("./functions/calendar");
+const args_1 = require("../../../../global/args");
 let noLoadAlerts = true;
 let forceReloadAlerts = false;
 let typeEvent = "920eb08f-5f59-47bb-9d48-32da83bf83eb";
@@ -93,9 +94,11 @@ let funLoadSchedules = () => {
         });
     });
 };
-node_cron_1.default.schedule('0 0 0 * * *', () => __awaiter(void 0, void 0, void 0, function* () {
-    funLoadSchedules();
-}));
+if (args_1.args.appMode !== "public") {
+    node_cron_1.default.schedule('0 0 0 * * *', () => __awaiter(void 0, void 0, void 0, function* () {
+        funLoadSchedules();
+    }));
+}
 setInterval(() => {
     if (noLoadAlerts && !listEventToNotify.length || forceReloadAlerts)
         funLoadSchedules();

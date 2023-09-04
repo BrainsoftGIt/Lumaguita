@@ -21,15 +21,30 @@ index_1.kconst.declares((exports, override, SELF_NAME, props) => {
 index_1.kconst.declares((exports, override, SELF_NAME, props) => {
     override(() => {
         index_1.K.dbConfig = {
-            // database: "maguita_dps_cafepark", // database name,
-            database: "maguita_dev",
-            user: "maguita_dev",
-            userClone: "maguita_dev_clone",
+            // // database: "maguita_dps_cafepark", // database name,
+            // database: "maguita_dev", // database name,
+            // user: "maguita_dev", //user name database connection
+            // userClone: "maguita_dev_clone", //user name database connection
+            // password: "1234", // password database connection
+            // // host: "192.168.88.112", //host database connection
+            // host: "localhost", //host database connection
+            // port: 5432, // port database connection
+            // portDatabaseApp: 54433, // port database connection
+            // superuser:"postgres",
+            // passwordClone:"1234",
+            // passwordSuperUser:"1234",
+            //
+            // databaseClinic: "clinic", // database name,
+            // userClinic: "clinic", // database name,
+            // passwordClinic: "1234@cli", // database name,
+            // hostClinic: "216.137.179.55", // database name,
+            database: `maguita_dev`,
+            user: `maguita_dev`,
+            userClone: `postgres`,
             password: "1234",
-            // host: "192.168.88.112", //host database connection
-            host: "localhost",
+            host: "127.0.0.1",
             port: 5432,
-            portDatabaseApp: 54433,
+            portDatabaseApp: 5432,
             superuser: "postgres",
             passwordClone: "1234",
             passwordSuperUser: "1234",
@@ -178,4 +193,5 @@ index_1.kconst.declares((exports, override, SELF_NAME, props) => {
         exports(index_1.targets.dbConnection);
     });
 }, { mode: ["public", "exe"] });
+//Configuração de banco de dados em modo produção
 //# sourceMappingURL=db.configs.export.js.map

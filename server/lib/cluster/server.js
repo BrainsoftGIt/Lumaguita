@@ -29,6 +29,10 @@ var SocketType;
     SocketType["MASTER"] = "MASTER";
 })(SocketType = exports.SocketType || (exports.SocketType = {}));
 class ClusterContext {
+    // public onReceiverRevision:( EVENT_NAME:EventName, callback: (navigation, push, result ) => any)=>void;
+    get onReceiverRevision() {
+        return this.revision.onceReceiverRevision;
+    }
     constructor(service, io, configs) {
         this._onceClusterEventListener = new Proxy([], {
             get(target, p, receiver) {
@@ -69,10 +73,6 @@ class ClusterContext {
         this._configsSets = new config_listener_1.ConfigListener(this);
         this._revision = new RevisionAgent_1.RevisionAgent(this);
         this._res = new resource_1.Resource(this);
-    }
-    // public onReceiverRevision:( EVENT_NAME:EventName, callback: (navigation, push, result ) => any)=>void;
-    get onReceiverRevision() {
-        return this.revision.onceReceiverRevision;
     }
     get localCluster() { return this._connector.localCluster; }
     get masterCluster() { return this._connector.localCluster; }

@@ -46,7 +46,7 @@ function functLoadDadosEmpresa(args) {
 exports.functLoadDadosEmpresa = functLoadDadosEmpresa;
 function functLoadTaxCodes() {
     const { sql } = database_service_1.factory.create(zoo_pg_1.Templates.PARAMETERIZED);
-    return (0, zoo_pg_1.catchAll)(sql `select * from codigoimposto`);
+    return (0, zoo_pg_1.catchAll)(sql `select * from tweeks.codigoimposto`);
 }
 exports.functLoadTaxCodes = functLoadTaxCodes;
 function functLoadClustersBranch(args) {

@@ -26,24 +26,22 @@ function dumpNow(instant, opts) {
             suffix = `-${opts.suffix}`;
         let dumps = (0, cron_service_1.intervalNames)(instant, { prefix: `${args_1.args.dbName}${prefix}${suffix}.`, suffix: ".base.db" })
             .filter(value => acceptsInterval.includes(value.intervalName));
-        console.log("[MAGUITA] Dump> start at ", instant);
-        const next = () => {
-            let _next = dumps.shift();
-            if (!_next) {
-                console.log("[MAGUITA] Dump> auto start database dumps... ", instant.toString(), "end!");
-                return resolve(true);
-            }
-            let dumpFile = instant.format(_next.format).toLowerCase();
-            console.log(`[MAGUITA] Dump> ${_next.intervalName} ->> `, dumpFile, "next!");
-            const out = create_dump(path_1.default.join(project_1.folders.dumps, dumpFile));
-            out.stdout.on("data", chunk => { });
-            out.stderr.on("data", chunk => { });
-            process.stdin.pipe(out.stdin);
-            out.on("close", (code, signal) => {
-                next();
+        let lastFile = path_1.default.join(project_1.folders.dumps, `last-${Math.random()}.base.db`);
+        const out = create_dump(lastFile);
+        out.stdout.on("data", chunk => { });
+        out.stderr.on("data", chunk => { });
+        process.stdin.pipe(out.stdin);
+        out.on("close", (code, signal) => {
+            dumps.forEach(next => {
+                let dumpFile = instant.format(next.format).toLowerCase();
+                let copyFile = path_1.default.join(project_1.folders.dumps, dumpFile);
+                console.log("CREATE DUMP ", copyFile, " USING ", lastFile);
+                fs_1.default.cpSync(lastFile, copyFile);
             });
-        };
-        next();
+            console.log("DROP DUMP FILE ", lastFile);
+            fs_1.default.unlinkSync(lastFile);
+            resolve(true);
+        });
     });
 }
 exports.dumpNow = dumpNow;
