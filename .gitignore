@@ -24,3 +24,4 @@ bin/maguita.exe
 /os-lion.js
 /build/compile/installer.iss
 /VERSION.look
+/client/app/index.js
