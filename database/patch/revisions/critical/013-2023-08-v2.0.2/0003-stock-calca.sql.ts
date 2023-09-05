@@ -261,7 +261,7 @@ begin
         l.link_metadata,
         count( di.dispoe_id ) as artigos_extras
       from tweeks.artigo art
-        inner join tweeks.link l on to_jsonb( art ) @> l.link_referencia
+        inner join tweeks.link l on art.artigo_id =(  l.link_referencia->>'art.artigo_id' )::uuid
           and l.link_estado = _const.maguita_link_estado_ativo
           and l.link_tlink_id = _const.maguita_tlink_preco
           and l.link_espaco_destino = arg_espaco_auth
@@ -403,5 +403,144 @@ begin
           from __classe c
     ;
 end;
+$$;
+`;
+
+
+block( module, { "identifier":"funct_pos_load_artigo_search" } ).sql`
+create or replace function tweeks.funct_pos_load_artigo_search(args jsonb) returns SETOF jsonb
+  language plpgsql
+as
+$$
+declare
+  /**
+    args := {
+      search_text:TXT,
+      arg_espaco_auth
+    }
+   */
+  arg_espaco_auth uuid default args->>'arg_espaco_auth';
+  _search_text character varying default args->>'search_text';
+  _search_text_like character varying;
+  _const map.constant;
+  ___branch uuid;
+begin
+  ___branch := tweeks.__branch_uid( null, arg_espaco_auth );
+  
+  _search_text := lib.str_nospace( lower( public.unaccent( _search_text ) ) );
+  _search_text_like := format( '%s%s%s', '%', _search_text, '%' );
+
+  _const := map.constant();
+  return query with
+    __ean as( select e.ean_artigo_id, array_agg( e.ean_code ) as ean_code from tweeks.ean e where e.ean_estado = _const.maguita_ean_estado_ativo group by e.ean_artigo_id ),
+    __artigo as (
+    select
+        c.classe_id,
+        c.classe_nome,
+        art.artigo_id,
+        art.artigo_classe_id,
+        art.artigo_nome,
+        art.artigo_codigo,
+        art.artigo_stocknegativo,
+        art.artigo_estado,
+        s.stock_quantidade,
+        l.link_metadata,
+        e.ean_code,
+        count( di.dispoe_id ) as artigos_extras
+      from tweeks.artigo art
+        inner join tweeks.classe c on art.artigo_classe_id = c.classe_id
+        inner join tweeks.link l on art.artigo_id =  ( l.link_referencia->>'artigo_id' )::uuid
+          and l.link_estado = _const.maguita_link_estado_ativo
+          and l.link_tlink_id = _const.maguita_tlink_preco
+          and l.link_espaco_destino = arg_espaco_auth
+        inner join tweeks.stock s on s.artigo_id = art.artigo_id
+          and s.espaco_id = arg_espaco_auth
+        left join tweeks.dispoe di on art.artigo_id = di.dispoe_artigo_id
+          and di.dispoe_estado = _const.dispoe_estado_ativo
+        left join __ean e on e.ean_artigo_id = art.artigo_id
+      where art._branch_uid = ___branch
+      group by art.artigo_id,
+        c.classe_id,
+        s.stock_quantidade,
+        l.link_metadata,
+        art.artigo_stocknegativo,
+        art.artigo_nome,
+        e.ean_code
+      order by case
+          when s.stock_quantidade > 0 or art.artigo_stocknegativo then 1
+          else 2
+        end,
+        art.artigo_nome
+  ) select to_jsonb( a )
+      from __artigo a
+      where
+        lower( public.unaccent( a.artigo_nome ) )  like _search_text_like
+          or lower( public.unaccent( a.artigo_codigo ) )  like _search_text_like
+          or  _search_text = any ( a.ean_code )
+  ;
+end
+$$;
+`;
+
+
+
+block( module, { "identifier": "funct_load_conta_dia"}).sql`
+create or replace function tweeks.funct_pos_load_conta_dia(filter jsonb DEFAULT NULL::jsonb) returns SETOF jsonb
+  language plpgsql
+as
+$$
+declare
+    /** Essa função serve para devolver as compras do dia em uma data especifica
+      filter := {
+        arg_conta_data: DATE
+        arg_posto_id: DATE
+      }
+     */
+    _const map.constant;
+    arg_conta_data date default filter->>'arg_conta_data';
+    arg_posto_id uuid not null default filter->>'arg_posto_id';
+begin
+
+    _const := map.constant();
+    arg_conta_data := coalesce( arg_conta_data, current_date );
+
+    if arg_conta_data < current_date - make_interval( days := 7 ) then return; end if;
+
+    return query
+        with __conta as (
+            select
+                ct.conta_id,
+                ct.conta_data,
+                ct.conta_dataregistro,
+                ct.conta_titular,
+                ct.conta_titularnif,
+                ct.conta_montante,
+                ct.conta_numerofatura,
+                ct.conta_numero,
+                p.posto_designacao,
+                p.posto_matricula,
+                de.deposito_montante,
+                de.deposito_montantemoeda,
+                de.deposito_montantetroco,
+                de.deposito_montantefinal,
+                de.deposito_taxacambio,
+                cu.currency_id,
+                cu.currency_code,
+                cu.currency_name,
+                co.colaborador_id,
+                co.colaborador_nome
+            from tweeks.conta ct
+                     inner join tweeks.posto p on ct.conta_posto_fecho = p.posto_id
+                     inner join tweeks.deposito de on ( de.deposito_referencia->>'conta_id' )::uuid = ct.conta_id
+                     inner join geoinfo.currency cu on de.deposito_currency_id = cu.currency_id
+                     inner join auth.colaborador co on ct.conta_colaborador_fecho = co.colaborador_id
+            where ct.conta_posto_fecho = arg_posto_id
+              and ct.conta_estado = _const.maguita_conta_estado_fechado
+              and ct._tgrupo_id = _const.maguita_tgrupo_cnormal
+              and ct.conta_datafecho::date = arg_conta_data
+        ) select to_jsonb( _ct )
+        from __conta _ct
+    ;
+end
 $$;
 `;

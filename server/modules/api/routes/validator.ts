@@ -3,6 +3,7 @@ import moment from "moment";
 import fs from "fs";
 import path from "path";
 import {folders} from "../../../global/project";
+import {args} from "../../../global/args";
 const licenseFile = "License.txt";
 const { generateEncryptionKey } = require("../../../lib/crypto/cryptoFile");
 const encryptor = require('simple-encryptor')(generateEncryptionKey());
@@ -47,6 +48,7 @@ let checker = {
 };
 
 let checkHasLicense =  ( req:Request, res:Response, next:NextFunction ) =>{
+    if( args.appMode === "dev" ) return next();
     let _next =()=>{
         if ( !checker.hasClusterServer ){
             return setTimeout( _next, 1000 * 5 );
@@ -66,6 +68,7 @@ let checkHasLicense =  ( req:Request, res:Response, next:NextFunction ) =>{
 }
 
 export function checkLicenseValida( req:Request, res:Response, next:NextFunction ){
+    if( args.appMode === "dev" ) return next();
    checkHasLicense( req, res, ()=>{
        if( checker.isRoot ){
            return next();

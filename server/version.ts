@@ -31,3 +31,5 @@ export let VERSION = {
         return  VERSION;
     }
 };
+
+console.log( "VERSION-NUMBER", VERSION.NUMBER )

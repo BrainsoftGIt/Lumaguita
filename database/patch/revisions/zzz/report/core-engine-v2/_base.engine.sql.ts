@@ -843,7 +843,7 @@ begin
     where type = _type
       and t.name = _name;
 
-    if _template.name is null then raise exception 'Template not found with ref: %', ref; end if;
+    if _template.name is null then raise exception 'Template not found with ref: % | type: % | name: %', ref, _type, _name; end if;
     for _i in
       select
         e.key,

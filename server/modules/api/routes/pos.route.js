@@ -156,7 +156,9 @@ storage_service_1.app.post("/api/pos/conta/proforma", (req, res) => __awaiter(vo
 storage_service_1.app.post("/api/search/articles", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { functSearchArtigoPOS } = require("../db/call-function-pos");
     req.body.arg_espaco_auth = req.session.user_pos.auth.armazem_atual;
+    console.log(req.body);
     const response = yield functSearchArtigoPOS(req.body);
+    console.log(response);
     res.json({ artigos: response.rows });
 }));
 storage_service_1.app.post("/api/change/sale/status", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
