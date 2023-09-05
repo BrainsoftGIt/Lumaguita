@@ -6,6 +6,9 @@ import fs from "fs";
 import path from "path";
 import {folders} from "../../../global/project";
 import moment from "moment";
+import {MaguitaTableOf} from "../../../../database/cataloger/lumaguita";
+import {dbRes} from "../../../service/database.service/kitres/res";
+import {getUserSession} from "./functions/get-session";
 
 app.get("/api/report/type/data", async (req, res) => {
     let args = {};
@@ -153,3 +156,15 @@ function formatColumn(headers, worksheet){
         });
     });
 }
+
+app.post( "/api/report/parametrized/sets", (req, res, next) => {
+    let _session = getUserSession( req );
+    let args = req.body;
+    args._user_id = _session.user_id;
+    args._espaco_auth = _session.workspace;
+    args._branch = _session.branch_uid;
+
+    dbRes.call.report.sets_parametrized_report({
+        args: args
+    }).doc()
+})
