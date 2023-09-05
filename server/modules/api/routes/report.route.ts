@@ -1,15 +1,15 @@
 import {app} from '../../../service/web.service';
 import {factory} from "../../../service/database.service";
-import {Templates, Types} from "zoo.pg";
+import { Templates, Types} from "zoo.pg";
 import {functFilterReport} from "../db/call-function-report";
 import fs from "fs";
 import path from "path";
 import {folders} from "../../../global/project";
 import moment from "moment";
-import {MaguitaTableOf} from "../../../../database/cataloger/lumaguita";
 import {dbRes} from "../../../service/database.service/kitres/res";
 import {getUserSession} from "./functions/get-session";
 import {SQL} from "kitres/src/core/pg-core/scape";
+import { Result } from 'kitres';
 
 app.get("/api/report/type/data", async (req, res) => {
     let args = {};
@@ -167,5 +167,22 @@ app.post( "/api/report/parametrized/sets", (req, res, next) => {
     console.log( args )
     dbRes.call.report.sets_parametrized_report({
         args: SQL.jsonb( args )
-    }).doc()
+    }, {
+        onResult(error: Error, result?: Result<any, any>): any {
+            if( error ){
+                res.json({
+                    result:false,
+                    message: error.message
+                })
+                console.error( error );
+                return;
+            }
+
+            return res.json({
+                result:result.rows[0]["result"],
+                message:result.rows[0]["message"],
+                data:result.rows.filter( (value, index) => index > 0 )
+            })
+        }
+    })
 })
