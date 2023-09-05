@@ -378,6 +378,11 @@ $('body').on('click', '.j-stp', function(event) {
 $('body').on('click', '.stgl', function(event) {
 	$(this).toggleClass('active');
 });
+
+$('body').on('click', '.stglr', function(event) {
+  $(this).toggleClass('active').siblings().removeClass('active');
+});
+
 $('body').on('click', '.tgl', function(event) {
 	$(this).addClass('active').siblings().removeClass('active');
 });

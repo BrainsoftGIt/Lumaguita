@@ -127,7 +127,7 @@ export let create = async (instituition, caixa, res, user, printer_name) => {
         fs.writeFile(path.join(folders.temp, 'multer/'+filename), buffer, function (err) {
             if (err) return console.log(err);
             else{
-                let paper = instituition.espaco_configuracao.printTalaoA5 ? "A5" : "POS";
+                let paper = "A6";
                 print(printer_name, path.resolve(path.join(folders.temp, 'multer/'+filename)), paper);
                 res.json("done");
             }
