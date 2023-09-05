@@ -1,45 +1,32 @@
 import path from "path";
 import fs from "fs";
-import {getFonts, structure} from "./estruture-talao-a5";
+import {getFonts, structure} from "./estruture-talao-a6";
 import {folders} from "../../../../global/project";
-import {clusterServer} from "../../../../service/cluster.service";
 import {print} from "./printer";
+import {clusterServer} from "../../../../service/cluster.service";
 
-function getTypePayment(tipo_id){
-    if(tipo_id === 1) return "Cash";
-    else if(tipo_id === 4) return "Cheque";
-    else if(tipo_id === 2) return "Depósito";
-    else return "Transferência";
-}
-export let create = async (instituition, account_content, res, user, date, printer_name, num_autorization) => {
+export let create = async (instituition, account_content, res, user, date, printer_name) => {
     const pdfMake = require("../../../../../libs/js/pdfmake/pdfmake");
     const pdfFonts = require('../../../../../libs/js/pdfmake/vfs_fonts');
     const {formattedString} = require("./formatValue");
     pdfMake.vfs = pdfFonts.pdfMake.vfs;
     pdfMake.fonts = getFonts();
-    let logoTipo = clusterServer.res.resolve(instituition?.espaco_configuracao?.logo_referencia);
-
-    let footerSystem;
-    let valorTotalImpostos = 0;
     let subtotal = 0;
     let preco_artigo = 0;
-    // let mostrar_logo = instituition.espaco_configuracao.certification?.logo_talao ? instituition.espaco_configuracao.certification?.logo_talao : false;
-    if(num_autorization !== null && instituition.espaco_configuracao.certification !== null)
-        footerSystem = "Documento emitido por sistema informático com o nº de autorização "+num_autorization+" e de certificado "+instituition.espaco_configuracao.certification;
-    else if(num_autorization === null && instituition.espaco_configuracao.certification !== null)
-        footerSystem = "Documento emitido por sistema informático com o nº de certificado "+instituition.espaco_configuracao.certification;
-    else
-        footerSystem = "Documento emitido por sistema informático com o nº de autorização "+num_autorization;
+    const footerSystem =  instituition.espaco_configuracao.certification !== null ? "Documento emitido por sistema informático com o nº de certificado "+instituition.espaco_configuracao.certification
+      : "";
+
+    let logoTipo = clusterServer.res.resolve(instituition?.espaco_configuracao?.logo_referencia);
 
     let sumImpost = {};
 
     let docDefinition = {
         compress: true,
         info: {
-            title: 'Fatura/Recibo',
+            title: 'Conta',
             author: 'luma',
-            subject: 'Fatura/Recibo',
-            keywords: 'luma, fatura/recibo, brainsoft',
+            subject: 'Conta',
+            keywords: 'luma, conta, brainsoft',
         },
         content: [
             {
@@ -85,25 +72,11 @@ export let create = async (instituition, account_content, res, user, date, print
                                     {
                                         width: "50%",
                                         bold: false,
-                                        text : "FATURA/RECIBO"
+                                        text : "CONTA"
                                     },
                                     {
                                         width: "50%",
-                                        text : account_content[0].main.conta_serie.document,
-                                        alignment : "right"
-                                    }
-                                ],
-                            },
-                            {
-                                columns: [
-                                    {
-                                        width: "40%",
-                                        bold: false,
-                                        text : "M. Pagamento"
-                                    },
-                                    {
-                                        width: "60%",
-                                        text : getTypePayment(account_content[0].main.deposito_tpaga_id),
+                                        text : account_content.main.conta_numerofatura,
                                         alignment : "right"
                                     }
                                 ],
@@ -131,16 +104,6 @@ export let create = async (instituition, account_content, res, user, date, print
                 style : "normal",
                 margin: [0, 8, 0, 0],
                 columns: [
-                    {
-                        stack: [
-                            {
-                                text: `NIF: ${(account_content[0]?.main?.cliente_nif || "---------------")}`
-                            },
-                            {
-                                text: `Nome: ${account_content[0]?.main?.cliente_titular}`
-                            },
-                        ]
-                    },
                 ]
             },
             {
@@ -169,14 +132,15 @@ export let create = async (instituition, account_content, res, user, date, print
                     },
                     {
                         alignment: "center",
-                        canvas: [ { type: 'rect', x: -3, y: 0, w: 345, h: 0, dash: { length: 9 }, lineWidth: 0.5} ],
+                        canvas: [ { type: 'rect', x: -3, y: 0, w: 245, h: 0, dash: { length: 9 }, lineWidth: 0.5} ],
                         margin: [0, 3, 0, 2],
                     }
                 ]
             },
             ...(() => {
-                return (account_content[0]?.main?.conta_vendas || []).map((cont) =>{
+                return (account_content?.main?.conta_vendas || []).map((cont) =>{
 
+                    preco_artigo = cont.venda_montantesemimposto/cont.venda_quantidade;
                     if(!!cont.tipoimposto_id) {
                         if (!sumImpost[cont.tipoimposto_id]) {
                             sumImpost[cont.tipoimposto_id] = {
@@ -189,7 +153,7 @@ export let create = async (instituition, account_content, res, user, date, print
                     }
 
                     subtotal = Number(subtotal) + Number(cont.venda_montantesemimposto);
-                    preco_artigo = cont.venda_montantesemimposto/cont.venda_quantidade;
+
                     return {
                         lineHeight: 1,
                         style : "normal",
@@ -215,7 +179,7 @@ export let create = async (instituition, account_content, res, user, date, print
                             },
                             {
                                 alignment: "center",
-                                canvas: [ { type: 'rect', x: -3, y: 0, w: 345, h: 0, dash: { length: 9 }, lineWidth: 0.5} ],
+                                canvas: [ { type: 'rect', x: -3, y: 0, w: 245, h: 0, dash: { length: 9 }, lineWidth: 0.5} ],
                                 margin: [0, 2, 0, 2],
                             }
                         ]
@@ -223,8 +187,8 @@ export let create = async (instituition, account_content, res, user, date, print
                 });
             })(),
             {
-                margin:  [0, 6, 0, 0],
-                style: "normal",
+               margin:  [0, 6, 0, 0],
+               style: "normal",
                 stack: [
                     {
                         columns : [
@@ -257,59 +221,20 @@ export let create = async (instituition, account_content, res, user, date, print
                                 text : "Total",
                             },
                             {
-                                text : formattedString(account_content[0]?.main?.conta_montante.toFixed(2)+"")+" STN",
+                                text : formattedString(account_content?.main?.conta_montante.toFixed(2)+"")+" STN",
                                 alignment : "right"
                             }
                         ],
-                    },
-                    {
-                        columns: [
-                            {
-                                text: "Valor pago",
-                            },
-                            {
-                                text: formattedString(account_content[1]?.main?.deposito_montantemoeda.toFixed(2)+"")+" "+account_content[1]?.main.currency_code,
-                                alignment: "right"
-                            }
-                        ]
-                    },
-                    {
-                        columns: [
-                            {
-                                text: "Troco",
-                            },
-                            {
-                                text: formattedString(account_content[1].main.deposito_montantetroco.toFixed(2)+"")+" STN",
-                                alignment: "right"
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
-                margin:  [0, 6, 0, 0],
-                style: "pequena",
-                stack: [
-                    {
-                        text: "Processado pelo software Luma",
-                    },
-                    {
-                        text: `Operador(a): ${user}`,
-                    },
-                    {
-                        text: "Obrigado pela preferência",
-                    },
-                    {
-                        text: footerSystem
                     }
                 ]
             }
         ],
-        ...structure(user)
+         ...structure(user)
     };
+
     const pdfDocGenerator = pdfMake.createPdf(docDefinition);
     pdfDocGenerator.getBuffer((buffer) => {
-        let filename = "FaturaReciboTalao_"+(new Date().getTime()+Math.random())+".pdf";
+        let filename = "Conta"+(new Date().getTime()+Math.random())+".pdf";
         fs.mkdirSync(path.join(folders.temp, 'multer'), {recursive: true});
         fs.writeFile(path.join(folders.temp, 'multer/'+filename), buffer, function (err) {
             if (err) return console.log(err);
