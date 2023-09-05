@@ -9,6 +9,7 @@ import moment from "moment";
 import {MaguitaTableOf} from "../../../../database/cataloger/lumaguita";
 import {dbRes} from "../../../service/database.service/kitres/res";
 import {getUserSession} from "./functions/get-session";
+import {SQL} from "kitres/src/core/pg-core/scape";
 
 app.get("/api/report/type/data", async (req, res) => {
     let args = {};
@@ -163,8 +164,8 @@ app.post( "/api/report/parametrized/sets", (req, res, next) => {
     args._user_id = _session.user_id;
     args._espaco_auth = _session.workspace;
     args._branch = _session.branch_uid;
-
+    console.log( args )
     dbRes.call.report.sets_parametrized_report({
-        args: args
+        args: SQL.jsonb( args )
     }).doc()
 })
