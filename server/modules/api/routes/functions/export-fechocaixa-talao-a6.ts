@@ -1,6 +1,6 @@
 import path from "path";
 import fs from "fs";
-import {getFonts, structure} from "./estruture-talao-a5";
+import {getFonts, structure} from "./estruture-talao-a6";
 import {folders} from "../../../../global/project";
 import {print} from "./printer";
 import {clusterServer} from "../../../../service/cluster.service";

@@ -166,6 +166,7 @@ var settings = {
                         }
 
                         $("#printTalaoA5").addClass(settings.empresa.printTalaoA5 ? "active" : "");
+                        $("#printTalaoA6").addClass(settings.empresa.printTalaoA6 ? "active" : "");
                         if(emp.configuracao_impressoras.length === 0) impressorasEstrutura.addClass("empty");
                         else impressorasEstrutura.removeClass("empty");
 
@@ -407,6 +408,7 @@ var settings = {
         dados.configuracao_impressoras = this.empresa?.configuracao_impressoras || [];
         dados.impressoras_cozinha = this.empresa?.impressoras_cozinha || {};
         dados.printTalaoA5 = !!this.empresa?.printTalaoA5;
+        dados.printTalaoA6 = !!this.empresa?.printTalaoA6;
 
         let formData = new FormData();
         formData.append("data", JSON.stringify({dados_empresa: dados}));

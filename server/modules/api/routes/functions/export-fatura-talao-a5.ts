@@ -149,7 +149,7 @@ export let create = async (instituition, account_content, res, user, date, print
                     },
                     {
                         alignment: "center",
-                        canvas: [ { type: 'rect', x: -3, y: 0, w: 245, h: 0, dash: { length: 9 }, lineWidth: 0.5} ],
+                        canvas: [ { type: 'rect', x: -3, y: 0, w: 345, h: 0, dash: { length: 9 }, lineWidth: 0.5} ],
                         margin: [0, 3, 0, 2],
                     }
                 ]
@@ -195,7 +195,7 @@ export let create = async (instituition, account_content, res, user, date, print
                             },
                             {
                                 alignment: "center",
-                                canvas: [ { type: 'rect', x: -3, y: 0, w: 245, h: 0, dash: { length: 9 }, lineWidth: 0.5} ],
+                                canvas: [ { type: 'rect', x: -3, y: 0, w: 345, h: 0, dash: { length: 9 }, lineWidth: 0.5} ],
                                 margin: [0, 2, 0, 2],
                             }
                         ]
@@ -273,7 +273,7 @@ export let create = async (instituition, account_content, res, user, date, print
         fs.writeFile(path.join(folders.temp, 'multer/'+filename), buffer, function (err) {
             if (err) return console.log(err);
             else{
-                let paper = instituition.espaco_configuracao.printTalaoA5 ? "A5" : "POS";
+                let paper =  "A5";
                 print(printer_name, path.resolve(path.join(folders.temp, 'multer/'+filename)), paper);
                 res.json("done");
             }
