@@ -1,7 +1,6 @@
 import {app} from '../../../service/web.service';
 import {functLoadContaData} from "../db/call-function-pos";
 import {functReportVendaPOS} from "../db/call-function-report";
-import {create as createA5} from "./functions/kitchenArticlesTalao-a5";
 
 export async function load_space_configuration(req, admin) {
     const {functLoadDadosEmpresa} = require("../db/call-function-settings");
