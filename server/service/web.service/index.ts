@@ -18,6 +18,8 @@ export const app:Express = express();
 import '../../modules/api/routes/check-static';
 import {E_TAG_VERSION} from "./etag";
 import {VERSION} from "../../version";
+import helmet from "helmet";
+import {nanoid} from "nanoid";
 
 console.log({E_TAG_VERSION} );
 //Static declarations
@@ -68,18 +70,97 @@ let redirect :{
 } = { };
 
 let versionCode = `v${VERSION.NUMBER.split(".").join("")}`;
-let switchVersion = "/switch-version"
+let switchVersion = "/switch-version";
+
+
+app.use(helmet({
+    contentSecurityPolicy: {
+        directives: {
+            frameAncestors: ["'self'", "https://zootakuxy.luma.brainsoftstp.com", "https://v206.zootakuxy.luma.brainsoftstp.com"],
+            frameSrc: ["'self'", "https://v206.zootakuxy.luma.brainsoftstp.com",  "https://zootakuxy.luma.brainsoftstp.com"],
+            scriptSrc: ["'self'", "'unsafe-inline'"]
+        },
+    },
+}));
+
 app.use( (req, res, next) => {
+    let existingQueryParams = Object.entries(req.query).map(([key, value]) => `${key}=${value}`).join('&');
+
+
     if( RESOLVE_REGEXP.test( req.headers.host ) ) {
         let domainsParts = req.headers.host.split( "." );
         // v1.client.luma.brainsoftstp.com
         //    client.luma.brainsoftstp.com
         let [ client, eTagVersion] = domainsParts.reverse().filter( (value, index) => index > 2 );
 
+        if( !eTagVersion ){
+            if( existingQueryParams.trim().length ) existingQueryParams = "?"+existingQueryParams
+            const redirectUrl = `https://${versionCode}.${client}.${BASE_REMOTE}${req.path}${existingQueryParams}`;
+
+            res.setHeader( "access-control-max-age", 0 );
+            res.setHeader( "Etag", E_TAG_VERSION );
+            return res.send(`
+                <!DOCTYPE html>
+                    <html lang="en">
+                    <head>
+                        <meta charset="UTF-8">
+                        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                        <title>Luma | Acesso remoto</title>
+                        <style>
+                            body, html {
+                                margin: 0;
+                                padding: 0;
+                                height: 100%;
+                                overflow: hidden;
+                            }
+
+                            #fullscreen-iframe {
+                                position: absolute;
+                                top: 0;
+                                left: 0;
+                                width: 100%;
+                                height: 100%;
+                                border: none; /* Remove a borda padrão do iframe */
+                            }
+                        </style>
+                    </head>
+                    <body>
+                        <iframe id="fullscreen-iframe" src="${redirectUrl}" ></iframe>
+                        <script>
+                            // Obtém o elemento iframe
+                            var iframe = document.getElementById('fullscreen-iframe');
+                            // iframe.addEventListener('load', function() {
+                            //   // Obtém o título da página dentro do iframe
+                            //   var iframeDocument = iframe.contentDocument || iframe.contentWindow.document;
+                            //   var iframeTitle = iframeDocument.title;
+                            //
+                            //   // Envia o título para a página principal usando postMessage
+                            //   window.parent.postMessage({ iframeTitle }, '*');
+                            // });
+                            //
+                            // // Adiciona um ouvinte de evento para mensagens postMessage
+                            // window.addEventListener('message', function(event) {
+                            //   // Verifica se a mensagem veio da página principal
+                            //   if (event.origin === 'https://zootakuxy.luma.brainsoftstp.com') {
+                            //     // Obtém o título do iframe da mensagem
+                            //     var iframeTitle = event.data.iframeTitle;
+                            //
+                            //     // Define o título da página dentro do iframe com o título recebido
+                            //     document.title = iframeTitle;
+                            //   }
+                            // });
+
+
+                        </script>
+                    </body>
+                </html>
+            `);
+        }
+
+        console.log( {eTagVersion, versionCode})
         if( !eTagVersion || eTagVersion !== versionCode ) {
-            const existingQueryParams = Object.entries(req.query).map(([key, value]) => `${key}=${value}`).join('&');
-            let redirectCode = Math.trunc( (Math.random() * ( 999999999 - 100000000 )) +100000000);
-            const redirectUrl = `${req.protocol}://${versionCode}.${client}.${BASE_REMOTE}${switchVersion}?code=${redirectCode}`;
+            let redirectCode = nanoid(16 );
+            const redirectUrl = `https://${versionCode}.${client}.${BASE_REMOTE}${switchVersion}?code=${redirectCode}`;
 
             redirect[ redirectCode ] = {
                 query:existingQueryParams,
@@ -97,7 +178,7 @@ app.use( (req, res, next) => {
 app.use( switchVersion, (req, res, next) => {
     let redirectCode:string = req.query.code as string;
     let status = redirect[ redirectCode ];
-    let redirectUrl = `${req.protocol}://${req.headers.host}`;
+    let redirectUrl = `https://${req.headers.host}`;
     if( !status ) return next()
     delete redirect[ redirectCode ];
 
@@ -105,9 +186,12 @@ app.use( switchVersion, (req, res, next) => {
         req.session[ key ] = value;
     });
 
-    redirectUrl+=`${status.path}`;
-    if( status.query?.length ) redirectUrl += `?`+status.query;
-    return res.redirect(  redirectUrl );
+    req.session.save( ()=>{
+        redirectUrl+=`${status.path}`;
+        if( status.query?.length ) redirectUrl += `?`+status.query;
+        return res.redirect(  redirectUrl );
+    });
+
 });
 
 
