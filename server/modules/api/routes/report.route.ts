@@ -159,6 +159,7 @@ function formatColumn(headers, worksheet){
 }
 
 app.post( "/api/report/parametrized/sets", (req, res, next) => {
+    console.log( { etag: req.headers.etag } );
     let _session = getUserSession( req );
     let args = req.body;
     args._user_id = _session.user_id;
@@ -171,7 +172,8 @@ app.post( "/api/report/parametrized/sets", (req, res, next) => {
             if( error ){
                 res.json({
                     result:false,
-                    message: error.message
+                    message: 'Error ao salar  o relatorio parametizados',
+                    hint: error.message
                 })
                 console.error( error );
                 return;
@@ -184,4 +186,69 @@ app.post( "/api/report/parametrized/sets", (req, res, next) => {
             })
         }
     })
+});
+
+
+app.post( "/api/report/parametrized/load", (req, res, next) => {
+    console.log( { etag: req.headers.etag} );
+    let _session = getUserSession( req );
+    let args = req.body;
+    args._user_id = _session.user_id;
+    args._espaco_auth = _session.workspace;
+    args._branch = _session.branch_uid;
+
+    dbRes.call.report.funct_load_report_parametrized( {
+        args :{
+            _branch: _session.branch_uid,
+            _user_id: _session.user_id,
+            _workspace: _session.workspace
+        }
+    }, {
+        onResult(error: Error, result?: Result<any,any>): any {
+            if( error ){
+                res.json({
+                    result:false,
+                    message: 'Error ao carregar a lista dos relatorios parametizados',
+                    hint: error.message
+                })
+                console.error( error );
+                return;
+            }
+            return res.json({
+                result:true,
+                message:"success",
+                data:result.rows
+            })
+        }
+    }).doc()
 })
+
+app.post( "/api/report/parametrized/load/filter", (req, res, next) => {
+    console.log( { etag: req.headers.etag} );
+    let _session = getUserSession( req );
+    dbRes.call.report.funct_load_report_parametrized_filter( {
+        args :{
+            _branch: _session.branch_uid,
+            _user_id: _session.user_id,
+            _workspace: _session.workspace,
+            _parametrized_uid: req.body["_parametrized_uid"]
+        }
+    }, {
+        onResult(error: Error, result?: Result<any,any>): any {
+            if( error ){
+                res.json({
+                    result:false,
+                    message: 'Error ao carregar os filtros de um relatorio parametizado',
+                    hint: error.message
+                })
+                console.error( error );
+                return;
+            }
+            return res.json({
+                result: true,
+                message:'success',
+                data:result.rows
+            })
+        }
+    }).doc()
+});
