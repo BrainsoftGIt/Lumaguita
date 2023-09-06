@@ -194,15 +194,11 @@ app.post( "/api/report/parametrized/load", (req, res, next) => {
     let _session = getUserSession( req );
     let args = req.body;
     args._user_id = _session.user_id;
-    args._espaco_auth = _session.workspace;
+    args._workspace = _session.workspace;
     args._branch = _session.branch_uid;
 
     dbRes.call.report.funct_load_report_parametrized( {
-        args :{
-            _branch: _session.branch_uid,
-            _user_id: _session.user_id,
-            _workspace: _session.workspace
-        }
+        args : args
     }, {
         onResult(error: Error, result?: Result<any,any>): any {
             if( error ){
