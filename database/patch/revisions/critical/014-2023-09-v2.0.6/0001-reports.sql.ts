@@ -249,12 +249,14 @@ declare
     args := {
       _branch:text
       _user_id: text
-      _workspace: text
+      _workspace: text,
+      _grants: text
     }
    doc*/
     _branch text default args->>'_branch';
     _user_id text default args->>'_user_id';
     _workspace text default args->>'_workspace';
+    _grants text default args->>'_grants';
 begin
   return query 
     with __parametrized_report as (
@@ -263,6 +265,7 @@ begin
         where p._branch_uid = _branch
           and _user_id = any ( p.parametrized_grants )
           and _workspace = any ( p.parametrized_grants )
+          and ( _grants is null or _grants = any ( p.parametrized_grants ) )  
     )  select to_jsonb( _pr )
           from __parametrized_report _pr;
 end;
