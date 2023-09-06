@@ -18,17 +18,13 @@ export const app:Express = express();
 import '../../modules/api/routes/check-static';
 import {E_TAG_VERSION} from "./etag";
 import {VERSION} from "../../version";
-import helmet from "helmet";
 import {nanoid} from "nanoid";
-
-console.log({E_TAG_VERSION} );
 //Static declarations
 
 let localStaticResource = express.static( folders.public, {
     immutable:false,
     cacheControl:true,
     setHeaders( res ){
-        console.log( res.getHeaders() );
         res.setHeader("ETag", E_TAG_VERSION )
     }
 })
@@ -73,15 +69,15 @@ let versionCode = `v${VERSION.NUMBER.split(".").join("")}`;
 let switchVersion = "/switch-version";
 
 
-app.use(helmet({
-    contentSecurityPolicy: {
-        directives: {
-            frameAncestors: ["'self'", "https://zootakuxy.luma.brainsoftstp.com", "https://v206.zootakuxy.luma.brainsoftstp.com"],
-            frameSrc: ["'self'", "https://v206.zootakuxy.luma.brainsoftstp.com",  "https://zootakuxy.luma.brainsoftstp.com"],
-            scriptSrc: ["'self'", "'unsafe-inline'"]
-        },
-    },
-}));
+// app.use(helmet({
+//     contentSecurityPolicy: {
+//         directives: {
+//             frameAncestors: ["'self'", "https://zootakuxy.luma.brainsoftstp.com", "https://v206.zootakuxy.luma.brainsoftstp.com"],
+//             frameSrc: ["'self'", "https://v206.zootakuxy.luma.brainsoftstp.com",  "https://zootakuxy.luma.brainsoftstp.com"],
+//             scriptSrc: ["'self'", "'unsafe-inline'"]
+//         },
+//     },
+// }));
 
 app.use( (req, res, next) => {
     let existingQueryParams = Object.entries(req.query).map(([key, value]) => `${key}=${value}`).join('&');
@@ -157,7 +153,6 @@ app.use( (req, res, next) => {
             `);
         }
 
-        console.log( {eTagVersion, versionCode})
         if( !eTagVersion || eTagVersion !== versionCode ) {
             let redirectCode = nanoid(16 );
             const redirectUrl = `https://${versionCode}.${client}.${BASE_REMOTE}${switchVersion}?code=${redirectCode}`;
