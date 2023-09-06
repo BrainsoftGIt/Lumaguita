@@ -171,6 +171,13 @@ language plpgsql as $$
       _parametrized.parametrized_user_update := _user_id;
       _parametrized.parametrized_update := clock_timestamp();
     end if;
+    
+    if _user_id != all( _parametrized.parametrized_grants ) then 
+        _parametrized.parametrized_grants := _parametrized.parametrized_grants || _user_id;
+    end if;
+    if _espaco_auth != all( _parametrized.parametrized_grants ) then 
+        _parametrized.parametrized_grants := _parametrized.parametrized_grants || _espaco_auth;
+    end if;
 
     select ( "returning" ).* into _parametrized
       from lib.sets( _parametrized )
@@ -206,6 +213,13 @@ language plpgsql as $$
       else
         _filter.filter_user_update := _user_id;
         _filter.filter_update := clock_timestamp();
+      end if;
+
+      if _user_id != all( _filter.filter_grants ) then
+          _filter.filter_grants := _filter.filter_grants || _user_id;
+      end if;
+      if _espaco_auth != all( _filter.filter_grants ) then
+          _filter.filter_grants := _filter.filter_grants || _espaco_auth;
       end if;
       
       if _filter.filter_type::regtype in ( 
@@ -264,11 +278,13 @@ declare
       _branch:text
       _user_id: text
       _workspace: text
+      _parametrized_uid
     }
    doc*/
   _branch text default args->>'_branch';
   _user_id text default args->>'_user_id';
   _workspace text default args->>'_workspace';
+  _parametrized_uid uuid default args->>'_parametrized_uid';
 
   _filter record;
   _const libdom.constant;
@@ -281,8 +297,7 @@ begin
     select *
       from report.filter f
       where f._branch_uid = _branch
-        and _user_id = any ( f.filter_grants )
-        and _workspace = any ( f.filter_grants )
+        and f.filter_parametrized_uid = _parametrized_uid
   loop
     _use_value := null;
       _is_date := _filter.filter_type::regtype in (
