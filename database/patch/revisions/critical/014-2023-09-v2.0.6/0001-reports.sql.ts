@@ -37,7 +37,7 @@ end;
 $$;
 `;
 
-block( module, { identifier: "parametrized-reports-structure", flags:["@unique"]}).sql`
+block( module, { identifier: "parametrized-reports-structure-force-02", flags:["@unique"]}).sql`
     with ___menu (menu_id, menu_menu_id, menu_codigo, menu_raiz, menu_nivel, menu_icon, menu_nome, menu_link, menu_estado, menu_children, menu_maxnode, menu_directchildern, menu_position) as (
         VALUES (115, null, 'maguita.nota.credito', '', 0, e'<?xml version="1.0" encoding="iso-8859-1"?>
     <!-- Generator: Adobe Illustrator 22.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
@@ -61,7 +61,7 @@ block( module, { identifier: "parametrized-reports-structure", flags:["@unique"]
         parametrized_columns jsonb not null default jsonb_build_array(),
         parametrized_groups jsonb not null default jsonb_build_array(),
         parametrized_props jsonb not null default jsonb_build_object(),
-        parametrized_espaco_destino character varying[] not null,
+        parametrized_grants character varying[] not null,
         parametrized_state int2 not null default libdom.get( 'report_filter_state_active' )::int2,
         parametrized_date timestamptz not null default clock_timestamp(),
         parametrized_update timestamptz,
@@ -81,10 +81,10 @@ block( module, { identifier: "parametrized-reports-structure", flags:["@unique"]
         filter_type character varying not null,
         filter_opr character varying not null,
         filter_mode character varying not null,
-        filter_value character varying default null,
+        filter_basevalue character varying default null,
         filter_valuemode int not null default libdom.get( 'report_filter_filter_valuemode_raw' )::int2,
         filter_increment character varying default null,
-        filter_espaco_destino character varying[] not null,
+        filter_grants character varying[] not null,
         filter_state int2 not null default libdom.get( 'report_filter_state_active' )::int2,
         filter_date timestamptz not null default clock_timestamp(),
         filter_update timestamptz,
@@ -93,16 +93,26 @@ block( module, { identifier: "parametrized-reports-structure", flags:["@unique"]
         filter_espaco_auth character varying not null,
         _branch_uid  character varying not null
     );
+`;
 
+block( module, { identifier: "parametrized-reports-domains-001"}).sql`
 
     select libdom.entry( 'report_filter_state_active', 'int2', 1, 'report.parametrized.parametrized_state', 'Ativo');
     select libdom.entry( 'report_filter_state_fechado', 'int2', 0, 'report.parametrized.parametrized_state', 'Fechado');
     select libdom.entry( 'report_filter_state_active', 'int2', 1, 'report.filter.filter_state', 'Ativo');
     select libdom.entry( 'report_filter_state_fechado', 'int2', 0, 'report.filter.filter_state', 'Fechado');
-    select libdom.entry( 'report_filter_filter_valuemode_raw', 'int2', 1) ;
-    select libdom.entry( 'report_filter_filter_valuemode_eval', 'int2', 2 );
+
     select libdom.domset('report.parametrized', 'parametrized_state', 'report.parametrized.parametrized_state' );
     select libdom.domset('report.filter', 'filter_state', 'report.filter.filter_state' );
+
+    select libdom.entry_drop('report_filter_filter_valuemode_raw', true );
+    select libdom.entry_drop('report_filter_filter_valuemode_eval', true );
+
+    select libdom.entry( 'report_filter_filter_valuemode_samevalue', 'int2', 1, 'report.filter.filter_valuemode', 'Mesmo valor');
+    select libdom.entry( 'report_filter_filter_valuemode_dateprocess', 'int2', 2, 'report.filter.filter_valuemode', 'Data do processamento');
+    select libdom.entry( 'report_filter_filter_valuemode_daterelative', 'int2', 3, 'report.filter.filter_valuemode', 'Relativo a data atual');
+    select libdom.entry( 'report_filter_filter_valuemode_ask', 'int2', 4, 'report.filter.filter_valuemode', 'Pedir');
+    select libdom.entry( 'report_filter_filter_valuemode_askallways', 'int2', 5, 'report.filter.filter_valuemode', 'Pedir sempre');
 `;
 
 
@@ -124,7 +134,7 @@ language plpgsql as $$
         parametrized_columns jsonb not null default jsonb_build_array(),
         parametrized_groups jsonb not null default jsonb_build_array(),
         parametrized_props jsonb not null default jsonb_build_object(),
-        parametrized_espaco_destino character varying[] not null,
+        parametrized_grants character varying[] not null,
 
         filters:[{
           filter_uid uuid not null primary key default gen_random_uuid(),
@@ -135,7 +145,7 @@ language plpgsql as $$
           filter_type character varying not null,
           filter_opr character varying not null,
           filter_mode character varying not null,
-          filter_value character varying default null,
+          filter_basevalue character varying default null,
           filter_valuemode int not null default libdom.get( 'report_filter_filter_valuemode_raw' )::int2,
           filter_increment character varying default null,
           filter_espaco_destino character varying[] not null
@@ -197,15 +207,112 @@ language plpgsql as $$
         _filter.filter_user_update := _user_id;
         _filter.filter_update := clock_timestamp();
       end if;
-
+      
+      if _filter.filter_type::regtype in ( 
+        'date'::regtype,
+        'timestamp'::regtype,
+        'timestamptz'::regtype
+      ) and _filter.filter_valuemode = _const.report_filter_filter_valuemode_daterelative then
+        _filter.filter_increment := clock_timestamp() - ( _filter.filter_basevalue::timestamptz );
+      end if;
+      
       select ("returning").* into _filter
         from lib.sets( _filter )
       ;
       return next to_jsonb( _filter )
           ||jsonb_build_object( 'type', 'filter');
     end loop;
+    
   end
 $$;
+
+
+create or replace function report.funct_load_report_parametrized( args jsonb )
+returns setof jsonb
+language plpgsql as $$
+declare
+  /**doc
+    args := {
+      _branch:text
+      _user_id: text
+      _workspace: text
+    }
+   doc*/
+    _branch text default args->>'_branch';
+    _user_id text default args->>'_user_id';
+    _workspace text default args->>'_workspace';
+begin
+  return query 
+    with __parametrized_report as (
+      select *
+        from report.parametrized p
+        where p._branch_uid = _branch
+          and _user_id = any ( p.parametrized_grants )
+          and _workspace = any ( p.parametrized_grants )
+    )  select to_jsonb( _pr )
+          from __parametrized_report _pr;
+end;
+$$;
+
+
+create or replace function report.funct_load_report_parametrized_filter( args jsonb )
+returns setof jsonb
+language plpgsql as $$
+declare
+  /**doc
+    args := {
+      _branch:text
+      _user_id: text
+      _workspace: text
+    }
+   doc*/
+  _branch text default args->>'_branch';
+  _user_id text default args->>'_user_id';
+  _workspace text default args->>'_workspace';
+
+  _filter record;
+  _const libdom.constant;
+  _is_date boolean;
+  _is_timestamp boolean;
+  _use_value text;
+begin
+  _const := libdom.constant();
+  for _filter in 
+    select *
+      from report.filter f
+      where f._branch_uid = _branch
+        and _user_id = any ( f.filter_grants )
+        and _workspace = any ( f.filter_grants )
+  loop
+    _use_value := null;
+      _is_date := _filter.filter_type::regtype in (
+        'date'::regtype
+      );
+    
+      _is_timestamp := _filter.filter_type::regtype in (
+        'timestamp'::regtype,
+        'timestamptz'::regtype
+      );
+      
+      if (_is_date or _is_timestamp) and  _filter.filter_valuemode = _const.report_filter_filter_valuemode_daterelative  then
+        _use_value := _filter.filter_basevalue::timestamptz + (_filter.filter_increment)::interval;
+      elsif ( _is_date or _is_timestamp ) and _filter.filter_valuemode = _const.report_filter_filter_valuemode_dateprocess then
+        _use_value := now();
+      elsif _filter.filter_valuemode = _const.report_filter_filter_valuemode_samevalue then 
+        _use_value := _filter.filter_basevalue;
+      end if;
+    
+      if _use_value is not null and _is_date then 
+          _use_value := _use_value::date;
+      end if;
+    
+      return next to_jsonb( _filter )|| jsonb_build_object(
+        'filter_value', _use_value
+      );
+    
+  end loop;
+end;
+$$
 `;
 
 
