@@ -30,6 +30,9 @@ const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
 const project_1 = require("../../../global/project");
 const moment_1 = __importDefault(require("moment"));
+const res_1 = require("../../../service/database.service/kitres/res");
+const get_session_1 = require("./functions/get-session");
+const scape_1 = require("kitres/src/core/pg-core/scape");
 web_service_1.app.get("/api/report/type/data", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     let args = {};
     const { sql } = database_service_1.factory.create(zoo_pg_1.Templates.PARAMETERIZED);
@@ -177,4 +180,89 @@ function formatColumn(headers, worksheet) {
         });
     });
 }
+web_service_1.app.post("/api/report/parametrized/sets", (req, res, next) => {
+    console.log({ etag: req.headers.etag });
+    let _session = (0, get_session_1.getUserSession)(req);
+    let args = req.body;
+    args._user_id = _session.user_id;
+    args._espaco_auth = _session.workspace;
+    args._branch = _session.branch_uid;
+    res_1.dbRes.call.report.sets_parametrized_report({
+        args: scape_1.SQL.jsonb(args)
+    }, {
+        onResult(error, result) {
+            if (error) {
+                res.json({
+                    result: false,
+                    message: 'Error ao salar  o relatorio parametizados',
+                    hint: error.message
+                });
+                console.error(error);
+                return;
+            }
+            return res.json({
+                result: result.rows[0]["result"],
+                message: result.rows[0]["message"],
+                data: result.rows.filter((value, index) => index > 0)
+            });
+        }
+    });
+});
+web_service_1.app.post("/api/report/parametrized/load", (req, res, next) => {
+    console.log({ etag: req.headers.etag });
+    let _session = (0, get_session_1.getUserSession)(req);
+    let args = req.body;
+    args._user_id = _session.user_id;
+    args._workspace = _session.workspace;
+    args._branch = _session.branch_uid;
+    res_1.dbRes.call.report.funct_load_report_parametrized({
+        args: args
+    }, {
+        onResult(error, result) {
+            if (error) {
+                res.json({
+                    result: false,
+                    message: 'Error ao carregar a lista dos relatorios parametizados',
+                    hint: error.message
+                });
+                console.error(error);
+                return;
+            }
+            return res.json({
+                result: true,
+                message: "success",
+                data: result.rows
+            });
+        }
+    }).doc();
+});
+web_service_1.app.post("/api/report/parametrized/load/filter", (req, res, next) => {
+    console.log({ etag: req.headers.etag });
+    let _session = (0, get_session_1.getUserSession)(req);
+    res_1.dbRes.call.report.funct_load_report_parametrized_filter({
+        args: {
+            _branch: _session.branch_uid,
+            _user_id: _session.user_id,
+            _workspace: _session.workspace,
+            _parametrized_uid: req.body["_parametrized_uid"]
+        }
+    }, {
+        onResult(error, result) {
+            if (error) {
+                res.json({
+                    result: false,
+                    message: 'Error ao carregar os filtros de um relatorio parametizado',
+                    hint: error.message
+                });
+                console.error(error);
+                return;
+            }
+            return res.json({
+                result: true,
+                message: 'success',
+                data: result.rows
+            });
+        }
+    }).doc();
+});
 //# sourceMappingURL=report.route.js.map
