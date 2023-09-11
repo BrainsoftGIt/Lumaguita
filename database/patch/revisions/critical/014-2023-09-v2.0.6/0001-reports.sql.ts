@@ -263,7 +263,6 @@ begin
       select *
         from report.parametrized p
         where p._branch_uid = _branch
-          and _user_id = any ( p.parametrized_grants )
           and _workspace = any ( p.parametrized_grants )
           and ( _grants is null or _grants = any ( p.parametrized_grants ) )  
     )  select to_jsonb( _pr )
