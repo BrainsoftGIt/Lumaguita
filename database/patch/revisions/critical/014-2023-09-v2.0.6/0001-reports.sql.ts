@@ -95,6 +95,10 @@ block( module, { identifier: "parametrized-reports-structure-force-02", flags:["
     );
 `;
 
+block( module, { identifier: "parametrized-reports-structure-drop-mode", flags:["@unique"]}).sql`
+alter table report.filter drop column if exists filter_mode;
+`;
+
 block( module, { identifier: "parametrized-reports-domains-001"}).sql`
 
     select libdom.entry( 'report_filter_state_active', 'int2', 1, 'report.parametrized.parametrized_state', 'Ativo');
@@ -144,7 +148,6 @@ language plpgsql as $$
           filter_column character varying not null,
           filter_type character varying not null,
           filter_opr character varying not null,
-          filter_mode character varying not null,
           filter_basevalue character varying default null,
           filter_valuemode int not null default libdom.get( 'report_filter_filter_valuemode_raw' )::int2,
           filter_increment character varying default null,
