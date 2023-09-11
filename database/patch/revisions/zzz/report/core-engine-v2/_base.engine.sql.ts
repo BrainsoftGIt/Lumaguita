@@ -269,6 +269,7 @@ begin
           'name', coalesce( rc.rename, rc.name ),
           'type', 'column',
           'format', rc.format,
+          'dataType', rc.type,
           'init', rc.init
         )
     from report.vcolumn rc
@@ -292,6 +293,7 @@ begin
         'key', format( 'filter|%s.%s::#%s', _src, f.name, f.ordinality ),
         'opr', f.doc->'opr',
         'column', f.name,
+        'dataType', f.type,
         'name', f.doc->'name',
         'mode', f.doc->'mode',
         'source', f.doc->'source',
@@ -338,6 +340,7 @@ begin
                  'type', 'group',
                  'label', f.agg_label,
                  'init', false,
+                 'dataType', f.type,
                  'simple', format( f.agg_simple,  f.agg_usecolumn ),
                  'expression', format( f.agg_expresion, f.agg_usecolumn, f.agg_rename ),
                  'priority', f.agg_priority,
@@ -395,6 +398,7 @@ begin
     ) select jsonb_build_object(
                  'key', format( 'aggregation|%s.%s::#%s', _src, f.name, f.agg_key ),
                  'column', f.name,
+                 'dataType', f.type,
                  'name',  f.agg_name,
                  'func', f.agg_function,
                  'format', agg_format,
@@ -414,6 +418,7 @@ begin
       f.agg_priority nulls last;
 end
 $$;
+
 
 create or replace function report.configs(args jsonb) returns SETOF jsonb
   language sql
