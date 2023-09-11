@@ -392,7 +392,7 @@ ul {
 			border-radius: 3px;
 			box-shadow: 0 2px 5px rgba(#666,.05);
 			background: #FFF;
-			
+
 			li{
 				font-size: .85rem;
 				line-height: 56px;
@@ -452,7 +452,7 @@ ul {
 					left: 50%;
 					border-right: 2px #777 solid;
 					border-bottom: 2px #777 solid;
-					
+
 				}
 				&.backward:after{
 					transform: translate(-50%, -50%) rotate(135deg);
@@ -634,4 +634,14 @@ ul {
 		stroke-dasharray: 90, 150;
 		stroke-dashoffset: -124;
 	}
+}
+.itemFlex1{
+	width: 100%;
+	max-width: 300px;
+}
+.itemFlex2{
+	width: 100%;
+}
+.bodyFrom{
+	align-items: start;
 }

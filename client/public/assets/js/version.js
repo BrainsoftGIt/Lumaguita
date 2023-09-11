@@ -5,4 +5,8 @@ window.version = await new Promise((resolve) => {
         resolve(text)
     });
 })
-window.document.getElementById("version").textContent = `v${window.version}`;
+
+let _version = window.document.getElementById("version");
+if(_version) {
+    _version.textContent = `v${window.version}`;
+}

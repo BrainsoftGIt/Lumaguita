@@ -1,3 +1,12 @@
+<style>
+    .itemFlex1 b{
+        font-size: 15px;
+        margin-top: 10px!important;
+    }
+    [list="filter"] fieldset{
+        margin-top: 10px;
+    }
+</style>
 <link rel="stylesheet" href="../assets/css/admin/report.css">
 <div class="__included__ report">
     <div class="_head flex h-sb v-ct">
@@ -6,18 +15,16 @@
         </div>
         <div class="inRight flex v-ct">
             <div class="filterMst j-stp">
-                <div class="flex v-ct showTarget flt-fire" target="xModalSaveReport">
+                <div class="flex v-ct flt-fire" xModalSaveReport>
                     <svg viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns" fill="#000000"><g stroke-width="0"></g><g stroke-linecap="round" stroke-linejoin="round"></g><g > <title>save-floppy</title> <desc>Created with Sketch Beta.</desc> <defs> </defs> <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage"> <g id="Icon-Set-Filled" sketch:type="MSLayerGroup" transform="translate(-154.000000, -517.000000)" fill="#1A73E8"> <path d="M172,522 C172,521.447 172.448,521 173,521 C173.552,521 174,521.447 174,522 L174,526 C174,526.553 173.552,527 173,527 C172.448,527 172,526.553 172,526 L172,522 L172,522 Z M163,529 L177,529 C177.552,529 178,528.553 178,528 L178,517 L162,517 L162,528 C162,528.553 162.448,529 163,529 L163,529 Z M182,517 L180,517 L180,529 C180,530.104 179.104,531 178,531 L162,531 C160.896,531 160,530.104 160,529 L160,517 L158,517 C155.791,517 154,518.791 154,521 L154,545 C154,547.209 155.791,549 158,549 L182,549 C184.209,549 186,547.209 186,545 L186,521 C186,518.791 184.209,517 182,517 L182,517 Z" id="save-floppy" sketch:type="MSShapeGroup"> </path> </g> </g> </g></svg>
                     <span>Guardar</span>
                 </div>
             </div>
             <div class="filterMst j-stp">
                 <div class="flex v-ct showTarget flt-fire" target="xModalMasterFilter">
-                    <svg x="0px" y="0px" viewBox="0 0 971.986 971.986"
-                         style="enable-background:new 0 0 971.986 971.986;" xml:space="preserve">
+                    <svg x="0px" y="0px" viewBox="0 0 971.986 971.986" style="enable-background:new 0 0 971.986 971.986;" xml:space="preserve">
                         <g>
-                            <path
-                                    d="M370.216,459.3c10.2,11.1,15.8,25.6,15.8,40.6v442c0,26.601,32.1,40.101,51.1,21.4l123.3-141.3 c16.5-19.8,25.6-29.601,25.6-49.2V500c0-15,5.7-29.5,15.8-40.601L955.615,75.5c26.5-28.8,6.101-75.5-33.1-75.5h-873 c-39.2,0-59.7,46.6-33.1,75.5L370.216,459.3z"/>
+                            <path d="M370.216,459.3c10.2,11.1,15.8,25.6,15.8,40.6v442c0,26.601,32.1,40.101,51.1,21.4l123.3-141.3 c16.5-19.8,25.6-29.601,25.6-49.2V500c0-15,5.7-29.5,15.8-40.601L955.615,75.5c26.5-28.8,6.101-75.5-33.1-75.5h-873 c-39.2,0-59.7,46.6-33.1,75.5L370.216,459.3z"/>
                         </g>
                     </svg>
                     <span>Configurar</span>
@@ -276,28 +283,77 @@
             </div>
         </div>
     </div>
-    <div id="xModalSaveReport" class="x-mobdal flex v-ct h-ct hideTarget" target="xModalSaveReport">
-        <div class="modal-frame j-stp">
-            <h3>Exportação relatório imposto</h3>
+    <div id="xModalSaveReport" class="x-mobdal flex v-ct h-ct" target="xModalSaveReport">
+        <div class="modal-frame j-stp modalFrame">
+            <h3>Relatório Paramentizado</h3>
             <div class="xform">
-                <div class="flex h-ct v-ct w100">
-                    <div class="xinput w25">
-                        <input type="text" placeholder="Data de inicio" _noObrigatory="true" id="financa_report_starta"
-                               data-inputmask-alias="dd-mm-yyyy" data-val="true">
-                        <label for="financa_report_starta">Data de inicio</label>
+                <div class="bodyFrom flex v-ct h-sb">
+                    <div class="itemFlex1">
+                        <div class="xinput grow-1 w100">
+                            <input type="text" id="reportName" placeholder="Report" _noObrigatory="true">
+                            <label for="reportName">Report</label>
+                        </div>
+                        <div class="xcheck multiple">
+                            <b>Postos</b>
+                            <ul list="posto">
+                               <!-- <li id="hasKuchen">Configurar impressora de cozinha</li>
+                                <li class="stglr" id="printTalaoA5">Imprimir talão no formato A5</li>
+                                <li class="stglr" id="printTalaoA6">Imprimir talão no formato A6</li>-->
+                            </ul>
+                        </div>
+                        <div class="xcheck multiple">
+                            <b>Armazém</b>
+                            <ul list="armazens">
+                                <!--<li id="hasKuchen">Configurar impressora de cozinha</li>
+                                <li class="stglr" id="printTalaoA5">Imprimir talão no formato A5</li>
+                                <li class="stglr" id="printTalaoA6">Imprimir talão no formato A6</li>-->
+                            </ul>
+                        </div>
                     </div>
-                    <div class="xinput w25" style="margin-left: 0.5em">
-                        <input type="text" placeholder="Data de fim" _noObrigatory="true" id="financa_report_enda"
-                               data-inputmask-alias="dd-mm-yyyy" data-val="true">
-                        <label for="financa_report_enda">Data de fim</label>
-                    </div>
+                    <div class="itemFlex2" list="filter">
 
-                    <button class="xbtn" style="margin-left: 0.9em; margin-top: -0.5em" load-report-imposto>Carregar</button>
+                    </div>
                 </div>
             </div>
+            <div class="master-btn-right flex">
+                <span class="hideTarget" target="xModalSaveReport">CANCELAR</span>
+                <span class="flex v-ct" id="SaveReport">
+                    Salvar
+                    <svg class="spinner" viewBox="0 0 50 50">
+                        <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
+                    </svg>
+                </span>
+            </div>
+        </div>
+    </div>
+    <div id="xModalLoadReport" class="x-mobdal flex v-ct h-ct" target="xModalLoadReport">
+        <div class="modal-frame j-stp">
+            <h3>Relatório Paramentizado</h3>
+            <div class="xform">
+                <div class="xselect flutuate w100">
+                    <input type="text" readonly id="loadparamentrwport">
+                    <label for="loadparamentrwport">Escolha o relatório</label>
+                    <ul list="report-paramentidado"></ul>
+                </div>
+                <div list-load="filter">
+
+                </div>
+            </div>
+            <div class="master-btn-right flex">
+                <span class="hideTarget" target="xModalLoadReport">CANCELAR</span>
+                <span class="flex v-ct" id="loadReport">
+                    Salvar
+                    <svg class="spinner" viewBox="0 0 50 50">
+                        <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
+                    </svg>
+                </span>
+            </div>
+            </div>
+        </div>
     </div>
 </div>
 <script src="../assets/js/Sortable.js"></script>
 <script src="../assets/js/jquery-sortable.js"></script>
 <script src="../assets/js/pagination.js"></script>
 <script src="../assets/js/admin/reports.js"></script>
+<script src="../assets/js/admin/paramentizadoReports.js"></script>

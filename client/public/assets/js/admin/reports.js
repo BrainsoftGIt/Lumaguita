@@ -66,8 +66,9 @@ var report = {
     },
     showSelectedFilter(filter){
         let listFiterData = $("[listFiterData]");
+        let saveList = $("[list='filter']");
         if(filter.attr("format") === "select"){
-            listFiterData.append(` <div class="xselect w100" name="${filter.text().replaceAll(" ", "")}" 
+            listFiterData.append(` <div class="xselect w100" dataType="${filter.attr("datatype")}" name="${filter.text().replaceAll(" ", "")}" 
                 column="${filter.attr("column")}" opr="${filter.attr("opr")}" key="${filter.attr("key")}"  mode="${filter.attr("mode")}">
                 <input type="text" readOnly>
                     <label>${filter.text()}</label>
@@ -79,7 +80,7 @@ var report = {
             }
         }
         else if( ["date", "timestamp", "timestamptz" ]. includes( filter.attr( "format" ) )){
-            listFiterData.append(`<div class="xinput w100" name="${filter.text().replaceAll(" ", "")}" column="${filter.attr("column")}" 
+            listFiterData.append(`<div class="xinput w100" dataType="${filter.attr("datatype")}" name="${filter.text().replaceAll(" ", "")}" column="${filter.attr("column")}" 
                 opr="${filter.attr("opr")}" key="${filter.attr("key")}"  mode="${filter.attr("mode")}">
                             <input data-inputmask-alias="dd-mm-yyyy" data-val="true" type="text"
                                 placeholder="${filter.text()}">
@@ -88,12 +89,53 @@ var report = {
             $('[data-inputmask-alias]').inputmask();
         }
         else{
-            listFiterData.append(`<div class="xinput w100 grow-1" name="${filter.text().replaceAll(" ", "")}" column="${filter.attr("column")}" 
+            listFiterData.append(`<div class="xinput w100 grow-1" dataType="${filter.attr("datatype")}" name="${filter.text().replaceAll(" ", "")}" column="${filter.attr("column")}" 
             opr="${filter.attr("opr")} "key="${filter.attr("key")}"  mode="${filter.attr("mode")}">
                             <input  type="text" placeholder="${filter.text()}">
                             <label>${filter.text()}</label>
                         </div>`);
         }
+
+        let atrs = {
+            name : filter.text().replaceAll(" ", ""),
+            column: filter.attr("column"),
+            opr : filter.attr("opr"),
+            key: filter.attr("key"),
+            mode: filter.attr("mode"),
+            datatype: filter.attr("datatype")
+        }
+
+        let listOption = [
+            {
+                "value": "1",
+                "label": "Valor Atual"
+            },
+            {
+                "value": "2",
+                "label": "Data do processamento"
+            },
+            {
+                "value": "3",
+                "label": "Relativo a data atual"
+            },
+            {
+                "value": "4",
+                "label": "Pedir"
+            },
+            {
+                "value": "5",
+                "label": "Pedir sempre"
+            }
+        ];
+
+        saveList.append(`
+            <div class="xselect flutuate w100" ${ Object.keys(atrs).map(( key ) => { return `data-${key}='${atrs[key]}'` }).join(" ") } >
+                <input type="text" readonly  placeholder="_">
+                <label>${filter.text()}</label>
+                <ul id="${atrs.key}-key">
+                    ${ listOption.map(({value, label}) => { return ![ "date", "timestamp", "timestamptz" ].includes( filter.attr( "format" )) && (value === "3" || value === "2")  ? "" : `<li data-id="${value}">${label}</li>` }).join(" ") } 
+                </ul>
+            </div>`)
     },
     getInputFilterValue(element){
         if(element.find("input:text").attr("data-val")) return alterFormatDate(element.find("input:text").val());
@@ -240,6 +282,8 @@ var report = {
     filtrar(limit, pageNumber){
         return new Promise(resolve => {
             let object = report.selectedFilter.obj;
+            paramentizadoReports.object = object;
+
             object.limit = limit;
             object.offset = (pageNumber -1) * limit;
             $("body").addClass("loading");
@@ -249,6 +293,7 @@ var report = {
                 contentType: "application/json",
                 data: JSON.stringify(object),
                 success(e) {
+                    paramentizadoReports.ready = true;
                     let total = e?.reportData[0]?.data?.["*_$"]?.["*:count"] || 0;
                     resolve(e?.reportData[0]?.data?.["*_$"]?.["*:count"] || 0);
                     $("body").removeClass("loading");
@@ -446,18 +491,18 @@ $("#tipo_relatorios").on("click", "li", function () {
     report.selectedReport = report.config.filter(conf => conf.report_source === $(this).attr("source"));
     report.selectedReport[0].configs.forEach((filt) =>{
          if(filt.type === "filter")
-            filtros_relatorio.append(`<li column="${filt.column}" format="${filt.format}" name="${filt.name}" source="${filt.source}" 
+            filtros_relatorio.append(`<li datatype="${filt.dataType}" column="${filt.column}" format="${filt.format}" name="${filt.name}" source="${filt.source}" 
                     key="${filt.key}" src="${filt.src}" opr="${filt.opr}" mode="${(filt.mode || "-1")}">${filt.name}</li>`);
          else if(filt.type === "column"){
              let dateRepresentation = report.listDateRepresentation.find(value => value.type.includes(filt.format));
              if(dateRepresentation){
-                 colunas_relatorio.append(`<li name="${filt.name}" class="${(filt.init ? "active" : "")}" column="${filt.column}" date_description="${dateRepresentation.description}"
+                 colunas_relatorio.append(`<li datatype="${filt.dataType}" name="${filt.name}" class="${(filt.init ? "active" : "")}" column="${filt.column}" date_description="${dateRepresentation.description}"
                 mask="${dateRepresentation.mask}" init="${filt.init}" title="Faça duplo para alterar as configurações da coluna" priority="100" ordem="asc"
                 format="${filt.format}" key="${filt.key}" weight="${report.setWeightColumns(filt.format)}" subformat="">${filt.name}
                  </li>`);
              }
              else{
-                 colunas_relatorio.append(`<li name="${filt.name}" class="${(filt.init ? "active" : "")}" column="${filt.column}" priority="100" ordem="asc"
+                 colunas_relatorio.append(`<li datatype="${filt.dataType}" name="${filt.name}" class="${(filt.init ? "active" : "")}" column="${filt.column}" priority="100" ordem="asc"
                     title="Faça duplo para alterar as configurações da coluna"
                      init="${filt.init}" format="${filt.format}" key="${filt.key}" weight="${report.setWeightColumns(filt.format)}" subformat="">${filt.name}
                  </li>`);
@@ -465,7 +510,7 @@ $("#tipo_relatorios").on("click", "li", function () {
          }
          else{
              if(!report.selectedReport[0].configs.find(value => value.type === "column" && value.column === filt.column)){
-                 grupos_colunas_relatorio.append(`<li name="${filt.name}" column="${filt.column}" class="${(filt.init ? "active" : "")}" func="${filt.func}" 
+                 grupos_colunas_relatorio.append(`<li datatype="${filt.dataType}" name="${filt.name}" column="${filt.column}" class="${(filt.init ? "active" : "")}" func="${filt.func}" 
                    rename="${filt.rename}" key="${filt.key}" weight="${report.setWeightColumns(filt.format)}" format="${filt.format}">${filt.name}</li>`);
              }
          }
@@ -480,7 +525,10 @@ $("#filtros_relatorio").on("click", "li", function () {
     $(this).toggleClass("active");
     if($(this).hasClass("active") && $("[listFiterData]").find(`div[name=${$(this).text().replaceAll(" ", "")}]`).length === 0)
         report.showSelectedFilter($(this));
-    else $("[listFiterData]").find(`div[name=${$(this).text().replaceAll(" ", "")}]`).remove();
+    else {
+        $("[listFiterData]").find(`div[name=${$(this).text().replaceAll(" ", "")}]`).remove();
+        $('[list="filter"]').find(`[data-name=${$(this).text().replaceAll(" ", "")}]`).remove();
+    }
 });
 $("#colunas_relatorio").on("click", "li", function () {
     $(this).toggleClass("active");
