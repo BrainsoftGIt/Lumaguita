@@ -102,7 +102,13 @@ var report = {
             opr : filter.attr("opr"),
             key: filter.attr("key"),
             mode: filter.attr("mode"),
-            datatype: filter.attr("datatype")
+            datatype: filter.attr("datatype"),
+            format: filter.attr("format"),
+            src: filter.attr("src"),
+            init: filter.attr("init"),
+            rename: filter.attr("rename"),
+            mask: filter.attr("mask"),
+            source: filter.attr("source"),
         }
 
         let listOption = [

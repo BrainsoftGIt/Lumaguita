@@ -36,7 +36,7 @@ var paramentizadoReports = {
             return id
         }).get()
 
-        let filters = _filters.map(({ column: filter_column, key, opr: filter_opr, value: filter_basevalue } ) => {
+        let filters = _filters.map(({ column: filter_column, key, opr: filter_opr, value: filter_basevalue, rename, init, mask, src } ) => {
             let element = $(`div[list="filter"] [data-column='${filter_column}']`);
             let { name : filter_name, datatype: filter_type } = element.data() || {};
             let {id: filter_valuemode} = element.find(`ul li.active`).data();
@@ -46,7 +46,11 @@ var paramentizadoReports = {
             return {
                 filter_name,
                 filter_props: {
-                    key
+                    key,
+                    rename,
+                    init,
+                    mask,
+                    src
                 },
                 filter_grants: grants,
                 filter_column,
@@ -102,7 +106,50 @@ var paramentizadoReports = {
                 _parametrized_uid: id
             }),
             success({data: list}) {
-                console.log(list)
+                console.log(list);
+                let listFiterData = $('[list-load="filter"]').empty();
+                list.forEach(({
+                                  filter_basevalue,
+                                  filter_column,
+                                  filter_date,
+                                  filter_espaco_auth,
+                                  filter_increment,
+                                  filter_name,
+                                  filter_opr,
+                                  filter_props: { key, format, src, source},
+                                  filter_require,
+                                  filter_state,
+                                  filter_type,
+                                  filter_user_id,
+                                  filter_mode
+                              }) => {
+                    if (format === "select") {
+                        listFiterData.append(` <div class="xselect w100" dataType="${filter_type}" name="${filter_name.replaceAll(" ", "")}"
+                       column="${filter_column}" opr="${filter_opr}" key="${key}"  mode="${filter_mode}">
+                       <input type="text" readOnly>
+                           <label>${filter_name}</label>
+                           <ul id="filtro_${filter_name.replaceAll(" ", "")}">
+                           </ul>
+                      </div>`);
+                        if (src === "db") {
+                            report.loadFilterSelectData(filter_name.replaceAll(" ", ""), source);
+                        }
+                    } else if (["date", "timestamp", "timestamptz"].includes(format)) {
+                        listFiterData.append(`<div class="xinput w100" dataType="${filter_type}" name="${filter_name.replaceAll(" ", "")}" column="${filter_column}"
+                       opr="${filter_opr}" key="${key}" mode="${filter_mode}">
+                                   <input data-inputmask-alias="dd-mm-yyyy" data-val="true" type="text"
+                                       placeholder="${filter_name}">
+                                   <label>${filter_name}</label>
+                               </div>`);
+                        $('[data-inputmask-alias]').inputmask();
+                    } else {
+                        listFiterData.append(`<div class="xinput w100 grow-1" dataType="${filter_type}" name="${filter_name.replaceAll(" ", "")}" column="${filter_column}"
+                       opr="${filter_opr} "key="${key}"  mode="${filter_mode}">
+                                       <input  type="text" placeholder="${filter_name}">
+                                       <label>${filter_name}</label>
+                                   </div>`);
+                    }
+                })
             }
         })
     }
@@ -114,7 +161,9 @@ $("#SaveReport").on("click", function (){
 })
 
 $("[xModalSaveReport]").on("click", function (){
-    if(!$('div[list="filter"] [data-name]').length || !paramentizadoReports.ready){
+    let {ready} = paramentizadoReports;
+    let {length} = $('div[list="filter"] [data-name]');
+    if(!length || !ready){
         return
     }
 
@@ -122,7 +171,6 @@ $("[xModalSaveReport]").on("click", function (){
 })
 
 $('[list="report-paramentidado"]').on("mousedown", "li", function (){
-    alert("djdhdh")
     let {id} = $(this).data();
     let {loadFilterReport} = paramentizadoReports;
     loadFilterReport(id);
