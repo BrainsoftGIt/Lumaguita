@@ -20,7 +20,7 @@ var paramentizadoReports = {
             success({armazens}) {
                 let espacoList = $('[list="armazens"]');
                 armazens.forEach(({ funct_load_espaco : { espaco_nome, espaco_id} }, idx) =>{
-                    espacoList.append(`<li data-id="${espaco_id}" class="tgl" id="posto-${espaco_id}">${espaco_nome}</li>`);
+                    espacoList.append(`<li data-id="${espaco_id}" class="stgl" id="posto-${espaco_id}">${espaco_nome}</li>`);
                 });
             }
         });
@@ -38,10 +38,11 @@ var paramentizadoReports = {
 
         let filters = _filters.map(({ column: filter_column, key, opr: filter_opr, value: filter_basevalue } ) => {
             let element = $(`div[list="filter"] [data-column='${filter_column}']`);
-            let { name : filter_name, datatype: filter_type, mask, init, src, rename, mode: filter_mode, format, source} = element.data() || {};
+            let { name : filter_name, datatype: filter_type, mask, init, src, rename, mode: filter_mode, format, source, func} = element.data() || {};
             let {id: filter_valuemode} = element.find(`ul li.active`).data();
 
-            console.log(grants)
+            let r_source = $("#tipo_relatorios").find("li.active").attr("source")
+
             return {
                 filter_name,
                 filter_props: {
@@ -51,7 +52,11 @@ var paramentizadoReports = {
                     init,
                     src,
                     format,
-                    source
+                    source,
+                    func
+                },
+                parametrized_props: {
+                    source: r_source
                 },
                 filter_grants: grants,
                 filter_column,
