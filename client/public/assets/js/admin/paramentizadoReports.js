@@ -28,20 +28,31 @@ var paramentizadoReports = {
     save : () => {
         let { parametrized_uid } = paramentizadoReports?.seleted | {};
         let parametrized_name = $("#reportName").val();
-        let parametrized_source = $("#tipo_relatorios").find("li.active").attr("source");
-        let { groups: parametrized_groups, columns: parametrized_columns, filters: _filters} = paramentizadoReports.object;
+        let { groups: parametrized_groups, columns: parametrized_columns, filters: _filters, orders, windows_function_key, headers, source: parametrized_source } = paramentizadoReports.object;
 
         let grants = $('[list="armazens"], [list="posto"]').find("li.active").map(function (){
             let {id} = $(this).data();
             return id
         }).get()
 
+        if(!parametrized_name){
+            return;
+        }
+
+        if(!parametrized_columns){
+            return;
+        }
+
+        if(!grants.length){
+            return;
+        }
+
+        let { totalColumnsWeight, listFormats} = report;
+
         let filters = _filters.map(({ column: filter_column, key, opr: filter_opr, value: filter_basevalue } ) => {
             let element = $(`div[list="filter"] [data-column='${filter_column}']`);
             let { name : filter_name, datatype: filter_type, mask, init, src, rename, mode: filter_mode, format, source, func} = element.data() || {};
             let {id: filter_valuemode} = element.find(`ul li.active`).data();
-
-            let r_source = $("#tipo_relatorios").find("li.active").attr("source")
 
             return {
                 filter_name,
@@ -54,9 +65,6 @@ var paramentizadoReports = {
                     format,
                     source,
                     func
-                },
-                parametrized_props: {
-                    source: r_source
                 },
                 filter_grants: grants,
                 filter_column,
@@ -75,6 +83,13 @@ var paramentizadoReports = {
             data: JSON.stringify({
                 filters,
                 parametrized_grants: grants,
+                parametrized_props: {
+                    orders,
+                    listFormats,
+                    windows_function_key,
+                    totalColumnsWeight,
+                    headers,
+                },
                 parametrized_uid,
                 parametrized_name,
                 parametrized_source,
@@ -115,23 +130,8 @@ var paramentizadoReports = {
                 console.log(list);
                 let { loadFilterSelectData } = paramentizadoReports;
                 let listFiterData = $('[list-load="filter"]').empty();
-                list.forEach(({
-                                  filter_basevalue,
-                                  filter_column,
-                                  filter_date,
-                                  filter_espaco_auth,
-                                  filter_increment,
-                                  filter_name,
-                                  filter_opr,
-                                  filter_props: { key, format, src, source },
-                                  filter_require,
-                                  filter_state,
-                                  filter_type,
-                                  filter_user_id,
-                                  filter_mode
-                              }) => {
+                list.forEach(({ filter_basevalue, filter_column, filter_date, filter_espaco_auth, filter_increment, filter_name, filter_opr, filter_props: { key, format, src, source }, filter_require, filter_state, filter_type, filter_user_id, filter_mode }) => {
 
-                    console.log({format, src, source, key})
                     if (format === "select") {
                         listFiterData.append(` <div class="xselect w100" dataType="${filter_type}" name="${filter_name.replaceAll(" ", "")}"
                        column="${filter_column}" opr="${filter_opr}" key="${key}"  mode="${filter_mode}">
@@ -157,6 +157,7 @@ var paramentizadoReports = {
                                        <label>${filter_name}</label>
                                    </div>`);
                     }
+
                 })
             }
         })
@@ -194,9 +195,53 @@ $("[xModalSaveReport]").on("click", function (){
 })
 
 $('[list="report-paramentidado"]').on("mousedown", "li", function (){
-    let {id} = $(this).data();
+    let {id, index} = $(this).data();
     let {loadFilterReport} = paramentizadoReports;
     loadFilterReport(id);
+    paramentizadoReports.seleted = paramentizadoReports.list[index];
+})
+
+$("#loadReport").on("click", function (){
+
+    let {seleted : { parametrized_groups: groups, parametrized_source: source, parametrized_columns: columns, parametrized_props : { windows_function_key, orders, listFormats, totalColumnsWeight, headers }}} = paramentizadoReports;
+    paramentizadoReports.report = true;
+
+    let filters = $('[list-load="filter"]').find(".xselect, .xinput").map(function () {
+        if($(this).attr("mode") !== "-1"){
+            return {
+                column: $(this).attr("column"),
+                opr: $(this).attr("opr"),
+                mode: $(this).attr("mode"),
+                key: $(this).attr("key"),
+                value: ($(this).hasClass("xselect") ? $(this).find("li.active").attr("value_uuid") : report.getInputFilterValue($(this)))
+            };
+        }
+
+        return {
+            column: $(this).attr("column"),
+            opr: $(this).attr("opr"),
+            key: $(this).attr("key"),
+            value: ($(this).hasClass("xselect") ? $(this).find("li.active").attr("value_uuid") : report.getInputFilterValue($(this)))
+        };
+    }).get();
+
+    report.listFormats = listFormats;
+    report.totalColumnsWeight = totalColumnsWeight;
+    paramentizadoReports.objectView = {
+        windows_function_key,
+        source,
+        columns,
+        filters,
+        groups,
+        orders
+    }
+    paramentizadoReports.headers = headers;
+
+    pagination.get_amount_item_page["body-report-list"] = {
+        value_por_lado: 4,
+        load: report.filtrar
+    }
+    pagination.create_pagination("body-report-list", report.offset, report.limit).then().catch();
 })
 
 var {loadPosto, loadArmazem, load} = paramentizadoReports;

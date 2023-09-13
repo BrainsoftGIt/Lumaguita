@@ -101,14 +101,13 @@ var report = {
             column: filter.attr("column"),
             opr : filter.attr("opr"),
             key: filter.attr("key"),
-            mode: filter.attr("mode"),
+            mode: filter.attr("mode") || undefined,
             datatype: filter.attr("datatype"),
-            format: filter.attr("format"),
-            src: filter.attr("src"),
-            init: filter.attr("init"),
-            rename: filter.attr("rename"),
-            mask: filter.attr("mask"),
-            source: filter.attr("source"),
+            format: filter.attr("format") || undefined,
+            src: filter.attr("src") || undefined,
+            rename: filter.attr("rename") || undefined,
+            mask: filter.attr("mask") || undefined,
+            source: filter.attr("source") || undefined,
         }
 
         let listOption = [
@@ -287,8 +286,12 @@ var report = {
     },
     filtrar(limit, pageNumber){
         return new Promise(resolve => {
-            let object = report.selectedFilter.obj;
-            paramentizadoReports.object = object;
+
+            let { objectView: object } =  paramentizadoReports;
+            if (!paramentizadoReports.report){
+                object = report.selectedFilter.obj;
+                paramentizadoReports.object = object;
+            }
 
             object.limit = limit;
             object.offset = (pageNumber -1) * limit;
@@ -373,8 +376,13 @@ var report = {
         }
     },
     export(){
-        const object = report.selectedFilter.obj;
-        const headers = report.selectedFilter.headers;
+
+        let { objectView: object, headers} =  paramentizadoReports;
+        if (!paramentizadoReports.report) {
+            object = report.selectedFilter.obj;
+            headers = report.selectedFilter.headers;
+        }
+
         $("body").addClass("loading");
         $.ajax({
             url: "/api/report/export",
@@ -618,6 +626,7 @@ $("#filterReport").on("click", async function () {
         }
     });
     if(isvalid){
+        paramentizadoReports.report = false;
         pagination.get_amount_item_page["body-report-list"] = {
             value_por_lado: 4,
             load: report.filtrar
@@ -683,6 +692,7 @@ $("[bt_footer_table]").on("click", async function () {
      report.function_key[0] = $("#footer_values_type").find("li.active").attr("func");
      $("#xModalFooterValue .hideTarget").click();
      if(!$(".pagination_master").is(":visible")){
+         paramentizadoReports.report = false;
          pagination.get_amount_item_page["body-report-list"] = {
              value_por_lado: 4,
              load: report.filtrar
