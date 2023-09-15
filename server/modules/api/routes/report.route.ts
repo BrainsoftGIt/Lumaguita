@@ -188,6 +188,35 @@ app.post( "/api/report/parametrized/sets", (req, res, next) => {
     })
 });
 
+app.post( "/api/report/parametrized/load/filter", (req, res, next) => {
+    console.log( { etag: req.headers.etag} );
+    let _session = getUserSession( req );
+    dbRes.call.report.funct_load_report_parametrized_filter( {
+        args :{
+            _branch: _session.branch_uid,
+            _user_id: _session.user_id,
+            _workspace: _session.workspace,
+            _parametrized_uid: req.body["_parametrized_uid"]
+        }
+    }, {
+        onResult(error: Error, result?: Result<any,any>): any {
+            if( error ){
+                res.json({
+                    result:false,
+                    message: 'Error ao carregar os filtros de um relatorio parametizado',
+                    hint: error.message
+                })
+                console.error( error );
+                return;
+            }
+            return res.json({
+                result: true,
+                message:'success',
+                data:result.rows
+            })
+        }
+    }).doc()
+});
 
 app.post( "/api/report/parametrized/loads", (req, res, next) => {
     console.log( { etag: req.headers.etag} );
@@ -218,33 +247,3 @@ app.post( "/api/report/parametrized/loads", (req, res, next) => {
         }
     }).doc()
 })
-
-app.post( "/api/report/parametrized/load/filter", (req, res, next) => {
-    console.log( { etag: req.headers.etag} );
-    let _session = getUserSession( req );
-    dbRes.call.report.funct_load_report_parametrized_filter( {
-        args :{
-            _branch: _session.branch_uid,
-            _user_id: _session.user_id,
-            _workspace: _session.workspace,
-            _parametrized_uid: req.body["_parametrized_uid"]
-        }
-    }, {
-        onResult(error: Error, result?: Result<any,any>): any {
-            if( error ){
-                res.json({
-                    result:false,
-                    message: 'Error ao carregar os filtros de um relatorio parametizado',
-                    hint: error.message
-                })
-                console.error( error );
-                return;
-            }
-            return res.json({
-                result: true,
-                message:'success',
-                data:result.rows
-            })
-        }
-    }).doc()
-});
