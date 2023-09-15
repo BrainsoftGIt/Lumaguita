@@ -219,7 +219,7 @@ app.post( "/api/report/parametrized/load/filter", (req, res, next) => {
 });
 
 app.post( "/api/report/parametrized/loads", (req, res, next) => {
-    console.log( { etag: req.headers.etag} );
+    /*console.log( { etag: req.headers.etag} );
     let _session = getUserSession( req );
     let args = req.body;
     args._user_id = _session.user_id;
@@ -245,5 +245,5 @@ app.post( "/api/report/parametrized/loads", (req, res, next) => {
                 data:result.rows
             })
         }
-    }).doc()
+    }).doc()*/
 })
