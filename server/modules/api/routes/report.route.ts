@@ -159,7 +159,6 @@ function formatColumn(headers, worksheet){
 }
 
 app.post( "/api/report/parametrized/sets", (req, res, next) => {
-    console.log( { etag: req.headers.etag } );
     let _session = getUserSession( req );
     let args = req.body;
     args._user_id = _session.user_id;
@@ -189,7 +188,6 @@ app.post( "/api/report/parametrized/sets", (req, res, next) => {
 });
 
 app.post( "/api/report/parametrized/load/filter", (req, res, next) => {
-    console.log( { etag: req.headers.etag} );
     let _session = getUserSession( req );
     dbRes.call.report.funct_load_report_parametrized_filter( {
         args :{
@@ -218,11 +216,7 @@ app.post( "/api/report/parametrized/load/filter", (req, res, next) => {
     }).doc()
 });
 
-app.use( (req, res, next) => {
-    if( req.method.toUpperCase() !== "POST" ) return next();
-    if( req.path !== "/api/report/parametrized/loads" ) return  next();
-
-    console.log( { etag: req.headers.etag} );
+app.post( "/api/report/load/parametrized", (req, res, next) => {
     let _session = getUserSession( req );
     let args = req.body;
     args._user_id = _session.user_id;

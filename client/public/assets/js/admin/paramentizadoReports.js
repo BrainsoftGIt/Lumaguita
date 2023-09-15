@@ -103,7 +103,7 @@ var paramentizadoReports = {
     },
     load : () => {
         $.ajax({
-            url: "/api/report/parametrized/loads",
+            url: "/api/report/load/parametrized",
             method: "POST",
             contentType: "application/json",
             data: JSON.stringify({
