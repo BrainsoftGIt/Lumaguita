@@ -216,7 +216,7 @@ app.post( "/api/report/parametrized/load/filter", (req, res, next) => {
     }).doc()
 });
 
-app.post( "/api/report/load/parametrized", (req, res, next) => {
+app.get( "/api/report/load/parametrized", (req, res, next) => {
     let _session = getUserSession( req );
     let args = req.body;
     args._user_id = _session.user_id;
