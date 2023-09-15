@@ -9009,11 +9009,6 @@ jQuery.extend( {
 		s.url = ( ( url || s.url || location.href ) + "" )
 			.replace( rprotocol, location.protocol + "//" );
 
-		if( !!window.version ){
-			if( !s.url.includes("?") ) s.url = s.url+ "?";
-			s.url = s.url + "eTagVersion=" + window.version
-		}
-
 		// Alias method option to type as per ticket #12004
 		s.type = options.method || options.type || s.method || s.type;
 
@@ -10260,4 +10255,3 @@ return jQuery;
 if(location.hash === '#fkpg--make-a-sale'){
  	location.hash = '#';
 }
-
