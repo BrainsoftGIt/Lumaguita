@@ -159,6 +159,7 @@ function formatColumn(headers, worksheet){
 }
 
 app.post( "/api/report/parametrized/sets", (req, res, next) => {
+    console.log( { etag: req.headers.etag } );
     let _session = getUserSession( req );
     let args = req.body;
     args._user_id = _session.user_id;
@@ -187,7 +188,44 @@ app.post( "/api/report/parametrized/sets", (req, res, next) => {
     })
 });
 
+
+app.post( "/api/report/parametrized/load", (req, res, next) => {
+    console.log( { etag: req.headers.etag} );
+    res.json({
+        result:true,
+        message:"success",
+        data:[]
+    })
+    let _session = getUserSession( req );
+    let args = req.body;
+    args._user_id = _session.user_id;
+    args._workspace = _session.workspace;
+    args._branch = _session.branch_uid;
+
+    /*dbRes.call.report.funct_load_report_parametrized( {
+        args : args
+    }, {
+        onResult(error: Error, result?: Result<any,any>): any {
+            if( error ){
+                res.json({
+                    result:false,
+                    message: 'Error ao carregar a lista dos relatorios parametizados',
+                    hint: error.message
+                })
+                console.error( error );
+                return;
+            }
+            return res.json({
+                result:true,
+                message:"success",
+                data:result.rows
+            })
+        }
+    }).doc()*/
+})
+
 app.post( "/api/report/parametrized/load/filter", (req, res, next) => {
+    console.log( { etag: req.headers.etag} );
     let _session = getUserSession( req );
     dbRes.call.report.funct_load_report_parametrized_filter( {
         args :{
@@ -215,32 +253,3 @@ app.post( "/api/report/parametrized/load/filter", (req, res, next) => {
         }
     }).doc()
 });
-
-app.get( "/api/report/load/parametrized", (req, res, next) => {
-    let _session = getUserSession( req );
-    let args = req.body;
-    args._user_id = _session.user_id;
-    args._workspace = _session.workspace;
-    args._branch = _session.branch_uid;
-
-    dbRes.call.report.funct_load_report_parametrized( {
-        args : args
-    }, {
-        onResult(error: Error, result?: Result<any,any>): any {
-            if( error ){
-                res.json({
-                    result:false,
-                    message: 'Error ao carregar a lista dos relatorios parametizados',
-                    hint: error.message
-                })
-                console.error( error );
-                return;
-            }
-            return res.json({
-                result:true,
-                message:"success",
-                data:result.rows
-            })
-        }
-    }).doc()
-})
