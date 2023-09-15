@@ -69,7 +69,6 @@
     "node-notifier": "^10.0.0",
     "node-thermal-printer": "^4.1.2",
     "nodemailer": "^6.4.14",
-    "nodemon": "^2.0.15",
     "npm": "^8.19.2",
     "nw-splasher": "^1.0.0",
     "open": "^8.4.0",
