@@ -96,8 +96,16 @@ var paramentizadoReports = {
                 parametrized_columns,
                 parametrized_groups
             }),
-            success({...all}) {
-                console.log(all)
+            success({result, message}) {
+                if(!result){
+                    xAlert("Relatório", message, "error");
+                    return
+                }
+
+                paramentizadoReports.ready = false;
+                xAlert("Relatório", "Operação efetuada sucesso!");
+                let { load } = paramentizadoReports; load();
+                $("#xModalSaveReport").removeClass("show")
             }
         })
     },
@@ -111,7 +119,7 @@ var paramentizadoReports = {
             }),
             success({data: list}) {
                 paramentizadoReports.list = list;
-                let listElement = $(`[list="report-paramentidado"]`)
+                let listElement = $(`[list="report-paramentidado"]`).empty()
                 list.forEach(({parametrized_name, parametrized_uid}, index) => {
                     listElement.append(`<li data-id="${parametrized_uid}" data-index="${index}" class="tgl" >${parametrized_name || "No name"}</li>`)
                 })
@@ -127,7 +135,6 @@ var paramentizadoReports = {
                 _parametrized_uid: id
             }),
             success({data: list}) {
-                console.log(list);
                 let { loadFilterSelectData } = paramentizadoReports;
                 let listFiterData = $('[list-load="filter"]').empty();
                 list.forEach(({ filter_basevalue, filter_column, filter_date, filter_espaco_auth, filter_increment, filter_name, filter_opr, filter_props: { key, format, src, source }, filter_require, filter_state, filter_type, filter_user_id, filter_mode }) => {
@@ -186,6 +193,7 @@ $("[xModalSaveReport]").on("click", function (){
     let {ready} = paramentizadoReports;
     let {length} = $('div[list="filter"] [data-name]');
     if(!length || !ready){
+        xAlert("Relatório", "Configure um relatório primeiramente!", "warning");
         return
     }
 
@@ -196,15 +204,15 @@ $("[xModalSaveReport]").on("click", function (){
 
 $('[list="report-paramentidado"]').on("mousedown", "li", function (){
     let {id, index} = $(this).data();
-    let {loadFilterReport} = paramentizadoReports;
-    loadFilterReport(id);
+    let {loadFilterReport} = paramentizadoReports; loadFilterReport(id);
     paramentizadoReports.seleted = paramentizadoReports.list[index];
 })
 
 $("#loadReport").on("click", function (){
 
-    let {seleted : { parametrized_groups: groups, parametrized_source: source, parametrized_columns: columns, parametrized_props : { windows_function_key, orders, listFormats, totalColumnsWeight, headers }}} = paramentizadoReports;
+    let {seleted : { parametrized_name, parametrized_groups: groups, parametrized_source: source, parametrized_columns: columns, parametrized_props : { windows_function_key, orders, listFormats, totalColumnsWeight, headers }}} = paramentizadoReports;
     paramentizadoReports.report = true;
+    $("#totalEntriesReport").html(parametrized_name);
 
     let filters = $('[list-load="filter"]').find(".xselect, .xinput").map(function () {
         if($(this).attr("mode") !== "-1"){
@@ -241,7 +249,11 @@ $("#loadReport").on("click", function (){
         value_por_lado: 4,
         load: report.filtrar
     }
-    pagination.create_pagination("body-report-list", report.offset, report.limit).then().catch();
+
+    pagination.create_pagination("body-report-list", report.offset, report.limit).then(() => {
+        $("#xModalLoadReport").removeClass("show");
+    })
+        .catch();
 })
 
 var {loadPosto, loadArmazem, load} = paramentizadoReports;

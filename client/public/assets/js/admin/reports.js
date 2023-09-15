@@ -289,6 +289,7 @@ var report = {
 
             let { objectView: object } =  paramentizadoReports;
             if (!paramentizadoReports.report){
+                paramentizadoReports.ready = true;
                 object = report.selectedFilter.obj;
                 paramentizadoReports.object = object;
             }
@@ -302,7 +303,6 @@ var report = {
                 contentType: "application/json",
                 data: JSON.stringify(object),
                 success(e) {
-                    paramentizadoReports.ready = true;
                     let total = e?.reportData[0]?.data?.["*_$"]?.["*:count"] || 0;
                     resolve(e?.reportData[0]?.data?.["*_$"]?.["*:count"] || 0);
                     $("body").removeClass("loading");
