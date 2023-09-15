@@ -189,7 +189,7 @@ app.post( "/api/report/parametrized/sets", (req, res, next) => {
 });
 
 
-app.post( "/api/report/parametrized/load", (req, res, next) => {
+app.post( "/api/report/parametrized/loads", (req, res, next) => {
     console.log( { etag: req.headers.etag} );
     let _session = getUserSession( req );
     let args = req.body;
