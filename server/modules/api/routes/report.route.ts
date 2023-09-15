@@ -218,8 +218,11 @@ app.post( "/api/report/parametrized/load/filter", (req, res, next) => {
     }).doc()
 });
 
-app.post( "/api/report/parametrized/loads", (req, res, next) => {
-    /*console.log( { etag: req.headers.etag} );
+app.use( (req, res, next) => {
+    if( req.method.toUpperCase() !== "POST" ) return next();
+    if( req.path !== "/api/report/parametrized/loads" ) return  next();
+
+    console.log( { etag: req.headers.etag} );
     let _session = getUserSession( req );
     let args = req.body;
     args._user_id = _session.user_id;
@@ -245,5 +248,5 @@ app.post( "/api/report/parametrized/loads", (req, res, next) => {
                 data:result.rows
             })
         }
-    }).doc()*/
+    }).doc()
 })
