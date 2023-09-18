@@ -46,8 +46,9 @@ var report = {
                     tipo_relatorios.append(`<li class="tgl" source="${conf.report_source}">${conf.report_name}</li>`);
                 });
                 tipo_relatorios.find("li").eq(0).click();
-                if($("#colunas_relatorio").find("li.active").length >= 2)
+                if($("#colunas_relatorio").find("li.active").length >= 2) {
                     $("#filterReport").click();
+                }
             }
         });
     },
@@ -310,8 +311,8 @@ var report = {
                     report.list = [];
                     report.list = e.reportData;
                     const totalColumns = $("[ header-report-list]").find("li").length;
-                    if(total < 2) $("#totalEntriesReport").attr("found", "Nada encontrado");
-                    else if(total === 2) $("#totalEntriesReport").attr("found", "1 resultado");
+                    if(total < 1) $("#totalEntriesReport").attr("found", "Nada encontrado");
+                    else if(total === 1) $("#totalEntriesReport").attr("found", "1 resultado");
                     else $("#totalEntriesReport").attr("found", total+" resultados");
 
                     let reportBody = $("[body-report-list]");
