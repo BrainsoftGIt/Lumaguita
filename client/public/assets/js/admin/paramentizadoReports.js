@@ -1,4 +1,11 @@
 var paramentizadoReports = {
+    types: {
+        ValorAtual: "1",
+        DatadoProcessamento: "2",
+        RelativoaDataAtual: "3",
+        Pedir: "4",
+        PedirSempre: "5",
+},
     loadPosto : () => {
         $.ajax({
             url: "/api/posto/load",
@@ -135,32 +142,32 @@ var paramentizadoReports = {
                 _parametrized_uid: id
             }),
             success({data: list}) {
-                let { loadFilterSelectData } = paramentizadoReports;
+                let { loadFilterSelectData, types: { DatadoProcessamento, RelativoaDataAtual, ValorAtual, PedirSempre}} = paramentizadoReports;
                 let listFiterData = $('[list-load="filter"]').empty();
-                list.forEach(({ filter_basevalue, filter_column, filter_date, filter_espaco_auth, filter_increment, filter_name, filter_opr, filter_props: { key, format, src, source }, filter_require, filter_state, filter_type, filter_user_id, filter_mode }) => {
-
+                list.forEach(({ filter_valuemode, filter_value, filter_column, filter_name, filter_opr, filter_props: { key, format, src, source }, filter_type, filter_mode }) => {
+                    let disabled = (DatadoProcessamento === filter_valuemode || ValorAtual === filter_valuemode || RelativoaDataAtual === filter_valuemode);
                     if (format === "select") {
-                        listFiterData.append(` <div class="xselect w100" dataType="${filter_type}" name="${filter_name.replaceAll(" ", "")}"
+                        listFiterData.append(` <div valuemode="${filter_valuemode}" class="xselect w100" dataType="${filter_type}" name="${filter_name.replaceAll(" ", "")}"
                        column="${filter_column}" opr="${filter_opr}" key="${key}"  mode="${filter_mode}">
-                       <input type="text" readOnly>
+                       <input ${PedirSempre !== filter_valuemode.toString() ? " _noObrigatory='true' class='_noObrigatory' " : ""} disabled="${disabled}" type="text" readOnly>
                            <label>${filter_name}</label>
                            <ul id="v2filtro_${filter_name.replaceAll(" ", "")}"></ul>
                       </div>`);
                         if (src === "db") {
-                            loadFilterSelectData($(`[id="v2filtro_${filter_name.replaceAll(" ", "")}"]`), source);
+                            loadFilterSelectData($(`[id="v2filtro_${filter_name.replaceAll(" ", "")}"]`), source, filter_value);
                         }
                     } else if (["date", "timestamp", "timestamptz"].includes(format)) {
-                        listFiterData.append(`<div class="xinput w100" dataType="${filter_type}" name="${filter_name.replaceAll(" ", "")}" column="${filter_column}"
+                        listFiterData.append(`<div valuemode="${filter_valuemode}" class="xinput w100" dataType="${filter_type}" name="${filter_name.replaceAll(" ", "")}" column="${filter_column}"
                        opr="${filter_opr}" key="${key}" mode="${filter_mode}">
-                                   <input data-inputmask-alias="dd-mm-yyyy" data-val="true" type="text"
+                                   <input ${PedirSempre !== filter_valuemode.toString() ? " _noObrigatory='true' class='_noObrigatory' " : ""} disabled="${disabled}" value="${(filter_value || "").stringToDateEn().getDatePt()}" data-inputmask-alias="dd-mm-yyyy" data-val="true" type="text"
                                        placeholder="${filter_name}">
                                    <label>${filter_name}</label>
                                </div>`);
                         $('[data-inputmask-alias]').inputmask();
                     } else {
-                        listFiterData.append(`<div class="xinput w100 grow-1" dataType="${filter_type}" name="${filter_name.replaceAll(" ", "")}" column="${filter_column}"
-                       opr="${filter_opr} "key="${key}"  mode="${filter_mode}">
-                                       <input  type="text" placeholder="${filter_name}">
+                        listFiterData.append(`<div valuemode="${filter_valuemode}" class="xinput w100 grow-1" dataType="${filter_type}" name="${filter_name.replaceAll(" ", "")}" column="${filter_column}"
+                       opr="${filter_opr} "key="${key}" mode="${filter_mode}">
+                                       <input ${PedirSempre !== filter_valuemode.toString() ? " _noObrigatory='true' class='_noObrigatory' " : ""} disabled="${disabled}" value="${filter_value || ""}" type="text" placeholder="${filter_name}">
                                        <label>${filter_name}</label>
                                    </div>`);
                     }
@@ -169,15 +176,19 @@ var paramentizadoReports = {
             }
         })
     },
-    loadFilterSelectData: (element, source) => {
+    loadFilterSelectData: (element, source, value) => {
         $.ajax({
             url: "/api/report/source/filter",
             method: "POST",
             contentType: "application/json",
             data: JSON.stringify({source: source}),
             success(e) {
-                e.filterData.forEach((fildata) =>{
-                    element.append(`<li class="tgl" value_uuid="${fildata.data.id}">${fildata.data.label}</li>`);
+                e.filterData.forEach(({ data : { id, label }}) =>{
+                    let active = (value?.toString?.() === id.toString()) ? "active" : "";
+                    if(!!active){
+                        element.parents(".xselect").find("input").val(label);
+                    }
+                    element.append(`<li class="tgl ${active}" value_uuid="${id}">${label}</li>`);
                 });
             }
         });
@@ -210,28 +221,44 @@ $('[list="report-paramentidado"]').on("mousedown", "li", function (){
 
 $("#loadReport").on("click", function (){
 
-    let {seleted : { parametrized_name, parametrized_groups: groups, parametrized_source: source, parametrized_columns: columns, parametrized_props : { windows_function_key, orders, listFormats, totalColumnsWeight, headers }}} = paramentizadoReports;
+    let {types : { PedirSempre} ,seleted : { parametrized_name, parametrized_groups: groups, parametrized_source: source, parametrized_columns: columns, parametrized_props : { windows_function_key, orders, listFormats, totalColumnsWeight, headers }}} = paramentizadoReports;
     paramentizadoReports.report = true;
     $("#totalEntriesReport").html(parametrized_name);
+    let errorPrienchimento = false;
 
     let filters = $('[list-load="filter"]').find(".xselect, .xinput").map(function () {
+        let rt = {};
         if($(this).attr("mode") !== "-1"){
-            return {
+            rt = {
+                valuemode: $(this).attr("valuemode"),
                 column: $(this).attr("column"),
                 opr: $(this).attr("opr"),
                 mode: $(this).attr("mode"),
                 key: $(this).attr("key"),
                 value: ($(this).hasClass("xselect") ? $(this).find("li.active").attr("value_uuid") : report.getInputFilterValue($(this)))
             };
+        } else {
+            rt = {
+                valuemode: $(this).attr("valuemode"),
+                column: $(this).attr("column"),
+                opr: $(this).attr("opr"),
+                key: $(this).attr("key"),
+                value: ($(this).hasClass("xselect") ? $(this).find("li.active").attr("value_uuid") : report.getInputFilterValue($(this)))
+            }
         }
 
-        return {
-            column: $(this).attr("column"),
-            opr: $(this).attr("opr"),
-            key: $(this).attr("key"),
-            value: ($(this).hasClass("xselect") ? $(this).find("li.active").attr("value_uuid") : report.getInputFilterValue($(this)))
-        };
+        if(rt.valuemode === PedirSempre && !rt.value){
+            $(this).find("input").focus();
+            errorPrienchimento = true;
+        }
+
+        return rt;
     }).get();
+
+    if(errorPrienchimento){
+        xAlert("Relatório", "Por favor, preencha campos obrigátorios!", "warning");
+        return
+    }
 
     report.listFormats = listFormats;
     report.totalColumnsWeight = totalColumnsWeight;
