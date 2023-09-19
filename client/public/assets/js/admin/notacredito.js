@@ -64,11 +64,12 @@ var notacredito = {
         }).get();
 
         if( !conta_id ){
-
+            xAlert("Nota de cretido", "Selecione uma conta!", "error");
             return;
         }
 
         if( !itens.length ){
+            xAlert("Nota de cretido", "Sem item para efetuar a nota de credito!", "error");
             return
         }
 
@@ -96,7 +97,6 @@ $("[pesquisarFatura]").on("keyup", function ({keyCode}){
         loadData();
     }
 })
-
 
 $("#finalizarNotaCredito").on("click", function (){
     let { reg } = notacredito; reg();
