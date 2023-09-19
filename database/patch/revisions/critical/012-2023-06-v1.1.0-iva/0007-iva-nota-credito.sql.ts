@@ -351,11 +351,13 @@ declare
     args := {
       arg_colaborador_id: UID
       arg_espaco_auth: UID
+      conta_fatura
     }
    */
   arg_colaborador_id uuid default args->>'arg_colaborador_id';
   arg_espaco_auth uuid default args->>'arg_espaco_auth';
   arg_branch uuid default tweeks.__branch_uid( arg_colaborador_id, arg_espaco_auth );
+  _conta_fatura character varying := args->>'conta_fatura';
   _const map.constant;
 begin
   _const := map.constant();
@@ -391,11 +393,12 @@ begin
         from tweeks.conta ct
           inner join __venda_group _veg on ct.conta_id = _veg.venda_conta_id
           inner join __venda _ved on _veg.venda_id = _ved.venda_id
-          left join tweeks.venda venc on _veg.venda_id = venc.venda_venda_docorign
-            and venc.venda_estado = _const.maguita_venda_estado_fechado
+          left join tweeks.venda venda_ncred on _veg.venda_id = venda_ncred.venda_venda_docorign
+            and venda_ncred.venda_estado = _const.maguita_venda_estado_fechado
         where ct._branch_uid = arg_branch
           and ct.conta_estado = _const.maguita_conta_estado_fechado
-          and venc.venda_id is null
+          and venda_ncred.venda_id is null
+          and ct.conta_numerofatura = _conta_fatura
         group by ct.conta_id
     ) select to_jsonb( _ct )
         from __conta _ct
