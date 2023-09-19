@@ -384,7 +384,8 @@ begin
         from __venda _ve
           inner join __venda _vei on _ve.venda_id = _vei.venda_venda_id
         where _ve.venda_venda_id is null
-        group by _ve.venda_id
+        group by _ve.venda_id,
+          _ve.venda_conta_id
 
     ), __conta as (
       select
