@@ -14,17 +14,23 @@ var notacredito = {
                 notacredito.fatura = fatura;
                 $("[cliente_titular]").val(conta_titular);
                 $("[cliente_nif]").val(conta_titularnif);
+
+                if(!conta_vendas.length){
+                    $("[tableDocumentArticles]").addClass("empty")
+                    return
+                }
+
                 conta_vendas.forEach(({ artigo_nome, venda_custounitario, venda_montantecomimposto, artigo_codigo, venda_custoquantidade, taxa_percentagem, taxa_taxa, venda_id }) => {
                     $("[tableDocumentArticles]").append(`
                     <ul data-venda_id="${venda_id}">
                         <li>${artigo_codigo}</li>
                         <li>${artigo_nome}</li>
                         <li>${venda_custoquantidade}</li>
-                        <li>${ (!taxa_percentagem) ? taxa_taxa : `${taxa_percentagem}%` }</li>          
+                        <li>${ (!taxa_percentagem) ? taxa_taxa || "" : `${taxa_percentagem}%` }</li>          
                         <li>${venda_custounitario.formatter()+" STN"}</li>                                               
                         <li>${venda_montantecomimposto.formatter()+" STN"}</li>                              
                         <li class="flex v-ct">
-                                <span class="flex v-ct">
+                                <span del class="flex v-ct">
                                      <a tooltip="Eliminar" flow="top" title="Remover">
                                     <svg class="delete" viewBox="-40 0 427 427.00131">
                                         <path
@@ -42,11 +48,13 @@ var notacredito = {
                     </ul>`);
                 })
                 xTableGenerate()
+
+                $(" [tableDocumentArticles] ").removeClass("empty")
             }
         });
     },
     reg : () => {
-        let { conta_id } = notacredito.fatura;
+        let { fatura : { conta_id } } = notacredito;
         let conta_posto_id = $("#colaborador_logado_armazens").find("li.active").attr("posto_admin");
         let itens = $("[tableDocumentArticles] ul").map(function (){
             let { venda_id } = $(this).data();
@@ -55,7 +63,12 @@ var notacredito = {
             }
         }).get();
 
-        if(!itens.length){
+        if( !conta_id ){
+
+            return;
+        }
+
+        if( !itens.length ){
             return
         }
 
@@ -87,6 +100,13 @@ $("[pesquisarFatura]").on("keyup", function ({keyCode}){
 
 $("#finalizarNotaCredito").on("click", function (){
     let { reg } = notacredito; reg();
+})
+
+$("[tableDocumentArticles]").on("click", "[del]", function (){
+    $(this).parents("ul").remove()
+    if(!$("[tableDocumentArticles] ul").length){
+        $("[tableDocumentArticles]").addClass("empty")
+    }
 })
 
 xTableGenerate()
