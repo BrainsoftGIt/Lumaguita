@@ -11,7 +11,7 @@
                 <ul class="flex" menus_internos>
                 </ul>
             </div>
-            <button class="xbtn"  id="ver_proformas">Listar Proformas</button>
+            <button class="xbtn" id="ver_proformas">Listar Proformas</button>
         </div>
     </div>
     <datalist id="faturaClientes" fatura>
@@ -19,99 +19,94 @@
     <datalist id="faturaArtigos" artigos>
     </datalist>
     <div class="_body" id="faturaAdmin">
-        <div class="modal-frame j-stp">
-            <h3></h3>
-            <div class="flex">
-                <div class="inputs flex xform">
-                    <div class="xinput w25">
-                        <input type="text" placeholder="Pesquisar cliente" search_customer list="faturaClientes">
-                        <label>Pesquisar cliente</label>
-                    </div>
-                    <div class="xinput w25">
-                        <input type="text" disabled cliente_titular>
-                        <label>Nome do cliente</label>
-                    </div>
-                    <div class="xinput w15" >
-                        <input type="text" placeholder="Data de emissão" _noObrigatory="true" id="fatura_data_emissao" data-inputmask-alias="dd-mm-yyyy" data-val="true" style="width: 15rem;">
-                        <label for="fatura_data_emissao">Data de emissão</label>
-                    </div>
-                    <div class="xinput w15" >
-                        <input type="text" placeholder="NIF" maxlength="9" disabled cliente_nif _noObrigatory="true">
-                        <label>NIF</label>
-                    </div>
-                    <div class="xinput w15">
-                        <input type="text" placeholder="Telefone" disabled cliente_contacto _noObrigatory="true">
-                        <label>Telefone</label>
-                    </div>
-                    <div class="xinput w25">
-                        <input type="text" search_article list="faturaArtigos">
-                        <label>Pesquisar artigo (nome ou código)</label>
-                    </div>
-                    <div class="xinput w25">
-                        <input type="text" placeholder="Descrição"  description_article>
-                        <label>Descrição</label>
-                    </div>
-                    <div class="xinput w8">
-                        <input type="text" placeholder="Quantidade" class="double" amount_article>
-                        <label>Qtd</label>
-                    </div>
-                    <div class="xinput w15">
-                        <input type="text" placeholder="Valor unitário" class="double formatNumber" price_article>
-                        <label>Valor unitário</label>
-                    </div>
-                    <div class="xinput w15" style="display: none">
-                        <input type="text" placeholder="Lote" lote_article _noObrigatory="true">
-                        <label>Lote</label>
-                    </div>
-                    <div class="xinput w15" style="display: none">
-                        <input type="text" placeholder="Data de validade" data-inputmask-alias="dd-mm-yyyy" data-val="true" date_expiration_article _noObrigatory="true">
-                        <label>Data de validade</label>
-                    </div>
-                    <div class="flex v-ct h-sa w30">
-                        <div class="xinput w50">
-                            <input type="text" placeholder="Imposto" imposto _noObrigatory="true" disabled>
-                            <label>Imposto</label>
-                        </div>
-                        <div class="xcheck w100" style="padding-left: 0.7rem; display: none">
-                            <ul>
-                                <li class="stgl" isencaoImposto>Isenção de imposto</li>
-                            </ul>
-                        </div>
-                        <div class="xcheck w100" style="padding-left: 0.7rem;">
-                            <ul>
-                                <li class="stgl" imprimirGuiaSaida>Imprimir guia de saída</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="flex h-sb v-ct" style="float: right;">
-                        <button class="xbtn" addArticleTable>Lançar</button>
-                    </div>
-                    <div class="x-table hovered grow-1">
-                        <div class="xheader">
-                            <ul class="flex">
-                                <li grow="1">Cód. Artigo</li>
-                                <li grow="2">Descrição</li>
-                                <li grow="1">Qtd</li>
-                                <li grow="1">Lote</li>
-                                <li grow="1">Data de validade</li>
-                                <li grow="1">Imposto</li>
-                                <li grow="1">Valor Unit</li>
-                                <li grow="1">Valor Final</li>
-                                <li grow="1"></li>
-                            </ul>
-                        </div>
-                        <div class="xbody" tableDocumentArticles>
-                        </div>
-                    </div>
+        <div class="inputs flex xform">
+            <div class="xinput w25">
+                <input type="text" placeholder="Pesquisar cliente" search_customer list="faturaClientes">
+                <label>Pesquisar cliente</label>
+            </div>
+            <div class="xinput w25">
+                <input type="text" disabled cliente_titular>
+                <label>Nome do cliente</label>
+            </div>
+            <div class="xinput w15">
+                <input type="text" placeholder="Data de emissão" _noObrigatory="true" id="fatura_data_emissao"
+                       data-inputmask-alias="dd-mm-yyyy" data-val="true" style="width: 15rem;">
+                <label for="fatura_data_emissao">Data de emissão</label>
+            </div>
+            <div class="xinput w15">
+                <input type="text" placeholder="NIF" maxlength="9" disabled cliente_nif _noObrigatory="true">
+                <label>NIF</label>
+            </div>
+            <div class="xinput w15">
+                <input type="text" placeholder="Telefone" disabled cliente_contacto _noObrigatory="true">
+                <label>Telefone</label>
+            </div>
+            <div class="xinput w25">
+                <input type="text" search_article list="faturaArtigos">
+                <label>Pesquisar artigo (nome ou código)</label>
+            </div>
+            <div class="xinput w25">
+                <input type="text" placeholder="Descrição" description_article>
+                <label>Descrição</label>
+            </div>
+            <div class="xinput w8">
+                <input type="text" placeholder="Quantidade" class="double" amount_article>
+                <label>Qtd</label>
+            </div>
+            <div class="xinput w15">
+                <input type="text" placeholder="Valor unitário" class="double formatNumber" price_article>
+                <label>Valor unitário</label>
+            </div>
+            <div class="xinput w15" style="display: none">
+                <input type="text" placeholder="Lote" lote_article _noObrigatory="true">
+                <label>Lote</label>
+            </div>
+            <div class="xinput w15" style="display: none">
+                <input type="text" placeholder="Data de validade" data-inputmask-alias="dd-mm-yyyy" data-val="true"
+                       date_expiration_article _noObrigatory="true">
+                <label>Data de validade</label>
+            </div>
+            <div class="flex v-ct h-sa w30">
+                <div class="xinput w50">
+                    <input type="text" placeholder="Imposto" imposto _noObrigatory="true" disabled>
+                    <label>Imposto</label>
+                </div>
+                <div class="xcheck w100" style="padding-left: 0.7rem; display: none">
+                    <ul>
+                        <li class="stgl" isencaoImposto>Isenção de imposto</li>
+                    </ul>
+                </div>
+                <div class="xcheck w100" style="padding-left: 0.7rem;">
+                    <ul>
+                        <li class="stgl" imprimirGuiaSaida>Imprimir guia de saída</li>
+                    </ul>
                 </div>
             </div>
             <div class="flex h-sb v-ct" style="float: right;">
-                <button class="xbtn" id="finalizar_fatura">Finalizar fatura</button>
-                <button class="xbtn  hideTarget" target="xModalOpenFatura" hideModal style="display: none">Cancelar</button>
+                <button class="xbtn" addArticleTable>Lançar</button>
             </div>
         </div>
-
-
+        <div class="x-table hovered grow-1">
+            <div class="xheader">
+                <ul class="flex">
+                    <li grow="1">Cód. Artigo</li>
+                    <li grow="2">Descrição</li>
+                    <li grow="1">Qtd</li>
+                    <li grow="1">Lote</li>
+                    <li grow="1">Data de validade</li>
+                    <li grow="1">Imposto</li>
+                    <li grow="1">Valor Unit</li>
+                    <li grow="1">Valor Final</li>
+                    <li grow="1"></li>
+                </ul>
+            </div>
+            <div class="xbody" tableDocumentArticles>
+            </div>
+        </div>
+        <div class="flex h-sb v-ct" style="float: right;">
+            <button class="xbtn" id="finalizar_fatura">Finalizar fatura</button>
+            <button class="xbtn  hideTarget" target="xModalOpenFatura" hideModal style="display: none">Cancelar</button>
+        </div>
     </div>
     <div id="xModalAnularProforma" class="x-mobdal XM-resetColabPass flex v-ct h-ct" target="xModalAnularProforma">
         <div class="modal-frame">
@@ -129,7 +124,7 @@
         </div>
     </div>
     <div id="xModalListProformas" class="x-mobdal XM-listProformas flex v-ct h-ct"
-        target="xModalListProformas" style="z-index: 20;">
+         target="xModalListProformas" style="z-index: 20;">
         <div class="modal-frame">
             <div class="flex h-sb v-ct">
                 <h3>Faturas próforma</h3>
@@ -137,7 +132,7 @@
                     <div class="masterSearch">
                         <input type="search" placeholder="Pesquise aqui..." id="pesquisar_proformas">
                         <svg x="0px" y="0px" viewBox="0 0 118.783 118.783"
-                            style="enable-background:new 0 0 118.783 118.783;" xml:space="preserve">
+                             style="enable-background:new 0 0 118.783 118.783;" xml:space="preserve">
                             <g>
                                 <path d="M115.97,101.597L88.661,74.286c4.64-7.387,7.333-16.118,7.333-25.488c0-26.509-21.49-47.996-47.998-47.996
                         S0,22.289,0,48.798c0,26.51,21.487,47.995,47.996,47.995c10.197,0,19.642-3.188,27.414-8.605l26.984,26.986

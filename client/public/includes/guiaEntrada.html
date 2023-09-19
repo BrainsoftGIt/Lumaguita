@@ -15,105 +15,100 @@
     <datalist id="artigos_entrada" artigos>
     </datalist>
     <div class="_body" id="guiaEntradaBody">
-        <div class="modal-frame j-stp">
-            <h3></h3>
-            <div class="flex">
-                <div class="inputs flex xform h-sb">
-                    <div class="xinput w25">
-                        <input type="text" placeholder="Pesquisar fornecedor" id="entrada_fornecedor" list="guiaEntradaFornecedores">
-                        <label for="entrada_fornecedor">Pesquisar fornecedor</label>
-                    </div>
-                    <div class="xinput w25">
-                        <input type="text" placeholder="Nome do fornecedor" disabled id="guiaEntradaNomeFornecedor">
-                        <label>Nome do fornecedor</label>
-                    </div>
-                    <div class="xinput w15">
-                        <input type="text" placeholder="NIF" maxlength="9" disabled id="guiaEntradaNifFornecedor" _noObrigatory="true">
-                        <label>NIF</label>
-                    </div>
-                    <div class="xinput w15">
-                        <input type="text" placeholder="Telefone" disabled id="guiaEntradaTelefoneFornecedor" _noObrigatory="true">
-                        <label>Telefone</label>
-                    </div>
-                    <div class="xinput w20">
-                        <input type="text" placeholder="Endereço" disabled id="guiaEntradaEnderecoFornecedor" _noObrigatory="true">
-                        <label >Endereço</label>
-                    </div>
-                    <div class="xselect flutuate w25">
-                        <input type="text" readonly>
-                        <label>Escolha o armazém de destino</label>
-                        <ul id="armazens_entrada">
-                        </ul>
-                    </div>
-                    <div class="xinput w25">
-                        <input type="text" placeholder="Número de fatura" id="entrada_codigofatura" _noObrigatory="true">
-                        <label for="entrada_codigofatura">Documento do fornecedor</label>
-                    </div>
-                    <div class="xinput w25">
-                        <input type="text" placeholder="Data de documento" data-inputmask-alias="dd-mm-yyyy" data-val="true" id="entrada_data_compra">
-                        <label for="entrada_data_compra">Data de documento</label>
-                    </div>
-                    <div class="xinput w25">
-                        <input type="text" placeholder="Seguro e tarifas" id="entraSeguroTarifas" class="double formatNumber" _noObrigatory="true">
-                        <label for="entraSeguroTarifas">Valor de seguro e tarifas de transporte</label>
-                    </div>
-                    <div class="xinput w100">
-                        <textarea placeholder="_" _noObrigatory="true" id="entrada_obs"></textarea>
-                        <label for="entrada_obs">Observação</label>
-                    </div>
-                    <div class="xinput w25">
-                        <input type="text" placeholder="Pesquisar artigo" search_article  list="artigos_entrada">
-                        <label>Pesquisar artigo (nome ou código)</label>
-                    </div>
-                    <div class="xinput w25">
-                        <input type="text" placeholder="Descrição" description_article>
-                        <label>Descrição</label>
-                    </div>
-                    <div class="xinput w8">
-                        <input type="text" placeholder="Quantidade" amount_article class="double">
-                        <label>Qtd</label>
-                    </div>
-                    <div class="xinput w15">
-                        <input type="text" placeholder="Preço de compra" class="double formatNumber" price_article >
-                        <label>Valor unitário</label>
-                    </div>
-                    <div class="xinput w15">
-                        <input type="text" placeholder="Lote" lote_article _noObrigatory="true">
-                        <label>Lote</label>
-                    </div>
-                    <div class="xinput w15">
-                        <input type="text" placeholder="Data de validade" data-inputmask-alias="dd-mm-yyyy" data-val="true" date_expiration_article _noObrigatory="true">
-                        <label>Data de validade</label>
-                    </div>
-                    <div class="xinput w15">
-                        <input type="text" placeholder="Qtd Embalagem" disabled amount_packaging _noObrigatory="true">
-                        <label>Qtd. Embalagem</label>
-                    </div>
-                    <div class="flex h-sb v-ct">
-                        <button class="xbtn" addArticleTable>Lançar</button>
-                    </div>
-                    <div class="x-table hovered grow-1">
-                        <div class="xheader">
-                            <ul class="flex">
-                                <li grow="3">Descrição</li>
-                                <li grow="1">Qtd</li>
-                                <li grow="1">Valor Unitáro</li>
-                                <li grow="1">Lote</li>
-                                <li grow="1">Validade</li>
-                                <li grow="1">Qtd. Emb.</li>
-                                <li grow="1">Valor Final</li>
-                                <li grow="1"></li>
-                            </ul>
-                        </div>
-                        <div class="xbody" tableDocumentArticles >
+        <div class="inputs flex xform h-sb">
+            <div class="xinput w25">
+                <input type="text" placeholder="Pesquisar fornecedor" id="entrada_fornecedor" list="guiaEntradaFornecedores">
+                <label for="entrada_fornecedor">Pesquisar fornecedor</label>
+            </div>
+            <div class="xinput w25">
+                <input type="text" placeholder="Nome do fornecedor" disabled id="guiaEntradaNomeFornecedor">
+                <label>Nome do fornecedor</label>
+            </div>
+            <div class="xinput w15">
+                <input type="text" placeholder="NIF" maxlength="9" disabled id="guiaEntradaNifFornecedor" _noObrigatory="true">
+                <label>NIF</label>
+            </div>
+            <div class="xinput w15">
+                <input type="text" placeholder="Telefone" disabled id="guiaEntradaTelefoneFornecedor" _noObrigatory="true">
+                <label>Telefone</label>
+            </div>
+            <div class="xinput w20">
+                <input type="text" placeholder="Endereço" disabled id="guiaEntradaEnderecoFornecedor" _noObrigatory="true">
+                <label >Endereço</label>
+            </div>
+            <div class="xselect flutuate w25">
+                <input type="text" readonly>
+                <label>Escolha o armazém de destino</label>
+                <ul id="armazens_entrada">
+                </ul>
+            </div>
+            <div class="xinput w25">
+                <input type="text" placeholder="Número de fatura" id="entrada_codigofatura" _noObrigatory="true">
+                <label for="entrada_codigofatura">Documento do fornecedor</label>
+            </div>
+            <div class="xinput w25">
+                <input type="text" placeholder="Data de documento" data-inputmask-alias="dd-mm-yyyy" data-val="true" id="entrada_data_compra">
+                <label for="entrada_data_compra">Data de documento</label>
+            </div>
+            <div class="xinput w25">
+                <input type="text" placeholder="Seguro e tarifas" id="entraSeguroTarifas" class="double formatNumber" _noObrigatory="true">
+                <label for="entraSeguroTarifas">Valor de seguro e tarifas de transporte</label>
+            </div>
+            <div class="xinput w100">
+                <textarea placeholder="_" _noObrigatory="true" id="entrada_obs"></textarea>
+                <label for="entrada_obs">Observação</label>
+            </div>
+            <div class="xinput w25">
+                <input type="text" placeholder="Pesquisar artigo" search_article  list="artigos_entrada">
+                <label>Pesquisar artigo (nome ou código)</label>
+            </div>
+            <div class="xinput w25">
+                <input type="text" placeholder="Descrição" description_article>
+                <label>Descrição</label>
+            </div>
+            <div class="xinput w8">
+                <input type="text" placeholder="Quantidade" amount_article class="double">
+                <label>Qtd</label>
+            </div>
+            <div class="xinput w15">
+                <input type="text" placeholder="Preço de compra" class="double formatNumber" price_article >
+                <label>Valor unitário</label>
+            </div>
+            <div class="xinput w15">
+                <input type="text" placeholder="Lote" lote_article _noObrigatory="true">
+                <label>Lote</label>
+            </div>
+            <div class="xinput w15">
+                <input type="text" placeholder="Data de validade" data-inputmask-alias="dd-mm-yyyy" data-val="true" date_expiration_article _noObrigatory="true">
+                <label>Data de validade</label>
+            </div>
+            <div class="xinput w15">
+                <input type="text" placeholder="Qtd Embalagem" disabled amount_packaging _noObrigatory="true">
+                <label>Qtd. Embalagem</label>
+            </div>
+            <div class="flex h-sb v-ct">
+                <button class="xbtn" addArticleTable>Lançar</button>
+            </div>
+        </div>
+        <div class="x-table hovered grow-1">
+            <div class="xheader">
+                <ul class="flex">
+                    <li grow="3">Descrição</li>
+                    <li grow="1">Qtd</li>
+                    <li grow="1">Valor Unitáro</li>
+                    <li grow="1">Lote</li>
+                    <li grow="1">Validade</li>
+                    <li grow="1">Qtd. Emb.</li>
+                    <li grow="1">Valor Final</li>
+                    <li grow="1"></li>
+                </ul>
+            </div>
+            <div class="xbody" tableDocumentArticles >
 
-                        </div>
-                    </div>
-                </div>
             </div>
-            <div class="flex h-sb v-ct" style="float: right;">
-                <button class="xbtn" id="finalizar_guia_entrada">Finalizar guia de entrada</button>
-            </div>
+        </div>
+        <div class="flex h-sb v-ct" style="float: right;">
+            <button class="xbtn" id="finalizar_guia_entrada">Finalizar guia de entrada</button>
         </div>
     </div>
 </div>

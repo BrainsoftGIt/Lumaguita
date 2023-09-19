@@ -16,55 +16,46 @@
     <datalist>
     </datalist>
     <div class="_body" id="faturaAdmin">
-        <div class="modal-frame j-stp">
-            <h3></h3>
-            <div class="flex">
-                <div class="inputs flex xform">
-                    <div class="xinput w25">
-                        <input type="text" placeholder="Pesquisar fatura" pesquisarFatura>
-                        <label>Pesquisar fatura</label>
-                    </div>
-                    <div class="xinput w25">
-                        <input type="text" disabled cliente_titular>
-                        <label>Nome do cliente</label>
-                    </div>
-                    <div class="xinput w15" >
-                        <input type="text" placeholder="Data de emissão" _noObrigatory="true" id="fatura_data_emissao" data-inputmask-alias="dd-mm-yyyy" data-val="true" style="width: 15rem;">
-                        <label for="fatura_data_emissao">Data de emissão</label>
-                    </div>
-                    <div class="xinput w15" >
-                        <input type="text" placeholder="NIF" maxlength="9" disabled cliente_nif _noObrigatory="true">
-                        <label>NIF</label>
-                    </div>
-                    <div class="xinput w15">
-                        <input type="text" placeholder="Telefone" disabled cliente_contacto _noObrigatory="true">
-                        <label>Telefone</label>
-                    </div>
-                    <div class="x-table hovered grow-1">
-                        <div class="xheader">
-                            <ul class="flex">
-                                <li grow="1">Cód. Artigo</li>
-                                <li grow="2">Descrição</li>
-                                <li grow="1">Qtd</li>
-                                <li grow="1">Lote</li>
-                                <li grow="1">Data de validade</li>
-                                <li grow="1">Imposto</li>
-                                <li grow="1">Valor Unit</li>
-                                <li grow="1">Valor Final</li>
-                                <li grow="1"></li>
-                            </ul>
-                        </div>
-                        <div class="xbody" tableDocumentArticles>
-                        </div>
-                    </div>
-                </div>
+        <div class="inputs flex xform">
+            <div class="xinput w25">
+                <input type="text" placeholder="Pesquisar fatura" pesquisarFatura>
+                <label>Pesquisar fatura</label>
             </div>
-            <div class="flex h-sb v-ct" style="float: right;">
-                <button class="xbtn" id="finalizarNotaCredito">Finalizar nota de crédito</button>
+            <div class="xinput w25">
+                <input type="text" disabled cliente_titular>
+                <label>Nome do cliente</label>
             </div>
+            <div class="xinput w25">
+                <input type="text" placeholder="Data de emissão" _noObrigatory="true" id="fatura_data_emissao"
+                       data-inputmask-alias="dd-mm-yyyy" data-val="true">
+                <label for="fatura_data_emissao">Data de emissão</label>
+            </div>
+            <div class="xinput w25">
+                <input type="text" placeholder="NIF" maxlength="9" disabled cliente_nif _noObrigatory="true">
+                <label>NIF</label>
+            </div>
+        </div>
+        <div class="x-table hovered grow-1">
+            <div class="xheader">
+                <ul class="flex">
+                    <li grow="1">Cód. Artigo</li>
+                    <li grow="2">Descrição</li>
+                    <li grow="1">Qtd</li>
+                    <li grow="1">Lote</li>
+                    <li grow="1">Data de validade</li>
+                    <li grow="1">Imposto</li>
+                    <li grow="1">Valor Unit</li>
+                    <li grow="1">Valor Final</li>
+                    <li grow="1"></li>
+                </ul>
+            </div>
+            <div class="xbody empty" tableDocumentArticles>
+            </div>
+        </div>
+        <div class="flex h-sb v-ct" style="float: right;">
+            <button class="xbtn" id="finalizarNotaCredito">Finalizar nota de crédito</button>
         </div>
     </div>
 </div>
-<script src="../assets/js/admin/fatura.js"></script>
-<script src="../assets/js/admin/articleTax.js"></script>
-<script src="../assets/js/admin/articlesDocuments.js"></script>
+</div>
+<script src="../assets/js/admin/notacredito.js"></script>
