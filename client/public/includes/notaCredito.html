@@ -17,6 +17,7 @@
     </datalist>
     <div class="_body" id="faturaAdmin">
         <div class="inputs flex xform">
+            <div class="w8"></div>
             <div class="xinput w25">
                 <input type="text" placeholder="Pesquisar fatura" pesquisarFatura>
                 <label>Pesquisar fatura</label>
@@ -26,27 +27,21 @@
                 <label>Nome do cliente</label>
             </div>
             <div class="xinput w25">
-                <input type="text" placeholder="Data de emissão" _noObrigatory="true" id="fatura_data_emissao"
-                       data-inputmask-alias="dd-mm-yyyy" data-val="true">
-                <label for="fatura_data_emissao">Data de emissão</label>
-            </div>
-            <div class="xinput w25">
                 <input type="text" placeholder="NIF" maxlength="9" disabled cliente_nif _noObrigatory="true">
                 <label>NIF</label>
             </div>
+            <div class="w8"></div>
         </div>
         <div class="x-table hovered grow-1">
             <div class="xheader">
                 <ul class="flex">
                     <li grow="1">Cód. Artigo</li>
-                    <li grow="2">Descrição</li>
-                    <li grow="1">Qtd</li>
-                    <li grow="1">Lote</li>
-                    <li grow="1">Data de validade</li>
+                    <li grow="3">Descrição</li>
+                    <li grow="0.5">Qtd</li>
                     <li grow="1">Imposto</li>
-                    <li grow="1">Valor Unit</li>
-                    <li grow="1">Valor Final</li>
-                    <li grow="1"></li>
+                    <li grow="2">Valor Unit</li>
+                    <li grow="2">Valor Final</li>
+                    <li grow="0.5"></li>
                 </ul>
             </div>
             <div class="xbody empty" tableDocumentArticles>
