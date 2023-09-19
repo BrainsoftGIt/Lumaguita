@@ -24,7 +24,7 @@ app.post( "/api/load/fatura/to/credito/nota", (req, res, next) => {
             }
 
             return res.json({
-                fatura: result.rows?.[0] || [],
+                fatura: result.rows?.[0] || {},
             })
         }
     })

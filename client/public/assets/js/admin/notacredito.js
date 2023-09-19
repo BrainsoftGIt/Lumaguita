@@ -12,11 +12,12 @@ var notacredito = {
             success: ({fatura}) => {
                 let { conta_titularnif, conta_titular, conta_vendas } = fatura;
                 notacredito.fatura = fatura;
-                $("[cliente_titular]").val(conta_titular);
-                $("[cliente_nif]").val(conta_titularnif);
+                $("[cliente_titular]").val(conta_titular || "");
+                $("[cliente_nif]").val(conta_titularnif || "");
 
-                if(!conta_vendas.length){
-                    $("[tableDocumentArticles]").addClass("empty")
+                if(!conta_vendas){
+                    $("[tableDocumentArticles]").empty().addClass("empty");
+                    xAlert("Nota de cretido", "Não foi encontrado numa fatura com esse número!", "error");
                     return
                 }
 
@@ -85,7 +86,7 @@ var notacredito = {
                 itens
             }),
             success: ({...all}) => {
-
+                delete notacredito.fatura;
             }
         });
     }
@@ -95,7 +96,9 @@ $("[pesquisarFatura]").on("keyup", function ({keyCode}){
     let { loadData } = notacredito;
     if(keyCode === 13 && $(this).val()){
         loadData();
+        return
     }
+    xAlert("Nota de cretido", "Priencha o campo fatura!", "error");
 })
 
 $("#finalizarNotaCredito").on("click", function (){
