@@ -15,7 +15,7 @@ alter table tweeks.venda add constraint fk_venda_to_venda_docorigin foreign key 
 `;
 
 
-block( module, { identifier: "ivaNotaCredito", flags:[]}).sql`
+block( module, { identifier: "funct_reg_conta_nota_credito", flags:[]}).sql`
 create or replace function tweeks.funct_reg_conta_nota_credito(args jsonb) returns lib.res
   language plpgsql
 as
