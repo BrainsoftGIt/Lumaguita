@@ -102,7 +102,7 @@ var paramentizadoReports = {
                     return
                 }
                 xAlert("Relatório", "Operação salva com sucesso!");
-                $("#xModalSaveReport").removeClass("active");
+                $("#xModalSaveReport").removeClass("show");
             }
         })
     },
