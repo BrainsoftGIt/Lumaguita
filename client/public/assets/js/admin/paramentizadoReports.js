@@ -96,8 +96,13 @@ var paramentizadoReports = {
                 parametrized_columns,
                 parametrized_groups
             }),
-            success({...all}) {
-                console.log(all)
+            success({message, result}) {
+                if(!result){
+                    xAlert("Relatório", message);
+                    return
+                }
+                xAlert("Relatório", "Operação salva com sucesso!");
+                $("#xModalSaveReport").removeClass("active");
             }
         })
     },
