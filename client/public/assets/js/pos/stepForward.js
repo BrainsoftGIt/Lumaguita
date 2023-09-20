@@ -70,6 +70,31 @@ var setStep = {
                 };
             }
         },
+        showReports(){
+            if(account.post.posto_authmode === 2
+                && $(".credentialPIN").find(".list-users li.active").attr("colab_id") === account.pos_user_session_uuid){
+                $('.credentialPIN').find(".pinkey li").css("pointer-events", "none");
+                account.functionGoForward = function () {
+                    $("#MST-PIN").find(".hideTarget").click();
+                    showTarget("fkPGReport");
+                };
+            }
+            else{
+                $('.credentialPIN').find(".pinkey li").css("pointer-events", "auto");
+                account.functionGoForward = function () {
+                    account.logIN();
+                };
+                account.functionAfterAuth = function (acessoColaborador,  defaultSpace) {
+                    if(acessoColaborador === 2){
+                        account.definirNovoPIN();
+                    }
+                    else{
+                        $("#MST-PIN").find(".hideTarget").click();
+                        showTarget("fkPGReport");
+                    }
+                };
+            }
+        },
         fecharCaixa(){
             if(account.post.posto_authmode === 2
                 && $(".credentialPIN").find(".list-users li.active").attr("colab_id") === account.pos_user_session_uuid){

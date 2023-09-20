@@ -55,6 +55,16 @@ $("[sales]").on("click", function () {
         account.loadUsers(["maguita.pos.vendas"]);
     }
 });
+
+$("[report]").on("click", function () {
+    if(account.hasValidPost()){
+        account.resetModalAuthentication();
+        account.operation = "showReports";
+        $(".fkinputs .table").css("display", "none");
+        account.loadUsers(["maguita.pos.report"]);
+    }
+});
+
 $("#filtro_data_vendas").on("click", "li", function () {
     $(this).addClass('active').siblings().removeClass('active');
     $("#filtro_data_vendas_atual").text($(this).text());
