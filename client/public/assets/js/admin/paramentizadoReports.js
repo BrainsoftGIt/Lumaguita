@@ -327,20 +327,15 @@ $("#loadReport").on("click", function (){
         }
         paramentizadoReports.headers = headers;
 
-    pagination.get_amount_item_page["body-report-list"] = {
-        value_por_lado: 4,
-        load: report.filtrar
-    }
-
-    pagination.create_pagination("body-report-list", report.offset, report.limit).then(() => {
-        $("#xModalLoadReport").removeClass("show");
-    })
-        .catch();
         pagination.get_amount_item_page["body-report-list"] = {
             value_por_lado: 4,
             load: report.filtrar
         }
-        pagination.create_pagination("body-report-list", report.offset, report.limit).then().catch();
+
+        pagination.create_pagination("body-report-list", report.offset, report.limit).then(() => {
+            $("#xModalLoadReport").removeClass("show");
+        })
+            .catch();
     })
 })
 
