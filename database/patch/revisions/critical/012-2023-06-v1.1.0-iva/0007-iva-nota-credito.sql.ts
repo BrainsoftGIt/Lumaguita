@@ -23,6 +23,7 @@ $$
 declare
   /**
     args := {
+      arg_conta_chave: CHAVE
       arg_colaborador_id: UID
       arg_espaco_auth: UID
       conta_id: UID,
@@ -63,7 +64,7 @@ begin
         art.*,
         count( venc.venda_id ) > 0 as venda_ncexists
       from tweeks.conta ct
-        inner join tweeks.venda ve on ct.conta_id = ve.venda_id
+        inner join tweeks.venda ve on ct.conta_id = ve.venda_conta_id
           and ve._branch_uid = arg_branch_uid
           and ve.venda_estado = _const.maguita_venda_estado_fechado
         left join tweeks.artigo art on ve.venda_artigo_id = art.artigo_id
@@ -75,9 +76,7 @@ begin
           and venc.venda_venda_docorign = ve.venda_id
           and venc.venda_estado = _const.maguita_venda_estado_fechado
           and venc._branch_uid = arg_branch_uid
-
       where ct.conta_id = arg_conta_id
-        and ctnc.conta_conta_docorigin = arg_conta_id
       group by ct.conta_id,
         art.artigo_id,
         ve.venda_id
@@ -263,6 +262,7 @@ begin
           'conta_titularnif', _conta.conta_titularnif,
           'conta_data', _conta.conta_data,
           'arg_vendas', _vendas.arg_vendas,
+          'arg_conta_chave', args->>'arg_conta_chave',
           'conta_conta_docorigin', _conta.conta_id,
           'conta_espaco_notacredito', arg_espaco_auth
         )
@@ -334,7 +334,8 @@ begin
       'guia_documentoperacao', format('NC-%s',  to_char( clock_timestamp(), 'YYYYMMDDHHMISS-US')),
       'guia_observacao', 'Guia de devolução ao stock ao efeturar uma nota de credito',
       'guia_metadata', coalesce( _conta_close_res, jsonb_build_object() ),
-      'custos', jsonb_build_array()
+      'custos', jsonb_build_array(),
+      'arg_conta_chave', args->>'arg_conta_chave'
     )
   );
 
