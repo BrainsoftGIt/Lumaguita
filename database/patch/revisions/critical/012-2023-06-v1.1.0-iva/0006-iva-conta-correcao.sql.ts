@@ -1,5 +1,23 @@
 import {block} from "../../../core/updater";
 
+
+block( module, {  identifier: "SERIE-GUIA-SAIDA" }).sql`
+do $$
+BEGIN 
+  if not exists(
+    select *
+      from tweeks.tserie
+      where tserie_id = 5
+  ) then 
+    INSERT INTO tweeks.tserie (tserie_id, tserie_desc, tserie_code, tserie_seqlimit, tserie_numlimit) VALUES (5, 'Guia Saida', 'GS', 6, 7);
+  end if;
+  
+  perform map.constant('maguita_tserie_guiasaida', 'int2', 5, 'Guia de saida', false, 'Guia de saida' );
+end;
+$$
+
+`;
+
 block( module, { identifier: "correct-conta", flags:[]}).sql`
 
 create or replace function tweeks.funct_pos_change_conta_fechar(args jsonb) returns lib.res
@@ -87,6 +105,7 @@ declare
     if arg_tserie_id not in (
         _const.maguita_tserie_fatura,
         _const.maguita_tserie_faturarecibo,
+        _const.maguita_tserie_guiasaida,
         _const.maguita_tserie_notacredito
     ) then
       return lib.res_false( 'Não pode fechar a conta o com tipo de serie selecionada!' );
