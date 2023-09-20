@@ -33,6 +33,11 @@ end;
 $$
 `;
 
+block( module, { identifier: "maguita_cliente_final_maguita_cliente_finalnotacredito"}).sql`
+    select map.constant( 'maguita_cliente_final', 'uuid', lib.to_uuid( 1 ) );
+    select map.constant( 'maguita_cliente_finalnotacredito', 'uuid', lib.to_uuid( 2 ) );
+`;
+
 block( module, { identifier: "correct-conta", flags:[]}).sql`
 
 create or replace function tweeks.funct_pos_change_conta_fechar(args jsonb) returns lib.res
@@ -45,9 +50,7 @@ declare
       arg = {
         arg_espaco_auth: ID,
         arg_colaborador_id: ID,
-        arg_tserie_id: ID,
-        arg_group_id
-      
+        arg_tserie_id: ID,      
         deposito:{
           deposito_cliente_id
           deposito_caixa_id
@@ -90,7 +93,6 @@ declare
     arg_espaco_auth uuid not null default args->>'arg_espaco_auth';
     arg_colaborador_id uuid not null default args->>'arg_colaborador_id';
     arg_tserie_id int2 default args->>'arg_tserie_id';
-    arg_group_id int2 default args->>'arg_group_id';
 
     arg_conta_id uuid default args->>'conta_id';
     arg_caixa_id uuid default args->>'de_caixa_id';
@@ -142,10 +144,9 @@ declare
         _conta.conta_cliente_id is null,
         _conta.conta_cliente_id = lib.to_uuid( 1 ) -- cliente final
     ) and arg_tserie_id not in (
-      _const.maguita_tserie_faturarecibo,
-      _const.maguita_tserie_notacredito
+      _const.maguita_tserie_faturarecibo
     ) then
-      return lib.res_false( 'Só pode lançar para os clientes finais a fatura/recibo ou uma nota de credito!');
+      return lib.res_false( 'Só pode lançar nos cliente finais as futuras/recibos!');
     end if;
     
     if arg_tserie_id = _const.maguita_tserie_faturarecibo then
@@ -180,7 +181,7 @@ declare
       when arg_tserie_id = _const.maguita_tserie_faturarecibo then _const.maguita_tgrupo_cnormal
       when arg_tserie_id = _const.maguita_tserie_fatura then _const.maguita_tgrupo_ccorrente
       when arg_tserie_id = _const.maguita_tserie_guiasaida then _const.maguita_tgrupo_ccorrente
-      when arg_tserie_id = _const.maguita_tserie_notacredito then arg_group_id
+      when arg_tserie_id = _const.maguita_tserie_notacredito then _const.maguita_tgrupo_ccorrente
     end;
 
     _rec := tweeks.__sets_generate_documento( arg_espaco_auth, arg_tserie_id );
