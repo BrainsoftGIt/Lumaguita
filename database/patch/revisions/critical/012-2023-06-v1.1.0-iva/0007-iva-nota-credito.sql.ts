@@ -365,7 +365,7 @@ begin
       'conta_titular', _conta.conta_titular,
       'conta_titularnif', _conta.conta_titularnif,
       'conta_data', coalesce( _conta_args.conta_data, now()::date),
-      'conta_cliente_id', _conta.conta_cliente_id,
+      'conta_cliente_id', _conta_args.conta_cliente_id,
       'guia_documentoperacao', format('NC-%s',  to_char( clock_timestamp(), 'YYYYMMDDHHMISS-US')),
       'guia_observacao', 'Guia de devolução ao stock ao efeturar uma nota de credito',
       'guia_metadata', coalesce( _conta_res.data, jsonb_build_object() ),
