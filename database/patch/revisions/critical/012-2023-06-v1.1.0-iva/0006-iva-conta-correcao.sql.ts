@@ -119,7 +119,7 @@ declare
 
     
     if _conta.conta_id is null then 
-        return lib.res_false( 'Identificador da conta a ser fechada não foi informado!' );
+        raise exception '%', 'Identificador da conta a ser fechada não foi informado!';
     end if;
     
     if _conta.conta_estado = _const.maguita_conta_estado_fechado then
