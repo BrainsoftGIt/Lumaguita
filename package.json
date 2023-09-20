@@ -35,7 +35,8 @@
     "test:nodemon:public-nw": "nodemon --config etc/nodemon/public-nw.nodemon.json",
     "start:server": "node server/launcher --appMode pord --selfMaster play",
     "database:compile": "node database/project/upgrade/current/_up.js",
-    "database:upgrade": "node database/project/upgrade/current/_up.js --upgrade"
+    "database:upgrade": "node database/project/upgrade/current/_up.js --upgrade",
+    "database:cataloger": "node database/cataloger/cataloger.js"
   },
   "dependencies": {
     "@google-cloud/local-auth": "^2.1.0",
