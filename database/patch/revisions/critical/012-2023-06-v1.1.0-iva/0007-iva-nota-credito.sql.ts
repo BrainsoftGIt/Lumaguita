@@ -172,7 +172,6 @@ begin
    */
   with __iten as (
     select
-        null as venda_id,
         iten.venda_artigo_id,
         iten.venda_quantidade * -1 as venda_quantidade,
         iten.venda_custounitario,
@@ -182,6 +181,7 @@ begin
         iten.venda_validade,
         iten.venda_metadata,
         iten.venda_montantetotal,
+        iten.venda_id as venda_venda_docorign,
         iten.venda_venda_id as ___iten_venda_super
       from tweeks.venda iten
         inner join tweeks.artigo at on iten.venda_artigo_id = at.artigo_id
@@ -191,7 +191,6 @@ begin
         and iten._branch_uid = arg_branch_uid
   ), __vendas as (
     select
-        null as venda_id,
         ve.venda_id as venda_venda_docorign,
         ve.venda_artigo_id,
         ve.venda_quantidade * -1 as venda_quantidade,
