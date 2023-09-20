@@ -172,7 +172,6 @@ begin
    */
   with __iten as (
     select
-        null as venda_id,
         iten.venda_artigo_id,
         iten.venda_quantidade * -1 as venda_quantidade,
         iten.venda_custounitario,
@@ -182,6 +181,7 @@ begin
         iten.venda_validade,
         iten.venda_metadata,
         iten.venda_montantetotal,
+        iten.venda_id as venda_venda_docorign,
         iten.venda_venda_id as ___iten_venda_super
       from tweeks.venda iten
         inner join tweeks.artigo at on iten.venda_artigo_id = at.artigo_id
@@ -191,7 +191,6 @@ begin
         and iten._branch_uid = arg_branch_uid
   ), __vendas as (
     select
-        null as venda_id,
         ve.venda_id as venda_venda_docorign,
         ve.venda_artigo_id,
         ve.venda_quantidade * -1 as venda_quantidade,
@@ -248,29 +247,63 @@ begin
       -- requerido
       arg_vendas
    */
+
+
+
+  if _conta.conta_cliente_id is null or _conta.conta_cliente_id = _const.maguita_cliente_final and not exists(
+      select *
+      from tweeks.cliente c
+      where c.cliente_id = _const.maguita_cliente_finalnotacredito
+  ) then
+      select * into __branch from cluster.branch where _branch_uid = arg_branch_uid;
+      insert into tweeks.cliente(
+          cliente_id,
+          cliente_colaborador_id,
+          cliente_colaborador_gerente,
+          cliente_espaco_auth,
+          cliente_titular,
+          _branch_uid,
+          cliente_code
+      ) values (
+                   _const.maguita_cliente_finalnotacredito,
+                   _const.colaborador_system_data,
+                   __branch.branch_main_user,
+                   __branch.branch_main_workspace,
+                   'CONTA DE NOTA DE CREDITO',
+                   __branch._branch_uid,
+                   'NC100010'
+               );
+  end if;
+  
+  _conta_args.conta_cliente_id := _conta.conta_cliente_id;
+  if _conta_args.conta_cliente_id is null or _conta_args.conta_cliente_id = _const.maguita_cliente_final then
+      _conta_args.conta_cliente_id := _const.maguita_cliente_finalnotacredito;
+  end if;
+
+
   _conta_res := tweeks.funct_pos_reg_conta(
     jsonb_build_object(
-          'arg_colaborador_id', arg_colaborador_id,
-          'arg_espaco_auth', _conta.conta_espaco_auth,
-          'conta_posto_id', _conta_args.conta_posto_id,
-          'conta_mesa', _conta_args.conta_mesa,
-          'conta_id', null,
-          'conta_extension', _conta_args.conta_extension,
-          'conta_chave', _conta_args.conta_chave,
-          'conta_currency_id', null,
-          'conta_tpaga_id', null,
-          'conta_cliente_id', _conta.conta_cliente_id,
-          'conta_titular', _conta.conta_titular,
-          'conta_titularnif', _conta.conta_titularnif,
-          'conta_data', _conta.conta_data,
-          'arg_vendas', _vendas.arg_vendas,
-          'conta_chave', _conta.conta_chave,
-          'conta_conta_docorigin', _conta.conta_id,
-          'conta_espaco_notacredito', arg_espaco_auth
-        )
+      'arg_colaborador_id', arg_colaborador_id,
+      'arg_espaco_auth', _conta.conta_espaco_auth,
+      'conta_posto_id', _conta_args.conta_posto_id,
+      'conta_mesa', _conta_args.conta_mesa,
+      'conta_extension', coalesce( _conta_args.conta_extension, jsonb_build_object()),
+      'conta_chave', _conta_args.conta_chave,
+      'conta_currency_id', null,
+      'conta_tpaga_id', null,
+      'conta_cliente_id', _conta_args.conta_cliente_id,
+      'conta_titular', _conta.conta_titular,
+      'conta_titularnif', _conta.conta_titularnif,
+      'conta_data', current_date,
+      'arg_vendas', _vendas.arg_vendas,
+      'conta_conta_docorigin', _conta.conta_id,
+      'conta_espaco_notacredito', arg_espaco_auth
+    )
   );
 
-  if _conta_res.result then
+  raise notice '%', to_jsonb(_conta_res);
+  
+  if not _conta_res.result then
     return _conta_res;
   end if;
 
@@ -318,35 +351,6 @@ begin
         }]
    */
   
-  if _conta.conta_cliente_id is null or _conta.conta_cliente_id = _const.maguita_cliente_final and not exists(
-    select *
-       from tweeks.cliente c
-       where c.cliente_id = _const.maguita_cliente_finalnotacredito
-  ) then 
-    select * into __branch from cluster.branch where _branch_uid = arg_branch_uid;
-    insert into tweeks.cliente(
-        cliente_id,
-        cliente_colaborador_id,
-        cliente_colaborador_gerente,
-        cliente_espaco_auth,
-        cliente_titular,
-        _branch_uid,
-        cliente_code
-    ) values (
-      _const.maguita_cliente_finalnotacredito,
-      _const.colaborador_system_data,
-      __branch.branch_main_user,
-      __branch.branch_main_workspace,
-      'CONTA DE NOTA DE CREDITO',
-      __branch._branch_uid,
-      'NC100010'
-    );
-  end if;
-  
-  if _conta.conta_cliente_id is null or _conta.conta_cliente_id = _const.maguita_cliente_final then 
-    _conta.conta_cliente_id := _const.maguita_cliente_finalnotacredito;
-  end if;
-
   _conta_close_res := tweeks.funct_pos_change_conta_fechar(
     jsonb_build_object(
       'arg_colaborador_id', arg_colaborador_id,
