@@ -117,6 +117,11 @@ declare
     _conta.conta_data := coalesce( _conta.conta_data, current_date );
     _deposito := jsonb_populate_record( _deposito, args->'deposito' );
 
+    
+    if _conta.conta_id is null then 
+        return lib.res_false( 'Identificador da conta a ser fechada não foi informado!' );
+    end if;
+    
     if _conta.conta_estado = _const.maguita_conta_estado_fechado then
         return lib.res_false( 'Essa conta já se encontra fechada!' );
     end if;
