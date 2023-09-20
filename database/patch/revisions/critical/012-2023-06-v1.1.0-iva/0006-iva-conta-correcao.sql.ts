@@ -662,7 +662,6 @@ begin
     ;
 end
 $$;
-
 `;
 
 block( module, { identifier: "correct-conta", flags:[ "@unique" ]}).sql`
