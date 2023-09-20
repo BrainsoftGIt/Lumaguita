@@ -261,7 +261,7 @@ begin
         l.link_metadata,
         count( di.dispoe_id ) as artigos_extras
       from tweeks.artigo art
-        inner join tweeks.link l on art.artigo_id =(  l.link_referencia->>'art.artigo_id' )::uuid
+        inner join tweeks.link l on art.artigo_id =(  l.link_referencia->>'artigo_id' )::uuid
           and l.link_estado = _const.maguita_link_estado_ativo
           and l.link_tlink_id = _const.maguita_tlink_preco
           and l.link_espaco_destino = arg_espaco_auth
