@@ -146,10 +146,11 @@ var paramentizadoReports = {
                 let listFiterData = $('[list-load="filter"]').empty();
                 list.forEach(({ filter_valuemode, filter_value, filter_column, filter_name, filter_opr, filter_props: { key, format, src, source }, filter_type, filter_mode }) => {
                     let disabled = (DatadoProcessamento === filter_valuemode || ValorAtual === filter_valuemode || RelativoaDataAtual === filter_valuemode);
+                    let disabledText = (disabled) ? `disabled="${disabled}"` : "";
                     if (format === "select") {
                         listFiterData.append(` <div valuemode="${filter_valuemode}" class="xselect w100" dataType="${filter_type}" name="${filter_name.replaceAll(" ", "")}"
                        column="${filter_column}" opr="${filter_opr}" key="${key}"  mode="${filter_mode}">
-                       <input ${PedirSempre !== filter_valuemode.toString() ? " _noObrigatory='true' class='_noObrigatory' " : ""} disabled="${disabled}" type="text" readOnly>
+                       <input ${PedirSempre !== filter_valuemode.toString() ? " _noObrigatory='true' class='_noObrigatory' " : ""} ${disabledText} type="text" readOnly>
                            <label>${filter_name}</label>
                            <ul id="v2filtro_${filter_name.replaceAll(" ", "")}"></ul>
                       </div>`);
@@ -221,7 +222,7 @@ $('[list="report-paramentidado"]').on("mousedown", "li", function (){
 
 $("#loadReport").on("click", function (){
 
-    let {types : { PedirSempre} ,seleted : { parametrized_name, parametrized_groups: groups, parametrized_source: source, parametrized_columns: columns, parametrized_props : { windows_function_key, orders, listFormats, totalColumnsWeight, headers }}} = paramentizadoReports;
+    let {types : { PedirSempre, Pedir}, seleted : { parametrized_name, parametrized_groups: groups, parametrized_source: source, parametrized_columns: columns, parametrized_props : { windows_function_key, orders, listFormats, totalColumnsWeight, headers }}} = paramentizadoReports;
     paramentizadoReports.report = true;
     $("#totalEntriesReport").html(parametrized_name);
     let errorPrienchimento = false;
@@ -251,9 +252,12 @@ $("#loadReport").on("click", function (){
             $(this).find("input").focus();
             errorPrienchimento = true;
         }
+        if(rt.valuemode === Pedir && !rt.value){
+            return null
+        }
 
         return rt;
-    }).get();
+    }).get().find( data => !!data);
 
     if(errorPrienchimento){
         xAlert("Relatório", "Por favor, preencha campos obrigátorios!", "warning");
