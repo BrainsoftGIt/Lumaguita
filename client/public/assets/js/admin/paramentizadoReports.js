@@ -5,7 +5,7 @@ var paramentizadoReports = {
         RelativoaDataAtual: "3",
         Pedir: "4",
         PedirSempre: "5",
-},
+    },
     loadPosto : () => {
         $.ajax({
             url: "/api/posto/load",
