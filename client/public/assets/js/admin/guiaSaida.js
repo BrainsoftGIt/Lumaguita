@@ -71,6 +71,7 @@ var guiaSaida = {
         });
     },
     registar_saida(montante, conta_id){
+        let GIADEDAIDA = 5;
         let dados = {};
         dados.conta_id = conta_id;
         dados.admin = true;
@@ -103,7 +104,7 @@ var guiaSaida = {
             url: "/api/pos/pay",
             method: "POST",
             contentType: "application/json",
-            data: JSON.stringify(dados),
+            data: JSON.stringify({...dados, arg_tserie_id: GIADEDAIDA}),
             error() {$("#finalizar_guia_saida").prop("disabled", false).removeClass("loading")},
             success(e) {
                 $("#finalizar_guia_saida").prop("disabled", false).removeClass("loading");

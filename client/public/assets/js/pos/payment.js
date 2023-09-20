@@ -325,6 +325,8 @@ var payment = {
         let tiposPagamento = $("#tiposPagamento");
         let documento_referencia_pagamento = $("#documento_referencia_pagamento");
 
+        let arg_tserie_id = tiposPagamento.find("li.active").attr("arg_tserie_id");
+
         if(tiposPagamento.find("li.active").attr("corrente") === undefined){
             dados.deposito = {
                 deposito_caixa_id: box.id,
@@ -359,7 +361,7 @@ var payment = {
             url: "/api/pos/pay",
             method: "POST",
             contentType: "application/json",
-            data: JSON.stringify(dados),
+            data: JSON.stringify({...dados, arg_tserie_id}),
             error(){$("#posPay").prop("disabled", false)},
             complete(){
                 payment.pay = currentFunction;
@@ -480,7 +482,7 @@ $("#efetuar_pagamento").on("click", function () {
 });
 $("#tiposPagamento").on("click", "li", function () {
     let tipo_desc = $(this).attr("tipo_desc");
-    if(tipo_desc === "cheque" || tipo_desc === "deposito" || tipo_desc === "transferencia" || tipo_desc === "cash" ){
+    if(tipo_desc === "cheque" || tipo_desc === "deposito" || tipo_desc === "transferencia" || tipo_desc === "cash" || tipo_desc === "pos" ){
         $("#payAndPrint").text("pagar & imprimir");
         if($("#moeda_pagamento").length === 0){
             $(".payment-inputs").append(`<div class="input-field is-money-field" coin="STN" id="moeda_pagamento">
@@ -489,16 +491,15 @@ $("#tiposPagamento").on("click", "li", function () {
                                             <span id="changeCoin"></span>
                                         </div>`);
         }
-        if(tipo_desc !== "cash"){
-            if($("#numeroOperacaoPagamento").length === 0){
+        if (tipo_desc !== "cash" && tipo_desc !== "pos") {
+            if ($("#numeroOperacaoPagamento").length === 0) {
                 $(".payment-inputs").append(`<div class="input-field" id="numeroOperacaoPagamento">
                                             <input type="text" id="documento_referencia_pagamento">
-                                            <label for="documento_referencia_pagamento">${"Número de "+$(this).attr("tipo_text")}</label>
+                                            <label for="documento_referencia_pagamento">${"Número de " + $(this).attr("tipo_text")}</label>
                                             <span></span>
                                         </div>`);
-            }
-            else{
-                $("#numeroOperacaoPagamento label").text("Número de "+$(this).attr("tipo_text"));
+            } else {
+                $("#numeroOperacaoPagamento label").text("Número de " + $(this).attr("tipo_text"));
             }
         }
         else $("#numeroOperacaoPagamento").remove();

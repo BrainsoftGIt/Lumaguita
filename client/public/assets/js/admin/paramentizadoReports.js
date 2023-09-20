@@ -271,6 +271,61 @@ $("#loadReport").on("click", function (){
         orders
     }
     paramentizadoReports.headers = headers;
+    $(`#tipo_relatorios li[source='${source}']`).click();
+    $("#grupos_colunas_relatorio li").removeClass("active");
+    $("#colunas_relatorio li").removeClass("active").attr("newOrder", 99999);
+    columns.forEach(({key}, index) => {
+        let li = $(`#colunas_relatorio li[key='${key}']`);
+        if(li) {
+            li.addClass("active").attr("newOrder", index);
+        }
+    });
+
+    groups.forEach(({key}, index) => {
+        let li = $(`#grupos_colunas_relatorio li[key='${key}']`);
+        if(li) {
+            li.addClass("active").attr("newOrder", index);
+        }
+    });
+
+    let shortData = ({li, listas}) => {
+
+        // Converte a coleção jQuery em um array para que possamos classificá-lo
+        const listaArray = li.get();
+
+        // Classifique os elementos com base no valor do atributo "newOrder"
+        listaArray.sort((a, b) => {
+            const valorA = parseInt($(a).attr("newOrder"));
+            const valorB = parseInt($(b).attr("newOrder"));
+            return valorA - valorB;
+        });
+
+        // Adiciona os elementos ordenados de volta à lista
+        listas.append(listaArray);
+    }
+
+    shortData({
+        li: $("#colunas_relatorio li[newOrder]"),
+        listas: $("#colunas_relatorio")
+    });
+
+    shortData({
+        li: $("#grupos_colunas_relatorio li[newOrder]"),
+        listas: $("#grupos_colunas_relatorio")
+    });
+
+    setTimeout(() => {
+        report.listFormats = listFormats;
+        report.totalColumnsWeight = totalColumnsWeight;
+        paramentizadoReports.objectView = {
+            windows_function_key,
+            source,
+            columns,
+            filters,
+            groups,
+            orders
+        }
+        paramentizadoReports.headers = headers;
 
     pagination.get_amount_item_page["body-report-list"] = {
         value_por_lado: 4,
@@ -281,6 +336,12 @@ $("#loadReport").on("click", function (){
         $("#xModalLoadReport").removeClass("show");
     })
         .catch();
+        pagination.get_amount_item_page["body-report-list"] = {
+            value_por_lado: 4,
+            load: report.filtrar
+        }
+        pagination.create_pagination("body-report-list", report.offset, report.limit).then().catch();
+    })
 })
 
 var {loadPosto, loadArmazem, load} = paramentizadoReports;

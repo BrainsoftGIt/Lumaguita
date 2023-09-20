@@ -15,7 +15,7 @@ alter table tweeks.venda add constraint fk_venda_to_venda_docorigin foreign key 
 `;
 
 
-block( module, { identifier: "ivaNotaCredito", flags:[]}).sql`
+block( module, { identifier: "funct_reg_conta_nota_credito", flags:[]}).sql`
 create or replace function tweeks.funct_reg_conta_nota_credito(args jsonb) returns lib.res
   language plpgsql
 as
@@ -23,6 +23,7 @@ $$
 declare
   /**
     args := {
+      conta_chave: CHAVE
       arg_colaborador_id: UID
       arg_espaco_auth: UID
       conta_id: UID,
@@ -38,6 +39,7 @@ declare
   arg_espaco_auth uuid default args->>'arg_espaco_auth';
   arg_conta_id uuid default args->>'conta_id';
   arg_branch_uid uuid default tweeks.__branch_uid( arg_colaborador_id, arg_espaco_auth );
+  __branch cluster.branch;
   _data record;
   _vendas record;
   _conta tweeks.conta;
@@ -47,8 +49,9 @@ declare
   _conta_close_res lib.res;
   itens uuid[] default array( select (e.doc->>'venda_id')::uuid from jsonb_array_elements( args->'itens' ) e ( doc ) );
 begin
-  _conta := map.constant();
+  _const := map.constant();
   _conta_args := jsonb_populate_record( _conta_args, args );
+  _conta_args.conta_posto_fecho := _conta_args.conta_posto_id;
   _conta := tweeks._get_conta( arg_conta_id );
 
   if _conta.conta_estado != _const.maguita_conta_estado_fechado then
@@ -63,7 +66,7 @@ begin
         art.*,
         count( venc.venda_id ) > 0 as venda_ncexists
       from tweeks.conta ct
-        inner join tweeks.venda ve on ct.conta_id = ve.venda_id
+        inner join tweeks.venda ve on ct.conta_id = ve.venda_conta_id
           and ve._branch_uid = arg_branch_uid
           and ve.venda_estado = _const.maguita_venda_estado_fechado
         left join tweeks.artigo art on ve.venda_artigo_id = art.artigo_id
@@ -75,9 +78,7 @@ begin
           and venc.venda_venda_docorign = ve.venda_id
           and venc.venda_estado = _const.maguita_venda_estado_fechado
           and venc._branch_uid = arg_branch_uid
-
       where ct.conta_id = arg_conta_id
-        and ctnc.conta_conta_docorigin = arg_conta_id
       group by ct.conta_id,
         art.artigo_id,
         ve.venda_id
@@ -263,6 +264,7 @@ begin
           'conta_titularnif', _conta.conta_titularnif,
           'conta_data', _conta.conta_data,
           'arg_vendas', _vendas.arg_vendas,
+          'conta_chave', _conta.conta_chave,
           'conta_conta_docorigin', _conta.conta_id,
           'conta_espaco_notacredito', arg_espaco_auth
         )
@@ -315,7 +317,35 @@ begin
           custoguia_tcusto_id: 1 - DESPESA | 2 - RECEITA
         }]
    */
-
+  
+  if _conta.conta_cliente_id is null or _conta.conta_cliente_id = _const.maguita_cliente_final and not exists(
+    select *
+       from tweeks.cliente c
+       where c.cliente_id = _const.maguita_cliente_finalnotacredito
+  ) then 
+    select * into __branch from cluster.branch where _branch_uid = arg_branch_uid;
+    insert into tweeks.cliente(
+        cliente_id,
+        cliente_colaborador_id,
+        cliente_colaborador_gerente,
+        cliente_espaco_auth,
+        cliente_titular,
+        _branch_uid,
+        cliente_code
+    ) values (
+      _const.maguita_cliente_finalnotacredito,
+      _const.colaborador_system_data,
+      __branch.branch_main_user,
+      __branch.branch_main_workspace,
+      'CONTA DE NOTA DE CREDITO',
+      __branch._branch_uid,
+      'NC100010'
+    );
+  end if;
+  
+  if _conta.conta_cliente_id is null or _conta.conta_cliente_id = _const.maguita_cliente_final then 
+    _conta.conta_cliente_id := _const.maguita_cliente_finalnotacredito;
+  end if;
 
   _conta_close_res := tweeks.funct_pos_change_conta_fechar(
     jsonb_build_object(
@@ -326,15 +356,18 @@ begin
       'conta_id', _conta_res.data->>'conta_id',
       'conta_extension', jsonb_build_object(),
       'conta_posto_id',  _conta_args.conta_posto_id,
-      'conta_desconto', (_conta.conta_desconto * -1),
+      'conta_posto_fecho',  _conta_args.conta_posto_id,
+      'conta_desconto', ( _conta.conta_desconto * -1 ),
       'conta_titular', _conta.conta_titular,
       'conta_titularnif', _conta.conta_titularnif,
       'conta_data', coalesce( _conta_args.conta_data, now()::date),
       'conta_cliente_id', _conta.conta_cliente_id,
       'guia_documentoperacao', format('NC-%s',  to_char( clock_timestamp(), 'YYYYMMDDHHMISS-US')),
       'guia_observacao', 'Guia de devolução ao stock ao efeturar uma nota de credito',
-      'guia_metadata', coalesce( _conta_close_res, jsonb_build_object() ),
-      'custos', jsonb_build_array()
+      'guia_metadata', coalesce( _conta_res.data, jsonb_build_object() ),
+      'custos', jsonb_build_array(),
+      'conta_chave', _conta_args.conta_chave,
+      'arg_group_id', _conta._tgrupo_id
     )
   );
 
@@ -351,11 +384,13 @@ declare
     args := {
       arg_colaborador_id: UID
       arg_espaco_auth: UID
+      conta_fatura
     }
    */
   arg_colaborador_id uuid default args->>'arg_colaborador_id';
   arg_espaco_auth uuid default args->>'arg_espaco_auth';
   arg_branch uuid default tweeks.__branch_uid( arg_colaborador_id, arg_espaco_auth );
+  _conta_fatura character varying := args->>'conta_fatura';
   _const map.constant;
 begin
   _const := map.constant();
@@ -380,9 +415,10 @@ begin
           _ve.venda_conta_id,
           array_agg( to_jsonb( _vei ) ) as venda_itens
         from __venda _ve
-          inner join __venda _vei on _ve.venda_id = _vei.venda_venda_id
+          left join __venda _vei on _ve.venda_id = _vei.venda_venda_id
         where _ve.venda_venda_id is null
-        group by _ve.venda_id
+        group by _ve.venda_id,
+          _ve.venda_conta_id
 
     ), __conta as (
       select
@@ -391,11 +427,12 @@ begin
         from tweeks.conta ct
           inner join __venda_group _veg on ct.conta_id = _veg.venda_conta_id
           inner join __venda _ved on _veg.venda_id = _ved.venda_id
-          left join tweeks.venda venc on _veg.venda_id = venc.venda_venda_docorign
-            and venc.venda_estado = _const.maguita_venda_estado_fechado
+          left join tweeks.venda venda_ncred on _veg.venda_id = venda_ncred.venda_venda_docorign
+            and venda_ncred.venda_estado = _const.maguita_venda_estado_fechado
         where ct._branch_uid = arg_branch
           and ct.conta_estado = _const.maguita_conta_estado_fechado
-          and venc.venda_id is null
+          and venda_ncred.venda_id is null
+          and ct.conta_numerofatura = _conta_fatura
         group by ct.conta_id
     ) select to_jsonb( _ct )
         from __conta _ct

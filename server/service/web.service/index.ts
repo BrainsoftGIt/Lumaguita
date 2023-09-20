@@ -68,17 +68,6 @@ let redirect :{
 let versionCode = `v${VERSION.NUMBER.split(".").join("")}`;
 let switchVersion = "/switch-version";
 
-
-// app.use(helmet({
-//     contentSecurityPolicy: {
-//         directives: {
-//             frameAncestors: ["'self'", "https://zootakuxy.luma.brainsoftstp.com", "https://v206.zootakuxy.luma.brainsoftstp.com"],
-//             frameSrc: ["'self'", "https://v206.zootakuxy.luma.brainsoftstp.com",  "https://zootakuxy.luma.brainsoftstp.com"],
-//             scriptSrc: ["'self'", "'unsafe-inline'"]
-//         },
-//     },
-// }));
-
 app.use( (req, res, next) => {
     let existingQueryParams = Object.entries(req.query).map(([key, value]) => `${key}=${value}`).join('&');
 
@@ -123,29 +112,7 @@ app.use( (req, res, next) => {
                     <body>
                         <iframe id="fullscreen-iframe" src="${redirectUrl}" ></iframe>
                         <script>
-                            // Obtém o elemento iframe
                             var iframe = document.getElementById('fullscreen-iframe');
-                            // iframe.addEventListener('load', function() {
-                            //   // Obtém o título da página dentro do iframe
-                            //   var iframeDocument = iframe.contentDocument || iframe.contentWindow.document;
-                            //   var iframeTitle = iframeDocument.title;
-                            //
-                            //   // Envia o título para a página principal usando postMessage
-                            //   window.parent.postMessage({ iframeTitle }, '*');
-                            // });
-                            //
-                            // // Adiciona um ouvinte de evento para mensagens postMessage
-                            // window.addEventListener('message', function(event) {
-                            //   // Verifica se a mensagem veio da página principal
-                            //   if (event.origin === 'https://zootakuxy.luma.brainsoftstp.com') {
-                            //     // Obtém o título do iframe da mensagem
-                            //     var iframeTitle = event.data.iframeTitle;
-                            //
-                            //     // Define o título da página dentro do iframe com o título recebido
-                            //     document.title = iframeTitle;
-                            //   }
-                            // });
-
 
                         </script>
                     </body>
