@@ -47,7 +47,7 @@ declare
   _conta_close_res lib.res;
   itens uuid[] default array( select (e.doc->>'venda_id')::uuid from jsonb_array_elements( args->'itens' ) e ( doc ) );
 begin
-  _conta := map.constant();
+  _const := map.constant();
   _conta_args := jsonb_populate_record( _conta_args, args );
   _conta := tweeks._get_conta( arg_conta_id );
 
