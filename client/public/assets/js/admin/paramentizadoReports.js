@@ -252,6 +252,7 @@ $("#loadReport").on("click", function (){
             $(this).find("input").focus();
             errorPrienchimento = true;
         }
+
         if(rt.valuemode === Pedir && !rt.value){
             return null
         }
