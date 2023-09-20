@@ -50,6 +50,7 @@ declare
 begin
   _const := map.constant();
   _conta_args := jsonb_populate_record( _conta_args, args );
+  _conta_args.conta_posto_fecho := _conta_args.conta_posto_id;
   _conta := tweeks._get_conta( arg_conta_id );
 
   if _conta.conta_estado != _const.maguita_conta_estado_fechado then
@@ -326,6 +327,7 @@ begin
       'conta_id', _conta_res.data->>'conta_id',
       'conta_extension', jsonb_build_object(),
       'conta_posto_id',  _conta_args.conta_posto_id,
+      'conta_posto_fecho',  _conta_args.conta_posto_id,
       'conta_desconto', (_conta.conta_desconto * -1),
       'conta_titular', _conta.conta_titular,
       'conta_titularnif', _conta.conta_titularnif,
@@ -333,7 +335,7 @@ begin
       'conta_cliente_id', _conta.conta_cliente_id,
       'guia_documentoperacao', format('NC-%s',  to_char( clock_timestamp(), 'YYYYMMDDHHMISS-US')),
       'guia_observacao', 'Guia de devolução ao stock ao efeturar uma nota de credito',
-      'guia_metadata', coalesce( _conta_close_res, jsonb_build_object() ),
+      'guia_metadata', coalesce( _conta_res.data, jsonb_build_object() ),
       'custos', jsonb_build_array(),
       'conta_chave', _conta.conta_chave
     )
