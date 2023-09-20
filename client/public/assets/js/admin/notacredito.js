@@ -55,7 +55,7 @@ var notacredito = {
         });
     },
     reg : () => {
-        let { fatura : { conta_id } } = notacredito;
+        let { fatura : { conta_id }, key: conta_chave } = notacredito;
         let conta_posto_id = $("#colaborador_logado_armazens").find("li.active").attr("posto_admin");
         let itens = $("[tableDocumentArticles] ul").map(function (){
             let { venda_id } = $(this).data();
@@ -83,11 +83,28 @@ var notacredito = {
             data: JSON.stringify({
                 conta_id,
                 conta_posto_id,
+                conta_chave,
                 itens
             }),
             success: ({...all}) => {
                 delete notacredito.fatura;
             }
+        });
+    },
+    loadAccountKey : () => {
+        return new Promise((resolve, reject) =>{
+            $.ajax({
+                url: "/api/account/key",
+                method: "POST",
+                contentType: "application/json",
+                data: JSON.stringify({admin: true}),
+                success(data) {
+                    resolve(data);
+                },
+                error(error){
+                    reject(error);
+                }
+            });
         });
     }
 }
@@ -102,7 +119,10 @@ $("[pesquisarFatura]").on("keyup", function ({keyCode}){
 })
 
 $("#finalizarNotaCredito").on("click", function (){
-    let { reg } = notacredito; reg();
+    let { reg, loadAccountKey } = notacredito;
+    loadAccountKey().then(({ accountKey }) => {
+        notacredito.key = accountKey; reg();
+    })
 })
 
 $("[tableDocumentArticles]").on("click", "[del]", function (){

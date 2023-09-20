@@ -183,7 +183,6 @@ var faturaAdmin = {
         return articles_table;
     },
     add_account: function (){
-        alert("dgdgdgd")
         let conta = {};
         conta.conta_mesa = {numero: null, descricao: null, lotacao: null};
         conta.conta_extension = {};
@@ -209,6 +208,7 @@ var faturaAdmin = {
         });
     },
     register_invoice({conta_id}){
+        let FATURA = 1;
         let dados = {};
         dados.conta_id = conta_id;
         dados.conta_extension = {};
@@ -231,7 +231,7 @@ var faturaAdmin = {
             url: "/api/pos/pay",
             method: "POST",
             contentType: "application/json",
-            data: JSON.stringify(dados),
+            data: JSON.stringify({...dados, arg_tserie_id: FATURA}),
             error() {$("#finalizar_fatura").prop("disabled", false).removeClass("loading")},
             success(e) {
                 $("#finalizar_fatura").prop("disabled", false).removeClass("loading");
