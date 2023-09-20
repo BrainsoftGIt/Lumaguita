@@ -1,6 +1,7 @@
 import {block} from "../../../core/updater";
 
 block( module, { identifier: "correct-conta", flags:[]}).sql`
+
 create or replace function tweeks.funct_pos_change_conta_fechar(args jsonb) returns lib.res
   language plpgsql
 as
@@ -12,7 +13,7 @@ declare
         arg_espaco_auth: ID,
         arg_colaborador_id: ID,
         arg_tserie_id: ID,
-
+      
         deposito:{
           deposito_cliente_id
           deposito_caixa_id
@@ -74,63 +75,62 @@ declare
   begin
     _const := map.constant();
     _caixa := tweeks._get_caixa( arg_caixa_id );
-
     _conta := tweeks._get_conta( arg_conta_id );
     _conta := jsonb_populate_record( _conta, args );
     _conta.conta_data := coalesce( _conta.conta_data, current_date );
-
     _deposito := jsonb_populate_record( _deposito, args->'deposito' );
 
-    _conta._tgrupo_id := case
-                           when _deposito.deposito_montantemoeda is null or args->'deposito' is null then _const.maguita_tgrupo_ccorrente
-                           else _const.maguita_tgrupo_cnormal
-      end;
-
     if _conta.conta_estado = _const.maguita_conta_estado_fechado then
-      return lib.res_false( 'Essa conta já se encontra fechada!' );
+        return lib.res_false( 'Essa conta já se encontra fechada!' );
     end if;
-
-    --   select * into _conta_estado
---     from tweeks.__lancamento_regularizacao(jsonb_build_object(
---       'cliente_id', _conta.conta_cliente_id,
---       'tgrupo_id', _conta._tgrupo_id,
---       '_braunc_uid', _conta._branch_uid
---     )) l
---     where l.lancamento_refid = _conta.conta_id
---   ;
-
+    
+    if arg_tserie_id not in (
+        _const.maguita_tserie_fatura,
+        _const.maguita_tserie_faturarecibo,
+        _const.maguita_tserie_notacredito
+    ) then
+      return lib.res_false( 'Não pode fechar a conta o com tipo de serie selecionada!' );
+    end if;
+    
     if _conta.conta_posto_fecho is null then
       return lib.res_false( 'Necessario indicar o posto de fecho!' );
     end if;
-
+    
+    -- Na fatura recibo não pode haver conta corrente
+    if arg_tserie_id = _const.maguita_tserie_faturarecibo and _deposito.deposito_montantemoeda is null then 
+      return lib.res_false( 'O pagamento para as faturas/recibo é obrigatorio!' );
+    end if;
+    
     -- Quando for conta corrente
     if _deposito.deposito_montantemoeda is null
       and true in (
-                   _conta.conta_cliente_id is null,
-                   _conta.conta_cliente_id = lib.to_uuid( 1 ) -- cliente final
-        )
+        _conta.conta_cliente_id is null,
+        _conta.conta_cliente_id = lib.to_uuid( 1 ) -- cliente final
+      )
     then
       return lib.res_false( 'Não pode abrir uma conta corrente para o cliente final' );
-
-      -- Quando for conta normal
-    elseif _conta._tgrupo_id = _const.maguita_tgrupo_cnormal then
+    end if;
+    
+    if arg_tserie_id = _const.maguita_tserie_faturarecibo then
       if _deposito.deposito_tpaga_id = _const.maguita_tpaga_contacorrente then
         return lib.res_false( 'Tipo de pagamento invalido' );
       end if;
 
+      
+      -- Obter o cambio para a moeda selecionada
       select * into _cambio from tweeks.__load_cambio_day(
-          arg_espaco_auth,
-          _deposito.deposito_currency_id,
-          _conta.conta_data,
-          _const
-        );
-
+        arg_espaco_auth,
+        _deposito.deposito_currency_id,
+        _conta.conta_data,
+        _const
+      );
+      
       if _cambio.cambio_id is null then
-        return lib.res_false('Câmbio não foi encontrado!' );
+        return lib.res_false( 'Câmbio não foi encontrado!' );
       end if;
 
-      if round( (_cambio.cambio_taxa * _deposito.deposito_montantemoeda)::numeric, _const.money_round )  < round( _conta.conta_montante::numeric, _const.money_round ) then
-        return lib.res_false('Montante para pagamento insuficiente' );
+      if round( ( _cambio.cambio_taxa * _deposito.deposito_montantemoeda)::numeric, _const.money_round )  < round( _conta.conta_montante::numeric, _const.money_round ) then
+        return lib.res_false( 'Montante para pagamento insuficiente' );
       end if;
 
       -- Se for para amortizar a conta a caixa tem que estar aberta
@@ -139,28 +139,21 @@ declare
       end if;
     end if;
 
-    
-    if arg_tserie_id is not null and arg_tserie_id = any( array[
-      _const.maguita_tserie_notacredito
-    ]::int2[] ) then
-      _rec := tweeks.__sets_generate_documento( arg_espaco_auth, arg_tserie_id );
-      _conta.conta_numerofatura := _rec.document;
-      _conta.conta_serie := to_json( _rec );
-      _conta.conta_serie_id = _rec.serie_id;
-    elseif _conta._tgrupo_id = _const.maguita_tgrupo_cnormal then
-      _rec := tweeks.__sets_generate_documento( arg_espaco_auth, _const.maguita_tserie_faturarecibo );
-      _conta.conta_numerofatura := _rec.document;
-      _conta.conta_serie := to_json( _rec );
-      _conta.conta_serie_id = _rec.serie_id;
-    elsif _conta._tgrupo_id = _const.maguita_tgrupo_ccorrente then
-      _rec := tweeks.__sets_generate_documento( arg_espaco_auth, _const.maguita_tserie_fatura );
-      _conta.conta_numerofatura := _rec.document;
-      _conta.conta_serie := to_json( _rec );
-      _conta.conta_serie_id = _rec.serie_id;
-    end if;
+    -- Definir o grupo de conta
+    _conta._tgrupo_id := case
+      when _const.maguita_tserie_faturarecibo then _const.maguita_tgrupo_cnormal
+      when _const.maguita_tserie_fatura then _const.maguita_tgrupo_ccorrente
+      when _const.maguita_tserie_notacredito then _const.maguita_tgrupo_ccorrente
+    end;
+
+
+    _rec := tweeks.__sets_generate_documento( arg_espaco_auth, arg_tserie_id );
+    _conta.conta_numerofatura := _rec.document;
+    _conta.conta_serie := to_json( _rec );
+    _conta.conta_serie_id = _rec.serie_id;
 
     _conta.conta_estado := _const.maguita_conta_estado_fechado;
-    _conta.conta_imprensa := _conta.conta_imprensa +1;
+    _conta.conta_imprensa := 1;
     _conta.conta_colaborador_fecho := arg_colaborador_id;
     _conta.conta_datafecho := current_timestamp;
     _conta.conta_cliente_id := coalesce( _conta.conta_cliente_id, lib.to_uuid( 1 ) );
@@ -173,28 +166,27 @@ declare
     _guia.guia_refclass := cluster.__format( 'tweeks.conta'::regclass );
     _guia.guia_refuid := _conta.conta_id;
     _guia.guia_refs := jsonb_build_object(
-        'cliente', jsonb_build_object( 'cliente_id', _conta.conta_cliente_id ),
-        'saida', jsonb_build_object( 'espaco_id', _conta.conta_espaco_auth )
-      );
+      'cliente', jsonb_build_object( 'cliente_id', _conta.conta_cliente_id ),
+      'saida', jsonb_build_object( 'espaco_id', _conta.conta_espaco_auth )
+    );
 
     _guia := tweeks.funct_sets_guia( jsonb_build_object(
-        'guia', _guia,
-        'custoguia', args->'custos',
-        'arg_colaborador_id', arg_colaborador_id,
-        'arg_espaco_auth', arg_espaco_auth
-      ));
+      'guia', _guia,
+      'custoguia', args->'custos',
+      'arg_colaborador_id', arg_colaborador_id,
+      'arg_espaco_auth', arg_espaco_auth
+    ));
 
     _conta.conta_extension := coalesce( _conta.conta_extension, jsonb_build_object() )
       || jsonb_build_object( 'guia_id', _guia.guia_uid );
 
     select ( "returning" ).* into _conta
-    from lib.sets_up( _conta )
+      from lib.sets_up( _conta )
     ;
 
     if coalesce( _deposito.deposito_montantemoeda, 0.0 ) > 0 then
-
+      
       _montante_amortizacao  := _deposito.deposito_montantemoeda * _cambio.cambio_taxa;
-
       if _montante_amortizacao > _conta.conta_montante and _conta._tgrupo_id != _const.maguita_tgrupo_ccorrente then
         _deposito_montantetroco := _montante_amortizacao - _conta.conta_montante;
       end if;
@@ -214,7 +206,7 @@ declare
           'deposito_serie_id', _conta.conta_serie_id,
           '_raise', true
         ));
-
+      
       if not _res.result then
         perform lib.result_exception(
             _res.message,
