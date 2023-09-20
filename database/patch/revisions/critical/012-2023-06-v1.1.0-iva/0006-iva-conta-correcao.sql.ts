@@ -46,6 +46,7 @@ declare
         arg_espaco_auth: ID,
         arg_colaborador_id: ID,
         arg_tserie_id: ID,
+        arg_group_id
       
         deposito:{
           deposito_cliente_id
@@ -89,6 +90,7 @@ declare
     arg_espaco_auth uuid not null default args->>'arg_espaco_auth';
     arg_colaborador_id uuid not null default args->>'arg_colaborador_id';
     arg_tserie_id int2 default args->>'arg_tserie_id';
+    arg_group_id int2 default args->>'arg_group_id';
 
     arg_conta_id uuid default args->>'conta_id';
     arg_caixa_id uuid default args->>'de_caixa_id';
@@ -135,21 +137,21 @@ declare
       return lib.res_false( 'O pagamento para as faturas/recibo é obrigatorio!' );
     end if;
     
-    -- Quando for conta corrente
-    if _deposito.deposito_montantemoeda is null
-      and true in (
+    -- Os cliente finais só podem receber fatura/recibo ou nota de credito
+    if true in (
         _conta.conta_cliente_id is null,
         _conta.conta_cliente_id = lib.to_uuid( 1 ) -- cliente final
-      )
-    then
-      return lib.res_false( 'Não pode abrir uma conta corrente para o cliente final' );
+    ) and arg_tserie_id not in (
+      _const.maguita_tserie_faturarecibo,
+      _const.maguita_tserie_notacredito
+    ) then
+      return lib.res_false( 'Só pode lançar para os clientes finais a fatura/recibo ou uma nota de credito!');
     end if;
     
     if arg_tserie_id = _const.maguita_tserie_faturarecibo then
       if _deposito.deposito_tpaga_id = _const.maguita_tpaga_contacorrente then
         return lib.res_false( 'Tipo de pagamento invalido' );
       end if;
-
       
       -- Obter o cambio para a moeda selecionada
       select * into _cambio from tweeks.__load_cambio_day(
@@ -175,11 +177,11 @@ declare
 
     -- Definir o grupo de conta
     _conta._tgrupo_id := case
-      when _const.maguita_tserie_faturarecibo then _const.maguita_tgrupo_cnormal
-      when _const.maguita_tserie_fatura then _const.maguita_tgrupo_ccorrente
-      when _const.maguita_tserie_notacredito then _const.maguita_tgrupo_ccorrente
+      when arg_tserie_id = _const.maguita_tserie_faturarecibo then _const.maguita_tgrupo_cnormal
+      when arg_tserie_id = _const.maguita_tserie_fatura then _const.maguita_tgrupo_ccorrente
+      when arg_tserie_id = _const.maguita_tserie_guiasaida then _const.maguita_tgrupo_ccorrente
+      when arg_tserie_id = _const.maguita_tserie_notacredito then arg_group_id
     end;
-
 
     _rec := tweeks.__sets_generate_documento( arg_espaco_auth, arg_tserie_id );
     _conta.conta_numerofatura := _rec.document;
