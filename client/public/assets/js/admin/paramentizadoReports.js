@@ -230,23 +230,49 @@ $("#loadReport").on("click", function (){
         };
     }).get();
 
-    report.listFormats = listFormats;
-    report.totalColumnsWeight = totalColumnsWeight;
-    paramentizadoReports.objectView = {
-        windows_function_key,
-        source,
-        columns,
-        filters,
-        groups,
-        orders
-    }
-    paramentizadoReports.headers = headers;
+    $(`#tipo_relatorios li[source='${source}']`).click();
 
-    pagination.get_amount_item_page["body-report-list"] = {
-        value_por_lado: 4,
-        load: report.filtrar
-    }
-    pagination.create_pagination("body-report-list", report.offset, report.limit).then().catch();
+    $("#colunas_relatorio li").removeClass("active").attr("newOrder", 99999);
+    columns.forEach(({column}, key) => {
+        console.log(column)
+        $(`#colunas_relatorio li[column='${column}']`).addClass("active").attr("newOrder", key)
+    });
+
+    // Seleciona todos os elementos <li> com o atributo "newOrder" definido
+    const $lista = $("#colunas_relatorio li[newOrder]");
+
+    // Converte a coleção jQuery em um array para que possamos classificá-lo
+    const listaArray = $lista.get();
+
+    // Classifique os elementos com base no valor do atributo "newOrder"
+    listaArray.sort((a, b) => {
+        const valorA = parseInt($(a).attr("newOrder"));
+        const valorB = parseInt($(b).attr("newOrder"));
+        return valorA - valorB;
+    });
+
+    // Adiciona os elementos ordenados de volta à lista
+    $("#colunas_relatorio").append(listaArray);
+
+    setTimeout(() => {
+        report.listFormats = listFormats;
+        report.totalColumnsWeight = totalColumnsWeight;
+        paramentizadoReports.objectView = {
+            windows_function_key,
+            source,
+            columns,
+            filters,
+            groups,
+            orders
+        }
+        paramentizadoReports.headers = headers;
+
+        pagination.get_amount_item_page["body-report-list"] = {
+            value_por_lado: 4,
+            load: report.filtrar
+        }
+        pagination.create_pagination("body-report-list", report.offset, report.limit).then().catch();
+    })
 })
 
 var {loadPosto, loadArmazem, load} = paramentizadoReports;
