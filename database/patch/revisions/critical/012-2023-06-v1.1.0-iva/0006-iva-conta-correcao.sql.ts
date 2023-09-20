@@ -177,10 +177,10 @@ declare
 
     -- Definir o grupo de conta
     _conta._tgrupo_id := case
-      when _const.maguita_tserie_faturarecibo then _const.maguita_tgrupo_cnormal
-      when _const.maguita_tserie_fatura then _const.maguita_tgrupo_ccorrente
-      when _const.maguita_tserie_guiasaida then _const.maguita_tgrupo_ccorrente
-      when _const.maguita_tserie_notacredito then arg_group_id
+      when arg_tserie_id = _const.maguita_tserie_faturarecibo then _const.maguita_tgrupo_cnormal
+      when arg_tserie_id = _const.maguita_tserie_fatura then _const.maguita_tgrupo_ccorrente
+      when arg_tserie_id = _const.maguita_tserie_guiasaida then _const.maguita_tgrupo_ccorrente
+      when arg_tserie_id = _const.maguita_tserie_notacredito then arg_group_id
     end;
 
     _rec := tweeks.__sets_generate_documento( arg_espaco_auth, arg_tserie_id );
