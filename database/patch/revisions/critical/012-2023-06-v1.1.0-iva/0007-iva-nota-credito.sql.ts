@@ -39,6 +39,7 @@ declare
   arg_espaco_auth uuid default args->>'arg_espaco_auth';
   arg_conta_id uuid default args->>'conta_id';
   arg_branch_uid uuid default tweeks.__branch_uid( arg_colaborador_id, arg_espaco_auth );
+  __branch cluster.branch;
   _data record;
   _vendas record;
   _conta tweeks.conta;
@@ -316,7 +317,35 @@ begin
           custoguia_tcusto_id: 1 - DESPESA | 2 - RECEITA
         }]
    */
-
+  
+  if _conta.conta_cliente_id is null or _conta.conta_cliente_id = _const.maguita_cliente_final and not exists(
+    select *
+       from tweeks.cliente c
+       where c.cliente_id = _const.maguita_cliente_finalnotacredito
+  ) then 
+    select * into __branch from cluster.branch where _branch_uid = arg_branch_uid;
+    insert into tweeks.cliente(
+        cliente_id,
+        cliente_colaborador_id,
+        cliente_colaborador_gerente,
+        cliente_espaco_auth,
+        cliente_titular,
+        _branch_uid,
+        cliente_code
+    ) values (
+      _const.maguita_cliente_finalnotacredito,
+      _const.colaborador_system_data,
+      __branch.branch_main_user,
+      __branch.branch_main_workspace,
+      'CONTA DE NOTA DE CREDITO',
+      __branch._branch_uid,
+      'NC100010'
+    );
+  end if;
+  
+  if _conta.conta_cliente_id is null or _conta.conta_cliente_id = _const.maguita_cliente_final then 
+    _conta.conta_cliente_id := _const.maguita_cliente_finalnotacredito;
+  end if;
 
   _conta_close_res := tweeks.funct_pos_change_conta_fechar(
     jsonb_build_object(
