@@ -15,7 +15,22 @@ BEGIN
   perform map.constant('maguita_tserie_guiasaida', 'int2', 5, 'Guia de saida', false, 'Guia de saida' );
 end;
 $$
+`;
 
+
+block( module, {  identifier: "TPAGA-CONTA_CORRENT" }).sql`
+do $$
+BEGIN 
+  if not exists(
+    select *
+      from tweeks.tpaga
+      where tpaga_id = 6
+  ) then
+      INSERT INTO tweeks.tpaga (tpaga_id, tpaga_designacao) VALUES (6, 'POS');
+  end if;
+  
+end;
+$$
 `;
 
 block( module, { identifier: "correct-conta", flags:[]}).sql`
