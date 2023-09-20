@@ -213,46 +213,73 @@ $("#loadReport").on("click", function (){
 
     let filters = $('[list-load="filter"]').find(".xselect, .xinput").map(function () {
         if($(this).attr("mode") !== "-1"){
+            let value = ($(this).hasClass("xselect") ? $(this).find("li.active").attr("value_uuid") : report.getInputFilterValue($(this)))
             return {
                 column: $(this).attr("column"),
                 opr: $(this).attr("opr"),
                 mode: $(this).attr("mode"),
                 key: $(this).attr("key"),
-                value: ($(this).hasClass("xselect") ? $(this).find("li.active").attr("value_uuid") : report.getInputFilterValue($(this)))
+                remove: !value,
+                value
             };
         }
 
+        let value = ($(this).hasClass("xselect") ? $(this).find("li.active").attr("value_uuid") : report.getInputFilterValue($(this)));
         return {
             column: $(this).attr("column"),
             opr: $(this).attr("opr"),
             key: $(this).attr("key"),
-            value: ($(this).hasClass("xselect") ? $(this).find("li.active").attr("value_uuid") : report.getInputFilterValue($(this)))
+            remove: !value,
+            value
         };
-    }).get();
+    })
+        .get()
+        .filter(() => {
+
+        });
 
     $(`#tipo_relatorios li[source='${source}']`).click();
-
+    $("#grupos_colunas_relatorio li").removeClass("active");
     $("#colunas_relatorio li").removeClass("active").attr("newOrder", 99999);
-    columns.forEach(({column}, key) => {
-        console.log(column)
-        $(`#colunas_relatorio li[column='${column}']`).addClass("active").attr("newOrder", key)
+    columns.forEach(({key}, index) => {
+        let li = $(`#colunas_relatorio li[key='${key}']`);
+        if(li) {
+            li.addClass("active").attr("newOrder", index);
+        }
     });
 
-    // Seleciona todos os elementos <li> com o atributo "newOrder" definido
-    const $lista = $("#colunas_relatorio li[newOrder]");
-
-    // Converte a coleção jQuery em um array para que possamos classificá-lo
-    const listaArray = $lista.get();
-
-    // Classifique os elementos com base no valor do atributo "newOrder"
-    listaArray.sort((a, b) => {
-        const valorA = parseInt($(a).attr("newOrder"));
-        const valorB = parseInt($(b).attr("newOrder"));
-        return valorA - valorB;
+    groups.forEach(({key}, index) => {
+        let li = $(`#grupos_colunas_relatorio li[key='${key}']`);
+        if(li) {
+            li.addClass("active").attr("newOrder", index);
+        }
     });
 
-    // Adiciona os elementos ordenados de volta à lista
-    $("#colunas_relatorio").append(listaArray);
+    let shortData = ({li, listas}) => {
+
+        // Converte a coleção jQuery em um array para que possamos classificá-lo
+        const listaArray = li.get();
+
+        // Classifique os elementos com base no valor do atributo "newOrder"
+        listaArray.sort((a, b) => {
+            const valorA = parseInt($(a).attr("newOrder"));
+            const valorB = parseInt($(b).attr("newOrder"));
+            return valorA - valorB;
+        });
+
+        // Adiciona os elementos ordenados de volta à lista
+        listas.append(listaArray);
+    }
+
+    shortData({
+        li: $("#colunas_relatorio li[newOrder]"),
+        listas: $("#colunas_relatorio")
+    });
+
+    shortData({
+        li: $("#grupos_colunas_relatorio li[newOrder]"),
+        listas: $("#grupos_colunas_relatorio")
+    });
 
     setTimeout(() => {
         report.listFormats = listFormats;
