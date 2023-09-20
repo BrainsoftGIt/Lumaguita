@@ -544,3 +544,34 @@ begin
 end
 $$;
 `;
+
+block( module, { identifier: "tweeks.__artigo_has_stock" }).sql`
+create or replace function tweeks.__artigo_has_stock(
+    arg_artigo_id uuid,
+    arg_espaco_id uuid,
+    arg_quantidadedebito double precision
+) returns boolean
+    language plpgsql
+as
+$$
+declare
+    /** Essa função serve para verificar se existe diponibilidade de um artig em um stock para cobrir uma quantidade de debito
+     */
+    _artigo tweeks.artigo;
+    _stock record;
+begin
+    _artigo := tweeks._get_artigo( arg_artigo_id );
+
+    -- Aceitar sempre que o artigo for do tipo staock negativo
+    if _artigo.artigo_stocknegativo then return true; end if;
+
+    select *
+      from tweeks._get_stock( arg_artigo_id, arg_espaco_id )
+      into _stock
+    ;
+    
+    return _stock.stock_quantidade >= arg_quantidadedebito;
+end;
+$$;
+
+`;
