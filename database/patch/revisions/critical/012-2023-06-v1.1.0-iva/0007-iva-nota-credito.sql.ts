@@ -23,7 +23,7 @@ $$
 declare
   /**
     args := {
-      arg_conta_chave: CHAVE
+      conta_chave: CHAVE
       arg_colaborador_id: UID
       arg_espaco_auth: UID
       conta_id: UID,
@@ -262,7 +262,7 @@ begin
           'conta_titularnif', _conta.conta_titularnif,
           'conta_data', _conta.conta_data,
           'arg_vendas', _vendas.arg_vendas,
-          'arg_conta_chave', args->>'arg_conta_chave',
+          'conta_chave', _conta.conta_chave,
           'conta_conta_docorigin', _conta.conta_id,
           'conta_espaco_notacredito', arg_espaco_auth
         )
@@ -335,7 +335,7 @@ begin
       'guia_observacao', 'Guia de devolução ao stock ao efeturar uma nota de credito',
       'guia_metadata', coalesce( _conta_close_res, jsonb_build_object() ),
       'custos', jsonb_build_array(),
-      'arg_conta_chave', args->>'arg_conta_chave'
+      'conta_chave', _conta.conta_chave
     )
   );
 
