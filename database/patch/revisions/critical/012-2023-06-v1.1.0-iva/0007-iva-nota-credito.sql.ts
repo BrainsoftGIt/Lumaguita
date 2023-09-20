@@ -284,22 +284,22 @@ begin
 
   _conta_res := tweeks.funct_pos_reg_conta(
     jsonb_build_object(
-          'arg_colaborador_id', arg_colaborador_id,
-          'arg_espaco_auth', _conta.conta_espaco_auth,
-          'conta_posto_id', _conta_args.conta_posto_id,
-          'conta_mesa', _conta_args.conta_mesa,
-          'conta_extension', _conta_args.conta_extension,
-          'conta_chave', _conta_args.conta_chave,
-          'conta_currency_id', null,
-          'conta_tpaga_id', null,
-          'conta_cliente_id', _conta_args.conta_cliente_id,
-          'conta_titular', _conta.conta_titular,
-          'conta_titularnif', _conta.conta_titularnif,
-          'conta_data', current_date,
-          'arg_vendas', _vendas.arg_vendas,
-          'conta_conta_docorigin', _conta.conta_id,
-          'conta_espaco_notacredito', arg_espaco_auth
-        )
+      'arg_colaborador_id', arg_colaborador_id,
+      'arg_espaco_auth', _conta.conta_espaco_auth,
+      'conta_posto_id', _conta_args.conta_posto_id,
+      'conta_mesa', _conta_args.conta_mesa,
+      'conta_extension', coalesce( _conta_args.conta_extension, jsonb_build_object()),
+      'conta_chave', _conta_args.conta_chave,
+      'conta_currency_id', null,
+      'conta_tpaga_id', null,
+      'conta_cliente_id', _conta_args.conta_cliente_id,
+      'conta_titular', _conta.conta_titular,
+      'conta_titularnif', _conta.conta_titularnif,
+      'conta_data', current_date,
+      'arg_vendas', _vendas.arg_vendas,
+      'conta_conta_docorigin', _conta.conta_id,
+      'conta_espaco_notacredito', arg_espaco_auth
+    )
   );
 
   raise notice '%', to_jsonb(_conta_res);
