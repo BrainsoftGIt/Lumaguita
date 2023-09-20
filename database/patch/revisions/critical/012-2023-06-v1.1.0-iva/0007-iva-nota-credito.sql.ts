@@ -210,7 +210,7 @@ begin
         ve.venda_lote,
         ve.venda_validade,
         ve.venda_metadata,
-        jsonb_agg( to_jsonb( iten ) ) as arg_itens
+        jsonb_agg( to_jsonb( iten ) ) filter ( where iten.venda_venda_docorign is not null ) as arg_itens
       from tweeks.venda ve
         left join __iten iten on ve.venda_id = iten.___iten_venda_super
 
@@ -265,14 +265,14 @@ begin
           _branch_uid,
           cliente_code
       ) values (
-                   _const.maguita_cliente_finalnotacredito,
-                   _const.colaborador_system_data,
-                   __branch.branch_main_user,
-                   __branch.branch_main_workspace,
-                   'CONTA DE NOTA DE CREDITO',
-                   __branch._branch_uid,
-                   'NC100010'
-               );
+           _const.maguita_cliente_finalnotacredito,
+           _const.colaborador_system_data,
+           __branch.branch_main_user,
+           __branch.branch_main_workspace,
+           'CONTA DE NOTA DE CREDITO',
+           __branch._branch_uid,
+           'NC100010'
+       );
   end if;
   
   _conta_args.conta_cliente_id := _conta.conta_cliente_id;
