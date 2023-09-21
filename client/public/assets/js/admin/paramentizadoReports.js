@@ -258,7 +258,7 @@ $("#loadReport").on("click", function (){
         }
 
         return rt;
-    }).get().find( data => !!data);
+    }).get().filter(data => !!data);
 
     if(errorPrienchimento){
         xAlert("Relatório", "Por favor, preencha campos obrigátorios!", "warning");

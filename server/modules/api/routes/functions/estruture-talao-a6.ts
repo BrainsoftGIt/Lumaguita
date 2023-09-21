@@ -1,4 +1,8 @@
-export let structure = (user) => {
+import fs from "fs";
+
+export let structure = ({user, logoTipo, instituition, footerSystem}) => {
+
+    let hasTalaoOhoto = logoTipo && instituition?.espaco_configuracao.logo_talao;
     return {
         styles: {
             pequena: {
@@ -21,16 +25,67 @@ export let structure = (user) => {
                 bold: true,
             },
         },
-        pageMargins: [ 15, 15, 15, 15 ],
+        pageMargins: [ 15, hasTalaoOhoto ? 110: 60, 15, 15 ],
         pageSize: "A6",
         background: function (page) {
             return []
         },
         header: function(currentPage, pageCount, pageSize) {
-            return []
+            return [
+                {
+                    lineHeight: 1,
+                    columns: [
+                        {
+                            style : "grande",
+                            alignment: "center",
+                            stack: [
+                                ( hasTalaoOhoto ? {
+                                    margin: [0, 0, 0, 5],
+                                    image:  'data:image/png;base64,' + fs.readFileSync(logoTipo).toString('base64'),
+                                    width: 40
+                                } : {}),
+                                {
+                                    text: `${instituition?.espaco_configuracao?.empresa_nome}`
+                                },
+                                {
+                                    text: `${instituition?.espaco_configuracao?.empresa_endereco}`
+                                },
+                                {
+                                    text: `Cont: ${instituition?.espaco_configuracao?.empresa_telef}`
+                                },
+                                {
+                                    text: `NIF: ${instituition?.espaco_configuracao?.empresa_nif} `
+                                },
+                                {
+                                    text: `Email: ${instituition?.espaco_configuracao?.empresa_email}`
+                                },
+                            ]
+                        }
+                    ]
+                },
+            ]
         },
         footer: function(currentPage, pageCount) {
-            return []
+            return [
+                {
+                    margin:  [0, 6, 0, 0],
+                    style: "pequena",
+                    stack: [
+                        {
+                            text: "Processado pelo software Luma",
+                        },
+                        {
+                            text: `Operador(a): ${user}`,
+                        },
+                        {
+                            text: "Obrigado Pela Preferência",
+                        },
+                        {
+                            text: footerSystem
+                        }
+                    ]
+                }
+            ]
         },
     }
 }

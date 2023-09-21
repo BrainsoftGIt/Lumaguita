@@ -25,37 +25,6 @@ export let create = async (instituition, caixa, res, user, printer_name) => {
         content: [
             {
                 lineHeight: 1,
-                columns: [
-                    {
-                        style : "grande",
-                        alignment: "center",
-                        stack: [
-                            (logoTipo && instituition?.espaco_configuracao.logo_talao ? {
-                                margin: [0, 0, 0, 5],
-                                image:  'data:image/png;base64,' + fs.readFileSync(logoTipo).toString('base64'),
-                                width: 60,
-                            } : {}),
-                            {
-                                text: `${instituition?.espaco_configuracao?.empresa_nome}`
-                            },
-                            {
-                                text: `${instituition?.espaco_configuracao?.empresa_endereco}`
-                            },
-                            {
-                                text: `Cont: ${instituition?.espaco_configuracao?.empresa_telef}`
-                            },
-                            {
-                                text: `NIF: ${instituition?.espaco_configuracao?.empresa_nif} `
-                            },
-                            {
-                                text: `Email: ${instituition?.espaco_configuracao?.empresa_email}`
-                            },
-                        ]
-                    }
-                ]
-            },
-            {
-                lineHeight: 1,
                 style : "normal",
                 margin: [0, 8, 0, 0],
                 columns: [
@@ -104,21 +73,9 @@ export let create = async (instituition, caixa, res, user, printer_name) => {
                         ]
                     },
                 ]
-            },
-            {
-                margin:  [0, 6, 0, 0],
-                style: "pequena",
-                stack: [
-                    {
-                        text: "Processado pelo software Luma",
-                    },
-                    {
-                        text: `Operador(a): ${user}`,
-                    }
-                ]
             }
         ],
-        ...structure(user)
+        ...structure({user, logoTipo, instituition, footerSystem : ""})
     };
     const pdfDocGenerator = pdfMake.createPdf(docDefinition);
     pdfDocGenerator.getBuffer((buffer) => {

@@ -3,12 +3,15 @@ import fs from "fs";
 import {getFonts, structure} from "./estruture-talao-a5";
 import {folders} from "../../../../global/project";
 import {print} from "./printer";
+import {clusterServer} from "../../../../service/cluster.service";
 
-export let create = async (instituition, articles, res, date, table, obs) => {
+export let create = async (instituition, articles, res, date, table, obs, user) => {
     const pdfMake = require("../../../../../libs/js/pdfmake/pdfmake");
     const pdfFonts = require('../../../../../libs/js/pdfmake/vfs_fonts');
     pdfMake.vfs = pdfFonts.pdfMake.vfs;
     pdfMake.fonts = getFonts();
+    let logoTipo = clusterServer.res.resolve(instituition?.espaco_configuracao?.logo_referencia);
+
 
     let docDefinition = {
         compress: true,
@@ -19,32 +22,6 @@ export let create = async (instituition, articles, res, date, table, obs) => {
             keywords: 'luma, cozinha, brainsoft',
         },
         content: [
-            {
-                lineHeight: 1,
-                columns: [
-                    {
-                        style : "grande",
-                        alignment: "center",
-                        stack: [
-                            {
-                                text: `${instituition?.espaco_configuracao?.empresa_nome}`
-                            },
-                            {
-                                text: `${instituition?.espaco_configuracao?.empresa_endereco}`
-                            },
-                            {
-                                text: `Cont: ${instituition?.espaco_configuracao?.empresa_telef}`
-                            },
-                            {
-                                text: `NIF: ${instituition?.espaco_configuracao?.empresa_nif} `
-                            },
-                            {
-                                text: `Email: ${instituition?.espaco_configuracao?.empresa_email}`
-                            },
-                        ]
-                    }
-                ]
-            },
             {
                 lineHeight: 1,
                 style : "normal",
@@ -156,7 +133,7 @@ export let create = async (instituition, articles, res, date, table, obs) => {
                 ]
             } : {})
         ],
-        ...structure(null)
+        ...structure({ user, footerSystem: "", logoTipo, instituition})
     };
 
     const pdfDocGenerator = pdfMake.createPdf(docDefinition);
