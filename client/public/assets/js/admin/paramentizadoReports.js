@@ -160,7 +160,7 @@ var paramentizadoReports = {
                     } else if (["date", "timestamp", "timestamptz"].includes(format)) {
                         listFiterData.append(`<div valuemode="${filter_valuemode}" class="xinput w100" dataType="${filter_type}" name="${filter_name.replaceAll(" ", "")}" column="${filter_column}"
                        opr="${filter_opr}" key="${key}" mode="${filter_mode}">
-                                   <input ${PedirSempre !== filter_valuemode.toString() ? " _noObrigatory='true' class='_noObrigatory' " : ""} disabled="${disabled}" value="${(filter_value || "").stringToDateEn().getDatePt()}" data-inputmask-alias="dd-mm-yyyy" data-val="true" type="text"
+                                   <input ${PedirSempre !== filter_valuemode.toString() ? " _noObrigatory='true' class='_noObrigatory' " : ""} disabled="${disabled}" value="${((filter_value || "").stringToDateEn() || "").getDatePt()}" data-inputmask-alias="dd-mm-yyyy" data-val="true" type="text"
                                        placeholder="${filter_name}">
                                    <label>${filter_name}</label>
                                </div>`);

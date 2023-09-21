@@ -1,6 +1,8 @@
 import fs from "fs";
 
 export let structure = ({user, logoTipo, instituition, footerSystem}) => {
+
+    let hasTalaoOhoto = logoTipo && instituition?.espaco_configuracao.logo_talao;
     return {
         styles: {
             pequena: {
@@ -23,7 +25,7 @@ export let structure = ({user, logoTipo, instituition, footerSystem}) => {
                 bold: true,
             },
         },
-        pageMargins: [ 25, 10, 25, 25 ],
+        pageMargins: [ 25, hasTalaoOhoto ? 110: 60, 25, 25 ],
         pageSize: "A5",
         background: function (page) {
             return []
@@ -37,10 +39,10 @@ export let structure = ({user, logoTipo, instituition, footerSystem}) => {
                             style : "grande",
                             alignment: "center",
                             stack: [
-                                (logoTipo && instituition?.espaco_configuracao.logo_talao ? {
-                                    margin: [0, 0, 0, 5],
+                                ( hasTalaoOhoto ? {
+                                    margin: [0, 5, 0, 5],
                                     image:  'data:image/png;base64,' + fs.readFileSync(logoTipo).toString('base64'),
-                                    width: 60,
+                                    width: 40
                                 } : {}),
                                 {
                                     text: `${instituition?.espaco_configuracao?.empresa_nome}`
