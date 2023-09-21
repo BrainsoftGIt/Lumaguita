@@ -213,4 +213,12 @@ insert into report.template( type, name, configs ) values ('query', 'source|twee
   "source": "tweeks.tmovimento"
 }');
     
+insert into report.template( type, name, configs ) values ('query', 'source|tweeks.tserie::venda', '{
+  "opr": "=",
+  "src": "db",
+  "name": { "$template": true, "$type": "text", "$structure": "\${args.name}", "$default":"SERIE" },
+  "format": "select",
+  "source": "tweeks.tserie::venda"
+}');
+    
 `;
