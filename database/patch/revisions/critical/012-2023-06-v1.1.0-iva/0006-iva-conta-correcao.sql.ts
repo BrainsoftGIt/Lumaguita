@@ -227,6 +227,7 @@ declare
       'arg_espaco_auth', arg_espaco_auth
     ));
 
+    -- Vicular a informaçao de guia na conta extension com a tag guia_id
     _conta.conta_extension := coalesce( _conta.conta_extension, jsonb_build_object() )
       || jsonb_build_object( 'guia_id', _guia.guia_uid );
 
@@ -234,6 +235,8 @@ declare
       from lib.sets_up( _conta )
     ;
 
+    
+    -- Caso necessairio lançar o deposito viculado a conta
     if coalesce( _deposito.deposito_montantemoeda, 0.0 ) > 0 then
       
       _montante_amortizacao  := _deposito.deposito_montantemoeda * _cambio.cambio_taxa;
@@ -250,11 +253,11 @@ declare
           'deposito_cliente_id', _conta.conta_cliente_id,
           'deposito_montantetroco', _deposito_montantetroco,
           '_tgrupo_id', _conta._tgrupo_id,
-          'deposito_referencia', lib.sets_ref( _conta ),
+          'deposito_referencia', jsonb_build_object( 'conta_id', _conta.conta_id ), -- Vincula o deposito a conta
           'deposito_documento', _conta.conta_numerofatura,
           'deposito_serie', _conta.conta_serie,
           'deposito_serie_id', _conta.conta_serie_id,
-          '_raise', true
+          '_raise', true -- Criar exception para comportamentos indesejados
         ));
       
       if not _res.result then
