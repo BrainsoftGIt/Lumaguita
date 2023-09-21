@@ -22,12 +22,12 @@ var notacredito = {
                     return
                 }
 
-                conta_vendas.forEach(({ artigo_nome, venda_custounitario, venda_montantecomimposto, artigo_codigo, venda_custoquantidade, taxa_percentagem, taxa_taxa, venda_id }) => {
+                conta_vendas.forEach(({ artigo_nome, venda_custounitario, venda_montantecomimposto, artigo_codigo, venda_quantidade, taxa_percentagem, taxa_taxa, venda_id }) => {
                     $("[tableDocumentArticles]").append(`
                     <ul data-venda_id="${venda_id}">
                         <li>${artigo_codigo}</li>
                         <li>${artigo_nome}</li>
-                        <li>${venda_custoquantidade}</li>
+                        <li>${venda_quantidade}</li>
                         <li>${ (!taxa_percentagem) ? taxa_taxa || "" : `${taxa_percentagem}%` }</li>          
                         <li>${venda_custounitario.formatter()+" STN"}</li>                                               
                         <li>${venda_montantecomimposto.formatter()+" STN"}</li>                              
@@ -87,7 +87,7 @@ var notacredito = {
                 conta_chave,
                 itens
             }),
-            success: ({data : {conta_id}, result, message}) => {
+            success: ({data : {conta : { conta_id } }, result, message}) => {
                 if(result){
                     xAlert("Nota de cretido", "Operação efetuada com sucesso!");
                     $("[cliente_titular]").val("");
