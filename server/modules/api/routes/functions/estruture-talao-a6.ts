@@ -25,7 +25,7 @@ export let structure = ({user, logoTipo, instituition, footerSystem}) => {
                 bold: true,
             },
         },
-        pageMargins: [ 15, hasTalaoOhoto ? 110: 60, 15, 15 ],
+        pageMargins: [ 15, hasTalaoOhoto ? 110: 60, 15, 55 ],
         pageSize: "A6",
         background: function (page) {
             return []
