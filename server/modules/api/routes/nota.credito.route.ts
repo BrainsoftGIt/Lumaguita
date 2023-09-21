@@ -40,7 +40,6 @@ app.post( "/api/reg/credito/nota", (req, res, next) => {
 
     dbRes.call.tweeks.funct_reg_conta_nota_credito({ args }, {
         onResult(error: Error, result?: Result<any, any>): any {
-            console.log({result})
             if( error ){
                 res.json({
                     result:false,
@@ -52,9 +51,9 @@ app.post( "/api/reg/credito/nota", (req, res, next) => {
             }
 
             return res.json({
-                result:result.rows[0]["result"],
-                message:result.rows[0]["message"],
-                data:result.rows.filter( (value, index) => index > 0 )
+                result: !!result?.rows?.[0]?.["result"],
+                message: result?.rows?.[0]?.["message"] || "",
+                data:result?.rows?.[0]?.data || {}
             })
         }
     })

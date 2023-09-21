@@ -15,8 +15,9 @@ var notacredito = {
                 $("[cliente_titular]").val(conta_titular || "");
                 $("[cliente_nif]").val(conta_titularnif || "");
 
+                $("[tableDocumentArticles]").empty();
                 if(!conta_vendas){
-                    $("[tableDocumentArticles]").empty().addClass("empty");
+                    $(" [tableDocumentArticles] ").addClass("empty");
                     xAlert("Nota de cretido", "Não foi encontrado numa fatura com esse número!", "error");
                     return
                 }
@@ -86,8 +87,18 @@ var notacredito = {
                 conta_chave,
                 itens
             }),
-            success: ({...all}) => {
-                delete notacredito.fatura;
+            success: ({data : {conta_id}, result, message}) => {
+                if(result){
+                    xAlert("Nota de cretido", "Operação efetuada com sucesso!");
+                    $("[cliente_titular]").val("");
+                    $("[cliente_nif]").val("");
+                    $("[pesquisarFatura]").val("");
+                    open("/api/print/nota-credito/"+JSON.stringify({type: "pdf", conta_id, date: new Date().getTimeStampPt(), admin: true }));
+                    delete notacredito.fatura;
+                    return
+                }
+
+                xAlert("Nota de cretido", message, "error");
             }
         });
     },
