@@ -90,6 +90,7 @@ var notacredito = {
             success: ({data : {conta : { conta_id } }, result, message}) => {
                 if(result){
                     xAlert("Nota de cretido", "Operação efetuada com sucesso!");
+                    $("[tableDocumentArticles]").empty().addClass("empty");
                     $("[cliente_titular]").val("");
                     $("[cliente_nif]").val("");
                     $("[pesquisarFatura]").val("");
