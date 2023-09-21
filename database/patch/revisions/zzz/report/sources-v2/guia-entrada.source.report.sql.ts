@@ -49,7 +49,7 @@ order by position desc nulls last,
          init desc nulls last,
          jsonb_array_length( agg ) desc,
          jsonb_array_length( filter ) desc,
-         source,
+         s2ource,
          name
 ;
 
