@@ -513,19 +513,24 @@ begin
           c._tgrupo_id,
           c.conta_data,
           c.conta_dataregistro,
+          c.conta_conta_docorigin,
           de.deposito_montante,
           de.deposito_montantetroco,
           de.deposito_montantefinal,
           de.deposito_montantemoeda,
           de.deposito_tpaga_id,
+          corigen.conta_numerofatura as conta_documentoorigem,
           array_agg( to_jsonb( v )||to_jsonb( vg ) order by v.artigo_nome ) as conta_vendas
         from tweeks.conta c
+          left join tweeks.conta corigen on c.conta_conta_docorigin = corigen.conta_id
           left join __venda_group vg on c.conta_id = vg._venda_conta_id
           left join __venda v on vg._venda_id = v.venda_id
-          left join tweeks.deposito de on lib.sets_ref( c ) = de.deposito_referencia
+          left join tweeks.deposito de on c.conta_id = (de.deposito_referencia->>'conta_id')::uuid
         where c.conta_id = arg_conta_id
           and c._branch_uid = ___branch
-        group by c.conta_id, de.deposito_id
+        group by c.conta_id, 
+          de.deposito_id,
+         corigen.conta_id
      ) select to_jsonb( c ) || _client from __conta c
   ;
 
@@ -552,7 +557,7 @@ begin
             inner join tweeks.tpaga tp on de.deposito_tpaga_id = tp.tpaga_id
             left join tweeks.caixa cx on de.deposito_caixa_id = cx.caixa_id
             left join tweeks.posto p on cx.caixa_posto_id = p.posto_id
-          where de.deposito_referencia @> lib.sets_ref( _conta )
+          where (de.deposito_referencia->>'conta_id')::uuid @> _conta.conta_id
             and de._branch_uid = ___branch
       ) select to_jsonb( _de )
           from __deposito _de
