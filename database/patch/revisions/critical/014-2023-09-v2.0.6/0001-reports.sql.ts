@@ -153,7 +153,21 @@ language plpgsql as $$
   begin
     _parametrized := jsonb_populate_record( _parametrized, args );
     _const := libdom.constant();
-
+    
+    -- Garantir que o nome do retatorio não se duplique
+    if _parametrized.parametrized_uid is null and exists(
+      select *
+        from report.parametrized 
+        where trim( lower( parametrized_name ) ) = lower( trim( _parametrized.parametrized_name ) )
+          and _branch_uid = _branch
+    ) then 
+      return next jsonb_build_object(
+        'result', false,
+        'message', 'Já existe uma relatorio parametizado com o nome'
+      );
+      return;
+    end if;
+    
     if _parametrized.parametrized_uid is null then
       _parametrized.parametrized_user_id := _user_id;
       _parametrized._branch_uid := _branch;
