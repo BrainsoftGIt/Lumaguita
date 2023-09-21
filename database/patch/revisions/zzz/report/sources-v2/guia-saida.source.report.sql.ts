@@ -1,6 +1,6 @@
 import {block} from "../../../../core/updater";
 
-block( module, { identifier: "report:source|venda-v2.0.6", flags:[]})
+block( module, { identifier: "report.vreport_guiasaida|v2.0.6", flags:[]})
     //language=PostgreSQL
     .sql`
 drop view if exists report.vreport_guiasaida;
@@ -39,10 +39,10 @@ with _const as ( select * from map.constant() )
       p.posto_id,
       e.espaco_id,
       lib.str_normalize( format( '%s %s', aut.colaborador_nome, aut.colaborador_apelido ) ) as "COLABORADOR",
-      v._branch_uid,
       ct.conta_colaborador_fecho as colaborador_fecho,
       cat.classe_id,
-      a.artigo_codigo as "CÓD ARTIGO"
+      a.artigo_codigo as "CÓD ARTIGO",
+      v._branch_uid
     from _const, tweeks.venda v
       inner join tweeks.artigo a on v.venda_artigo_id = a.artigo_id
       inner join tweeks.classe cat on a.artigo_classe_id = cat.classe_id

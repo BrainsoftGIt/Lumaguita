@@ -248,6 +248,17 @@ declare
         ) select to_jsonb( _s )
         from __source _s;
     end if;
+    
+    if _source = 'tweeks.classe' then
+      return query
+        with __source( id, label ) as (
+          select classe_id, classe_nome
+            from tweeks.classe
+        ) select to_jsonb( _s )
+        from __source _s
+        order by _s.label
+      ;
+    end if;
 
     if _source = 'tweeks.caixa' then
       return query 
