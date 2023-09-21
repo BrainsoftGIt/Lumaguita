@@ -274,7 +274,7 @@ declare
                 ) as label
               from __caixa cx
           ) select to_jsonb( _s )
-        from __source _s;
+        from __source _s
       ;
     end if;
 
