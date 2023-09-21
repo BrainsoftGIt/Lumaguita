@@ -43,14 +43,17 @@ var paramentizadoReports = {
         }).get()
 
         if(!parametrized_name){
+            xAlert("Relatório", "Defina o nome para o relatórios!", "warning");
             return;
         }
 
         if(!parametrized_columns){
+            xAlert("Relatório", "Defina colunas para o relatório!", "warning");
             return;
         }
 
         if(!grants.length){
+            xAlert("Relatório", "Selecione posto ou armazém!", "warning");
             return;
         }
 
