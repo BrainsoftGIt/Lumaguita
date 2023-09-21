@@ -207,7 +207,7 @@ export let create = async (instituition, account_content, res, user, date, num_a
                                         bold: true,
                                         fontSize: 14,
                                         color : '#000000',
-                                        text : ""
+                                        text : "Nº de Nota de Credito"
                                     },
                                     {
                                         margin: [0, 0, 0, 15],
