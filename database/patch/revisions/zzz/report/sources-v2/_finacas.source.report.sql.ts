@@ -1,6 +1,6 @@
-import {block} from "../../../core/updater";
+import {block} from "../../../../core/updater";
 
-block( module, { identifier: "financas-report", flags:[]}).sql`
+block( module, { identifier: "vreport_imposto_financas", flags:[]}).sql`
 create or replace function report.vreport_imposto_financas(args jsonb) returns SETOF jsonb
   language plpgsql
 as
@@ -69,6 +69,11 @@ begin
         and ve.venda_estado = _const.maguita_venda_estado_fechado
         and ct.conta_datafecho >= coalesce( arg_datainicio, ct.conta_data )
         and ct.conta_datafecho <= coalesce( arg_datafim, ct.conta_data )
+        and ts.tserie_id in (
+          _const.maguita_tserie_fatura,  
+          _const.maguita_tserie_faturarecibo,  
+          _const.maguita_tserie_notacredito  
+        )
     ) select to_jsonb( _de ) from __declaracao _de
   ;
 end;
