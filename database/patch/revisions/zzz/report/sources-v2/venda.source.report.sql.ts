@@ -45,7 +45,10 @@ with _const as ( select * from map.constant() )
       lib.str_normalize( format( '%s %s', aut.colaborador_nome, aut.colaborador_apelido ) ) as "COLABORADOR",
       v._branch_uid,
       ct.conta_colaborador_fecho as colaborador_fecho,
-      cat.classe_id
+      cat.classe_id,
+      de.deposito_id,
+      de.deposito_caixa_id as _caixa_id,
+      cx.caixa_code as "CAIXA"
     from _const, tweeks.venda v
       inner join tweeks.artigo a on v.venda_artigo_id = a.artigo_id
       inner join tweeks.classe cat on a.artigo_classe_id = cat.classe_id
@@ -55,6 +58,11 @@ with _const as ( select * from map.constant() )
       inner join auth.colaborador aut on ct.conta_colaborador_fecho = aut.colaborador_id
       inner join tweeks.serie se on ct.conta_serie_id = se.serie_id
       inner join tweeks.tserie ts on se.serie_tserie_id = ts.tserie_id
+      left join tweeks.deposito de on ( de.deposito_referencia->>'conta_id' )::uuid = ct.conta_id
+        and de.deposito_posto_id = p.posto_id
+        and de.deposito_documento = ct.conta_numerofatura
+      left join tweeks.caixa cx on de.deposito_caixa_id = cx.caixa_id
+      
       left join tweeks.taxa tx on tx.taxa_id = any( v.venda_taxas )
       left join tweeks.tipoimposto tip on tx.taxa_tipoimposto_id = tip.tipoimposto_id
 
@@ -70,10 +78,12 @@ with _const as ( select * from map.constant() )
       a.artigo_id,
       ct.conta_id,
       p.posto_id,
+      de.deposito_id,
       e.espaco_id,
       cat.classe_id,
       aut.colaborador_id,
-      ts.tserie_id
+      ts.tserie_id,
+      cx.caixa_id
 ;
 
 select * from report.sync( 'report.vreport_venda', 'RELATÓRIO DE VENDAS', 1000 );

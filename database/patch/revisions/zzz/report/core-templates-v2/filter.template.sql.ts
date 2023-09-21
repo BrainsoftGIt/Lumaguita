@@ -249,6 +249,35 @@ declare
         from __source _s;
     end if;
 
+    if _source = 'tweeks.caixa' then
+      return query 
+        with __caixa as (
+            select
+              caixa_id as id,
+              to_char( cx.caixa_dataatualizacao, 'YYYY-MM-DD HH:MI') fecho,
+              coalesce( cx.caixa_dataatualizacao, cx.caixa_dataregistro ) as date,
+              p.posto_designacao,
+              cx.caixa_estado,
+              max(coalesce( cx.caixa_dataatualizacao, cx.caixa_dataregistro )) filter ( where cx.caixa_estado = (map.constant()).maguita_caixa_estado_fechado ) over () last
+              from tweeks.caixa cx
+                inner join tweeks.posto p on cx.caixa_posto_id = p.posto_id
+              where cx._branch_uid = _branch
+              order by cx.caixa_dataatualizacao desc nulls first, cx.caixa_dataregistro desc
+          ), __source( id, label ) as (
+             select
+                cx.id,
+                format( '%s %s %s', cx.posto_designacao, cx.fecho,
+                  case
+                    when cx.caixa_estado = (map.constant()).maguita_caixa_estado_ativo then '(aberta)'
+                    when cx.date = cx.last then '(ultima fechada)'
+                  end
+                ) as label
+              from __caixa cx
+          ) select to_jsonb( _s )
+        from __source _s;
+      ;
+    end if;
+
   end;
 $$;
 

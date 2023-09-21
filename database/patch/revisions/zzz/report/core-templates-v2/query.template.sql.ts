@@ -220,5 +220,13 @@ insert into report.template( type, name, configs ) values ('query', 'source|twee
   "format": "select",
   "source": "tweeks.tserie::venda"
 }');
+
+insert into report.template( type, name, configs ) values ('query', 'source|tweeks.caixa', '{
+  "opr": "=",
+  "src": "db",
+  "name": { "$template": true, "$type": "text", "$structure": "\${args.name}", "$default":"CAIXA" },
+  "format": "select",
+  "source": "tweeks.caixa"
+}');
     
 `;
