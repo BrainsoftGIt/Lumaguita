@@ -154,7 +154,11 @@ declare
       return lib.res_false( 'Só pode lançar nos cliente finais as futuras/recibos!');
     end if;
     
-    if arg_tserie_id = _const.maguita_tserie_faturarecibo then
+    
+    -- Quando hover necessidade de efetuar o deposito então, deve-se obter a taxa de cambio para o dia
+    if arg_tserie_id = _const.maguita_tserie_faturarecibo 
+      or _deposito.deposito_montantemoeda is not null
+    then
       if _deposito.deposito_tpaga_id = _const.maguita_tpaga_contacorrente then
         return lib.res_false( 'Tipo de pagamento invalido' );
       end if;
@@ -170,7 +174,10 @@ declare
       if _cambio.cambio_id is null then
         return lib.res_false( 'Câmbio não foi encontrado!' );
       end if;
-
+    end if;
+    
+    -- O valor do deposito nas conta de fatura/recibo deve ser o suficiente para cobrir o montante da fatura
+    if arg_tserie_id = _const.maguita_tserie_faturarecibo then 
       if round( ( _cambio.cambio_taxa * _deposito.deposito_montantemoeda)::numeric, _const.money_round )  < round( _conta.conta_montante::numeric, _const.money_round ) then
         return lib.res_false( 'Montante para pagamento insuficiente' );
       end if;
@@ -181,14 +188,15 @@ declare
       end if;
     end if;
 
-    -- Definir o grupo de conta
+    -- Definir em aqual conta a fatura deve ser enviado
     _conta._tgrupo_id := case
       when arg_tserie_id = _const.maguita_tserie_faturarecibo then _const.maguita_tgrupo_cnormal
       when arg_tserie_id = _const.maguita_tserie_fatura then _const.maguita_tgrupo_ccorrente
       when arg_tserie_id = _const.maguita_tserie_guiasaida then _const.maguita_tgrupo_ccorrente
       when arg_tserie_id = _const.maguita_tserie_notacredito then _const.maguita_tgrupo_ccorrente
     end;
-
+    
+    -- Gerar a serie para a conta dependento do tipo do documento (fatura, faturarecibo, notacredito, guiasaida)
     _rec := tweeks.__sets_generate_documento( arg_espaco_auth, arg_tserie_id );
     _conta.conta_numerofatura := _rec.document;
     _conta.conta_serie := to_json( _rec );
