@@ -3,20 +3,34 @@ var fatura = {
     CODE_OPERATION_ACCOUNT: "conta"
 };
 
-$("#pos_fatura").on("click", function () {
+let getUserPOSHasMenu = () => {
+    return new Promise((resolve) => {
+        $.ajax({
+            url: "/api/imposto/artigo",
+            method: "POST",
+            contentType: "application/json",
+            data: JSON.stringify({menucodigo: "maguita.pos.conta"}),
+            success({result}) {
+                resolve(result);
+            },
+            error(error){
+                resolve(false);
+            }
+        });
+    })
+}
+$("#pos_fatura").on("click", async function () {
     spaceConfig.loadConfig().then(value => {
-        if(spaceConfig.isConfigured({object: value.config[0]})){
-            if($("#artigos_carrinho").find("li.sended").length > 0){
-                if(pos.haveAccessGranted("maguita.pos.imprimir.conta", true)){
-                    if(spaceConfig.hasPrinter({operation: fatura.CODE_OPERATION_ACCOUNT})){
+        if (spaceConfig.isConfigured({object: value.config[0]})) {
+            if ($("#artigos_carrinho").find("li.sended").length > 0) {
+                if (pos.haveAccessGranted("maguita.pos.imprimir.conta", true)) {
+                    if (spaceConfig.hasPrinter({operation: fatura.CODE_OPERATION_ACCOUNT})) {
                         spaceConfig.operationCode = fatura.CODE_OPERATION_ACCOUNT;
                         spaceConfig.account_id = pos.conta_id;
                         spaceConfig.getPrinter({operation: fatura.CODE_OPERATION_ACCOUNT});
                     }
-                }
-                else M.toast({html: 'Sem privilégio para imprimir conta.', classes: 'rounded'});
-            }
-            else M.toast({html: 'Adicione e confirme artigos no carrinho!', classes: 'rounded'});
+                } else M.toast({html: 'Sem privilégio para imprimir conta.', classes: 'rounded'});
+            } else M.toast({html: 'Adicione e confirme artigos no carrinho!', classes: 'rounded'});
         }
     });
 });
