@@ -82,7 +82,7 @@ with  _const ( maguita_caixa_estado_fechado, maguita_caixa_estado_ativo ) as (
 ) select *
    from __report_caixa;
 
-select * from report.sync( 'report.vreport_caixa', 'RELATÓRIO DE CAIXA', 500 );
+select * from report.sync( 'report.vreport_caixa', 'RELATÓRIO DE CAIXA', 1600 );
 
 UPDATE report.vcolumn SET position = 3000, show = true, init = true, format = 'code', filter = '[]', agg = '[]', noagg = false, gen = '[]', rename = null, type = 'character varying' WHERE source = 'report.vreport_caixa' AND name = 'CAIXA';
 UPDATE report.vcolumn SET position = 990, show = true, init = false, format = 'name:short', filter = '[]', agg = '[]', noagg = false, gen = '[]', rename = null, type = 'character varying' WHERE source = 'report.vreport_caixa' AND name = 'ARMAZÉM';

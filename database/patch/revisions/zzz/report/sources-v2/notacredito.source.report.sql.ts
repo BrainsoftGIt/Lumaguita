@@ -93,7 +93,7 @@ block( module, { identifier: `report.vreport_notacredito|v2.0.6-${ Math.random()
              cx.caixa_id
     ;
 
-    select * from report.sync( 'report.vreport_notacredito', 'RELATÓRIO DE NOTA CREDITO' );
+    select * from report.sync( 'report.vreport_notacredito', 'RELATÓRIO DE NOTA CREDITO', 1500 );
 
     UPDATE report.vcolumn SET position = 2000, show = true, init = false, format = 'code:long', filter = '[{"opr": "like", "mode": "right", "name": "DOCUMENTO", "format": "simple"}]', agg = '[]', noagg = null, gen = '[]', rename = null, type = 'character varying' WHERE source = 'report.vreport_notacredito' AND name = 'DOCUMENTO';
     UPDATE report.vcolumn SET position = 1999, show = true, init = true, format = 'code:long', filter = '[{"opr": "like", "mode": "right", "name": "DOC. ORIGEM", "format": "simple"}]', agg = '[]', noagg = false, gen = '[]', rename = null, type = 'character varying' WHERE source = 'report.vreport_notacredito' AND name = 'DOC. ORIGEM';

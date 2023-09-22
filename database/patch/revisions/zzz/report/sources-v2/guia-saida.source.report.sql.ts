@@ -75,7 +75,7 @@ with _const ( maguita_venda_estado_fechado, maguita_conta_estado_fechado, maguit
       aut.colaborador_id
 ;
 
-select * from report.sync( 'report.vreport_guiasaida', 'RELATÓRIO DE GUIA SAIDA' );
+select * from report.sync( 'report.vreport_guiasaida', 'RELATÓRIO DE GUIA SAIDA', 1100 );
 
 UPDATE report.vcolumn SET position = 2000, show = true, init = true, format = 'name:short', filter = '[]', agg = '[]', noagg = false, gen = '[]', rename = null, type = 'character varying' WHERE source = 'report.vreport_guiasaida' AND name = 'SERIE';
 UPDATE report.vcolumn SET position = 1995, show = true, init = true, format = 'name', filter = '[]', agg = '[]', noagg = null, gen = '[]', rename = null, type = 'character varying' WHERE source = 'report.vreport_guiasaida' AND name = 'ARTIGO';

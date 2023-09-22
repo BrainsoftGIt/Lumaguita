@@ -39,7 +39,7 @@ create view report.vreport_guiaentrada as
       left join tweeks.espaco e on e.espaco_id = (g.guia_refs->'destino'->>'espaco_id')::uuid
 ;
 
-select * from report.sync( 'report.vreport_guiaentrada', 'RELATÓRIO DE GUIA ENTRADA' );
+select * from report.sync( 'report.vreport_guiaentrada', 'RELATÓRIO DE GUIA ENTRADA', 1200 );
 
 UPDATE report.vcolumn SET position = null, show = true, init = true, format = 'date', filter = '[{"opr": ">=", "name": "ENTRADA DE", "format": "date"}, {"opr": "<=", "name": "ENTRADA ATÉ", "format": "date"}]', agg = '[]', noagg = false, gen = '[]', rename = null, type = 'timestamp with time zone' WHERE source = 'report.vreport_guiaentrada' AND name = 'DATA';
 UPDATE report.vcolumn SET position = null, show = true, init = true, format = 'code', filter = '[["query.like", {"mode": "right", "name": "DOCUMENTO"}]]', agg = '[]', noagg = false, gen = '[]', rename = null, type = 'character varying' WHERE source = 'report.vreport_guiaentrada' AND name = 'DOCUMENTO';

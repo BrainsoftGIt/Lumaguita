@@ -94,7 +94,7 @@ with _const ( maguita_venda_estado_fechado, maguita_conta_estado_fechado, maguit
       cx.caixa_id
 ;
 
-select * from report.sync( 'report.vreport_venda', 'RELATÓRIO DE VENDAS', 1000 );
+select * from report.sync( 'report.vreport_venda', 'RELATÓRIO DE VENDAS', 2000 );
 
 UPDATE report.vcolumn SET position = 2000, show = true, init = false, format = 'code:long', filter = '[{"opr": "like", "mode": "right", "name": "FATURA", "format": "simple"}]', agg = '[]', noagg = null, gen = '[]', rename = null, type = 'character varying' WHERE source = 'report.vreport_venda' AND name = 'FATURA';
 UPDATE report.vcolumn SET position = 1995, show = true, init = true, format = 'name', filter = '[]', agg = '[]', noagg = null, gen = '[]', rename = null, type = 'character varying' WHERE source = 'report.vreport_venda' AND name = 'ARTIGO';

@@ -62,7 +62,7 @@ with _const (maguita_lancamento_mode_manual, maguita_lancamento_mode_automatic, 
 ) select *
     from __conta_report;
 
-select * from report.sync( 'report.vreport_conta', 'RELATÓRIO DE CONTA/LANÇAMENTO', 1 );
+select * from report.sync( 'report.vreport_conta', 'RELATÓRIO DE CONTA/LANÇAMENTO', 1800 );
 
 UPDATE report.vcolumn SET position = 1995, show = true, init = false, format = 'int', filter = '[]', agg = '[]', noagg = false, gen = '[]', rename = null, type = 'bigint' WHERE source = 'report.vreport_conta' AND name = 'SEQUÊNCIA';
 UPDATE report.vcolumn SET position = 1895, show = true, init = true, format = 'name', filter = '[]', agg = '[]', noagg = false, gen = '[]', rename = null, type = 'character varying' WHERE source = 'report.vreport_conta' AND name = 'CLIENTE';
