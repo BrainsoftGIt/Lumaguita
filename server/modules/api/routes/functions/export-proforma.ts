@@ -309,7 +309,7 @@ export let create = async (instituition, account, account_content, res, user, da
                                 margin: [0, 3, 0, 3],
                                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
                                 fillColor: baseColor,
-                                text: "Valor Unit.",
+                                text: "Valor Unit. STN",
                                 color: textcolor,
                                 alignment: "right"
                             },
@@ -317,7 +317,7 @@ export let create = async (instituition, account, account_content, res, user, da
                                 margin: [0, 3, 0, 3],
                                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
                                 fillColor: baseColor,
-                                text: "Subtotal",
+                                text: "Subtotal STN",
                                 color: textcolor,
                                 alignment: "right"
                             }
@@ -335,13 +335,13 @@ export let create = async (instituition, account, account_content, res, user, da
                                 fontSize: 6.5,
                                 border: [false, false, false, false],
                                 margin: [0, 3, 0, 3],
-                                text: "Subtotal"
+                                text: "Subtotal STN"
                             },
                             {
                                 fontSize: 6.5,
                                 border: [false, false, false, false],
                                 margin: [0, 3, 0, 3],
-                                text: formattedString(subtotal.toFixed(2) + "") + " STN",
+                                text: formattedString(subtotal.toFixed(2) + ""),
                                 alignment: "right"
                             },
                         ],
@@ -358,13 +358,13 @@ export let create = async (instituition, account, account_content, res, user, da
                                     fontSize: 6.5,
                                     border: [false, false, false, false],
                                     margin: [0, 3, 0, 3],
-                                    text: `${sumImpost[key].name}`,
+                                    text: `${sumImpost[key].name} STN`,
                                 },
                                 {
                                     fontSize: 6.5,
                                     border: [false, false, false, false],
                                     margin: [0, 3, 0, 3],
-                                    text: formattedString(sumImpost[key].sum.toFixed(2) + "") + " STN",
+                                    text: formattedString(sumImpost[key].sum.toFixed(2) + ""),
                                     alignment: "right"
                                 }
                             ]
@@ -384,7 +384,7 @@ export let create = async (instituition, account, account_content, res, user, da
                                 color: textcolor,
                                 margin: [0, 3, 0, 3],
                                 bold: true,
-                                text: "Total",
+                                text: "Total STN",
                             },
                             {
                                 fontSize: 7.5,
@@ -393,7 +393,7 @@ export let create = async (instituition, account, account_content, res, user, da
                                 color: textcolor,
                                 margin: [0, 3, 0, 3],
                                 bold: true,
-                                text: formattedString(account_content?.main?.conta_montante.toFixed(2) + "") + " STN",
+                                text: formattedString(account_content?.main?.conta_montante.toFixed(2) + ""),
                                 alignment: "right"
                             }
                         ]

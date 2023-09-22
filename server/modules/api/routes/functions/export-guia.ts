@@ -307,7 +307,7 @@ export let create = async (instituition, fornecedor, guia, artigos, res, user, c
                                 margin: [0, 3, 0, 3],
                                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
                                 fillColor: baseColor,
-                                text: "Valor Unit.",
+                                text: "Valor Unit. STN",
                                 color: textcolor,
                                 alignment: "right"
                             },
@@ -315,7 +315,7 @@ export let create = async (instituition, fornecedor, guia, artigos, res, user, c
                                 margin: [0, 3, 0, 3],
                                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
                                 fillColor: baseColor,
-                                text: "Valor",
+                                text: "Valor STN",
                                 color: textcolor,
                                 alignment: "right"
                             }
@@ -333,13 +333,13 @@ export let create = async (instituition, fornecedor, guia, artigos, res, user, c
                                 fontSize: 6.5,
                                 border: [false, false, false, false],
                                 margin: [0, 3, 0, 3],
-                                text: "Subtotal"
+                                text: "Subtotal STN"
                             },
                             {
                                 fontSize: 6.5,
                                 border: [false, false, false, false],
                                 margin: [0, 3, 0, 3],
-                                text: formattedString(subtotal.toFixed(2) + "") + " STN",
+                                text: formattedString(subtotal.toFixed(2) + ""),
                                 alignment: "right"
                             },
                         ],
@@ -380,7 +380,7 @@ export let create = async (instituition, fornecedor, guia, artigos, res, user, c
                                 color: textcolor,
                                 margin: [0, 3, 0, 3],
                                 bold: true,
-                                text: "Total",
+                                text: "Total STN",
                             },
                             {
                                 fontSize: 7.5,
@@ -389,7 +389,7 @@ export let create = async (instituition, fornecedor, guia, artigos, res, user, c
                                 color: textcolor,
                                 margin: [0, 3, 0, 3],
                                 bold: true,
-                                text: formattedString(total.toFixed(2) + "") + " STN",
+                                text: formattedString(total.toFixed(2) + ""),
                                 alignment: "right"
                             }
                         ]

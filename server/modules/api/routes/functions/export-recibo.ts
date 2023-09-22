@@ -76,14 +76,14 @@ export let create = async (instituition, deposito, cliente, res, user, date, num
                 margin: [0, 3, 0, 3],
                 fontSize: 6.5,
                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
-                text: formattedString(dep.debito + "") + " STN",
+                text: formattedString(dep.debito + ""),
                 alignment: "right"
             },
             {
                 margin: [0, 3, 0, 3],
                 fontSize: 6.5,
                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
-                text: formattedString(deposito_distribuicao + "") + " STN",
+                text: formattedString(deposito_distribuicao + ""),
                 alignment: "right"
             },
         ]);
@@ -321,7 +321,7 @@ export let create = async (instituition, deposito, cliente, res, user, date, num
                                 margin: [0, 3, 0, 3],
                                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
                                 fillColor: baseColor,
-                                text: "Valor Doc.",
+                                text: "Valor Doc. STN",
                                 color: textcolor,
                                 alignment: "center"
                             },
@@ -329,7 +329,7 @@ export let create = async (instituition, deposito, cliente, res, user, date, num
                                 margin: [0, 3, 0, 3],
                                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
                                 fillColor: baseColor,
-                                text: "Valor Recebido",
+                                text: "Valor Recebido STN",
                                 color: textcolor,
                                 alignment: "center"
                             }
