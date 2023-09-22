@@ -79,9 +79,9 @@ do $$
           ( 'PC', 'Pacotes' )
       )
       select * from tweeks.branch e
-        left join __unit u on true
+        left join __unit _u on true
         left join tweeks.unit u on e.branch_uid  = u._branch_uid
-          and lower( u.unit_code ) = lower( u.unit_code )
+          and lower( u.unit_code ) = lower( _u.unit_code )
         where u.unit_id is null
     loop
         insert into tweeks.unit ( 
