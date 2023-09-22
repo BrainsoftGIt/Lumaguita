@@ -26,32 +26,32 @@ export let create = async (instituition, account_content, res, user, num_autoriz
             {
                 margin: [0, 3, 0, 3],
                 fontSize: 6.5,
-                borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
+                border: [false, false, false, false],
                 text: cont?.artigo_codigo || "---"
             },
             {
                 margin: [0, 3, 0, 3],
                 fontSize: 6.5,
-                borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
+                border: [false, false, false, false],
                 text: cont.artigo_nome
             },
             {
                 margin: [0, 3, 0, 3],
                 fontSize: 6.5,
-                borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
+                border: [false, false, false, false],
                 text: cont.venda_quantidade
             },
             {
                 margin: [0, 3, 0, 3],
                 fontSize: 6.5,
-                borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
+                border: [false, false, false, false],
                 text: cont.venda_lote || "---",
                 alignment: "right"
             },
             {
                 margin: [0, 3, 0, 3],
                 fontSize: 6.5,
-                borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
+                border: [false, false, false, false],
                 text: (cont.venda_validade === null ? "---" : moment(cont.venda_validade).format("DD-MM-YYYY")),
                 alignment: "right"
             }
@@ -232,28 +232,28 @@ export let create = async (instituition, account_content, res, user, num_autoriz
                         [
                             {
                                 margin: [0, 3, 0, 3],
-                                borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
+                                borderColor: [baseColor, baseColor, baseColor, baseColor],
                                 fillColor: baseColor,
                                 text: "Código",
                                 color: textcolor
                             },
                             {
                                 margin: [0, 3, 0, 3],
-                                borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
+                                borderColor: [baseColor, baseColor, baseColor, baseColor],
                                 fillColor: baseColor,
                                 text: "Descrição",
                                 color: textcolor
                             },
                             {
                                 margin: [0, 3, 0, 3],
-                                borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
+                                borderColor: [baseColor, baseColor, baseColor, baseColor],
                                 fillColor: baseColor,
                                 text: "Qtd",
                                 color: textcolor
                             },
                             {
                                 margin: [0, 3, 0, 3],
-                                borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
+                                borderColor: [baseColor, baseColor, baseColor, baseColor],
                                 fillColor: baseColor,
                                 text: "Lote",
                                 color: textcolor,
@@ -261,7 +261,7 @@ export let create = async (instituition, account_content, res, user, num_autoriz
                             },
                             {
                                 margin: [0, 3, 0, 3],
-                                borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
+                                borderColor: [baseColor, baseColor, baseColor, baseColor],
                                 fillColor: baseColor,
                                 text: "Data de validade",
                                 color: textcolor,

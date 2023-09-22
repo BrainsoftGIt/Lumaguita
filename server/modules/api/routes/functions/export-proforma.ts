@@ -40,39 +40,39 @@ export let create = async (instituition, account, account_content, res, user, da
             {
                 margin: [0, 3, 0, 3],
                 fontSize: 6.5,
-                borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
+                border: [false, false, false, false],
                 text: cont?.artigo_codigo || "----"
             },
             {
                 margin: [0, 3, 0, 3],
                 fontSize: 6.5,
-                borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
+                border: [false, false, false, false],
                 text: cont?.venda_descricao || "----"
             },
             {
                 margin: [0, 3, 0, 3],
                 fontSize: 6.5,
-                borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
+                border: [false, false, false, false],
                 text: cont?.venda_quantidade || "---"
             },
             {
                 margin: [0, 3, 0, 3],
                 fontSize: 6.5,
-                borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
+                border: [false, false, false, false],
                 text: `${formattedString(cont.venda_imposto.toFixed(2))} STN`,
                 alignment: "right"
             },
             {
                 margin: [0, 3, 0, 3],
                 fontSize: 6.5,
-                borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
+                border: [false, false, false, false],
                 text: formattedString(preco_artigo.toFixed(2) + "") + " STN",
                 alignment: "right"
             },
             {
                 margin: [0, 3, 0, 3],
                 fontSize: 6.5,
-                borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
+                border: [false, false, false, false],
                 text: formattedString(cont.venda_montantesemimposto.toFixed(2) + "") + " STN",
                 alignment: "right"
             }
@@ -278,28 +278,28 @@ export let create = async (instituition, account, account_content, res, user, da
                         [
                             {
                                 margin: [0, 3, 0, 3],
-                                borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
+                                borderColor: [baseColor, baseColor, baseColor, baseColor],
                                 fillColor: baseColor,
                                 text: "Código",
                                 color: textcolor
                             },
                             {
                                 margin: [0, 3, 0, 3],
-                                borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
+                                borderColor: [baseColor, baseColor, baseColor, baseColor],
                                 fillColor: baseColor,
                                 text: "Descrição",
                                 color: textcolor
                             },
                             {
                                 margin: [0, 3, 0, 3],
-                                borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
+                                borderColor: [baseColor, baseColor, baseColor, baseColor],
                                 fillColor: baseColor,
                                 text: "Qtd",
                                 color: textcolor
                             },
                             {
                                 margin: [0, 3, 0, 3],
-                                borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
+                                borderColor: [baseColor, baseColor, baseColor, baseColor],
                                 fillColor: baseColor,
                                 text: "Taxa",
                                 color: textcolor,
@@ -307,7 +307,7 @@ export let create = async (instituition, account, account_content, res, user, da
                             },
                             {
                                 margin: [0, 3, 0, 3],
-                                borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
+                                borderColor: [baseColor, baseColor, baseColor, baseColor],
                                 fillColor: baseColor,
                                 text: "Valor Unit. STN",
                                 color: textcolor,
@@ -315,7 +315,7 @@ export let create = async (instituition, account, account_content, res, user, da
                             },
                             {
                                 margin: [0, 3, 0, 3],
-                                borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
+                                borderColor: [baseColor, baseColor, baseColor, baseColor],
                                 fillColor: baseColor,
                                 text: "Subtotal STN",
                                 color: textcolor,
@@ -335,7 +335,7 @@ export let create = async (instituition, account, account_content, res, user, da
                                 fontSize: 6.5,
                                 border: [false, false, false, false],
                                 margin: [0, 3, 0, 3],
-                                text: "Subtotal STN"
+                                text: "Subtotal"
                             },
                             {
                                 fontSize: 6.5,
@@ -358,7 +358,7 @@ export let create = async (instituition, account, account_content, res, user, da
                                     fontSize: 6.5,
                                     border: [false, false, false, false],
                                     margin: [0, 3, 0, 3],
-                                    text: `${sumImpost[key].name} STN`,
+                                    text: `${sumImpost[key].name}`,
                                 },
                                 {
                                     fontSize: 6.5,
@@ -384,7 +384,7 @@ export let create = async (instituition, account, account_content, res, user, da
                                 color: textcolor,
                                 margin: [0, 3, 0, 3],
                                 bold: true,
-                                text: "Total STN",
+                                text: "Total",
                             },
                             {
                                 fontSize: 7.5,

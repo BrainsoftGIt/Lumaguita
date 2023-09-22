@@ -55,34 +55,34 @@ export let create = async (instituition, deposito, cliente, res, user, date, num
             {
                 margin: [0, 3, 0, 3],
                 fontSize: 6.5,
-                borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
+                border: [false, false, false, false],
                 text: dep.lancamento_doc
             },
             {
                 margin: [0, 3, 0, 3],
                 fontSize: 6.5,
-                borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
+                border: [false, false, false, false],
                 text: "Pagamento de fatura " + dep.lancamento_doc,
                 alignment: "center"
             },
             {
                 margin: [0, 3, 0, 3],
                 fontSize: 6.5,
-                borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
+                border: [false, false, false, false],
                 text: moment(dep.lancamento_data).format("DD-MM-YYYY"),
                 alignment: "center"
             },
             {
                 margin: [0, 3, 0, 3],
                 fontSize: 6.5,
-                borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
+                border: [false, false, false, false],
                 text: formattedString(dep.debito + ""),
                 alignment: "right"
             },
             {
                 margin: [0, 3, 0, 3],
                 fontSize: 6.5,
-                borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
+                border: [false, false, false, false],
                 text: formattedString(deposito_distribuicao + ""),
                 alignment: "right"
             },
@@ -297,21 +297,21 @@ export let create = async (instituition, deposito, cliente, res, user, date, num
                         [
                             {
                                 margin: [0, 3, 0, 3],
-                                borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
+                                borderColor: [baseColor, baseColor, baseColor, baseColor],
                                 fillColor: baseColor,
                                 text: "Documento",
                                 color: textcolor
                             },
                             {
                                 margin: [0, 3, 0, 3],
-                                borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
+                                borderColor: [baseColor, baseColor, baseColor, baseColor],
                                 fillColor: baseColor,
                                 text: "Descrição",
                                 color: textcolor
                             },
                             {
                                 margin: [0, 3, 0, 3],
-                                borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
+                                borderColor: [baseColor, baseColor, baseColor, baseColor],
                                 fillColor: baseColor,
                                 text: "Data",
                                 color: textcolor,
@@ -319,7 +319,7 @@ export let create = async (instituition, deposito, cliente, res, user, date, num
                             },
                             {
                                 margin: [0, 3, 0, 3],
-                                borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
+                                borderColor: [baseColor, baseColor, baseColor, baseColor],
                                 fillColor: baseColor,
                                 text: "Valor Doc. STN",
                                 color: textcolor,
@@ -327,7 +327,7 @@ export let create = async (instituition, deposito, cliente, res, user, date, num
                             },
                             {
                                 margin: [0, 3, 0, 3],
-                                borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
+                                borderColor: [baseColor, baseColor, baseColor, baseColor],
                                 fillColor: baseColor,
                                 text: "Valor Recebido STN",
                                 color: textcolor,
