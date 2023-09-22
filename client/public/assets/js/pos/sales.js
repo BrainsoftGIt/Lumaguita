@@ -65,6 +65,10 @@ $("[report]").on("click", function () {
     }
 });
 
+$("#pos_menus").on("click", "li", function (){
+    $("#fkPGReport").removeClass("show")
+})
+
 $("#filtro_data_vendas").on("click", "li", function () {
     $(this).addClass('active').siblings().removeClass('active');
     $("#filtro_data_vendas_atual").text($(this).text());
