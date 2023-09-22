@@ -1,6 +1,6 @@
 import {block} from "../../../../core/updater";
 
-block( module, { identifier: "report.vreport_guiaentrada|v2.0.6" }).sql`
+block( module, { identifier: "report.vreport_guiaentrada|v2.0.6-01" }).sql`
 drop view if exists report.vreport_guiaentrada;
 create view report.vreport_guiaentrada as 
   select 

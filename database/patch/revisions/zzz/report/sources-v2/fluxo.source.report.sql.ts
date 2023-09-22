@@ -1,6 +1,6 @@
 import {block} from "../../../../core/updater";
 
-block( module, { identifier: "report:source|fluxo", flags:["@force"] })
+block( module, { identifier: "report:source|fluxo-v2.0.6" })
     //language=PostgreSQL
     .sql`
 drop view if exists report.vreport_fluxo;
