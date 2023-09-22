@@ -468,6 +468,9 @@ begin
         a.artigo_codigo,
         a.artigo_compostoquantidade,
         a.artigo_artigo_id,
+        u.unit_id,
+        u.unit_code,
+        u.unit_name,
         tx.taxa_percentagem,
         tx.taxa_taxa,
         tip.tipoimposto_id,
@@ -477,6 +480,7 @@ begin
         inner join tweeks.artigo a on v.venda_artigo_id = a.artigo_id
         left join tweeks.taxa tx on tx.taxa_id = any ( v.venda_taxas )
         left join tweeks.tipoimposto tip on tx.taxa_tipoimposto_id = tip.tipoimposto_id
+        left join tweeks.unit u on a.artigo_unit_id = u.unit_id
       where v._branch_uid = ___branch
         and v.venda_estado in (
            _const.maguita_venda_estado_aberto,

@@ -82,7 +82,7 @@ create or replace function tweeks.__fluxo_stock( _artigo_uid uuid default null, 
 
 
 block( module, { "identifier": "stock-admin"}).sql`
-create function tweeks.funct_load_artigo(args jsonb) returns SETOF jsonb
+create or replace function tweeks.funct_load_artigo(args jsonb) returns SETOF jsonb
   language plpgsql
 as
 $$
@@ -140,6 +140,9 @@ begin
                 art.artigo_nome,
                 art.artigo_compostoquantidade,
                 art.artigo_artigo_id,
+                u.unit_id,
+                u.unit_code,
+                u.unit_name,
 
                 art.artigo_espaco_auth = any( arg_espaco_childs ) as artigo_owner,
                 coalesce( s.stock_quantidade, 0 ) as stock_quantidade,
@@ -161,6 +164,7 @@ begin
                 ( lib.first( l.link_metadata ) filter ( where l.link_espaco_destino = arg_espaco_auth ) )->>'precario_quantidade' as precario_quantidade,
                 ( ( lib.first( l.link_metadata ) filter ( where l.link_espaco_destino = arg_espaco_auth ) )->>'stock_minimo' )::double precision as link_stockminimo
               from tweeks.artigo art
+                left join tweeks.unit u on art.artigo_unit_id = u.unit_id
                 left join tweeks.artigo origin on art.artigo_artigo_id = origin.artigo_id
                 left join tweeks.link l on l.link_estado = _const.maguita_link_estado_ativo
                   and l.link_referencia = rule.artigo_referencia( art.artigo_id )
@@ -169,8 +173,10 @@ begin
                   and l._branch_uid = _branch
                 left join __stock s on art.artigo_id = s.stock_artigo_id and s.stock_espaco_id = arg_espaco_auth
               where art._branch_uid = _branch
-              group by art.artigo_id,
-                 origin.artigo_id,
+              group by 
+                art.artigo_id,
+                u.unit_id,
+                origin.artigo_id,
                 s.stock_quantidade
           ), __filter as (
             select *,
@@ -259,6 +265,9 @@ begin
         art.artigo_estado,
         s.stock_quantidade,
         l.link_metadata,
+        u.unit_id,
+        u.unit_code,
+        u.unit_name,
         count( di.dispoe_id ) as artigos_extras
       from tweeks.artigo art
         inner join tweeks.link l on art.artigo_id =(  l.link_referencia->>'artigo_id' )::uuid
@@ -268,13 +277,16 @@ begin
         left join __stock s on art.artigo_id = s.artigo_id and s.espaco_id = arg_espaco_auth
         left join tweeks.dispoe di on art.artigo_id = di.dispoe_artigo_id
           and di.dispoe_estado = _const.dispoe_estado_ativo
-      where art.artigo_classe_id = coalesce( arg_classe_id, art.artigo_classe_id )
+        left join tweeks.unit u on art.artigo_unit_id = u.unit_id
+
+    where art.artigo_classe_id = coalesce( arg_classe_id, art.artigo_classe_id )
       group by art.artigo_id,
         s.stock_quantidade,
         l.link_metadata,
         art.artigo_stocknegativo,
         art.artigo_nome,
-        art.artigo_foto
+        art.artigo_foto,
+        u.unit_id
       order by case
           when s.stock_quantidade > 0 or art.artigo_stocknegativo then 1
           else 2
@@ -437,6 +449,9 @@ begin
     select
         c.classe_id,
         c.classe_nome,
+        u.unit_id,
+        u.unit_code,
+        u.unit_name,
         art.artigo_id,
         art.artigo_classe_id,
         art.artigo_nome,
@@ -458,9 +473,12 @@ begin
         left join tweeks.dispoe di on art.artigo_id = di.dispoe_artigo_id
           and di.dispoe_estado = _const.dispoe_estado_ativo
         left join __ean e on e.ean_artigo_id = art.artigo_id
-      where art._branch_uid = ___branch
+        left join tweeks.unit u on art.artigo_unit_id = u.unit_id
+
+    where art._branch_uid = ___branch
       group by art.artigo_id,
         c.classe_id,
+        u.unit_id,
         s.stock_quantidade,
         l.link_metadata,
         art.artigo_stocknegativo,
@@ -530,10 +548,10 @@ begin
                 co.colaborador_id,
                 co.colaborador_nome
             from tweeks.conta ct
-                     inner join tweeks.posto p on ct.conta_posto_fecho = p.posto_id
-                     inner join tweeks.deposito de on ( de.deposito_referencia->>'conta_id' )::uuid = ct.conta_id
-                     inner join geoinfo.currency cu on de.deposito_currency_id = cu.currency_id
-                     inner join auth.colaborador co on ct.conta_colaborador_fecho = co.colaborador_id
+                inner join tweeks.posto p on ct.conta_posto_fecho = p.posto_id
+                inner join tweeks.deposito de on ( de.deposito_referencia->>'conta_id' )::uuid = ct.conta_id
+                inner join geoinfo.currency cu on de.deposito_currency_id = cu.currency_id
+                inner join auth.colaborador co on ct.conta_colaborador_fecho = co.colaborador_id
             where ct.conta_posto_fecho = arg_posto_id
               and ct.conta_estado = _const.maguita_conta_estado_fechado
               and ct._tgrupo_id = _const.maguita_tgrupo_cnormal
