@@ -31,7 +31,6 @@ export let create = async (instituition, deposito, cliente, res, user, date, num
     let faturas_deposito = deposito.filter(dep => dep.data.lancamento_doc !== undefined);
     const moeda = deposito[0].data.currency_code;
 
-    console.log(deposito[0].data);
     faturas_deposito.forEach((dep, index) => {
         dep = dep.data;
         if (index === 0) {
