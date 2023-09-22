@@ -17,40 +17,40 @@ export let create = async (instituition, account_content, res, user, num_autoriz
 
 
     let artigosConta = [];
-    (account_content.main.conta_vendas || []).forEach((cont) =>{
+    (account_content.main.conta_vendas || []).forEach((cont) => {
         console.log(cont);
         artigosConta.push([
             {
-                margin : [0, 7, 0, 5],
-                fontSize : 6.5,
+                margin: [0, 3, 0, 3],
+                fontSize: 6.5,
                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
-                text : cont?.artigo_codigo || "---"
+                text: cont?.artigo_codigo || "---"
             },
             {
-                margin : [0, 7, 0, 5],
-                fontSize : 6.5,
+                margin: [0, 3, 0, 3],
+                fontSize: 6.5,
                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
-                text : cont.artigo_nome
+                text: cont.artigo_nome
             },
             {
-                margin : [0, 7, 0, 5],
-                fontSize : 6.5,
+                margin: [0, 3, 0, 3],
+                fontSize: 6.5,
                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
-                text : cont.venda_quantidade
+                text: cont.venda_quantidade
             },
             {
-                margin : [0, 7, 0, 5],
-                fontSize : 6.5,
+                margin: [0, 3, 0, 3],
+                fontSize: 6.5,
                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
-                text : cont.venda_lote || "---",
-                alignment : "right"
+                text: cont.venda_lote || "---",
+                alignment: "right"
             },
             {
-                margin : [0, 7, 0, 5],
-                fontSize : 6.5,
+                margin: [0, 3, 0, 3],
+                fontSize: 6.5,
                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
-                text : (cont.venda_validade === null ? "---" : moment(cont.venda_validade).format("DD-MM-YYYY")),
-                alignment : "right"
+                text: (cont.venda_validade === null ? "---" : moment(cont.venda_validade).format("DD-MM-YYYY")),
+                alignment: "right"
             }
         ]);
     });
@@ -67,22 +67,22 @@ export let create = async (instituition, account_content, res, user, num_autoriz
                 lineHeight: 1.3,
                 columns: [
                     (logoTipo ? {
-                        image:  'data:image/png;base64,' + fs.readFileSync(logoTipo).toString('base64'),
+                        image: 'data:image/png;base64,' + fs.readFileSync(logoTipo).toString('base64'),
                         width: 80,
                     } : {}),
                     {
-                        fontSize : 9,
-                        alignment : "right",
+                        fontSize: 9,
+                        alignment: "right",
                         stack: [
                             {
                                 text: `${instituition?.espaco_configuracao?.empresa_nome}`,
                                 bold: true,
-                                fontSize : 9,
+                                fontSize: 9,
                             },
                             {
                                 columns: [
                                     {
-                                        margin : [0, 0, 10, 0],
+                                        margin: [0, 0, 10, 0],
                                         text: `${instituition?.espaco_configuracao?.empresa_nif} `
                                     },
                                     getImage("nif.png", 9)
@@ -91,7 +91,7 @@ export let create = async (instituition, account_content, res, user, num_autoriz
                             {
                                 columns: [
                                     {
-                                        margin : [0, 0, 10, 0],
+                                        margin: [0, 0, 10, 0],
                                         text: `${instituition?.espaco_configuracao?.empresa_endereco}`
                                     },
                                     getImage("point.png", 9)
@@ -100,7 +100,7 @@ export let create = async (instituition, account_content, res, user, num_autoriz
                             {
                                 columns: [
                                     {
-                                        margin : [0, 0, 10, 0],
+                                        margin: [0, 0, 10, 0],
                                         text: `${instituition?.espaco_configuracao?.empresa_telef}`
                                     },
                                     getImage("phone.png", 9)
@@ -109,7 +109,7 @@ export let create = async (instituition, account_content, res, user, num_autoriz
                             {
                                 columns: [
                                     {
-                                        margin : [0, 0, 10, 0],
+                                        margin: [0, 0, 10, 0],
                                         text: `${instituition?.espaco_configuracao?.empresa_email}`
                                     },
                                     getImage("mail.png", 9)
@@ -124,18 +124,18 @@ export let create = async (instituition, account_content, res, user, num_autoriz
                 margin: [0, (!hasPersonalizadoHarder) ? 40 : 10, 0, 0],
                 layout: {
                     hLineWidth: function (i, node) {
-                        return  0.8;
+                        return 0.8;
                     },
                     vLineWidth: function (i, node) {
-                        return  0.8;
+                        return 0.8;
                     },
                 },
-                table : {
+                table: {
                     widths: ["50%", "50%"],
                     body: [
                         [
                             {
-                                fontSize : 8,
+                                fontSize: 8,
                                 border: [false, false, true, false],
                                 borderColor: ['#000000', '#000000', '#000000', '#000000'],
                                 stack: [
@@ -177,21 +177,21 @@ export let create = async (instituition, account_content, res, user, num_autoriz
                                 ]
                             },
                             {
-                                fontSize : 8,
+                                fontSize: 8,
                                 border: [true, false, false, false],
                                 borderColor: ['#000000', '#000000', '#000000', '#000000'],
                                 stack: [
                                     {
                                         bold: true,
-                                        color : '#000000',
-                                        text : "Nº de guia de saída"
+                                        color: '#000000',
+                                        text: "Nº de guia de saída"
                                     },
                                     {
                                         margin: [0, 0, 0, 15],
-                                        text : guia.guia_numero,
+                                        text: guia.guia_numero,
                                     },
                                     {
-                                        color : '#000000',
+                                        color: '#000000',
                                         text: "Data de emissâo"
                                     },
                                     {
@@ -205,64 +205,64 @@ export let create = async (instituition, account_content, res, user, num_autoriz
                 }
             },
             {
-                text : "",
+                text: "",
                 margin: [0, 20, 0, 5],
             },
             {
-                fontSize : 7,
+                fontSize: 7,
                 lineHeight: 1.3,
                 layout: {
                     fillColor: function (rowIndex, node, columnIndex) {
                         return (rowIndex % 2 === 0) ? '#F5F6F6' : null;
                     },
                     hLineWidth: function (i, node) {
-                        return  0.8;
+                        return 0.8;
                     },
                     vLineWidth: function (i, node) {
-                        return  0.8;
+                        return 0.8;
                     },
                 },
-                table : {
+                table: {
                     headerRows: 1,
                     widths: ["10%", "44%", "8%", "17%", "21%"],
-                    body : [
+                    body: [
                         [
                             {
-                                margin: [0, 7, 0, 5],
+                                margin: [0, 3, 0, 3],
                                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
                                 fillColor: '#000000',
                                 text: "Código",
                                 color: "#ffffff"
                             },
                             {
-                                margin : [0, 7, 0, 5],
+                                margin: [0, 3, 0, 3],
                                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
                                 fillColor: '#000000',
-                                text : "Descrição",
+                                text: "Descrição",
                                 color: "#ffffff"
                             },
                             {
-                                margin : [0, 7, 0, 5],
+                                margin: [0, 3, 0, 3],
                                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
                                 fillColor: '#000000',
                                 text: "Qtd",
                                 color: "#ffffff"
                             },
                             {
-                                margin : [0, 7, 0, 5],
+                                margin: [0, 3, 0, 3],
                                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
                                 fillColor: '#000000',
                                 text: "Lote",
                                 color: "#ffffff",
-                                alignment : "right"
+                                alignment: "right"
                             },
                             {
-                                margin : [0, 7, 0, 5],
+                                margin: [0, 3, 0, 3],
                                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
                                 fillColor: '#000000',
                                 text: "Data de validade",
                                 color: "#ffffff",
-                                alignment : "right"
+                                alignment: "right"
                             }
                         ],
                         ...artigosConta
@@ -273,14 +273,14 @@ export let create = async (instituition, account_content, res, user, num_autoriz
                 margin: [0, 50, 0, 0],
                 stack: [
                     {
-                        fontSize : 8,
+                        fontSize: 8,
                         bold: false,
-                        text : "Recebi"
+                        text: "Recebi"
                     },
                     {
                         margin: [0, 20, 0, 0],
                         bold: false,
-                        text : "____________________________________"
+                        text: "____________________________________"
                     }
                 ]
             },
@@ -288,14 +288,14 @@ export let create = async (instituition, account_content, res, user, num_autoriz
                 margin: [0, 50, 0, 0],
                 stack: [
                     {
-                        fontSize : 8,
+                        fontSize: 8,
                         bold: false,
-                        text : "Entreguei"
+                        text: "Entreguei"
                     },
                     {
                         margin: [0, 20, 0, 0],
                         bold: false,
-                        text : "____________________________________"
+                        text: "____________________________________"
                     }
                 ]
             }
@@ -306,13 +306,13 @@ export let create = async (instituition, account_content, res, user, num_autoriz
 
     const pdfDocGenerator = pdfMake.createPdf(docDefinition);
     pdfDocGenerator.getBuffer((buffer) => {
-        let filename = "Guia_Saída_"+(new Date().getTime()+Math.random())+".pdf";
+        let filename = "Guia_Saída_" + (new Date().getTime() + Math.random()) + ".pdf";
         fs.mkdirSync(path.join(folders.temp, 'multer'), {recursive: true});
-        fs.writeFile(path.join(folders.temp, 'multer/'+filename), buffer, function (err) {
+        fs.writeFile(path.join(folders.temp, 'multer/' + filename), buffer, function (err) {
             if (err) return console.log(err);
-            if(res) {
-                res.download(path.join(folders.temp, 'multer')+"/"+filename, filename, function () {
-                    fs.unlinkSync(path.join(folders.temp, 'multer')+"/"+filename);
+            if (res) {
+                res.download(path.join(folders.temp, 'multer') + "/" + filename, filename, function () {
+                    fs.unlinkSync(path.join(folders.temp, 'multer') + "/" + filename);
                 });
             }
         });

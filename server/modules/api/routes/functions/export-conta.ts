@@ -4,7 +4,7 @@ import {getFonts, structure, getImage} from "./estruture";
 import {folders} from "../../../../global/project";
 import {clusterServer} from "../../../../service/cluster.service";
 
-export let create = async (instituition,  account_content, res, user, date, num_autorization) => {
+export let create = async (instituition, account_content, res, user, date, num_autorization) => {
     const pdfMake = require("../../../../../libs/js/pdfmake/pdfmake");
     const pdfFonts = require('../../../../../libs/js/pdfmake/vfs_fonts');
     const {formattedString} = require("./formatValue");
@@ -15,9 +15,9 @@ export let create = async (instituition,  account_content, res, user, date, num_
     let subtotal = 0;
     let preco_artigo = 0;
     let sumImpost = {};
-    (account_content?.main?.conta_vendas || []).forEach((cont) =>{
+    (account_content?.main?.conta_vendas || []).forEach((cont) => {
 
-        if(!!cont.tipoimposto_id) {
+        if (!!cont.tipoimposto_id) {
             if (!sumImpost[cont.tipoimposto_id]) {
                 sumImpost[cont.tipoimposto_id] = {
                     sum: 0,
@@ -28,46 +28,46 @@ export let create = async (instituition,  account_content, res, user, date, num_
             sumImpost[cont.tipoimposto_id].sum += cont.venda_imposto;
         }
 
-        preco_artigo = cont.venda_montantesemimposto/cont.venda_quantidade;
+        preco_artigo = cont.venda_montantesemimposto / cont.venda_quantidade;
         artigosConta.push([
             {
-                margin : [0, 7, 0, 5],
-                fontSize : 6.5,
+                margin: [0, 3, 0, 3],
+                fontSize: 6.5,
                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
-                text : cont?.artigo_codigo || "---"
+                text: cont?.artigo_codigo || "---"
             },
             {
-                margin : [0, 7, 0, 5],
-                fontSize : 6.5,
+                margin: [0, 3, 0, 3],
+                fontSize: 6.5,
                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
-                text : cont?.artigo_nome || "---"
+                text: cont?.artigo_nome || "---"
             },
             {
-                margin : [0, 7, 0, 5],
-                fontSize : 6.5,
+                margin: [0, 3, 0, 3],
+                fontSize: 6.5,
                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
-                text : cont?.venda_quantidade || "----"
+                text: cont?.venda_quantidade || "----"
             },
             {
-                margin : [0, 7, 0, 5],
-                fontSize : 6.5,
+                margin: [0, 3, 0, 3],
+                fontSize: 6.5,
                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
-                text : `${formattedString(cont.venda_imposto.toFixed(2))} STN`,
-                alignment : "right"
+                text: `${formattedString(cont.venda_imposto.toFixed(2))} STN`,
+                alignment: "right"
             },
             {
-                margin : [0, 7, 0, 5],
-                fontSize : 6.5,
+                margin: [0, 3, 0, 3],
+                fontSize: 6.5,
                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
-                text : formattedString(preco_artigo.toFixed(2)+"")+" STN",
-                alignment : "right"
+                text: formattedString(preco_artigo.toFixed(2) + "") + " STN",
+                alignment: "right"
             },
             {
-                margin : [0, 7, 0, 5],
-                fontSize : 6.5,
+                margin: [0, 3, 0, 3],
+                fontSize: 6.5,
                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
-                text : formattedString(cont.venda_montantesemimposto.toFixed(2)+"")+" STN",
-                alignment : "right"
+                text: formattedString(cont.venda_montantesemimposto.toFixed(2) + "") + " STN",
+                alignment: "right"
             }
         ]);
         subtotal = Number(subtotal) + Number(cont.venda_montantesemimposto);
@@ -89,22 +89,22 @@ export let create = async (instituition,  account_content, res, user, date, num_
                 lineHeight: 1.3,
                 columns: [
                     (logoTipo ? {
-                        image:  'data:image/png;base64,' + fs.readFileSync(logoTipo).toString('base64'),
+                        image: 'data:image/png;base64,' + fs.readFileSync(logoTipo).toString('base64'),
                         width: 80,
                     } : {}),
                     {
-                        fontSize : 9,
-                        alignment : "right",
+                        fontSize: 9,
+                        alignment: "right",
                         stack: [
                             {
                                 text: `${instituition?.espaco_configuracao?.empresa_nome}`,
                                 bold: true,
-                                fontSize : 9,
+                                fontSize: 9,
                             },
                             {
                                 columns: [
                                     {
-                                        margin : [0, 0, 10, 0],
+                                        margin: [0, 0, 10, 0],
                                         text: `${instituition?.espaco_configuracao?.empresa_nif} `
                                     },
                                     getImage("nif.png", 9)
@@ -113,7 +113,7 @@ export let create = async (instituition,  account_content, res, user, date, num_
                             {
                                 columns: [
                                     {
-                                        margin : [0, 0, 10, 0],
+                                        margin: [0, 0, 10, 0],
                                         text: `${instituition?.espaco_configuracao?.empresa_endereco}`
                                     },
                                     getImage("point.png", 9)
@@ -122,7 +122,7 @@ export let create = async (instituition,  account_content, res, user, date, num_
                             {
                                 columns: [
                                     {
-                                        margin : [0, 0, 10, 0],
+                                        margin: [0, 0, 10, 0],
                                         text: `${instituition?.espaco_configuracao?.empresa_telef}`
                                     },
                                     getImage("phone.png", 9)
@@ -131,7 +131,7 @@ export let create = async (instituition,  account_content, res, user, date, num_
                             {
                                 columns: [
                                     {
-                                        margin : [0, 0, 10, 0],
+                                        margin: [0, 0, 10, 0],
                                         text: `${instituition?.espaco_configuracao?.empresa_email}`
                                     },
                                     getImage("mail.png", 9)
@@ -146,18 +146,18 @@ export let create = async (instituition,  account_content, res, user, date, num_
                 margin: [0, (!hasPersonalizadoHarder) ? 40 : 10, 0, 0],
                 layout: {
                     hLineWidth: function (i, node) {
-                        return  0.8;
+                        return 0.8;
                     },
                     vLineWidth: function (i, node) {
-                        return  0.8;
+                        return 0.8;
                     },
                 },
-                table : {
+                table: {
                     widths: ["50%", "50%"],
                     body: [
                         [
                             {
-                                fontSize : 8,
+                                fontSize: 8,
                                 border: [false, false, true, false],
                                 borderColor: ['#000000', '#000000', '#000000', '#000000'],
                                 stack: [
@@ -187,94 +187,94 @@ export let create = async (instituition,  account_content, res, user, date, num_
             {
                 // font: "NimbusRomanno9l",
                 margin: [0, 30, 0, 5],
-                text : ""
+                text: ""
             },
             {
                 // Código | Descrição | Lote | Qtd. | Valor Unit. | Valor
                 // font: "NimbusRomanno9l", 2021CódigoDescriçãoLoteQtd
-                fontSize : 7,
+                fontSize: 7,
                 lineHeight: 1.3,
                 layout: {
                     fillColor: function (rowIndex, node, columnIndex) {
                         return (rowIndex % 2 === 0) ? '#F5F6F6' : null;
                     },
                     hLineWidth: function (i, node) {
-                        return  0.8;
+                        return 0.8;
                     },
                     vLineWidth: function (i, node) {
-                        return  0.8;
+                        return 0.8;
                     },
                 },
-                table : {
+                table: {
                     headerRows: 1,
                     widths: ["10%", "39%", "8%", "11%", "14%", "18%"],
-                    body : [
+                    body: [
                         [
                             {
-                                margin: [0, 7, 0, 5],
+                                margin: [0, 3, 0, 3],
                                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
                                 fillColor: '#000000',
                                 text: "Código",
                                 color: "#ffffff"
                             },
                             {
-                                margin : [0, 7, 0, 5],
+                                margin: [0, 3, 0, 3],
                                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
                                 fillColor: '#000000',
-                                text : "Descrição",
+                                text: "Descrição",
                                 color: "#ffffff"
                             },
                             {
-                                margin : [0, 7, 0, 5],
+                                margin: [0, 3, 0, 3],
                                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
                                 fillColor: '#000000',
                                 text: "Qtd",
                                 color: "#ffffff"
                             },
                             {
-                                margin : [0, 7, 0, 5],
+                                margin: [0, 3, 0, 3],
                                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
                                 fillColor: '#000000',
                                 text: "Taxa",
                                 color: "#ffffff",
-                                alignment : "right"
+                                alignment: "right"
                             },
                             {
-                                margin : [0, 7, 0, 5],
+                                margin: [0, 3, 0, 3],
                                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
                                 fillColor: '#000000',
                                 text: "Valor Unit.",
                                 color: "#ffffff",
-                                alignment : "right"
+                                alignment: "right"
                             },
                             {
-                                margin : [0, 7, 0, 5],
+                                margin: [0, 3, 0, 3],
                                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
                                 fillColor: '#000000',
                                 text: "Subtotal",
                                 color: "#ffffff",
-                                alignment : "right"
+                                alignment: "right"
                             }
                         ],
                         ...artigosConta,
                         [
                             {
                                 border: [false, false, false, false],
-                                text : "", colSpan: 4, fillColor : "#ffffff"
+                                text: "", colSpan: 4, fillColor: "#ffffff"
                             },
-                            {text : ""},
-                            {text : ""},
-                            {text : ""},
+                            {text: ""},
+                            {text: ""},
+                            {text: ""},
                             {
-                                fontSize : 6.5,
+                                fontSize: 6.5,
                                 border: [false, false, false, false],
-                                margin : [0, 7, 0, 5],
+                                margin: [0, 3, 0, 3],
                                 text: "Subtotal"
                             },
                             {
-                                fontSize : 6.5,
+                                fontSize: 6.5,
                                 border: [false, false, false, false],
-                                margin : [0, 7, 0, 5],
+                                margin: [0, 3, 0, 3],
                                 text: formattedString(subtotal.toFixed(2) + "") + " STN",
                                 alignment: "right"
                             },
@@ -283,22 +283,22 @@ export let create = async (instituition,  account_content, res, user, date, num_
                             return [
                                 {
                                     border: [false, false, false, false],
-                                    text : "", colSpan: 4, fillColor : "#ffffff"
+                                    text: "", colSpan: 4, fillColor: "#ffffff"
                                 },
-                                {text : ""},
-                                {text : ""},
-                                {text : ""},
+                                {text: ""},
+                                {text: ""},
+                                {text: ""},
                                 {
-                                    fontSize : 6.5,
+                                    fontSize: 6.5,
                                     border: [false, false, false, false],
-                                    margin : [0, 7, 0, 5],
+                                    margin: [0, 3, 0, 3],
                                     text: `${sumImpost[key].name}`,
                                 },
                                 {
-                                    fontSize : 6.5,
+                                    fontSize: 6.5,
                                     border: [false, false, false, false],
-                                    margin : [0, 7, 0, 5],
-                                    text: formattedString(sumImpost[key].sum.toFixed(2)+"")+" STN",
+                                    margin: [0, 3, 0, 3],
+                                    text: formattedString(sumImpost[key].sum.toFixed(2) + "") + " STN",
                                     alignment: "right"
                                 }
                             ]
@@ -306,26 +306,26 @@ export let create = async (instituition,  account_content, res, user, date, num_
                         [
                             {
                                 border: [false, false, false, false],
-                                text : "", colSpan: 4, fillColor : "#ffffff"
+                                text: "", colSpan: 4, fillColor: "#ffffff"
                             },
-                            {text : ""},
-                            {text : ""},
-                            {text : ""},
+                            {text: ""},
+                            {text: ""},
+                            {text: ""},
                             {
-                                fontSize : 7.5,
+                                fontSize: 7.5,
                                 border: [false, false, false, false],
                                 fillColor: "#000000",
                                 color: "#ffffff",
-                                margin : [0, 7, 0, 5],
+                                margin: [0, 3, 0, 3],
                                 bold: true,
                                 text: "Total",
                             },
                             {
-                                fontSize : 7.5,
+                                fontSize: 7.5,
                                 border: [false, false, false, false],
                                 fillColor: "#000000",
                                 color: "#ffffff",
-                                margin : [0, 7, 0, 5],
+                                margin: [0, 3, 0, 3],
                                 bold: true,
                                 text: formattedString(account_content.main.conta_montante.toFixed(2) + "") + " STN",
                                 alignment: "right"
@@ -341,13 +341,13 @@ export let create = async (instituition,  account_content, res, user, date, num_
 
     const pdfDocGenerator = pdfMake.createPdf(docDefinition);
     pdfDocGenerator.getBuffer((buffer) => {
-        let filename = "Conta"+new Date().getTime()+".pdf";
+        let filename = "Conta" + new Date().getTime() + ".pdf";
         fs.mkdirSync(path.join(folders.temp, 'multer'), {recursive: true});
-        fs.writeFile(path.join(folders.temp, 'multer/'+filename), buffer, function (err) {
+        fs.writeFile(path.join(folders.temp, 'multer/' + filename), buffer, function (err) {
             if (err) return console.log(err);
-            if(res) {
-                res.download(path.join(folders.temp, 'multer')+"/"+filename, filename, function () {
-                    fs.unlinkSync(path.join(folders.temp, 'multer')+"/"+filename);
+            if (res) {
+                res.download(path.join(folders.temp, 'multer') + "/" + filename, filename, function () {
+                    fs.unlinkSync(path.join(folders.temp, 'multer') + "/" + filename);
                 });
             }
         });

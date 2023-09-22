@@ -6,10 +6,10 @@ import {folders} from "../../../../global/project";
 import moment from "moment";
 
 
-function getTypePayment(tipo_id){
-    if(tipo_id === 1) return "Cash";
-    else if(tipo_id === 4) return "Cheque";
-    else if(tipo_id === 2) return "Depósito";
+function getTypePayment(tipo_id) {
+    if (tipo_id === 1) return "Cash";
+    else if (tipo_id === 4) return "Cheque";
+    else if (tipo_id === 2) return "Depósito";
     else return "Transferência";
 }
 
@@ -30,64 +30,61 @@ export let create = async (instituition, deposito, cliente, res, user, date, num
     let faturas_deposito = deposito.filter(dep => dep.data.lancamento_doc !== undefined);
     const moeda = deposito[0].data.currency_code;
 
-    faturas_deposito.forEach((dep, index) =>{
+    faturas_deposito.forEach((dep, index) => {
         dep = dep.data;
-        if(index === 0){
+        if (index === 0) {
             preview = Number(dep.regula_acumulacao) - Number(valor_restante);
             pendente = Number(dep.acomulacao) - Number(preview);
-            if(Number(valor_restante) > Number(pendente)){
+            if (Number(valor_restante) > Number(pendente)) {
                 valor_restante = Number(valor_restante) - Number(pendente);
                 deposito_distribuicao = pendente;
-            }
-            else{
+            } else {
                 deposito_distribuicao = valor_restante;
                 valor_restante = 0;
             }
-        }
-        else{
-            if( Number(valor_restante) > Number(dep.debito)){
+        } else {
+            if (Number(valor_restante) > Number(dep.debito)) {
                 valor_restante = Number(valor_restante) - Number(dep.debito);
                 deposito_distribuicao = dep.debito;
-            }
-            else{
+            } else {
                 deposito_distribuicao = valor_restante;
                 valor_restante = 0;
             }
         }
         depositoPagamento.push([
             {
-                margin : [0, 7, 0, 5],
-                fontSize : 6.5,
+                margin: [0, 3, 0, 3],
+                fontSize: 6.5,
                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
-                text :  dep.lancamento_doc
+                text: dep.lancamento_doc
             },
             {
-                margin : [0, 7, 0, 5],
-                fontSize : 6.5,
+                margin: [0, 3, 0, 3],
+                fontSize: 6.5,
                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
-                text: "Pagamento de fatura "+dep.lancamento_doc,
+                text: "Pagamento de fatura " + dep.lancamento_doc,
                 alignment: "center"
             },
             {
-                margin : [0, 7, 0, 5],
-                fontSize : 6.5,
+                margin: [0, 3, 0, 3],
+                fontSize: 6.5,
                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
                 text: moment(dep.lancamento_data).format("DD-MM-YYYY"),
                 alignment: "center"
             },
             {
-                margin : [0, 7, 0, 5],
-                fontSize : 6.5,
+                margin: [0, 3, 0, 3],
+                fontSize: 6.5,
                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
-                text : formattedString(dep.debito+"")+" STN",
-                alignment : "right"
+                text: formattedString(dep.debito + "") + " STN",
+                alignment: "right"
             },
             {
-                margin : [0, 7, 0, 5],
-                fontSize : 6.5,
+                margin: [0, 3, 0, 3],
+                fontSize: 6.5,
                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
-                text : formattedString(deposito_distribuicao+"")+" STN",
-                alignment : "right"
+                text: formattedString(deposito_distribuicao + "") + " STN",
+                alignment: "right"
             },
         ]);
     });
@@ -107,22 +104,22 @@ export let create = async (instituition, deposito, cliente, res, user, date, num
                 lineHeight: 1.3,
                 columns: [
                     (logoTipo ? {
-                        image:  'data:image/png;base64,' + fs.readFileSync(logoTipo).toString('base64'),
+                        image: 'data:image/png;base64,' + fs.readFileSync(logoTipo).toString('base64'),
                         width: 80,
                     } : {}),
                     {
-                        fontSize : 9,
-                        alignment : "right",
+                        fontSize: 9,
+                        alignment: "right",
                         stack: [
                             {
                                 text: `${instituition?.espaco_configuracao?.empresa_nome}`,
                                 bold: true,
-                                fontSize : 9,
+                                fontSize: 9,
                             },
                             {
                                 columns: [
                                     {
-                                        margin : [0, 0, 10, 0],
+                                        margin: [0, 0, 10, 0],
                                         text: `${instituition?.espaco_configuracao?.empresa_nif} `
                                     },
                                     getImage("nif.png", 9)
@@ -131,7 +128,7 @@ export let create = async (instituition, deposito, cliente, res, user, date, num
                             {
                                 columns: [
                                     {
-                                        margin : [0, 0, 10, 0],
+                                        margin: [0, 0, 10, 0],
                                         text: `${instituition?.espaco_configuracao?.empresa_endereco}`
                                     },
                                     getImage("point.png", 9)
@@ -140,7 +137,7 @@ export let create = async (instituition, deposito, cliente, res, user, date, num
                             {
                                 columns: [
                                     {
-                                        margin : [0, 0, 10, 0],
+                                        margin: [0, 0, 10, 0],
                                         text: `${instituition?.espaco_configuracao?.empresa_telef}`
                                     },
                                     getImage("phone.png", 9)
@@ -149,7 +146,7 @@ export let create = async (instituition, deposito, cliente, res, user, date, num
                             {
                                 columns: [
                                     {
-                                        margin : [0, 0, 10, 0],
+                                        margin: [0, 0, 10, 0],
                                         text: `${instituition?.espaco_configuracao?.empresa_email}`
                                     },
                                     getImage("mail.png", 9)
@@ -164,18 +161,18 @@ export let create = async (instituition, deposito, cliente, res, user, date, num
                 margin: [0, (!hasPersonalizadoHarder) ? 40 : 10, 0, 0],
                 layout: {
                     hLineWidth: function (i, node) {
-                        return  0.8;
+                        return 0.8;
                     },
                     vLineWidth: function (i, node) {
-                        return  0.8;
+                        return 0.8;
                     },
                 },
-                table : {
+                table: {
                     widths: ["50%", "50%"],
                     body: [
                         [
                             {
-                                fontSize : 8,
+                                fontSize: 8,
                                 border: [false, false, true, false],
                                 borderColor: ['#000000', '#000000', '#000000', '#000000'],
                                 stack: [
@@ -187,8 +184,8 @@ export let create = async (instituition, deposito, cliente, res, user, date, num
                                         text: [
                                             {
                                                 bold: true,
-                                                color : '#000000',
-                                                text : `Cliente: `
+                                                color: '#000000',
+                                                text: `Cliente: `
                                             },
                                             `${cliente?.cliente_titular}`
                                         ]
@@ -197,8 +194,8 @@ export let create = async (instituition, deposito, cliente, res, user, date, num
                                         text: [
                                             {
                                                 bold: true,
-                                                color : '#000000',
-                                                text : `NIF: `
+                                                color: '#000000',
+                                                text: `NIF: `
                                             },
                                             `${(cliente?.cliente_nif || "---------")}`
                                         ]
@@ -207,8 +204,8 @@ export let create = async (instituition, deposito, cliente, res, user, date, num
                                         text: [
                                             {
                                                 bold: true,
-                                                color : '#000000',
-                                                text : `Contacto: `
+                                                color: '#000000',
+                                                text: `Contacto: `
                                             },
                                             `${cliente?.cliente_contactos?.[0]}`
                                         ]
@@ -217,8 +214,8 @@ export let create = async (instituition, deposito, cliente, res, user, date, num
                                         text: [
                                             {
                                                 bold: true,
-                                                color : '#000000',
-                                                text : `Email: `
+                                                color: '#000000',
+                                                text: `Email: `
                                             },
                                             `${cliente?.cliente_mail || "------"}`
                                         ]
@@ -226,12 +223,12 @@ export let create = async (instituition, deposito, cliente, res, user, date, num
                                 ]
                             },
                             {
-                                fontSize : 8,
+                                fontSize: 8,
                                 border: [true, false, false, false],
                                 borderColor: ['#000000', '#000000', '#000000', '#000000'],
                                 stack: [
                                     {
-                                        color : '#000000',
+                                        color: '#000000',
                                         bold: true,
                                         text: "Nº do Recibo"
                                     },
@@ -241,13 +238,13 @@ export let create = async (instituition, deposito, cliente, res, user, date, num
                                     {
                                         columns: [
                                             {
-                                                color : '#000000',
+                                                color: '#000000',
                                                 width: "50%",
                                                 bold: true,
                                                 text: "Forma de Pagamento"
                                             },
                                             {
-                                                color : '#000000',
+                                                color: '#000000',
                                                 bold: true,
                                                 width: "50%",
                                                 text: "Data de Emissão",
@@ -273,65 +270,65 @@ export let create = async (instituition, deposito, cliente, res, user, date, num
                 }
             },
             {
-                text : "",
+                text: "",
                 margin: [0, 20, 0, 5],
             },
             {
-                fontSize : 7,
+                fontSize: 7,
                 lineHeight: 1.3,
                 layout: {
                     fillColor: function (rowIndex, node, columnIndex) {
                         return (rowIndex % 2 === 0) ? '#F5F6F6' : null;
                     },
                     hLineWidth: function (i, node) {
-                        return  0.8;
+                        return 0.8;
                     },
                     vLineWidth: function (i, node) {
-                        return  0.8;
+                        return 0.8;
                     },
                 },
-                table : {
+                table: {
                     headerRows: 1,
                     widths: ["20%", "30%", "10%", "20%", "20%"],
-                    body : [
+                    body: [
                         [
                             {
-                                margin: [0, 7, 0, 5],
+                                margin: [0, 3, 0, 3],
                                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
                                 fillColor: '#000000',
                                 text: "Documento",
                                 color: "#ffffff"
                             },
                             {
-                                margin : [0, 7, 0, 5],
+                                margin: [0, 3, 0, 3],
                                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
                                 fillColor: '#000000',
-                                text : "Descrição",
+                                text: "Descrição",
                                 color: "#ffffff"
                             },
                             {
-                                margin : [0, 7, 0, 5],
+                                margin: [0, 3, 0, 3],
                                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
                                 fillColor: '#000000',
                                 text: "Data",
                                 color: "#ffffff",
-                                alignment : "center"
+                                alignment: "center"
                             },
                             {
-                                margin : [0, 7, 0, 5],
+                                margin: [0, 3, 0, 3],
                                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
                                 fillColor: '#000000',
                                 text: "Valor Doc.",
                                 color: "#ffffff",
-                                alignment : "center"
+                                alignment: "center"
                             },
                             {
-                                margin : [0, 7, 0, 5],
+                                margin: [0, 3, 0, 3],
                                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
                                 fillColor: '#000000',
                                 text: "Valor Recebido",
                                 color: "#ffffff",
-                                alignment : "center"
+                                alignment: "center"
                             }
                         ],
                         ...depositoPagamento
@@ -345,13 +342,13 @@ export let create = async (instituition, deposito, cliente, res, user, date, num
 
     const pdfDocGenerator = pdfMake.createPdf(docDefinition);
     pdfDocGenerator.getBuffer((buffer) => {
-        let filename = "Recibo_"+(new Date().getTime()+Math.random())+".pdf";
+        let filename = "Recibo_" + (new Date().getTime() + Math.random()) + ".pdf";
         fs.mkdirSync(path.join(folders.temp, 'multer'), {recursive: true});
-        fs.writeFile(path.join(folders.temp, 'multer/'+filename), buffer, function (err) {
+        fs.writeFile(path.join(folders.temp, 'multer/' + filename), buffer, function (err) {
             if (err) return console.log(err);
-            if(res) {
-                res.download(path.join(folders.temp, 'multer')+"/"+filename, filename, function () {
-                    fs.unlinkSync(path.join(folders.temp, 'multer')+"/"+filename);
+            if (res) {
+                res.download(path.join(folders.temp, 'multer') + "/" + filename, filename, function () {
+                    fs.unlinkSync(path.join(folders.temp, 'multer') + "/" + filename);
                 });
             }
         });
