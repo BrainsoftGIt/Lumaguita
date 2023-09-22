@@ -26,38 +26,38 @@ export let create = async (instituition, fornecedor, guia, artigos, res, user, c
             {
                 margin: [0, 3, 0, 3],
                 fontSize: 6.5,
-                borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
+                border: [false, false, false, false],
                 text: art.artigo_codigo || "----"
             },
             {
                 margin: [0, 3, 0, 3],
                 fontSize: 6.5,
-                borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
+                border: [false, false, false, false],
                 text: art.entrada_descricao
             },
             {
                 margin: [0, 3, 0, 3],
                 fontSize: 6.5,
-                borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
+                border: [false, false, false, false],
                 text: art.entrada_lote || "----"
             },
             {
                 margin: [0, 3, 0, 3],
                 fontSize: 6.5,
-                borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
+                border: [false, false, false, false],
                 text: art.entrada_quantidade
             },
             {
                 margin: [0, 3, 0, 3],
                 fontSize: 6.5,
-                borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
+                border: [false, false, false, false],
                 text: formattedString(art.entrada_custounitario + "") + " STN",
                 alignment: "right"
             },
             {
                 margin: [0, 3, 0, 3],
                 fontSize: 6.5,
-                borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
+                border: [false, false, false, false],
                 text: formattedString((Number(art.entrada_quantidade) * Number(art.entrada_custounitario)) + "") + " STN",
                 alignment: "right"
             }
@@ -277,45 +277,45 @@ export let create = async (instituition, fornecedor, guia, artigos, res, user, c
                         [
                             {
                                 margin: [0, 3, 0, 3],
-                                borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
+                                borderColor: [baseColor, baseColor, baseColor, baseColor],
                                 color: textcolor,
                                 fillColor: baseColor,
                                 text: "Código"
                             },
                             {
                                 margin: [0, 3, 0, 3],
-                                borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
+                                borderColor: [baseColor, baseColor, baseColor, baseColor],
                                 fillColor: baseColor,
                                 text: "Descrição",
                                 color: textcolor
                             },
                             {
                                 margin: [0, 3, 0, 3],
-                                borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
+                                borderColor: [baseColor, baseColor, baseColor, baseColor],
                                 fillColor: baseColor,
                                 text: "Lote",
                                 color: textcolor
                             },
                             {
                                 margin: [0, 3, 0, 3],
-                                borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
+                                borderColor: [baseColor, baseColor, baseColor, baseColor],
                                 fillColor: baseColor,
                                 text: "Qtd",
                                 color: textcolor
                             },
                             {
                                 margin: [0, 3, 0, 3],
-                                borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
+                                borderColor: [baseColor, baseColor, baseColor, baseColor],
                                 fillColor: baseColor,
-                                text: "Valor Unit.",
+                                text: "Valor Unit. STN",
                                 color: textcolor,
                                 alignment: "right"
                             },
                             {
                                 margin: [0, 3, 0, 3],
-                                borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
+                                borderColor: [baseColor, baseColor, baseColor, baseColor],
                                 fillColor: baseColor,
-                                text: "Valor",
+                                text: "Valor STN",
                                 color: textcolor,
                                 alignment: "right"
                             }
@@ -339,7 +339,7 @@ export let create = async (instituition, fornecedor, guia, artigos, res, user, c
                                 fontSize: 6.5,
                                 border: [false, false, false, false],
                                 margin: [0, 3, 0, 3],
-                                text: formattedString(subtotal.toFixed(2) + "") + " STN",
+                                text: formattedString(subtotal.toFixed(2) + ""),
                                 alignment: "right"
                             },
                         ],
@@ -389,7 +389,7 @@ export let create = async (instituition, fornecedor, guia, artigos, res, user, c
                                 color: textcolor,
                                 margin: [0, 3, 0, 3],
                                 bold: true,
-                                text: formattedString(total.toFixed(2) + "") + " STN",
+                                text: formattedString(total.toFixed(2) + ""),
                                 alignment: "right"
                             }
                         ]

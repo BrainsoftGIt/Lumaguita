@@ -17,19 +17,19 @@ export let create = async (instituition, artigos_transferencia:any, armazens, re
             {
                 margin : [0, 7, 0, 5],
                 fontSize : 6.5,
-                borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
+                border: [false, false, false, false],
                 text : art.artigo_codigo
             },
             {
                 margin : [0, 7, 0, 5],
                 fontSize : 6.5,
-                borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
+                border: [false, false, false, false],
                 text : art.artigo_nome
             },
             {
                 margin : [0, 7, 0, 5],
                 fontSize : 6.5,
-                borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
+                border: [false, false, false, false],
                 text : art.transferencia_quantidade
             }
         ]);
@@ -252,21 +252,21 @@ export let create = async (instituition, artigos_transferencia:any, armazens, re
                         [
                             {
                                 margin: [0, 7, 0, 5],
-                                borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
+                                borderColor: [baseColor, baseColor, baseColor, baseColor],
                                 fillColor: baseColor,
                                 text: "Código",
                                 color: textcolor
                             },
                             {
                                 margin : [0, 7, 0, 5],
-                                borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
+                                borderColor: [baseColor, baseColor, baseColor, baseColor],
                                 fillColor: baseColor,
                                 text : "Descrição",
                                 color: textcolor
                             },
                             {
                                 margin : [0, 7, 0, 5],
-                                borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
+                                borderColor: [baseColor, baseColor, baseColor, baseColor],
                                 fillColor: baseColor,
                                 text: "Quantidade",
                                 color: textcolor
