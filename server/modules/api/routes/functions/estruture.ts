@@ -1,27 +1,26 @@
 import fs from "fs";
 import path from "path";
 
-export let structure = (user, num_autorization, num_certification,  imageCabecalho = "", textcolor, baseColor) => {
+export let structure = (user, num_autorization, num_certification, imageCabecalho = "", textcolor, baseColor, rotape = {}) => {
     let footerSystem;
 
-    if(num_autorization === null && num_certification === null){
+    if (num_autorization === null && num_certification === null) {
         footerSystem = "";
-    }
-    else{
-        if(num_autorization !== null && num_certification !== null)
-            footerSystem = "Documento emitido por sistema informático com o nº de autorização "+num_autorization+" e de certificado "+num_certification;
-        else if(num_autorization === null && num_certification !== null)
-            footerSystem = "Documento emitido por sistema informático com o nº de certificado "+num_certification;
+    } else {
+        if (num_autorization !== null && num_certification !== null)
+            footerSystem = "Documento emitido por sistema informático com o nº de autorização " + num_autorization + " e de certificado " + num_certification;
+        else if (num_autorization === null && num_certification !== null)
+            footerSystem = "Documento emitido por sistema informático com o nº de certificado " + num_certification;
         else
-            footerSystem = "Documento emitido por sistema informático com o nº de autorização "+num_autorization;
+            footerSystem = "Documento emitido por sistema informático com o nº de autorização " + num_autorization;
     }
 
     return {
-        pageMargins: [35, ( imageCabecalho ? 90 : 50 ), 35, 45],
+        pageMargins: [35, (imageCabecalho ? 90 : 50), 35, 80],
         background: function (page) {
-            return [  ];
+            return [];
         },
-        header: function(currentPage, pageCount, pageSize) {
+        header: function (currentPage, pageCount, pageSize) {
             let file = path.resolve(__dirname, imageCabecalho)
             return [
                 imageCabecalho ? {
@@ -31,54 +30,33 @@ export let structure = (user, num_autorization, num_certification,  imageCabecal
                 } : {}
             ];
         },
-        footer: function(currentPage, pageCount) {
+        footer: function (currentPage, pageCount) {
             return [
+                (currentPage === pageCount) ? rotape : {},
                 {
+                    alignment: "center",
+                    color: baseColor,
                     lineHeight: 1.3,
-                    fontSize : 6.5,
-                    margin: [30, 0, 35, 0],
-                    stack :[
+                    fontSize: 6.5,
+                    margin: [30, 10, 30, 5],
+                    stack: [
                         {
-                            color: baseColor,
-                            columns: [
-                                {
-                                    width: "60%",
-                                    text: `${user} | Processado pelo software Luma`
-                                },
-                                {
-                                    width: "40%",
-                                    text: `${currentPage}/${pageCount}`,
-                                    alignment: "right"
-                                }
-                            ]
+                            text: `${user} | Processado pelo software Luma`
                         },
                         {
-                            color: baseColor,
-                            columns: [
-                                {
-                                    fontSize : 6,
-                                    width: "100%",
-                                    text: `${footerSystem}`
-                                }
-                            ],
+                            text: `${footerSystem}`,
+                        },
+                        {
+                            text: `${currentPage}/${pageCount}`,
                         }
-                    ],
-                    relativePosition: {
-                        x: 0,
-                        y: 5,
-                    }
-                },
-                {
-                    canvas: [
-                        { type: 'rect', x: 30, y: 0, w: 530, h: 1.2, color: baseColor, lineColor: '#ffffff', r: 5},
-                    ],
-                },
+                    ]
+                }
             ]
         },
     }
 }
 
-export let getImage = (pathFile, width : string | number = 10) => {
+export let getImage = (pathFile, width: string | number = 10) => {
     let file = path.resolve(__dirname, `../../../../resources/pdfs/${pathFile}`)
     return {
         image: 'data:image/png;base64,' + fs.readFileSync(file).toString('base64'),
@@ -115,7 +93,7 @@ export let getFonts = () => {
         Times: {
             normal: 'times.ttf',
             bold: 'timesbd.ttf',
-            italics:  'timesbi.ttf',
+            italics: 'timesbi.ttf',
             bolditalics: 'timesi.ttf'
         }
     }
