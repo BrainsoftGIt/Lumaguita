@@ -287,6 +287,15 @@ export let create = async (instituition, account_content, res, user, date, num_a
                                         text: account_content.main.conta_serie.document,
                                     },
                                     {
+                                        bold: true,
+                                        color: '#000000',
+                                        text: "Nº de Documento Origen"
+                                    },
+                                    {
+                                        margin: [0, 0, 0, 15],
+                                        text: account_content.main.conta_documentoorigem,
+                                    },
+                                    {
                                         color: '#000000',
                                         text: "Data de emissâo"
                                     },
