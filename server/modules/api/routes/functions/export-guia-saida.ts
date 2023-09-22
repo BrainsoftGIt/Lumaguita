@@ -13,6 +13,9 @@ export let create = async (instituition, account_content, res, user, num_autoriz
     pdfMake.fonts = getFonts();
     let logoTipo = clusterServer.res.resolve(instituition?.espaco_configuracao?.logo_referencia);
 
+    let baseColor = instituition?.espaco_configuracao?.empresa_basecolor || "#000000";
+    let textcolor = instituition?.espaco_configuracao?.empresa_textcolor || "#ffffff";
+
     let hasPersonalizadoHarder = (instituition?.espaco_configuracao?.cabecalho_referencia === null ? "" : clusterServer.res.resolve(instituition?.espaco_configuracao?.cabecalho_referencia));
 
 
@@ -230,38 +233,38 @@ export let create = async (instituition, account_content, res, user, num_autoriz
                             {
                                 margin: [0, 3, 0, 3],
                                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
-                                fillColor: '#000000',
+                                fillColor: baseColor,
                                 text: "Código",
-                                color: "#ffffff"
+                                color: textcolor
                             },
                             {
                                 margin: [0, 3, 0, 3],
                                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
-                                fillColor: '#000000',
+                                fillColor: baseColor,
                                 text: "Descrição",
-                                color: "#ffffff"
+                                color: textcolor
                             },
                             {
                                 margin: [0, 3, 0, 3],
                                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
-                                fillColor: '#000000',
+                                fillColor: baseColor,
                                 text: "Qtd",
-                                color: "#ffffff"
+                                color: textcolor
                             },
                             {
                                 margin: [0, 3, 0, 3],
                                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
-                                fillColor: '#000000',
+                                fillColor: baseColor,
                                 text: "Lote",
-                                color: "#ffffff",
+                                color: textcolor,
                                 alignment: "right"
                             },
                             {
                                 margin: [0, 3, 0, 3],
                                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
-                                fillColor: '#000000',
+                                fillColor: baseColor,
                                 text: "Data de validade",
-                                color: "#ffffff",
+                                color: textcolor,
                                 alignment: "right"
                             }
                         ],

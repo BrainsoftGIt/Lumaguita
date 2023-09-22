@@ -17,6 +17,9 @@ export let create = async (instituition, account_content, res, user, date, num_a
     let subtotal = 0;
     let preco_artigo = 0;
 
+    let baseColor = instituition?.espaco_configuracao?.empresa_basecolor || "#000000";
+    let textcolor = instituition?.espaco_configuracao?.empresa_textcolor || "#ffffff";
+
     let hasPersonalizadoHarder = (instituition?.espaco_configuracao?.cabecalho_referencia === null ? "" : clusterServer.res.resolve(instituition?.espaco_configuracao?.cabecalho_referencia));
 
     (account_content.main.conta_vendas || []).forEach((cont) => {
@@ -253,46 +256,46 @@ export let create = async (instituition, account_content, res, user, date, num_a
                             {
                                 margin: [0, 3, 0, 3],
                                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
-                                fillColor: '#000000',
+                                fillColor: baseColor,
                                 text: "Código",
-                                color: "#ffffff"
+                                color: textcolor
                             },
                             {
                                 margin: [0, 3, 0, 3],
                                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
-                                fillColor: '#000000',
+                                fillColor: baseColor,
                                 text: "Descrição",
-                                color: "#ffffff"
+                                color: textcolor
                             },
                             {
                                 margin: [0, 3, 0, 3],
                                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
-                                fillColor: '#000000',
+                                fillColor: baseColor,
                                 text: "Qtd",
-                                color: "#ffffff"
+                                color: textcolor
                             },
                             {
                                 margin: [0, 3, 0, 3],
                                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
-                                fillColor: '#000000',
+                                fillColor: baseColor,
                                 text: "Taxa",
-                                color: "#ffffff",
+                                color: textcolor,
                                 alignment: "right"
                             },
                             {
                                 margin: [0, 3, 0, 3],
                                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
-                                fillColor: '#000000',
+                                fillColor: baseColor,
                                 text: "Valor Unit.",
-                                color: "#ffffff",
+                                color: textcolor,
                                 alignment: "right"
                             },
                             {
                                 margin: [0, 3, 0, 3],
                                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
-                                fillColor: '#000000',
+                                fillColor: baseColor,
                                 text: "Subtotal",
-                                color: "#ffffff",
+                                color: textcolor,
                                 alignment: "right"
                             }
                         ],
@@ -354,8 +357,8 @@ export let create = async (instituition, account_content, res, user, date, num_a
                             {
                                 fontSize: 7.5,
                                 border: [false, false, false, false],
-                                fillColor: "#000000",
-                                color: "#ffffff",
+                                fillColor: baseColor,
+                                color: textcolor,
                                 margin: [0, 3, 0, 3],
                                 bold: true,
                                 text: "Total",
@@ -363,8 +366,8 @@ export let create = async (instituition, account_content, res, user, date, num_a
                             {
                                 fontSize: 7.5,
                                 border: [false, false, false, false],
-                                fillColor: "#000000",
-                                color: "#ffffff",
+                                fillColor: baseColor,
+                                color: textcolor,
                                 margin: [0, 3, 0, 3],
                                 bold: true,
                                 text: formattedString(account_content?.main?.conta_montante.toFixed(2) + "") + " STN",

@@ -148,6 +148,8 @@ var settings = {
                         $("#empresa_telef").val(emp.empresa_telef);
                         $("#empresa_endereco").val(emp.empresa_endereco);
                         $("#empresa_gerente").val(emp.empresa_gerente);
+                        $("#empresa_textcolor").val(emp.empresa_textcolor);
+                        $("#empresa_basecolor").val(emp.empresa_basecolor);
                         if(settings.empresa?.configuracao_impressoras === undefined){
                             settings.empresa["configuracao_impressoras"] = [];
                         }
@@ -392,6 +394,8 @@ var settings = {
         dados.empresa_telef = $("#empresa_telef").val();
         dados.empresa_endereco = $("#empresa_endereco").val().trim();
         dados.empresa_gerente = $("#empresa_gerente").val().trim() || null;
+        dados.empresa_basecolor = $("#empresa_basecolor").val().trim() || null;
+        dados.empresa_textcolor = $("#empresa_textcolor").val().trim() || null;
         dados.logo_nome = this.empresa?.logo_nome || null;
         dados.logo_talao = $("#mostrarLogoTalao").hasClass("active");
         if($("#remove_header").hasClass("active")){
