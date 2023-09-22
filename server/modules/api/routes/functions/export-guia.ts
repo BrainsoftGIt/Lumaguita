@@ -21,38 +21,38 @@ export let create = async (instituition, fornecedor, guia, artigos, res, user, c
         artigosEntrada.push([
             {
                 margin : [0, 7, 0, 5],
-                fontSize : 9.5,
+                fontSize : 6.5,
                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
                 text : art.artigo_codigo || "----"
             },
             {
                 margin : [0, 7, 0, 5],
-                fontSize : 9.5,
+                fontSize : 6.5,
                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
                 text : art.entrada_descricao
             },
             {
                 margin : [0, 7, 0, 5],
-                fontSize : 9.5,
+                fontSize : 6.5,
                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
                 text : art.entrada_lote || "----"
             },
             {
                 margin : [0, 7, 0, 5],
-                fontSize : 9.5,
+                fontSize : 6.5,
                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
                 text : art.entrada_quantidade
             },
             {
                 margin : [0, 7, 0, 5],
-                fontSize : 9.5,
+                fontSize : 6.5,
                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
                 text : formattedString(art.entrada_custounitario+"")+" STN",
                 alignment : "right"
             },
             {
                 margin : [0, 7, 0, 5],
-                fontSize : 9.5,
+                fontSize : 6.5,
                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
                 text : formattedString((Number(art.entrada_quantidade) * Number(art.entrada_custounitario))+"")+" STN",
                 alignment : "right"
@@ -78,16 +78,16 @@ export let create = async (instituition, fornecedor, guia, artigos, res, user, c
                 columns: [
                     (logoTipo ? {
                         image:  'data:image/png;base64,' + fs.readFileSync(logoTipo).toString('base64'),
-                        width: 120,
+                        width: 80,
                     } : {}),
                     {
-                        fontSize : 12,
+                        fontSize : 9,
                         alignment : "right",
                         stack: [
                             {
                                 text: `${instituition?.espaco_configuracao?.empresa_nome}`,
                                 bold: true,
-                                fontSize : 16,
+                                fontSize : 9,
                             },
                             {
                                 columns: [
@@ -138,6 +138,7 @@ export let create = async (instituition, fornecedor, guia, artigos, res, user, c
                     body: [
                         [
                             {
+                                fontSize : 8,
                                 border: [false, false, true, false],
                                 borderColor: ['#000000', '#000000', '#000000', '#000000'],
                                 stack: [
@@ -145,7 +146,6 @@ export let create = async (instituition, fornecedor, guia, artigos, res, user, c
                                         color : '#000000',
                                         text: `Fornecedor`,
                                         bold: true,
-                                        fontSize: 15,
                                     },
                                     {
                                         text: [
@@ -190,12 +190,12 @@ export let create = async (instituition, fornecedor, guia, artigos, res, user, c
                                 ]
                             },
                            {
+                               fontSize : 8,
                                border: [true, false, false, false],
                                borderColor: ['#000000', '#000000', '#000000', '#000000'],
                                 stack: [
                                     {
                                         bold: true,
-                                        fontSize: 20,
                                         color : '#000000',
                                         text : "Guia de Entrada"
                                     },
@@ -253,7 +253,7 @@ export let create = async (instituition, fornecedor, guia, artigos, res, user, c
                 text : ""
             },
             {
-                fontSize : 11,
+                fontSize : 7,
                 lineHeight: 1.3,
                 layout: {
                     fillColor: function (rowIndex, node, columnIndex) {
@@ -326,13 +326,13 @@ export let create = async (instituition, fornecedor, guia, artigos, res, user, c
                             {text : ""},
                             {text : ""},
                             {
-                                fontSize : 9.5,
+                                fontSize : 6.5,
                                 border: [false, false, false, false],
                                 margin : [0, 7, 0, 5],
                                 text: "Subtotal"
                             },
                             {
-                                fontSize : 9.5,
+                                fontSize : 6.5,
                                 border: [false, false, false, false],
                                 margin : [0, 7, 0, 5],
                                 text: formattedString(subtotal.toFixed(2)+"")+" STN",
@@ -348,13 +348,13 @@ export let create = async (instituition, fornecedor, guia, artigos, res, user, c
                             {text : ""},
                             {text : ""},
                             {
-                                fontSize : 9.5,
+                                fontSize : 6.5,
                                 border: [false, false, false, false],
                                 margin : [0, 7, 0, 5],
                                 text: "Seguro e tarifas de transporte",
                             },
                             {
-                                fontSize : 9.5,
+                                fontSize : 6.5,
                                 border: [false, false, false, false],
                                 margin : [0, 7, 0, 5],
                                 text: (custo_guia.length === 0 ? "" : formattedString(custo_guia[0].data.data.custoguia_montante.toFixed(2)+"")+" STN"),
@@ -370,7 +370,7 @@ export let create = async (instituition, fornecedor, guia, artigos, res, user, c
                             {text : ""},
                             {text : ""},
                             {
-                                fontSize : 9.5,
+                                fontSize : 7.5,
                                 border: [false, false, false, false],
                                 fillColor: "#000000",
                                 color: "#ffffff",
@@ -379,7 +379,7 @@ export let create = async (instituition, fornecedor, guia, artigos, res, user, c
                                 text: "Total",
                             },
                             {
-                                fontSize : 9.5,
+                                fontSize : 7.5,
                                 border: [false, false, false, false],
                                 fillColor: "#000000",
                                 color: "#ffffff",

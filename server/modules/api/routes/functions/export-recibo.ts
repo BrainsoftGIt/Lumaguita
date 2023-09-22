@@ -57,34 +57,34 @@ export let create = async (instituition, deposito, cliente, res, user, date, num
         depositoPagamento.push([
             {
                 margin : [0, 7, 0, 5],
-                fontSize : 9.5,
+                fontSize : 6.5,
                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
                 text :  dep.lancamento_doc
             },
             {
                 margin : [0, 7, 0, 5],
-                fontSize : 9.5,
+                fontSize : 6.5,
                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
                 text: "Pagamento de fatura "+dep.lancamento_doc,
                 alignment: "center"
             },
             {
                 margin : [0, 7, 0, 5],
-                fontSize : 9.5,
+                fontSize : 6.5,
                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
                 text: moment(dep.lancamento_data).format("DD-MM-YYYY"),
                 alignment: "center"
             },
             {
                 margin : [0, 7, 0, 5],
-                fontSize : 9.5,
+                fontSize : 6.5,
                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
                 text : formattedString(dep.debito+"")+" STN",
                 alignment : "right"
             },
             {
                 margin : [0, 7, 0, 5],
-                fontSize : 9.5,
+                fontSize : 6.5,
                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
                 text : formattedString(deposito_distribuicao+"")+" STN",
                 alignment : "right"
@@ -108,16 +108,16 @@ export let create = async (instituition, deposito, cliente, res, user, date, num
                 columns: [
                     (logoTipo ? {
                         image:  'data:image/png;base64,' + fs.readFileSync(logoTipo).toString('base64'),
-                        width: 120,
+                        width: 80,
                     } : {}),
                     {
-                        fontSize : 12,
+                        fontSize : 9,
                         alignment : "right",
                         stack: [
                             {
                                 text: `${instituition?.espaco_configuracao?.empresa_nome}`,
                                 bold: true,
-                                fontSize : 16,
+                                fontSize : 9,
                             },
                             {
                                 columns: [
@@ -125,7 +125,7 @@ export let create = async (instituition, deposito, cliente, res, user, date, num
                                         margin : [0, 0, 10, 0],
                                         text: `${instituition?.espaco_configuracao?.empresa_nif} `
                                     },
-                                    getImage("nif.png", 12)
+                                    getImage("nif.png", 9)
                                 ]
                             },
                             {
@@ -134,7 +134,7 @@ export let create = async (instituition, deposito, cliente, res, user, date, num
                                         margin : [0, 0, 10, 0],
                                         text: `${instituition?.espaco_configuracao?.empresa_endereco}`
                                     },
-                                    getImage("point.png", 12)
+                                    getImage("point.png", 9)
                                 ]
                             },
                             {
@@ -143,7 +143,7 @@ export let create = async (instituition, deposito, cliente, res, user, date, num
                                         margin : [0, 0, 10, 0],
                                         text: `${instituition?.espaco_configuracao?.empresa_telef}`
                                     },
-                                    getImage("phone.png", 12)
+                                    getImage("phone.png", 9)
                                 ]
                             },
                             {
@@ -152,7 +152,7 @@ export let create = async (instituition, deposito, cliente, res, user, date, num
                                         margin : [0, 0, 10, 0],
                                         text: `${instituition?.espaco_configuracao?.empresa_email}`
                                     },
-                                    getImage("mail.png", 12)
+                                    getImage("mail.png", 9)
                                 ]
                             }
                         ]
@@ -175,13 +175,13 @@ export let create = async (instituition, deposito, cliente, res, user, date, num
                     body: [
                         [
                             {
+                                fontSize : 8,
                                 border: [false, false, true, false],
                                 borderColor: ['#000000', '#000000', '#000000', '#000000'],
                                 stack: [
                                     {
                                         text: `Cliente`,
                                         bold: true,
-                                        fontSize: 14,
                                     },
                                     {
                                         text: [
@@ -226,13 +226,13 @@ export let create = async (instituition, deposito, cliente, res, user, date, num
                                 ]
                             },
                             {
+                                fontSize : 8,
                                 border: [true, false, false, false],
                                 borderColor: ['#000000', '#000000', '#000000', '#000000'],
                                 stack: [
                                     {
                                         color : '#000000',
                                         bold: true,
-                                        fontSize: 14,
                                         text: "Nº do Recibo"
                                     },
                                     {
@@ -277,7 +277,7 @@ export let create = async (instituition, deposito, cliente, res, user, date, num
                 margin: [0, 20, 0, 5],
             },
             {
-                fontSize : 11,
+                fontSize : 7,
                 lineHeight: 1.3,
                 layout: {
                     fillColor: function (rowIndex, node, columnIndex) {

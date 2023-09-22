@@ -118,6 +118,9 @@ var payment = {
         }
         $("#valorSubtotalPagamento").text($("#pos_valorSubtotal").text());
         $("#valorTotalPagamento").text($("#pos_valorTotal").text());
+        if(account.post.posto_definirmontanteautomaticamente){
+            $("#montante_entregue").val($(" #pos_valorTotal ").text()).keyup()
+        }
         if(pos.haveAccessGranted("maguita.pos.contacorrente", true)){
             if(tiposPagamento.find("li[corrente]").length === 0){
                 tiposPagamento.append(`<li class="flex v-ct waves-effect tgl" tipo_id="5" corrente>
@@ -414,6 +417,9 @@ var payment = {
             total = Number(total) + Number(result.total);
             $("#valorSubtotalPagamento").text(subtotal.dc().formatter());
             $("#valorTotalPagamento").text(total.dc().formatter());
+            if(account.post.posto_definirmontanteautomaticamente){
+                $("#montante_entregue").val(total.dc().formatter()).keyup()
+            }
         });
     }
 };

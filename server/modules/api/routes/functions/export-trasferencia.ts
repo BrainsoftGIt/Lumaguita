@@ -16,19 +16,19 @@ export let create = async (instituition, artigos_transferencia:any, armazens, re
         artigos.push([
             {
                 margin : [0, 7, 0, 5],
-                fontSize : 9.5,
+                fontSize : 6.5,
                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
                 text : art.artigo_codigo
             },
             {
                 margin : [0, 7, 0, 5],
-                fontSize : 9.5,
+                fontSize : 6.5,
                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
                 text : art.artigo_nome
             },
             {
                 margin : [0, 7, 0, 5],
-                fontSize : 9.5,
+                fontSize : 6.5,
                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
                 text : art.transferencia_quantidade
             }
@@ -51,16 +51,16 @@ export let create = async (instituition, artigos_transferencia:any, armazens, re
                 columns: [
                     (logoTipo ? {
                         image:  'data:image/png;base64,' + fs.readFileSync(logoTipo).toString('base64'),
-                        width: 120,
+                        width: 80,
                     } : {}),
                     {
-                        fontSize : 12,
+                        fontSize : 9,
                         alignment : "right",
                         stack: [
                             {
                                 text: `${instituition?.espaco_configuracao?.empresa_nome}`,
                                 bold: true,
-                                fontSize : 16,
+                                fontSize : 9,
                             },
                             {
                                 columns: [
@@ -68,7 +68,7 @@ export let create = async (instituition, artigos_transferencia:any, armazens, re
                                         margin : [0, 0, 10, 0],
                                         text: `${instituition?.espaco_configuracao?.empresa_nif} `
                                     },
-                                    getImage("nif.png", 12)
+                                    getImage("nif.png", 9)
                                 ]
                             },
                             {
@@ -77,7 +77,7 @@ export let create = async (instituition, artigos_transferencia:any, armazens, re
                                         margin : [0, 0, 10, 0],
                                         text: `${instituition?.espaco_configuracao?.empresa_endereco}`
                                     },
-                                    getImage("point.png", 12)
+                                    getImage("point.png", 9)
                                 ]
                             },
                             {
@@ -86,7 +86,7 @@ export let create = async (instituition, artigos_transferencia:any, armazens, re
                                         margin : [0, 0, 10, 0],
                                         text: `${instituition?.espaco_configuracao?.empresa_telef}`
                                     },
-                                    getImage("phone.png", 12)
+                                    getImage("phone.png", 9)
                                 ]
                             },
                             {
@@ -95,7 +95,7 @@ export let create = async (instituition, artigos_transferencia:any, armazens, re
                                         margin : [0, 0, 10, 0],
                                         text: `${instituition?.espaco_configuracao?.empresa_email}`
                                     },
-                                    getImage("mail.png", 12)
+                                    getImage("mail.png", 9)
                                 ]
                             }
                         ]
@@ -118,6 +118,7 @@ export let create = async (instituition, artigos_transferencia:any, armazens, re
                     body: [
                         [
                             {
+                                fontSize : 8,
                                 border: [false, false, true, false],
                                 borderColor: ['#000000', '#000000', '#000000', '#000000'],
                                 stack: [
@@ -125,11 +126,11 @@ export let create = async (instituition, artigos_transferencia:any, armazens, re
                                         color: '#000000',
                                         text: `TRANSFERÊNCIA DE ARTIGOS`,
                                         bold: true,
-                                        fontSize: 16,
                                     }
                                 ]
                             },
                             {
+                                fontSize : 8,
                                 border: [true, false, false, false],
                                 borderColor: ['#000000', '#000000', '#000000', '#000000'],
                                 stack: [
@@ -228,7 +229,7 @@ export let create = async (instituition, artigos_transferencia:any, armazens, re
                 text : ""
             },
             {
-                fontSize : 11,
+                fontSize : 7,
                 lineHeight: 1.3,
                 layout: {
                     fillColor: function (rowIndex, node, columnIndex) {
