@@ -338,3 +338,7 @@ $$
 `;
 
 
+block( module, { identifier: "posto_definirmontanteautomaticamente"}).sql`
+  alter table tweeks.posto add if not exists posto_definirmontanteautomaticamente boolean default false;
+`;
+
