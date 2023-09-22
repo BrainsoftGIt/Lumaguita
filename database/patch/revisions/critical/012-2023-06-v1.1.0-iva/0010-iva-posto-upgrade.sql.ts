@@ -48,6 +48,7 @@ $$
         pos.posto_chave,
         pos.posto_vermontatefaturado,
         pos.posto_multiplecaixa,
+        pos.posto_definirmontanteautomaticamente,
         tpos.tposto_id,
         tpos.tposto_designacao
       from tweeks.posto pos
