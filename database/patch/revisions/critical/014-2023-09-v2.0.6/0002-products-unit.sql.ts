@@ -1,7 +1,7 @@
 import {block} from "../../../core/updater";
 
 block( module, {
-    identifier: "unit|v2.0.6-04",
+    identifier: "unit|v2.0.6-05",
     flags: [ "@unique" ]
 }).sql`
 select map.constant('maguita_unit_state_active', 'int2', 1 );
@@ -51,12 +51,44 @@ do $$
             and _branch_uid = _record.branch_uid
       ;
   end loop;
+    for _record in 
+      with __unit ( unit_code, unit_name) as (
+        values 
+          ( 'G', 'Gramas' ),
+          ( 'KG', 'Kilogramas' ),
+          ( 'T', 'Toneladas' ),
+          ( 'L', 'Litros' ),
+          ( 'SC', 'Sacos' ),
+          ( 'CX', 'Caixas' ),
+          ( 'EMB', 'Embalagem' ),
+          ( 'PC', 'Pacotes' )
+      )
+      select * from tweeks.branch e
+        left join __unit u on true
+        left join tweeks.unit u on e.branch_uid  = u._branch_uid
+          and lower( u.unit_code ) = lower( u.unit_code )
+        where u.unit_id is null
+    loop
+        insert into tweeks.unit ( 
+            unit_code,
+            unit_name,
+            unit_espaco_auth,
+            unit_user_id,
+            _branch_uid
+        ) values (
+            'Unit',
+            'Unidades',
+            _record.branch_main_workspace,
+            _record.branch_main_user,
+            _record.branch_uid
+      ) returning * into _unit;
+  end loop;
   end;
 $$;
 `;
 
 block( module, {
-    identifier: "unit:(sets,load)|v2.0.6-04",
+    identifier: "unit:(sets,load)|v2.0.6-05",
 }).sql`
 create or replace function tweeks.funct_sets_unit( args jsonb )
   returns lib.res
