@@ -3,22 +3,6 @@ var fatura = {
     CODE_OPERATION_ACCOUNT: "conta"
 };
 
-let getUserPOSHasMenu = () => {
-    return new Promise((resolve) => {
-        $.ajax({
-            url: "/api/imposto/artigo",
-            method: "POST",
-            contentType: "application/json",
-            data: JSON.stringify({menucodigo: "maguita.pos.conta"}),
-            success({result}) {
-                resolve(result);
-            },
-            error(error){
-                resolve(false);
-            }
-        });
-    })
-}
 $("#pos_fatura").on("click", async function () {
     spaceConfig.loadConfig().then(value => {
         if (spaceConfig.isConfigured({object: value.config[0]})) {
