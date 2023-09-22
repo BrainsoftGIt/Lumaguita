@@ -35,7 +35,6 @@ export let structure = (user, num_autorization, num_certification, imageCabecalh
                 (currentPage === pageCount) ? rotape : {},
                 {
                     alignment: "center",
-                    color: baseColor,
                     lineHeight: 1.3,
                     fontSize: 6.5,
                     margin: [30, 10, 30, 5],
