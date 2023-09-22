@@ -39,7 +39,7 @@ export let structure = (user, num_autorization, num_certification,  imageCabecal
                     margin: [30, 0, 35, 0],
                     stack :[
                         {
-                            color: "#000000",
+                            color: baseColor,
                             columns: [
                                 {
                                     width: "60%",
@@ -53,6 +53,7 @@ export let structure = (user, num_autorization, num_certification,  imageCabecal
                             ]
                         },
                         {
+                            color: baseColor,
                             columns: [
                                 {
                                     fontSize : 6,
