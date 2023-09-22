@@ -1,7 +1,7 @@
 import {block} from "../../../core/updater";
 
 block( module, {
-    identifier: "unit|v2.0.6-05",
+    identifier: "unit|v2.0.6-06",
     flags: [ "@unique" ]
 }).sql`
     drop view if exists report.vreport_balanco;
@@ -14,10 +14,6 @@ block( module, {
     drop view if exists report.vreport_imposto;
     drop view if exists report.vreport_notacredito;
     drop view if exists report.vreport_venda;
-
-
-
-
 
 select map.constant('maguita_unit_state_active', 'int2', 1 );
 select map.constant('maguita_unit_state_fechado', 'int2', 0 );
