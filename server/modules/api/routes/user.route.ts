@@ -37,20 +37,12 @@ app.post("/api/exit", async (req, res) =>{
     res.json({result: true});
 });
 
-app.post("/api/login/menu", async (req, res)=>{
-    const {callFunctionLoadMenu} = require("../database/ts.call-user-functions");
-    req.body.arg_colaborador_id = req.session.auth_data.colaborador_id;
-    req.body.arg_menu_super = req.session.auth_data.collaborator_group === 1 ? "ccias.admin" : "ccias.association";
-    req.body.arg_allmenu = true;
-    const response = await callFunctionLoadMenu(req.body);
-    res.json({menus: response.rows});
-});
-
 app.post("/api/user/menus", async (req,res) =>{
     const {callFunctionLoadUserMenus} = require("../database/ts.call-user-functions");
     const response = await callFunctionLoadUserMenus(req.body);
     res.json({menus: response.rows});
 });
+
 app.get("/api/all/menu", async (req, res) =>{
     const {callFunctionLoadMenu} = require("../database/ts.call-user-functions");
     req.body.arg_menu_super = req.session.auth_data.collaborator_group === 1 ? "ccias.admin" : "ccias.association";

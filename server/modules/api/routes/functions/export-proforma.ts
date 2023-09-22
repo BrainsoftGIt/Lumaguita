@@ -286,7 +286,7 @@ export let create = async (instituition, account, account_content, res, user, da
                                         text: "Nº de Fatura"
                                     },
                                     {
-                                        margin: [0, 0, 0, 15],
+                                        margin: [0, 0, 0, 4],
                                         text: account_content?.main?.conta_numero,
                                     },
                                     {

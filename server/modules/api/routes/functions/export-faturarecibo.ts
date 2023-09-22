@@ -316,7 +316,7 @@ export let create = async (instituition, account_content, res, user, date, num_a
                                         text: "Nº da Fatura"
                                     },
                                     {
-                                        margin: [0, 0, 0, 15],
+                                        margin: [0, 0, 0, 4],
                                         text: account_content[0].main.conta_serie.document,
                                     },
                                     {

@@ -190,7 +190,7 @@ export let create = async (instituition, account_content, res, user, num_autoriz
                                         text: "Nº de guia de saída"
                                     },
                                     {
-                                        margin: [0, 0, 0, 15],
+                                        margin: [0, 0, 0, 4],
                                         text: guia.guia_numero,
                                     },
                                     {

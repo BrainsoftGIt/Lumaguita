@@ -67,6 +67,7 @@ export let create = async (instituition, account_content, res, user, date, num_a
             }
         ]);
 
+        console.log(cont.tipoimposto_id)
         if (!!cont.tipoimposto_id) {
             if (!sumImpost[cont.tipoimposto_id]) {
                 sumImpost[cont.tipoimposto_id] = {
@@ -283,17 +284,8 @@ export let create = async (instituition, account_content, res, user, date, num_a
                                         text: "Nº de Nota de Credito"
                                     },
                                     {
-                                        margin: [0, 0, 0, 15],
+                                        margin: [0, 0, 0, 4],
                                         text: account_content.main.conta_serie.document,
-                                    },
-                                    {
-                                        bold: true,
-                                        color: '#000000',
-                                        text: "Nº de Documento Origen"
-                                    },
-                                    {
-                                        margin: [0, 0, 0, 15],
-                                        text: account_content.main.conta_documentoorigem,
                                     },
                                     {
                                         color: '#000000',
@@ -302,7 +294,16 @@ export let create = async (instituition, account_content, res, user, date, num_a
                                     {
                                         width: "100%",
                                         text: moment(account_content.main.conta_data).format("DD-MM-YYYY"),
-                                    }
+                                    },
+                                    {
+                                        bold: true,
+                                        color: '#000000',
+                                        text: "Nº de Documento Origen"
+                                    },
+                                    {
+                                        margin: [0, 0, 0, 4],
+                                        text: account_content.main.conta_documentoorigem,
+                                    },
                                 ]
                             }
                         ]
