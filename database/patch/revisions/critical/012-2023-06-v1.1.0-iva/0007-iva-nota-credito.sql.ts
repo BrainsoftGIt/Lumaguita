@@ -180,6 +180,7 @@ begin
         iten.venda_lote,
         iten.venda_validade,
         iten.venda_metadata,
+        iten.venda_taxas,
         iten.venda_montantetotal,
         iten.venda_id as venda_venda_docorign,
         iten.venda_venda_id as ___iten_venda_super
@@ -210,6 +211,7 @@ begin
         ve.venda_lote,
         ve.venda_validade,
         ve.venda_metadata,
+        iten.venda_taxas,
         coalesce( jsonb_agg( to_jsonb( iten ) ) filter ( where iten.venda_venda_docorign is not null ), jsonb_build_array()) as arg_itens
       from tweeks.venda ve
         left join __iten iten on ve.venda_id = iten.___iten_venda_super
