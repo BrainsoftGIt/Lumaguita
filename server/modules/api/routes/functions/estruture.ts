@@ -70,7 +70,7 @@ export let structure = (user, num_autorization, num_certification,  imageCabecal
                 },
                 {
                     canvas: [
-                        { type: 'rect', x: 30, y: 0, w: 530, h: 1.2, color: '#0a0a0a', lineColor: '#ffffff', r: 5},
+                        { type: 'rect', x: 30, y: 0, w: 530, h: 1.2, color: baseColor, lineColor: '#ffffff', r: 5},
                     ],
                 },
             ]
