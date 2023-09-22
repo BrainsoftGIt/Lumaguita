@@ -1,7 +1,7 @@
 import {block} from "../../../core/updater";
 
 block( module, {
-    identifier: "unit|v2.0.6-05",
+    identifier: "unit|v2.0.6-07",
     flags: [ "@unique" ]
 }).sql`
     drop view if exists report.vreport_balanco;
@@ -14,10 +14,6 @@ block( module, {
     drop view if exists report.vreport_imposto;
     drop view if exists report.vreport_notacredito;
     drop view if exists report.vreport_venda;
-
-
-
-
 
 select map.constant('maguita_unit_state_active', 'int2', 1 );
 select map.constant('maguita_unit_state_fechado', 'int2', 0 );
@@ -67,7 +63,7 @@ do $$
       ;
   end loop;
     for _record in 
-      with __unit ( unit_code, unit_name) as (
+      with __unit ( _code, _name) as (
         values 
           ( 'G', 'Gramas' ),
           ( 'KG', 'Kilogramas' ),
@@ -81,7 +77,7 @@ do $$
       select * from tweeks.branch e
         left join __unit _u on true
         left join tweeks.unit u on e.branch_uid  = u._branch_uid
-          and lower( u.unit_code ) = lower( _u.unit_code )
+          and lower( u.unit_code ) = lower( _u._code )
         where u.unit_id is null
     loop
         insert into tweeks.unit ( 
@@ -91,8 +87,8 @@ do $$
             unit_user_id,
             _branch_uid
         ) values (
-            'Unit',
-            'Unidades',
+            _record._code,
+            _record._name,
             _record.branch_main_workspace,
             _record.branch_main_user,
             _record.branch_uid
