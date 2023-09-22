@@ -6,7 +6,13 @@ block( module, { identifier: "report:source|venda-v2.0.6", flags:[]})
 drop view if exists report.vreport_venda;
 
 create view report.vreport_venda as
-with _const as ( select * from map.constant() )
+with _const ( maguita_venda_estado_fechado, maguita_conta_estado_fechado, maguita_tserie_faturarecibo, maguita_tserie_fatura ) as (
+  select 
+    map.get( 'maguita_venda_estado_fechado' )::int2
+    , map.get( 'maguita_conta_estado_fechado' )::int2
+    , map.get( 'maguita_tserie_faturarecibo' )::int2
+    , map.get( 'maguita_tserie_fatura' )::int2
+)
   select
       v.venda_id,
       ct.conta_numerofatura as "FATURA",

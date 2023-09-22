@@ -7,7 +7,11 @@ drop view if exists report.vreport_balanco;
 
 create or replace view report.vreport_balanco as
 with
-  _const as ( select * from map.constant() ),
+  _const ( maguita_conta_estado_fechado, maguita_venda_estado_fechado ) as ( 
+    select 
+      map.get('maguita_conta_estado_fechado')::int2,
+      map.get('maguita_venda_estado_fechado')::int2
+  ),
   __lancamento as ( select * from tweeks.__lancamento_regularizacao() l ),
   __receitas as (
     select
@@ -140,27 +144,28 @@ order by "CATEGORIA", "ARTIGO", "DATA"
 
 select * from report.sync( 'report.vreport_balanco', 'RELATÓRIO DE BALANÇO', 1 );
 
-UPDATE report.vcolumn SET position = null, show = false, init = false, format = null, filter = '[]', agg = '[]', noagg = null, gen = '[]', rename = null, type = 'uuid' WHERE source = 'report.vreport_balanco' AND name = '_branch_uid';
+UPDATE report.vcolumn SET position = 1996, show = true, init = true, format = 'name', filter = '[]', agg = '[]', noagg = null, gen = '[]', rename = null, type = 'character varying' WHERE source = 'report.vreport_balanco' AND name = 'ARTIGO';
 UPDATE report.vcolumn SET position = 1995, show = true, init = false, format = 'code', filter = '[]', agg = '[]', noagg = false, gen = '[]', rename = null, type = 'character varying' WHERE source = 'report.vreport_balanco' AND name = 'CÓDIGO';
+UPDATE report.vcolumn SET position = 1994, show = true, init = false, format = 'name:short', filter = '[]', agg = '[]', noagg = null, gen = '[]', rename = null, type = 'character varying' WHERE source = 'report.vreport_balanco' AND name = 'CATEGORIA';
+UPDATE report.vcolumn SET position = 1895, show = true, init = true, format = 'name:short', filter = '[]', agg = '[]', noagg = null, gen = '[]', rename = null, type = 'character varying' WHERE source = 'report.vreport_balanco' AND name = 'ARMAZÉM';
+UPDATE report.vcolumn SET position = 89, show = true, init = true, format = 'int', filter = '[]', agg = '[]', noagg = null, gen = '[]', rename = null, type = 'double precision' WHERE source = 'report.vreport_balanco' AND name = 'QT. ENTRADA';
+UPDATE report.vcolumn SET position = 88, show = true, init = false, format = 'money', filter = '[]', agg = '[]', noagg = null, gen = '[]', rename = null, type = 'double precision' WHERE source = 'report.vreport_balanco' AND name = '$ DESPESA PREV.';
+UPDATE report.vcolumn SET position = 87, show = true, init = true, format = 'money', filter = '[]', agg = '[]', noagg = null, gen = '[]', rename = null, type = 'double precision' WHERE source = 'report.vreport_balanco' AND name = '$ DESPESA EFET.';
+UPDATE report.vcolumn SET position = 86, show = false, init = false, format = 'money', filter = '[]', agg = '[]', noagg = null, gen = '[]', rename = null, type = 'double precision' WHERE source = 'report.vreport_balanco' AND name = '$ DESPESA ESTI.';
+UPDATE report.vcolumn SET position = 79, show = true, init = true, format = 'int', filter = '[]', agg = '[]', noagg = null, gen = '[]', rename = null, type = 'double precision' WHERE source = 'report.vreport_balanco' AND name = 'QT. SAÍDA';
+UPDATE report.vcolumn SET position = 78, show = true, init = false, format = 'money', filter = '[]', agg = '[]', noagg = null, gen = '[]', rename = null, type = 'double precision' WHERE source = 'report.vreport_balanco' AND name = '$ RECEITA PREV.';
+UPDATE report.vcolumn SET position = 77, show = true, init = true, format = 'money', filter = '[]', agg = '[]', noagg = null, gen = '[]', rename = null, type = 'double precision' WHERE source = 'report.vreport_balanco' AND name = '$ RECEITA EFET.';
+UPDATE report.vcolumn SET position = 76, show = true, init = false, format = 'money', filter = '[]', agg = '[]', noagg = null, gen = '[]', rename = null, type = 'double precision' WHERE source = 'report.vreport_balanco' AND name = '$ RECEITA ESTI.';
+UPDATE report.vcolumn SET position = 50, show = true, init = true, format = 'int', filter = '[]', agg = '[]', noagg = null, gen = '[]', rename = null, type = 'double precision' WHERE source = 'report.vreport_balanco' AND name = 'REST. QT.';
+UPDATE report.vcolumn SET position = 49, show = true, init = true, format = 'money', filter = '[]', agg = '[]', noagg = null, gen = '[]', rename = null, type = 'double precision' WHERE source = 'report.vreport_balanco' AND name = '$ REST. PREV.';
+UPDATE report.vcolumn SET position = 48, show = true, init = true, format = 'money', filter = '[]', agg = '[]', noagg = null, gen = '[]', rename = null, type = 'double precision' WHERE source = 'report.vreport_balanco' AND name = '$ REST. EFET.';
+UPDATE report.vcolumn SET position = 47, show = true, init = true, format = 'money', filter = '[]', agg = '[]', noagg = null, gen = '[]', rename = null, type = 'double precision' WHERE source = 'report.vreport_balanco' AND name = '$ REST. ESTI.';
 UPDATE report.vcolumn SET position = 0, show = true, init = true, format = 'date', filter = '["query.date|start", "query.date|end"]', agg = '[]', noagg = null, gen = '[]', rename = null, type = 'timestamp with time zone' WHERE source = 'report.vreport_balanco' AND name = 'DATA';
 UPDATE report.vcolumn SET position = null, show = false, init = false, format = 'id', filter = '["query.source|tweeks.artigo"]', agg = '[{"func": "count::distinct", "name": "TOTAL DE ARTIGO", "rename": "??COUNT::DISTINCT TOTAL ARTIGO"}]', noagg = null, gen = '[]', rename = null, type = 'uuid' WHERE source = 'report.vreport_balanco' AND name = 'artigo_id';
 UPDATE report.vcolumn SET position = null, show = false, init = false, format = 'id', filter = '["query.source|tweeks.classe"]', agg = '[]', noagg = null, gen = '[]', rename = null, type = 'uuid' WHERE source = 'report.vreport_balanco' AND name = 'classe_id';
 UPDATE report.vcolumn SET position = null, show = false, init = false, format = 'id', filter = '["query.source|tweeks.espaco"]', agg = '[]', noagg = null, gen = '[]', rename = null, type = 'uuid' WHERE source = 'report.vreport_balanco' AND name = 'espaco_id';
-UPDATE report.vcolumn SET position = 89, show = true, init = true, format = 'int', filter = '[]', agg = '[]', noagg = null, gen = '[]', rename = null, type = 'double precision' WHERE source = 'report.vreport_balanco' AND name = 'QT. ENTRADA';
-UPDATE report.vcolumn SET position = 79, show = true, init = true, format = 'int', filter = '[]', agg = '[]', noagg = null, gen = '[]', rename = null, type = 'double precision' WHERE source = 'report.vreport_balanco' AND name = 'QT. SAÍDA';
-UPDATE report.vcolumn SET position = 50, show = true, init = true, format = 'int', filter = '[]', agg = '[]', noagg = null, gen = '[]', rename = null, type = 'double precision' WHERE source = 'report.vreport_balanco' AND name = 'REST. QT.';
-UPDATE report.vcolumn SET position = 88, show = true, init = false, format = 'money', filter = '[]', agg = '[]', noagg = null, gen = '[]', rename = null, type = 'double precision' WHERE source = 'report.vreport_balanco' AND name = '$ DESPESA PREV.';
-UPDATE report.vcolumn SET position = 87, show = true, init = true, format = 'money', filter = '[]', agg = '[]', noagg = null, gen = '[]', rename = null, type = 'double precision' WHERE source = 'report.vreport_balanco' AND name = '$ DESPESA EFET.';
-UPDATE report.vcolumn SET position = 86, show = false, init = false, format = 'money', filter = '[]', agg = '[]', noagg = null, gen = '[]', rename = null, type = 'double precision' WHERE source = 'report.vreport_balanco' AND name = '$ DESPESA ESTI.';
-UPDATE report.vcolumn SET position = 78, show = true, init = false, format = 'money', filter = '[]', agg = '[]', noagg = null, gen = '[]', rename = null, type = 'double precision' WHERE source = 'report.vreport_balanco' AND name = '$ RECEITA PREV.';
-UPDATE report.vcolumn SET position = 77, show = true, init = true, format = 'money', filter = '[]', agg = '[]', noagg = null, gen = '[]', rename = null, type = 'double precision' WHERE source = 'report.vreport_balanco' AND name = '$ RECEITA EFET.';
-UPDATE report.vcolumn SET position = 76, show = true, init = false, format = 'money', filter = '[]', agg = '[]', noagg = null, gen = '[]', rename = null, type = 'double precision' WHERE source = 'report.vreport_balanco' AND name = '$ RECEITA ESTI.';
-UPDATE report.vcolumn SET position = 49, show = true, init = true, format = 'money', filter = '[]', agg = '[]', noagg = null, gen = '[]', rename = null, type = 'double precision' WHERE source = 'report.vreport_balanco' AND name = '$ REST. PREV.';
-UPDATE report.vcolumn SET position = 48, show = true, init = true, format = 'money', filter = '[]', agg = '[]', noagg = null, gen = '[]', rename = null, type = 'double precision' WHERE source = 'report.vreport_balanco' AND name = '$ REST. EFET.';
-UPDATE report.vcolumn SET position = 47, show = true, init = true, format = 'money', filter = '[]', agg = '[]', noagg = null, gen = '[]', rename = null, type = 'double precision' WHERE source = 'report.vreport_balanco' AND name = '$ REST. ESTI.';
-UPDATE report.vcolumn SET position = 1996, show = true, init = true, format = 'name', filter = '[]', agg = '[]', noagg = null, gen = '[]', rename = null, type = 'character varying' WHERE source = 'report.vreport_balanco' AND name = 'ARTIGO';
-UPDATE report.vcolumn SET position = 1994, show = true, init = false, format = 'name:short', filter = '[]', agg = '[]', noagg = null, gen = '[]', rename = null, type = 'character varying' WHERE source = 'report.vreport_balanco' AND name = 'CATEGORIA';
-UPDATE report.vcolumn SET position = 1895, show = true, init = true, format = 'name:short', filter = '[]', agg = '[]', noagg = null, gen = '[]', rename = null, type = 'character varying' WHERE source = 'report.vreport_balanco' AND name = 'ARMAZÉM';
+UPDATE report.vcolumn SET position = null, show = false, init = false, format = null, filter = '[]', agg = '[]', noagg = null, gen = '[]', rename = null, type = 'uuid' WHERE source = 'report.vreport_balanco' AND name = '_branch_uid';
+
 
 select * from report.vcolumn
 where source = 'report.vreport_balanco'

@@ -6,7 +6,12 @@ block( module, { identifier: "report.vreport_notacredito|v2.0.6", flags:[]})
     drop view if exists report.vreport_notacredito;
 
     create view report.vreport_notacredito as
-    with _const as ( select * from map.constant() )
+    with _const ( maguita_venda_estado_fechado, maguita_conta_estado_fechado, maguita_tserie_notacredito ) as ( 
+      select 
+        map.get('maguita_venda_estado_fechado')::int2
+        , map.get( 'maguita_conta_estado_fechado' )::int2
+        , map.get( 'maguita_tserie_notacredito' )::int2
+    )
     select
         v.venda_id,
         ct.conta_numerofatura as "DOCUMENTO",
@@ -130,6 +135,7 @@ block( module, { identifier: "report.vreport_notacredito|v2.0.6", flags:[]})
     UPDATE report.vcolumn SET position = null, show = false, init = false, format = 'id', filter = '[]', agg = '[]', noagg = null, gen = '[]', rename = null, type = 'uuid' WHERE source = 'report.vreport_notacredito' AND name = '_branch_uid';
     UPDATE report.vcolumn SET position = null, show = false, init = false, format = 'id', filter = '[]', agg = '[]', noagg = false, gen = '[]', rename = null, type = 'uuid[]' WHERE source = 'report.vreport_notacredito' AND name = '_tipoimposto_ids';
     UPDATE report.vcolumn SET position = null, show = false, init = false, format = 'id', filter = '[]', agg = '[]', noagg = false, gen = '[]', rename = null, type = 'uuid' WHERE source = 'report.vreport_notacredito' AND name = 'deposito_id';
+
 
     select *
     from report.vcolumn

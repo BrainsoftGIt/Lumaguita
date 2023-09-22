@@ -6,12 +6,13 @@ block( module, { identifier: "report:source|conta", flags:["@force"]})
 drop view if exists report.vreport_conta;
 
 create view report.vreport_conta as
-with _const as (
+with _const (maguita_lancamento_mode_manual, maguita_lancamento_mode_automatic, ___conta_regclass, ___deposito_regclass) as (
   select
-      m.*,
+      map.get('maguita_lancamento_mode_manual')::int2,
+      map.get('maguita_lancamento_mode_automatic')::int2,
       cluster.__format( 'tweeks.conta' ) as ___conta_regclass,
       cluster.__format( 'tweeks.deposito' ) as ___deposito_regclass
-    from map.constant() m ),
+  ),
      _lancamento as ( select *  from tweeks.__lancamento_regularizacao()
 ), __conta_report as (
   select
@@ -63,33 +64,33 @@ with _const as (
 
 select * from report.sync( 'report.vreport_conta', 'RELATÓRIO DE CONTA/LANÇAMENTO', 1 );
 
-UPDATE report.vcolumn SET position = null, show = false, init = false, format = null, filter = '[]', agg = '[]', noagg = false, gen = '[]', rename = null, type = 'uuid' WHERE source = 'report.vreport_conta' AND name = '_branch_uid';
-UPDATE report.vcolumn SET position = 1894, show = true, init = false, format = 'code', filter = '[["query.like", {"name": "NIF"}]]', agg = '[]', noagg = false, gen = '[]', rename = null, type = 'character varying' WHERE source = 'report.vreport_conta' AND name = 'NIF';
-UPDATE report.vcolumn SET position = 1695, show = true, init = true, format = 'code', filter = '[]', agg = '[]', noagg = false, gen = '[]', rename = null, type = 'character varying' WHERE source = 'report.vreport_conta' AND name = 'TIPO';
-UPDATE report.vcolumn SET position = 1685, show = true, init = false, format = 'code', filter = '[]', agg = '[]', noagg = false, gen = '[]', rename = null, type = 'character varying' WHERE source = 'report.vreport_conta' AND name = 'CONTA';
-UPDATE report.vcolumn SET position = 1684, show = true, init = false, format = 'code', filter = '[]', agg = '[]', noagg = false, gen = '[]', rename = null, type = 'text' WHERE source = 'report.vreport_conta' AND name = 'OPERAÇÃO';
-UPDATE report.vcolumn SET position = 1675, show = true, init = false, format = 'code', filter = '[]', agg = '[]', noagg = false, gen = '[]', rename = null, type = 'text' WHERE source = 'report.vreport_conta' AND name = 'MODO';
-UPDATE report.vcolumn SET position = null, show = false, init = false, format = 'code', filter = '[["query.source|tweeks.lancamento::mode", {"name": "MODO"}]]', agg = '[]', noagg = false, gen = '[]', rename = null, type = 'smallint' WHERE source = 'report.vreport_conta' AND name = 'lancamento_mode';
-UPDATE report.vcolumn SET position = null, show = false, init = false, format = 'code', filter = '[["query.source|tweeks.toperacao", {"name": "TIPO DE OPERAÇÃO"}]]', agg = '[]', noagg = false, gen = '[]', rename = null, type = 'smallint' WHERE source = 'report.vreport_conta' AND name = 'lancamento_operacao';
-UPDATE report.vcolumn SET position = 1795, show = true, init = true, format = 'code:long', filter = '[["query.like", {"name": "DOCUMENTO"}]]', agg = '[]', noagg = false, gen = '[]', rename = null, type = 'character varying' WHERE source = 'report.vreport_conta' AND name = 'DOCUMENTO';
-UPDATE report.vcolumn SET position = 95, show = true, init = true, format = 'date', filter = '[["query.range|start", {"name": "DATA INICIO"}], ["query.range|end", {"name": "DATA FIM"}]]', agg = '[]', noagg = null, gen = '[]', rename = null, type = 'date' WHERE source = 'report.vreport_conta' AND name = 'DATA';
-UPDATE report.vcolumn SET position = null, show = false, init = false, format = 'id', filter = '[["query.source|tweeks.cliente", {"name": "CLIENTE"}]]', agg = '[{"func": "count::distinct", "name": "TOTAL CLIENTES", "format": "int", "rename": "??COUNT::DISTINCT TOTAL DE CLIENTES"}]', noagg = null, gen = '[]', rename = null, type = 'uuid' WHERE source = 'report.vreport_conta' AND name = 'cliente_id';
-UPDATE report.vcolumn SET position = null, show = false, init = false, format = 'id', filter = '[]', agg = '[{"func": "count::distinct", "name": "TOTAL DE FATURA", "format": "int", "rename": "??COUNT::DISTINCT TOTAL DE FATURAS"}]', noagg = false, gen = '[]', rename = null, type = 'uuid' WHERE source = 'report.vreport_conta' AND name = '_conta_id';
-UPDATE report.vcolumn SET position = null, show = false, init = false, format = 'id', filter = '[]', agg = '[{"func": "count::distinct", "name": "TOTAL DE DEPOSITOS", "format": "int", "rename": "??COUNT::DISTINCT TOTAL DE DEPOSITOS"}]', noagg = false, gen = '[]', rename = null, type = 'uuid' WHERE source = 'report.vreport_conta' AND name = '_deposito_id';
-UPDATE report.vcolumn SET position = null, show = false, init = false, format = 'id', filter = '[]', agg = '[{"func": "count::distinct", "name": "TOTAL DE LANÇAMENTO", "format": "int", "rename": "??COUNT::DISTINCT TOTAL DE  LANCAMENTO"}]', noagg = false, gen = '[]', rename = null, type = 'uuid' WHERE source = 'report.vreport_conta' AND name = 'lancamento_id';
-UPDATE report.vcolumn SET position = null, show = false, init = false, format = 'id', filter = '[["query.source|auth.colaborador", {"name": "COLABORADOR"}]]', agg = '[]', noagg = false, gen = '[]', rename = null, type = 'uuid' WHERE source = 'report.vreport_conta' AND name = 'colaborador_id';
-UPDATE report.vcolumn SET position = null, show = false, init = false, format = 'id', filter = '[["query.source|tweeks.tgroup", {"name": "TIPO DE CONTA"}]]', agg = '[]', noagg = null, gen = '[]', rename = null, type = 'smallint' WHERE source = 'report.vreport_conta' AND name = 'tgrupo_id';
-UPDATE report.vcolumn SET position = null, show = false, init = false, format = 'id', filter = '[["query.source|tweeks.tlancamento", {"name": "TIPO DE LANÇAMENTO"}]]', agg = '[]', noagg = false, gen = '[]', rename = null, type = 'smallint' WHERE source = 'report.vreport_conta' AND name = 'tlancamento_id';
 UPDATE report.vcolumn SET position = 1995, show = true, init = false, format = 'int', filter = '[]', agg = '[]', noagg = false, gen = '[]', rename = null, type = 'bigint' WHERE source = 'report.vreport_conta' AND name = 'SEQUÊNCIA';
+UPDATE report.vcolumn SET position = 1895, show = true, init = true, format = 'name', filter = '[]', agg = '[]', noagg = false, gen = '[]', rename = null, type = 'character varying' WHERE source = 'report.vreport_conta' AND name = 'CLIENTE';
+UPDATE report.vcolumn SET position = 1894, show = true, init = false, format = 'code', filter = '[["query.like", {"name": "NIF"}]]', agg = '[]', noagg = false, gen = '[]', rename = null, type = 'character varying' WHERE source = 'report.vreport_conta' AND name = 'NIF';
+UPDATE report.vcolumn SET position = 1795, show = true, init = true, format = 'code:long', filter = '[["query.like", {"name": "DOCUMENTO"}]]', agg = '[]', noagg = false, gen = '[]', rename = null, type = 'character varying' WHERE source = 'report.vreport_conta' AND name = 'DOCUMENTO';
 UPDATE report.vcolumn SET position = 1785, show = true, init = true, format = 'money', filter = '[]', agg = '[]', noagg = false, gen = '[]', rename = null, type = 'double precision' WHERE source = 'report.vreport_conta' AND name = '$ CREDITO';
 UPDATE report.vcolumn SET position = 1775, show = true, init = true, format = 'money', filter = '[]', agg = '[]', noagg = false, gen = '[]', rename = null, type = 'double precision' WHERE source = 'report.vreport_conta' AND name = '$ DEBITO';
 UPDATE report.vcolumn SET position = 1775, show = true, init = true, format = 'money', filter = '[]', agg = '[]', noagg = false, gen = '[]', rename = null, type = 'double precision' WHERE source = 'report.vreport_conta' AND name = '$ MONTANTE';
 UPDATE report.vcolumn SET position = 1765, show = true, init = true, format = 'money', filter = '[]', agg = '[]', noagg = false, gen = '[]', rename = null, type = 'double precision' WHERE source = 'report.vreport_conta' AND name = '$ RESULTADO';
 UPDATE report.vcolumn SET position = 1755, show = true, init = true, format = 'money', filter = '[]', agg = '[]', noagg = false, gen = '[]', rename = null, type = 'double precision' WHERE source = 'report.vreport_conta' AND name = '$ REGULARIZADO';
-UPDATE report.vcolumn SET position = 1895, show = true, init = true, format = 'name', filter = '[]', agg = '[]', noagg = false, gen = '[]', rename = null, type = 'character varying' WHERE source = 'report.vreport_conta' AND name = 'CLIENTE';
+UPDATE report.vcolumn SET position = 1695, show = true, init = true, format = 'code', filter = '[]', agg = '[]', noagg = false, gen = '[]', rename = null, type = 'character varying' WHERE source = 'report.vreport_conta' AND name = 'TIPO';
+UPDATE report.vcolumn SET position = 1685, show = true, init = false, format = 'code', filter = '[]', agg = '[]', noagg = false, gen = '[]', rename = null, type = 'character varying' WHERE source = 'report.vreport_conta' AND name = 'CONTA';
+UPDATE report.vcolumn SET position = 1684, show = true, init = false, format = 'code', filter = '[]', agg = '[]', noagg = false, gen = '[]', rename = null, type = 'text' WHERE source = 'report.vreport_conta' AND name = 'OPERAÇÃO';
+UPDATE report.vcolumn SET position = 1675, show = true, init = false, format = 'code', filter = '[]', agg = '[]', noagg = false, gen = '[]', rename = null, type = 'text' WHERE source = 'report.vreport_conta' AND name = 'MODO';
 UPDATE report.vcolumn SET position = 100, show = true, init = false, format = 'name:short', filter = '[]', agg = '[]', noagg = false, gen = '[]', rename = null, type = 'character varying' WHERE source = 'report.vreport_conta' AND name = 'COLABORADOR';
-UPDATE report.vcolumn SET position = 0, show = true, init = false, format = 'text', filter = '[]', agg = '[]', noagg = false, gen = '[]', rename = null, type = 'character varying' WHERE source = 'report.vreport_conta' AND name = 'OBSERVAÇÃO';
+UPDATE report.vcolumn SET position = 95, show = true, init = true, format = 'date', filter = '[["query.range|start", {"name": "DATA INICIO"}], ["query.range|end", {"name": "DATA FIM"}]]', agg = '[]', noagg = null, gen = '[]', rename = null, type = 'date' WHERE source = 'report.vreport_conta' AND name = 'DATA';
 UPDATE report.vcolumn SET position = 85, show = true, init = true, format = 'timestamp', filter = '[["query.range|end", {"name": "REGISTRO INICIO"}], ["query.range|end", {"name": "REGISTRO FIM"}]]', agg = '[]', noagg = false, gen = '[]', rename = null, type = 'timestamp with time zone' WHERE source = 'report.vreport_conta' AND name = 'REGISTRO';
+UPDATE report.vcolumn SET position = 0, show = true, init = false, format = 'text', filter = '[]', agg = '[]', noagg = false, gen = '[]', rename = null, type = 'character varying' WHERE source = 'report.vreport_conta' AND name = 'OBSERVAÇÃO';
+UPDATE report.vcolumn SET position = null, show = false, init = false, format = 'id', filter = '[["query.source|tweeks.cliente", {"name": "CLIENTE"}]]', agg = '[{"func": "count::distinct", "name": "TOTAL CLIENTES", "format": "int", "rename": "??COUNT::DISTINCT TOTAL DE CLIENTES"}]', noagg = null, gen = '[]', rename = null, type = 'uuid' WHERE source = 'report.vreport_conta' AND name = 'cliente_id';
+UPDATE report.vcolumn SET position = null, show = false, init = false, format = 'id', filter = '[]', agg = '[{"func": "count::distinct", "name": "TOTAL DE FATURA", "format": "int", "rename": "??COUNT::DISTINCT TOTAL DE FATURAS"}]', noagg = false, gen = '[]', rename = null, type = 'uuid' WHERE source = 'report.vreport_conta' AND name = '_conta_id';
+UPDATE report.vcolumn SET position = null, show = false, init = false, format = 'id', filter = '[]', agg = '[{"func": "count::distinct", "name": "TOTAL DE DEPOSITOS", "format": "int", "rename": "??COUNT::DISTINCT TOTAL DE DEPOSITOS"}]', noagg = false, gen = '[]', rename = null, type = 'uuid' WHERE source = 'report.vreport_conta' AND name = '_deposito_id';
+UPDATE report.vcolumn SET position = null, show = false, init = false, format = 'id', filter = '[]', agg = '[{"func": "count::distinct", "name": "TOTAL DE LANÇAMENTO", "format": "int", "rename": "??COUNT::DISTINCT TOTAL DE  LANCAMENTO"}]', noagg = false, gen = '[]', rename = null, type = 'uuid' WHERE source = 'report.vreport_conta' AND name = 'lancamento_id';
+UPDATE report.vcolumn SET position = null, show = false, init = false, format = 'id', filter = '[["query.source|auth.colaborador", {"name": "COLABORADOR"}]]', agg = '[]', noagg = false, gen = '[]', rename = null, type = 'uuid' WHERE source = 'report.vreport_conta' AND name = 'colaborador_id';
+UPDATE report.vcolumn SET position = null, show = false, init = false, format = 'code', filter = '[["query.source|tweeks.lancamento::mode", {"name": "MODO"}]]', agg = '[]', noagg = false, gen = '[]', rename = null, type = 'smallint' WHERE source = 'report.vreport_conta' AND name = 'lancamento_mode';
+UPDATE report.vcolumn SET position = null, show = false, init = false, format = 'code', filter = '[["query.source|tweeks.toperacao", {"name": "TIPO DE OPERAÇÃO"}]]', agg = '[]', noagg = false, gen = '[]', rename = null, type = 'smallint' WHERE source = 'report.vreport_conta' AND name = 'lancamento_operacao';
+UPDATE report.vcolumn SET position = null, show = false, init = false, format = 'id', filter = '[["query.source|tweeks.tgroup", {"name": "TIPO DE CONTA"}]]', agg = '[]', noagg = null, gen = '[]', rename = null, type = 'smallint' WHERE source = 'report.vreport_conta' AND name = 'tgrupo_id';
+UPDATE report.vcolumn SET position = null, show = false, init = false, format = 'id', filter = '[["query.source|tweeks.tlancamento", {"name": "TIPO DE LANÇAMENTO"}]]', agg = '[]', noagg = false, gen = '[]', rename = null, type = 'smallint' WHERE source = 'report.vreport_conta' AND name = 'tlancamento_id';
+UPDATE report.vcolumn SET position = null, show = false, init = false, format = null, filter = '[]', agg = '[]', noagg = false, gen = '[]', rename = null, type = 'uuid' WHERE source = 'report.vreport_conta' AND name = '_branch_uid';
 
 
 select * from report.vcolumn
