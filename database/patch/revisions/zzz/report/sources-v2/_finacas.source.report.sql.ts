@@ -1,6 +1,6 @@
 import {block} from "../../../../core/updater";
 
-block( module, { identifier: "vreport_imposto_financas", flags:[]}).sql`
+block( module, { identifier: `report.vreport_imposto_financas|v2.0.6-${ Math.random() }`, flags:[]}).sql`
 create or replace function report.vreport_imposto_financas(args jsonb) returns SETOF jsonb
   language plpgsql
 as
@@ -33,7 +33,7 @@ begin
          ve.venda_montantesemimposto::numeric(100,6) as total_valor_itens,
          tx.taxa_percentagem as taxa_aplicavel_itens,
          coalesce( ve.venda_codigoimposto, ar.artigo_codigoimposto) as codigo_isento,
-         ve.venda_quantidade quant_itens,
+         abs( ve.venda_quantidade ) quant_itens,
          coalesce( ve.venda_descricao, ar.artigo_nome ) desc_itens,
          ctorigin.conta_numerofatura numero_documento_origem,
          ctorigin.conta_data data_documento_origem,
