@@ -557,7 +557,7 @@ begin
             inner join tweeks.tpaga tp on de.deposito_tpaga_id = tp.tpaga_id
             left join tweeks.caixa cx on de.deposito_caixa_id = cx.caixa_id
             left join tweeks.posto p on cx.caixa_posto_id = p.posto_id
-          where (de.deposito_referencia->>'conta_id')::uuid @> _conta.conta_id
+          where (de.deposito_referencia->>'conta_id')::uuid = _conta.conta_id
             and de._branch_uid = ___branch
       ) select to_jsonb( _de )
           from __deposito _de
