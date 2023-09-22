@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
 
-export let structure = (user, num_autorization, num_certification,  imageCabecalho = "") => {
+export let structure = (user, num_autorization, num_certification,  imageCabecalho = "", textcolor, baseColor) => {
     let footerSystem;
 
     if(num_autorization === null && num_certification === null){

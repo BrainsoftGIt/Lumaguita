@@ -35,6 +35,9 @@ export let create = async (instituition, artigos_transferencia:any, armazens, re
         ]);
     });
 
+    let baseColor = instituition?.espaco_configuracao?.empresa_basecolor || "#000000";
+    let textcolor = instituition?.espaco_configuracao?.empresa_textcolor || "#ffffff";
+
     let hasPersonalizadoHarder = (instituition?.espaco_configuracao?.cabecalho_referencia === null ? "" : clusterServer.res.resolve(instituition?.espaco_configuracao?.cabecalho_referencia));
 
     let docDefinition = {
@@ -250,23 +253,23 @@ export let create = async (instituition, artigos_transferencia:any, armazens, re
                             {
                                 margin: [0, 7, 0, 5],
                                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
-                                color: "#ffffff",
-                                fillColor: '#000000',
-                                text: "Código"
+                                fillColor: baseColor,
+                                text: "Código",
+                                color: textcolor
                             },
                             {
                                 margin : [0, 7, 0, 5],
                                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
-                                fillColor: '#000000',
+                                fillColor: baseColor,
                                 text : "Descrição",
-                                color: "#ffffff"
+                                color: textcolor
                             },
                             {
                                 margin : [0, 7, 0, 5],
                                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
-                                fillColor: '#000000',
+                                fillColor: baseColor,
                                 text: "Quantidade",
-                                color: "#ffffff"
+                                color: textcolor
                             }
                         ],
                         ...artigos
@@ -275,7 +278,7 @@ export let create = async (instituition, artigos_transferencia:any, armazens, re
             }
         ],
         ...structure(user, null, instituition.espaco_configuracao.certification,
-            (instituition?.espaco_configuracao?.cabecalho_referencia === null ? "" : clusterServer.res.resolve(instituition?.espaco_configuracao?.cabecalho_referencia)))
+            (instituition?.espaco_configuracao?.cabecalho_referencia === null ? "" : clusterServer.res.resolve(instituition?.espaco_configuracao?.cabecalho_referencia)), textcolor, baseColor)
     };
 
     const pdfDocGenerator = pdfMake.createPdf(docDefinition);

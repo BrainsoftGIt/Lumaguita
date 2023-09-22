@@ -89,6 +89,9 @@ export let create = async (instituition, deposito, cliente, res, user, date, num
         ]);
     });
 
+    let baseColor = instituition?.espaco_configuracao?.empresa_basecolor || "#000000";
+    let textcolor = instituition?.espaco_configuracao?.empresa_textcolor || "#ffffff";
+
     let hasPersonalizadoHarder = (instituition?.espaco_configuracao?.cabecalho_referencia === null ? "" : clusterServer.res.resolve(instituition?.espaco_configuracao?.cabecalho_referencia));
 
     let docDefinition = {
@@ -295,39 +298,39 @@ export let create = async (instituition, deposito, cliente, res, user, date, num
                             {
                                 margin: [0, 3, 0, 3],
                                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
-                                fillColor: '#000000',
+                                fillColor: baseColor,
                                 text: "Documento",
-                                color: "#ffffff"
+                                color: textcolor
                             },
                             {
                                 margin: [0, 3, 0, 3],
                                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
-                                fillColor: '#000000',
+                                fillColor: baseColor,
                                 text: "Descrição",
-                                color: "#ffffff"
+                                color: textcolor
                             },
                             {
                                 margin: [0, 3, 0, 3],
                                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
-                                fillColor: '#000000',
+                                fillColor: baseColor,
                                 text: "Data",
-                                color: "#ffffff",
+                                color: textcolor,
                                 alignment: "center"
                             },
                             {
                                 margin: [0, 3, 0, 3],
                                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
-                                fillColor: '#000000',
+                                fillColor: baseColor,
                                 text: "Valor Doc.",
-                                color: "#ffffff",
+                                color: textcolor,
                                 alignment: "center"
                             },
                             {
                                 margin: [0, 3, 0, 3],
                                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
-                                fillColor: '#000000',
+                                fillColor: baseColor,
                                 text: "Valor Recebido",
-                                color: "#ffffff",
+                                color: textcolor,
                                 alignment: "center"
                             }
                         ],
@@ -337,7 +340,7 @@ export let create = async (instituition, deposito, cliente, res, user, date, num
             }
         ],
         ...structure(user, num_autorization, instituition.espaco_configuracao.certification,
-            (instituition?.espaco_configuracao?.cabecalho_referencia === null ? "" : clusterServer.res.resolve(instituition?.espaco_configuracao?.cabecalho_referencia)))
+            (instituition?.espaco_configuracao?.cabecalho_referencia === null ? "" : clusterServer.res.resolve(instituition?.espaco_configuracao?.cabecalho_referencia)), textcolor, baseColor)
     };
 
     const pdfDocGenerator = pdfMake.createPdf(docDefinition);
