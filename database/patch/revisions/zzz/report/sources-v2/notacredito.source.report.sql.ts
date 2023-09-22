@@ -1,6 +1,6 @@
 import {block} from "../../../../core/updater";
 
-block( module, { identifier: "report.vreport_notacredito|v2.0.6-01" })
+block( module, { identifier: `report.vreport_notacredito|v2.0.6-${ Math.random() }` })
     //language=PostgreSQL
     .sql`
     drop view if exists report.vreport_notacredito;
