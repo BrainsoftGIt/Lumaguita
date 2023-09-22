@@ -143,6 +143,10 @@ begin
                 u.unit_id,
                 u.unit_code,
                 u.unit_name,
+                
+                uorig.unit_id as unit_originid,
+                uorig.unit_code as unit_origncode,
+                uorig.unit_name as unit_origenname,
 
                 art.artigo_espaco_auth = any( arg_espaco_childs ) as artigo_owner,
                 coalesce( s.stock_quantidade, 0 ) as stock_quantidade,
@@ -166,6 +170,7 @@ begin
               from tweeks.artigo art
                 left join tweeks.unit u on art.artigo_unit_id = u.unit_id
                 left join tweeks.artigo origin on art.artigo_artigo_id = origin.artigo_id
+                left join tweeks.unit uorig on origin.artigo_unit_id = uorig.unit_id
                 left join tweeks.link l on l.link_estado = _const.maguita_link_estado_ativo
                   and l.link_referencia = rule.artigo_referencia( art.artigo_id )
                   and l.link_espaco_destino = any( arg_espaco_childs )
@@ -176,6 +181,7 @@ begin
               group by 
                 art.artigo_id,
                 u.unit_id,
+                uorig.unit_id,
                 origin.artigo_id,
                 s.stock_quantidade
           ), __filter as (

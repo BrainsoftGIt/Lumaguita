@@ -1,7 +1,7 @@
 import {block} from "../../../core/updater";
 
 block( module, {
-    identifier: "unit|v2.0.6-02",
+    identifier: "unit|v2.0.6-03",
     flags: [ "@unique" ]
 }).sql`
 select map.constant('maguita_unit_state_active', 'int2', 1 );
@@ -56,7 +56,7 @@ $$;
 `;
 
 block( module, {
-    identifier: "unit:(sets,load)|v2.0.6-02",
+    identifier: "unit:(sets,load)|v2.0.6-03",
 }).sql`
 create or replace function tweeks.funct_sets_unit( args jsonb )
   returns lib.res
