@@ -61,7 +61,7 @@ with __imposto_report as (
 ) select * from __imposto_report
 ;
 
-select * from report.sync( 'report.vreport_imposto', 'RELATÓRIO DE IMPOSTO', 1 );
+select * from report.sync( 'report.vreport_imposto', 'RELATÓRIO DE IMPOSTO', 1400 );
 
 UPDATE report.vcolumn SET position = 995, show = true, init = true, format = 'code', filter = '[]', agg = '[]', noagg = false, gen = '[]', rename = null, type = 'character varying' WHERE source = 'report.vreport_imposto' AND name = 'CODIGO';
 UPDATE report.vcolumn SET position = 985, show = true, init = false, format = 'name:short', filter = '[]', agg = '[]', noagg = false, gen = '[]', rename = null, type = 'character varying' WHERE source = 'report.vreport_imposto' AND name = 'IMPOSTO';

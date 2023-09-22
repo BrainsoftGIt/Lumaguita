@@ -85,7 +85,7 @@ create or replace view report.vreport_fluxo as
       left join auth.colaborador c on f.fluxo_colaborador_id = c.colaborador_id
   ;
 
-select * from report.sync('report.vreport_fluxo', 'RELATÓRIO DE FLUXO', 1 );
+select * from report.sync('report.vreport_fluxo', 'RELATÓRIO DE FLUXO', 1300 );
 
 UPDATE report.vcolumn SET position = 4000, show = true, init = true, format = 'code', filter = '[]', agg = '[]', noagg = false, gen = '[]', rename = null, type = 'bigint' WHERE source = 'report.vreport_fluxo' AND name = 'SEQUENCIA';
 UPDATE report.vcolumn SET position = 3000, show = true, init = true, format = 'name:short', filter = '[]', agg = '[]', noagg = null, gen = '[]', rename = null, type = 'character varying' WHERE source = 'report.vreport_fluxo' AND name = 'OPERAÇÃO';

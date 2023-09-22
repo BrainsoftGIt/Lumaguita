@@ -68,7 +68,7 @@ select
   where ct.conta_estado != _const.maguita_conta_estado_anulado
 ;
 
-select * from report.sync( 'report.vreport_fatura', 'RELATÓRIO DE FATURA', 250 );
+select * from report.sync( 'report.vreport_fatura', 'RELATÓRIO DE FATURA', 1900 );
 
 UPDATE report.vcolumn SET position = 10000, show = true, init = true, format = 'code:long', filter = '[{"opr": "like", "mode": "right", "name": "FATURA", "format": "simple"}]', agg = '[]', noagg = null, gen = '[]', rename = null, type = 'character varying' WHERE source = 'report.vreport_fatura' AND name = 'FATURA';
 UPDATE report.vcolumn SET position = 1900, show = true, init = true, format = 'code', filter = '[]', agg = '[]', noagg = false, gen = '[]', rename = null, type = 'integer' WHERE source = 'report.vreport_fatura' AND name = 'Nº CONTA';
