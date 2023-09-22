@@ -35,7 +35,7 @@ export let structure = (user, num_autorization, num_certification,  imageCabecal
             return [
                 {
                     lineHeight: 1.3,
-                    fontSize: 11.5,
+                    fontSize : 6.5,
                     margin: [30, 0, 35, 0],
                     stack :[
                         {
@@ -55,7 +55,7 @@ export let structure = (user, num_autorization, num_certification,  imageCabecal
                         {
                             columns: [
                                 {
-                                    fontSize: 10,
+                                    fontSize : 6,
                                     width: "100%",
                                     text: `${footerSystem}`
                                 }

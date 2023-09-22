@@ -36,39 +36,39 @@ export let create = async (instituition, account, account_content, res, user, da
         artigosConta.push([
             {
                 margin : [0, 7, 0, 5],
-                fontSize : 9.5,
+                fontSize : 6.5,
                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
                 text : cont?.artigo_codigo || "----"
             },
             {
                 margin : [0, 7, 0, 5],
-                fontSize : 9.5,
+                fontSize : 6.5,
                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
                 text : cont?.venda_descricao || "----"
             },
             {
                 margin : [0, 7, 0, 5],
-                fontSize : 9.5,
+                fontSize : 6.5,
                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
                 text : cont?.venda_quantidade || "---"
             },
             {
                 margin : [0, 7, 0, 5],
-                fontSize : 9.5,
+                fontSize : 6.5,
                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
                 text : `${formattedString(cont.venda_imposto.toFixed(2))} STN`,
                 alignment : "right"
             },
             {
                 margin : [0, 7, 0, 5],
-                fontSize : 9.5,
+                fontSize : 6.5,
                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
                 text : formattedString(preco_artigo.toFixed(2)+"")+" STN",
                 alignment : "right"
             },
             {
                 margin : [0, 7, 0, 5],
-                fontSize : 9.5,
+                fontSize : 6.5,
                 borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
                 text : formattedString(cont.venda_montantesemimposto.toFixed(2)+"")+" STN",
                 alignment : "right"
@@ -90,16 +90,16 @@ export let create = async (instituition, account, account_content, res, user, da
                 columns: [
                     (logoTipo ? {
                         image:  'data:image/png;base64,' + fs.readFileSync(logoTipo).toString('base64'),
-                        width: 120,
+                        width: 80,
                     } : {}),
                     {
-                        fontSize : 12,
+                        fontSize : 9,
                         alignment : "right",
                         stack: [
                             {
                                 text: `${instituition?.espaco_configuracao?.empresa_nome}`,
                                 bold: true,
-                                fontSize : 16,
+                                fontSize : 9,
                             },
                             {
                                 columns: [
@@ -107,7 +107,7 @@ export let create = async (instituition, account, account_content, res, user, da
                                         margin : [0, 0, 10, 0],
                                         text: `${instituition?.espaco_configuracao?.empresa_nif} `
                                     },
-                                    getImage("nif.png", 12)
+                                    getImage("nif.png", 9)
                                 ]
                             },
                             {
@@ -116,7 +116,7 @@ export let create = async (instituition, account, account_content, res, user, da
                                         margin : [0, 0, 10, 0],
                                         text: `${instituition?.espaco_configuracao?.empresa_endereco}`
                                     },
-                                    getImage("point.png", 12)
+                                    getImage("point.png", 9)
                                 ]
                             },
                             {
@@ -125,7 +125,7 @@ export let create = async (instituition, account, account_content, res, user, da
                                         margin : [0, 0, 10, 0],
                                         text: `${instituition?.espaco_configuracao?.empresa_telef}`
                                     },
-                                    getImage("phone.png", 12)
+                                    getImage("phone.png", 9)
                                 ]
                             },
                             {
@@ -134,7 +134,7 @@ export let create = async (instituition, account, account_content, res, user, da
                                         margin : [0, 0, 10, 0],
                                         text: `${instituition?.espaco_configuracao?.empresa_email}`
                                     },
-                                    getImage("mail.png", 12)
+                                    getImage("mail.png", 9)
                                 ]
                             }
                         ]
@@ -150,6 +150,7 @@ export let create = async (instituition, account, account_content, res, user, da
                     body: [
                         [
                             {
+                                fontSize : 8,
                                 border: [false, false, true, false],
                                 borderColor: ['#000000', '#000000', '#000000', '#000000'],
                                 stack: [
@@ -157,7 +158,6 @@ export let create = async (instituition, account, account_content, res, user, da
                                         color : '#000000',
                                         text: `FATURA PROFORMA`,
                                         bold: true,
-                                        fontSize: 20,
                                     },
                                     {
                                         text: [
@@ -202,12 +202,12 @@ export let create = async (instituition, account, account_content, res, user, da
                                 ]
                             },
                            {
+                               fontSize : 8,
                                border: [true, false, false, false],
                                borderColor: ['#000000', '#000000', '#000000', '#000000'],
                                 stack: [
                                     {
                                         bold: true,
-                                        fontSize: 14,
                                         color : '#000000',
                                         text : "Nº de Fatura"
                                     },
@@ -255,7 +255,7 @@ export let create = async (instituition, account, account_content, res, user, da
                 text : ""
             },
             {
-                fontSize : 11,
+                fontSize : 7,
                 lineHeight: 1.3,
                 layout: {
                     fillColor: function (rowIndex, node, columnIndex) {
@@ -329,13 +329,13 @@ export let create = async (instituition, account, account_content, res, user, da
                             {text : ""},
                             {text : ""},
                             {
-                                fontSize : 9.5,
+                                fontSize : 6.5,
                                 border: [false, false, false, false],
                                 margin : [0, 7, 0, 5],
                                 text: "Subtotal"
                             },
                             {
-                                fontSize : 9.5,
+                                fontSize : 6.5,
                                 border: [false, false, false, false],
                                 margin : [0, 7, 0, 5],
                                 text: formattedString(subtotal.toFixed(2)+"")+" STN",
@@ -352,13 +352,13 @@ export let create = async (instituition, account, account_content, res, user, da
                                 {text : ""},
                                 {text : ""},
                                 {
-                                    fontSize : 9.5,
+                                    fontSize : 6.5,
                                     border: [false, false, false, false],
                                     margin : [0, 7, 0, 5],
                                     text: `${sumImpost[key].name}`,
                                 },
                                 {
-                                    fontSize : 9.5,
+                                    fontSize : 6.5,
                                     border: [false, false, false, false],
                                     margin : [0, 7, 0, 5],
                                     text: formattedString(sumImpost[key].sum.toFixed(2)+"")+" STN",
@@ -375,7 +375,7 @@ export let create = async (instituition, account, account_content, res, user, da
                             {text : ""},
                             {text : ""},
                             {
-                                fontSize : 9.5,
+                                fontSize : 7.5,
                                 border: [false, false, false, false],
                                 fillColor: "#000000",
                                 color: "#ffffff",
@@ -384,7 +384,7 @@ export let create = async (instituition, account, account_content, res, user, da
                                 text: "Total",
                             },
                             {
-                                fontSize : 9.5,
+                                fontSize : 7.5,
                                 border: [false, false, false, false],
                                 fillColor: "#000000",
                                 color: "#ffffff",
@@ -398,10 +398,10 @@ export let create = async (instituition, account, account_content, res, user, da
                 }
             },
             (account?.conta_proformaextras?.termos !== null ? {
+                fontSize : 8,
                 margin: [0, 50, 0, 0],
                 stack: [
                     {
-                        fontSize: 15,
                         bold: true,
                         text : "Termos"
                     },
