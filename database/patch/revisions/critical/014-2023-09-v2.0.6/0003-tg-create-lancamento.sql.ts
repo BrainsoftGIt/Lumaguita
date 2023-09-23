@@ -76,6 +76,7 @@ begin
       if _conta_data.tserie_id = _const.maguita_tserie_notacredito then
         _lancamento.lancamento_descricao := format( 'Lançamento de nota de credito na conta com fatura nº %s', _conta.conta_numerofatura );
         _lancamento.lancamento_operacao := 1;
+        _lancamento.lancamento_valor := abs( _conta.conta_montante );
       elsif _conta_data.tserie_id in(  _const.maguita_tserie_faturarecibo, _const.maguita_tserie_fatura ) then 
         _lancamento.lancamento_descricao := format( 'Lançamento de divida na conta com fatura nº %s', _conta.conta_numerofatura );
       elsif _conta_data.tserie_id = _const.maguita_tserie_guiasaida then 
