@@ -352,7 +352,7 @@ var pos = {
                 }
 
                 pos.registerAccount = currentFunction;
-                M.toast({html: e.data.message, classes: 'rounded'});
+                M.toast({html: e?.message || e?.data?.message || "Erro ao salvar!", classes: 'rounded'});
             }
         });
     },
@@ -396,7 +396,7 @@ var pos = {
                 }
 
                 pos.updateAccount = currentFunction;
-                M.toast({html: e.message, classes: 'rounded'});
+                M.toast({html: e?.message || e?.data?.message || "Erro ao salvar!", classes: 'rounded'});
             }
         });
     },
