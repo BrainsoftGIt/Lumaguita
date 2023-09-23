@@ -154,7 +154,7 @@ export let create = async (instituition, account_content, res, user, date, num_a
     let docDefinition = {
         compress: true,
         info: {
-            title: 'Fatura',
+            title: 'Nota de Credito',
             author: 'Luma',
             subject: 'Impressão de fatura',
             keywords: 'luma, fatura, brainsoft',

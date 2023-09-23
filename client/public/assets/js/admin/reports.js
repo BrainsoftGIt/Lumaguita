@@ -418,7 +418,7 @@ var report = {
                 let sumatorio = 0;
                 $(" [listIReport] ").empty();
                 Object.keys(ordenList).forEach((key) => {
-                    ordenList[key].forEach(({desc_itens, total_valor_itens, taxa_aplicavel_itens, quant_itens, numero_documento_origem}) => {
+                    ordenList[key].forEach(({desc_itens, total_valor_itens, taxa_aplicavel_itens, quant_itens, numero_documento_origem, tserie_code}) => {
                         $("[listIReport]").append(`<ul>
                                 <li>${ordenList[key][0].documento_numero ?? "N/A"}</li>
                                 <li>${ordenList[key][0].documento_data ?? "N/A"}</li>
@@ -430,7 +430,7 @@ var report = {
                                 <li>${taxa_aplicavel_itens ?? "N/A"}</li>
                                 <li>${numero_documento_origem ?? "N/A"}</li>
                             </ul>`);
-                        sumatorio += total_valor_itens;
+                        sumatorio += (tserie_code === "NC") ? (-1*total_valor_itens) : total_valor_itens;
                     })
                 })
 

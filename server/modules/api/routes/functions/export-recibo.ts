@@ -4,6 +4,7 @@ import {getFonts, structure, getImage} from "./estruture";
 import {clusterServer} from "../../../../service/cluster.service";
 import {folders} from "../../../../global/project";
 import moment from "moment";
+import {formattedString} from "./formatValue";
 
 
 function getTypePayment(tipo_id) {
@@ -63,7 +64,6 @@ export let create = async (instituition, deposito, cliente, res, user, date, num
                 fontSize: 6.5,
                 border: [false, false, false, false],
                 text: "Pagamento de fatura " + dep.lancamento_doc,
-                alignment: "center"
             },
             {
                 margin: [0, 3, 0, 3],
@@ -77,20 +77,72 @@ export let create = async (instituition, deposito, cliente, res, user, date, num
                 fontSize: 6.5,
                 border: [false, false, false, false],
                 text: formattedString(dep.debito + ""),
-                alignment: "right"
+                alignment: "center"
             },
             {
                 margin: [0, 3, 0, 3],
                 fontSize: 6.5,
                 border: [false, false, false, false],
                 text: formattedString(deposito_distribuicao + ""),
-                alignment: "right"
+                alignment: "center"
             },
         ]);
     });
 
     let baseColor = instituition?.espaco_configuracao?.empresa_basecolor || "#000000";
     let textcolor = instituition?.espaco_configuracao?.empresa_textcolor || "#ffffff";
+
+    let rotape = {
+        margin: [30, 0, 30, 0],
+        table: {
+            widths: ["100%"],
+            body: [
+                [
+                    {
+                        border: [false, false, false, false],
+                        fillColor: baseColor,
+                        color: textcolor,
+                        columns: [
+                            {
+                                alignment: "center",
+                                fontSize: 6.5,
+                                margin: [0, 1, 0, 1],
+                                text: "Código de operação",
+                                bold: true
+                            },
+                            {
+                                alignment: "center",
+                                fontSize: 7.5,
+                                margin: [0, 1, 0, 1],
+                                bold: true,
+                                text: "Montante Pago",
+                            }
+                        ]
+                    }
+                ],
+                [
+                    {
+                        border: [false, false, false, false],
+                        fillColor: "#F5F6F6",
+                        columns: [
+                            {
+                                fontSize: 6.5,
+                                margin: [0, 1, 0, 1],
+                                text: deposito[0].data.deposito_docref || "---------",
+                                alignment: "center"
+                            },
+                            {
+                                alignment: "center",
+                                fontSize: 6.5,
+                                margin: [0, 1, 0, 1],
+                                text: formattedString(deposito[0].data.deposito_montante.toFixed(2) + ""),
+                            }
+                        ]
+                    }
+                ]
+            ]
+        }
+    };
 
     let hasPersonalizadoHarder = (instituition?.espaco_configuracao?.cabecalho_referencia === null ? "" : clusterServer.res.resolve(instituition?.espaco_configuracao?.cabecalho_referencia));
 
@@ -236,6 +288,7 @@ export let create = async (instituition, deposito, cliente, res, user, date, num
                                         text: "Nº do Recibo"
                                     },
                                     {
+                                        margin: [0, 0, 0, 4],
                                         text: deposito[0].data.deposito_documento
                                     },
                                     {
@@ -340,7 +393,7 @@ export let create = async (instituition, deposito, cliente, res, user, date, num
             }
         ],
         ...structure(user, num_autorization, instituition.espaco_configuracao.certification,
-            (instituition?.espaco_configuracao?.cabecalho_referencia === null ? "" : clusterServer.res.resolve(instituition?.espaco_configuracao?.cabecalho_referencia)), textcolor, baseColor)
+            (instituition?.espaco_configuracao?.cabecalho_referencia === null ? "" : clusterServer.res.resolve(instituition?.espaco_configuracao?.cabecalho_referencia)), textcolor, baseColor, rotape)
     };
 
     const pdfDocGenerator = pdfMake.createPdf(docDefinition);
