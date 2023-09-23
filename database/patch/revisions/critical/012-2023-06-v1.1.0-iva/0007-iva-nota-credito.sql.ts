@@ -28,6 +28,7 @@ declare
       arg_espaco_auth: UID
       conta_id: UID,
       conta_posto_id: UID
+      conta_observacao
       itens: [
         { venda_id:ID },
         { venda_id:ID },
@@ -299,6 +300,7 @@ begin
       'conta_data', current_date,
       'arg_vendas', _vendas.arg_vendas,
       'conta_conta_docorigin', _conta.conta_id,
+      'conta_observacao', _conta_args.conta_observacao,
       'conta_espaco_notacredito', arg_espaco_auth
     )
   );
