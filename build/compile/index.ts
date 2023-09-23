@@ -185,7 +185,10 @@ function release( args:CompileArgs  ){
     ], { pipeConsole: true }).linkSpawn( (code, signal, error, errs) => {
         if( error ) console.log( error );
         console.log( "RELEASE END WITH CODE", code );
-        if( code === 0 ) VERSION.unlock();
+        if( code === 0 ){
+            VERSION.unlock();
+            VERSION.increment();
+        }
     });
 }
 
