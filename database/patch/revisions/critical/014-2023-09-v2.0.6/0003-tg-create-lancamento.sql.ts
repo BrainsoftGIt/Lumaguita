@@ -66,15 +66,17 @@ begin
       _lancamento.lancamento_refid := _conta.conta_id;
       _lancamento.lancamento_regclass := cluster.__format( pg_typeof( _conta )::text::regclass );
       _lancamento.lancamento_valor := _conta.conta_montante;
-      _lancamento.lancamento_operacao := -1;
       _lancamento.lancamento_cliente_id := _conta.conta_cliente_id;
       _lancamento.lancamento_espaco_auth := _conta.conta_espaco_auth;
       _lancamento.lancamento_colaborador_id := coalesce( _conta.conta_colaborador_fecho, _conta.conta_colaborador_atualizacao, _conta.conta_colaborador_id );
       _lancamento.lancamento_data := _conta.conta_data;
       _lancamento.lancamento_descricao := format( 'Lançamento de divida na conta com fatura nº %s', _conta.conta_numerofatura );
+
+      _lancamento.lancamento_operacao := -1;
       
       if _conta_data.tserie_id = _const.maguita_tserie_notacredito then
         _lancamento.lancamento_descricao := format( 'Lançamento de nota de credito na conta com fatura nº %s', _conta.conta_numerofatura );
+        _lancamento.lancamento_operacao := 1;
       elsif _conta_data.tserie_id in(  _const.maguita_tserie_faturarecibo, _const.maguita_tserie_fatura ) then 
         _lancamento.lancamento_descricao := format( 'Lançamento de divida na conta com fatura nº %s', _conta.conta_numerofatura );
       elsif _conta_data.tserie_id = _const.maguita_tserie_guiasaida then 
