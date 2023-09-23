@@ -30,7 +30,7 @@ begin
          se.serie_numero as documento_serie,
          ct.conta_data as documento_data,
          coalesce( ct.conta_titularnif, cli.cliente_nif) as nif_consumidor,
-         ve.venda_montantesemimposto::numeric(100,6) as total_valor_itens,
+         abs( ve.venda_montantesemimposto::numeric(100,6) ) as total_valor_itens,
          tx.taxa_percentagem as taxa_aplicavel_itens,
          coalesce( ve.venda_codigoimposto, ar.artigo_codigoimposto) as codigo_isento,
          abs( ve.venda_quantidade ) quant_itens,
