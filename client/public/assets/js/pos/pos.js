@@ -348,8 +348,11 @@ var pos = {
                         $("#kitchen_obs").val("");
                         showTarget("xModalKuchenObservation", "");
                     }
+                    return
                 }
-                else M.toast({html: e.data.message, classes: 'rounded'});
+
+                pos.registerAccount = currentFunction;
+                M.toast({html: e.data.message, classes: 'rounded'});
             }
         });
     },
@@ -389,8 +392,11 @@ var pos = {
                         $("#kitchen_obs").val("");
                         showTarget("xModalKuchenObservation", "");
                     }
+                    return
                 }
-                else M.toast({html: e.message, classes: 'rounded'});
+
+                pos.updateAccount = currentFunction;
+                M.toast({html: e.message, classes: 'rounded'});
             }
         });
     },
