@@ -71,7 +71,6 @@ begin
       _lancamento.lancamento_colaborador_id := coalesce( _conta.conta_colaborador_fecho, _conta.conta_colaborador_atualizacao, _conta.conta_colaborador_id );
       _lancamento.lancamento_data := _conta.conta_data;
       _lancamento.lancamento_descricao := format( 'Lançamento de divida na conta com fatura nº %s', _conta.conta_numerofatura );
-
       _lancamento.lancamento_operacao := -1;
       
       if _conta_data.tserie_id = _const.maguita_tserie_notacredito then
