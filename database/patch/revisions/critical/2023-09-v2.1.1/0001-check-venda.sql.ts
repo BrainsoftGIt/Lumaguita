@@ -303,3 +303,8 @@ exception  when others then
 end;
 $$;
 `;
+
+
+block( module, { identifier: "conta_props", flags:[ "@unique" ]} ).sql`
+  alter table tweeks.conta add column if not exists conta_props jsonb default null;
+`;
