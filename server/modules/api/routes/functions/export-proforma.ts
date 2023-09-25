@@ -42,6 +42,12 @@ export let create = async (instituition, account, account_content, res, user, da
                 margin: [0, 3, 0, 3],
                 fontSize: 6.5,
                 border: [false, false, false, false],
+                text: cont?.unit_code || "----"
+            },
+            {
+                margin: [0, 3, 0, 3],
+                fontSize: 6.5,
+                border: [false, false, false, false],
                 text: cont?.artigo_codigo || "----"
             },
             {
@@ -344,7 +350,7 @@ export let create = async (instituition, account, account_content, res, user, da
                 },
                 table: {
                     headerRows: 1,
-                    widths: ["10%", "39%", "8%", "11%", "14%", "18%"],
+                    widths: ["8%", "10%", "35%", "7%", "10%", "13%", "17%"],
                     body: [
                         [
                             {
@@ -352,6 +358,13 @@ export let create = async (instituition, account, account_content, res, user, da
                                 borderColor: [baseColor, baseColor, baseColor, baseColor],
                                 fillColor: baseColor,
                                 text: "Código",
+                                color: textcolor
+                            },
+                            {
+                                margin: [0, 3, 0, 3],
+                                borderColor: [baseColor, baseColor, baseColor, baseColor],
+                                fillColor: baseColor,
+                                text: "Uni.",
                                 color: textcolor
                             },
                             {
