@@ -300,7 +300,7 @@ export let create = async (instituition, account_content, res, user, date, num_a
                                         text: "Nº de Nota de Credito"
                                     },
                                     {
-                                        margin: [0, 0, 0, 4],
+                                        margin: [0, 0, 0, 15],
                                         text: account_content.main.conta_serie.document,
                                     },
                                     {
@@ -317,7 +317,6 @@ export let create = async (instituition, account_content, res, user, date, num_a
                                         text: "Nº de Documento Origen"
                                     },
                                     {
-                                        margin: [0, 0, 0, 4],
                                         text: account_content.main.conta_documentoorigem,
                                     },
                                 ]

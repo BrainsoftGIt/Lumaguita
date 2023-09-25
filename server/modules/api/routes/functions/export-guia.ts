@@ -277,7 +277,7 @@ export let create = async (instituition, fornecedor, guia, artigos, res, user, c
                                         text: "Guia de Entrada"
                                     },
                                     {
-                                        margin: [0, 0, 0, 4],
+                                        margin: [0, 0, 0, 15],
                                         text: guia.guia_numero,
                                     },
                                     {
