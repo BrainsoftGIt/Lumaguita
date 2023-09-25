@@ -28,6 +28,7 @@ declare
       arg_espaco_auth: UID
       conta_id: UID,
       conta_posto_id: UID
+      conta_observacao
       itens: [
         { venda_id:ID },
         { venda_id:ID },
@@ -299,6 +300,7 @@ begin
       'conta_data', current_date,
       'arg_vendas', _vendas.arg_vendas,
       'conta_conta_docorigin', _conta.conta_id,
+      'conta_observacao', _conta_args.conta_observacao,
       'conta_espaco_notacredito', arg_espaco_auth
     )
   );
@@ -363,7 +365,7 @@ begin
       'conta_extension', jsonb_build_object(),
       'conta_posto_id',  _conta_args.conta_posto_id,
       'conta_posto_fecho',  _conta_args.conta_posto_id,
-      'conta_desconto', ( _conta.conta_desconto * -1 ),
+      'conta_desconto', ( _conta.conta_desconto ),
       'conta_titular', _conta.conta_titular,
       'conta_titularnif', _conta.conta_titularnif,
       'conta_data', coalesce( _conta_args.conta_data, now()::date),

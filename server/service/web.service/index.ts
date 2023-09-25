@@ -68,6 +68,10 @@ let redirect :{
 let versionCode = `v${VERSION.NUMBER.split(".").join("")}`;
 let switchVersion = "/switch-version";
 
+app.get( "/VERSION", (req, res, next) => {
+    res.send( VERSION.NUMBER );
+});
+
 app.use( (req, res, next) => {
     let existingQueryParams = Object.entries(req.query).map(([key, value]) => `${key}=${value}`).join('&');
 
