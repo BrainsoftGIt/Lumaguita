@@ -521,6 +521,13 @@ begin
           c.conta_data,
           c.conta_dataregistro,
           c.conta_conta_docorigin,
+          c.conta_titular,
+          c.conta_titularnif,
+          ccl.cliente_id,
+          ccl.cliente_code,
+          ccl.cliente_nif,
+          ccl.cliente_titular,
+          ccl.cliente_metadata,
           de.deposito_montante,
           de.deposito_montantetroco,
           de.deposito_montantefinal,
@@ -529,6 +536,7 @@ begin
           corigen.conta_numerofatura as conta_documentoorigem,
           array_agg( to_jsonb( v )||to_jsonb( vg ) order by v.artigo_nome ) as conta_vendas
         from tweeks.conta c
+          left join tweeks.cliente ccl on c.conta_cliente_id = ccl.cliente_id
           left join tweeks.conta corigen on c.conta_conta_docorigin = corigen.conta_id
           left join __venda_group vg on c.conta_id = vg._venda_conta_id
           left join __venda v on vg._venda_id = v.venda_id
