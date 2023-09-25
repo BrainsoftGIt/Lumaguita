@@ -276,6 +276,16 @@ export let create = async (instituition, account_content, res, user, date, num_a
                                             },
                                             (account_content.main.cliente_mail || "---------------")
                                         ]
+                                    },
+                                    {
+                                        text: [
+                                            {
+                                                bold: true,
+                                                color: '#000000',
+                                                text: `Morada: `
+                                            },
+                                            (account_content?.main?.cliente_metadata?.morada || "---------------")
+                                        ]
                                     }
                                 ]
                             },

@@ -174,7 +174,7 @@ export let create = async (instituition, account_content, res, user, num_autoriz
                                                 color: '#000000',
                                                 text: `Morada: `
                                             },
-                                            (/*account_content.main.cliente_nif ||*/ "---------------")
+                                            (account_content?.main?.cliente_metadata?.morada || "---------------")
                                         ]
                                     }
                                 ]
