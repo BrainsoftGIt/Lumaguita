@@ -97,9 +97,9 @@ var pos = {
     },
     reduceQuantity(){
         let quantidadeCarrinho = Number(this.selectedCartElement.find("span.amount").text());
-        // if((quantidadeCarrinho -1) !== 0) {
+        if((quantidadeCarrinho -1) !== 0) {
             this.selectedCartElement.find("span.amount").text((Number(quantidadeCarrinho) -1));
-        // }
+        }
         this.determinateTotalValues();
     },
     addToCart(){
@@ -348,8 +348,11 @@ var pos = {
                         $("#kitchen_obs").val("");
                         showTarget("xModalKuchenObservation", "");
                     }
+                    return
                 }
-                else M.toast({html: e.data.message, classes: 'rounded'});
+
+                pos.registerAccount = currentFunction;
+                M.toast({html: e?.message || e?.data?.message || "Erro ao salvar!", classes: 'rounded'});
             }
         });
     },
@@ -389,8 +392,11 @@ var pos = {
                         $("#kitchen_obs").val("");
                         showTarget("xModalKuchenObservation", "");
                     }
+                    return
                 }
-                else M.toast({html: e.message, classes: 'rounded'});
+
+                pos.updateAccount = currentFunction;
+                M.toast({html: e?.message || e?.data?.message || "Erro ao salvar!", classes: 'rounded'});
             }
         });
     },

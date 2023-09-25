@@ -28,6 +28,12 @@ export let create = async (instituition, fornecedor, guia, artigos, res, user, c
                 margin: [0, 3, 0, 3],
                 fontSize: 6.5,
                 border: [false, false, false, false],
+                text: art.unit_code || "----"
+            },
+            {
+                margin: [0, 3, 0, 3],
+                fontSize: 6.5,
+                border: [false, false, false, false],
                 text: art.artigo_codigo || "----"
             },
             {
@@ -36,12 +42,12 @@ export let create = async (instituition, fornecedor, guia, artigos, res, user, c
                 border: [false, false, false, false],
                 text: art.entrada_descricao
             },
-            {
+            /*{
                 margin: [0, 3, 0, 3],
                 fontSize: 6.5,
                 border: [false, false, false, false],
                 text: art.entrada_lote || "----"
-            },
+            },*/
             {
                 margin: [0, 3, 0, 3],
                 fontSize: 6.5,
@@ -339,9 +345,16 @@ export let create = async (instituition, fornecedor, guia, artigos, res, user, c
                 },
                 table: {
                     headerRows: 1,
-                    widths: ["10%", "33%", "11%", "8%", "17%", "21%"],
+                    widths: ["11%", "10%", "33%", "8%", "17%", "21%"],
                     body: [
                         [
+                            {
+                                margin: [0, 3, 0, 3],
+                                borderColor: [baseColor, baseColor, baseColor, baseColor],
+                                fillColor: baseColor,
+                                text: "Uni.",
+                                color: textcolor
+                            },
                             {
                                 margin: [0, 3, 0, 3],
                                 borderColor: [baseColor, baseColor, baseColor, baseColor],
@@ -356,13 +369,13 @@ export let create = async (instituition, fornecedor, guia, artigos, res, user, c
                                 text: "Descrição",
                                 color: textcolor
                             },
-                            {
+                            /*{
                                 margin: [0, 3, 0, 3],
                                 borderColor: [baseColor, baseColor, baseColor, baseColor],
                                 fillColor: baseColor,
                                 text: "Lote",
                                 color: textcolor
-                            },
+                            },*/
                             {
                                 margin: [0, 3, 0, 3],
                                 borderColor: [baseColor, baseColor, baseColor, baseColor],

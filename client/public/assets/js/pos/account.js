@@ -364,6 +364,7 @@ $(".credentialPIN").on("click", ".list-users li", function () {
        setStep.callStep[account.operation]();
 });
 $("[newAccount]").on("click", function () {
+    $("#fkPGReport").removeClass("show");
     if(account.hasValidPost()){
         account.operation = "addAccount";
         account.resetModalAuthentication();

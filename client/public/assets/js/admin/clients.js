@@ -1,22 +1,24 @@
 var clients = {
     list: [],
-    load(){
+    load() {
         $("body").addClass("loading");
         $.ajax({
             url: "/api/clientes/admin",
             method: "POST",
             contentType: "application/json",
-            error(){ $("body").removeClass("loading")},
+            error() {
+                $("body").removeClass("loading")
+            },
             success(e) {
                 $("body").removeClass("loading");
                 let listClients = $("#listClients");
                 clients.list = [];
                 clients.list = e.customers;
                 listClients.empty();
-                if(clients.list.length === 0) listClients.addClass("empty");
+                if (clients.list.length === 0) listClients.addClass("empty");
                 else listClients.removeClass("empty");
 
-                clients.list.forEach((cust, idx) =>{
+                clients.list.forEach((cust, idx) => {
                     cust = cust.data;
                     listClients.append(`<ul  i="${idx}" style="cursor: pointer;">
                                             <li>${alterFormatDate(cust.cliente_dataregistro.substring(0, 10)) + ", " + cust.cliente_dataregistro.substring(11, 13) + "h" + cust.cliente_dataregistro.substring(14, 16)}</li>
@@ -24,7 +26,7 @@ var clients = {
                                             <li>${(cust.cliente_nif || "N/D")}</li>
                                             <li>${cust.cliente_titular}</li>
                                             <li>${(cust.cliente_contactos.length > 0 ? cust.cliente_contactos[0] : "N/D")}</li>
-                                            <li>${(cust.cliente_mail ||  "N/D")}</li>                              
+                                            <li>${(cust.cliente_mail || "N/D")}</li>                              
                                             <li class="flex v-ct">
                                                <span class="noLabel"></span>
                                                         <span class="flex v-ct">
@@ -56,70 +58,90 @@ var clients = {
             }
         });
     },
-    registarCliente(){
+    registarCliente() {
         $("[bt_cliente]").prop("disabled", true).addClass("loading");
         let xModalCRUCustomer = $("#xModalCRUCustomer");
         $.ajax({
             url: "/api/cliente/admin",
             method: "POST",
             contentType: "application/json",
-            data: JSON.stringify({cliente_titular: $("#cliente_nome").val().trim(), cliente_nif: ($("#cliente_nif").val() || null),
+            data: JSON.stringify({
+                cliente_titular: $("#cliente_nome").val().trim(),
+                cliente_nif: ($("#cliente_nif").val() || null),
                 cliente_code: $("#cliente_codigo").val().trim() || generateCodeClient(),
                 cliente_contactos: [$("#cliente_telefone").val()],
-                cliente_mail: ($("#cliente_email").val().trim() || null)}),
-            error(){  $("[bt_cliente]").prop("disabled", false).removeClass("loading")},
+                cliente_mail: ($("#cliente_email").val().trim() || null),
+                cliente_metadata: {
+                    morada: $('#cliente_morada').val() || "",
+                }
+            }),
+            error() {
+                $("[bt_cliente]").prop("disabled", false).removeClass("loading")
+            },
             success(e) {
                 $("[bt_cliente]").prop("disabled", false).removeClass("loading");
-                if(e.result){
+                if (e.result) {
                     clients.load();
                     xAlert("Registar Cliente", "Cliente registado com sucesso!");
                     xModalCRUCustomer.find(".hideTarget").click();
                     xModalCRUCustomer.find("input").val("");
-                }
-                else xAlert("Registar Cliente",  e.data, "error");
+                } else xAlert("Registar Cliente", e.data, "error");
             }
         });
     },
-    editarCliente(){
+    editarCliente() {
         $("[bt_cliente]").prop("disabled", true).addClass("loading");
         let xModalCRUCustomer = $("#xModalCRUCustomer");
         $.ajax({
             url: "/api/cliente/admin",
             method: "POST",
             contentType: "application/json",
-            data: JSON.stringify({cliente_titular: $("#cliente_nome").val().trim(), cliente_nif: ($("#cliente_nif").val() || null),
+            data: JSON.stringify({
+                cliente_titular: $("#cliente_nome").val().trim(),
+                cliente_nif: ($("#cliente_nif").val() || null),
                 cliente_code: $("#cliente_codigo").val().trim() || generateCodeClient(),
-                cliente_contactos: [$("#cliente_telefone").val()], cliente_id: clients.selected.cliente_id,
-                cliente_mail: ($("#cliente_email").val().trim() || null)}),
-            error(){  $("[bt_cliente]").prop("disabled", false).removeClass("loading")},
+                cliente_contactos: [$("#cliente_telefone").val()],
+                cliente_id: clients.selected.cliente_id,
+                cliente_mail: ($("#cliente_email").val().trim() || null),
+                cliente_metadata: {
+                    ...(clients.selected.cliente_metadata || {}),
+                    morada: $('#cliente_morada').val() || "",
+                }
+            }),
+            error() {
+                $("[bt_cliente]").prop("disabled", false).removeClass("loading")
+            },
             success(e) {
                 $("[bt_cliente]").prop("disabled", false).removeClass("loading");
-                if(e.result){
+                if (e.result) {
                     clients.load();
                     xAlert("Editar Cliente", "Cliente editado com sucesso!");
                     xModalCRUCustomer.find(".hideTarget").click();
                     xModalCRUCustomer.find("input").val("");
-                }
-                else xAlert("Editar Cliente",  e.data, "error");
+                } else xAlert("Editar Cliente", e.data, "error");
             }
         });
     },
-    alterEstadoCliente(){
+    alterEstadoCliente() {
         $("[changeStatusCustomer]").prop("disabled", true).addClass("loading");
         $.ajax({
             url: "/api/cliente/admin",
             method: "POST",
             contentType: "application/json",
-            data: JSON.stringify({cliente_id: this.clienteSelecionado.cliente_id, cliente_estado: (this.clienteSelecionado.cliente_estado === 1 ? 0 : 1)}),
-            error(){  $("[changeStatusCustomer]").prop("disabled", false).removeClass("loading")},
+            data: JSON.stringify({
+                cliente_id: this.clienteSelecionado.cliente_id,
+                cliente_estado: (this.clienteSelecionado.cliente_estado === 1 ? 0 : 1)
+            }),
+            error() {
+                $("[changeStatusCustomer]").prop("disabled", false).removeClass("loading")
+            },
             success(e) {
                 $("[changeStatusCustomer]").prop("disabled", false).removeClass("loading");
-                if(e.result){
+                if (e.result) {
                     clients.load();
                     $("#xModalChangeCustomerStatus").find(".hideTarget").click();
                     xAlert("Alterar estado cliente", "Operação efetuada com sucesso!");
-                }
-                else xAlert("Alterar estado cliente",  e.data, "error");
+                } else xAlert("Alterar estado cliente", e.data, "error");
             }
         });
     }
@@ -127,16 +149,16 @@ var clients = {
 clients.load();
 
 $("[novoCliente]").on("click", function () {
-    if(!$("#xModalCRUCustomer").find("h3[targetTitle]").text().toLowerCase().includes("adicionar")){
+    if (!$("#xModalCRUCustomer").find("h3[targetTitle]").text().toLowerCase().includes("adicionar")) {
         $("#xModalCRUCustomer").find("input").val("");
     }
     showTarget("xModalCRUCustomer", "Adicionar Cliente");
 });
 $("[bt_cliente]").on("click", function () {
     let xModalCRUCustomer = $("#xModalCRUCustomer");
-    if(!validation1($("#cliente_nome"))) return;
-    if($("#cliente_email").val().trim() !== ""){
-        if(!isMailValid($("#cliente_email"))){
+    if (!validation1($("#cliente_nome"))) return;
+    if ($("#cliente_email").val().trim() !== "") {
+        if (!isMailValid($("#cliente_email"))) {
             xAlert("Registar cliente", "Email inválido.", "error");
             $("#cliente_email").focus();
             return;
@@ -151,10 +173,11 @@ $("#listClients").on("click", ".editar", function () {
     $("#cliente_nome").val(clients.selected.cliente_titular);
     $("#cliente_nif").val((clients.selected.cliente_nif || ""));
     $("#cliente_email").val((clients.selected.cliente_mail || ""));
+    $("#cliente_morada").val((clients.selected.cliente_metadata.morada || ""));
     $("#cliente_telefone").val((clients.selected.cliente_contactos.length > 0 ? clients.selected.cliente_contactos[0] : ""));
     showTarget("xModalCRUCustomer", "Editar cliente");
 });
 $("#pesquisarCliente").on("keypress", function (e) {
-    if(e.which === 13)
-       advSearch($(this).val(), $("#listClients"), $("#listClients").find("ul"));
+    if (e.which === 13)
+        advSearch($(this).val(), $("#listClients"), $("#listClients").find("ul"));
 });
