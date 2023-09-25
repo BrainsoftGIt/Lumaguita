@@ -61,9 +61,4 @@ begin
 end
 $$;
 
-alter function funct_pos_load_conta_proforma(jsonb) owner to maguita_dev;
-
-grant execute on function funct_pos_load_conta_proforma(jsonb) to postgres;
-
-
 `;
