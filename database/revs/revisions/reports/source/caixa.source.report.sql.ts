@@ -1,8 +1,6 @@
-import {block} from "../../../../core/updater";
+import {sql} from "kitres";
 
-block(module, { identifier: `report:source|caixa-v2.0.6-${Math.random()}`, } )
-    //language=PostgreSQL
-    .sql`
+export const vreport_caixa = sql`
 drop view if exists report.vreport_caixa;
 
 create view report.vreport_caixa as

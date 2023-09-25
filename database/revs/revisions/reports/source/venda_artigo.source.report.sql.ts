@@ -1,7 +1,6 @@
-import {block} from "../../../../core/updater";
-import {VERSION} from "../../../../../../server/version";
+import {sql} from "kitres";
 
-block( module, { identifier: `report.vreport_venda_artigo|${ VERSION.TAG }`}).sql`
+export const vreport_venda_artigo = sql`
 drop view if exists report.vreport_venda_artigo;
 
 create or replace view report.vreport_venda_artigo as

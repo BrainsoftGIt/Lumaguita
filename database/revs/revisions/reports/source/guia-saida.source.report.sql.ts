@@ -1,8 +1,6 @@
-import {block} from "../../../../core/updater";
+import {sql} from "kitres";
 
-block( module, { identifier: `report.vreport_guiasaida|v2.0.6-01-${Math.random()}`, flags:[]})
-    //language=PostgreSQL
-    .sql`
+export const vreport_guiasaida = sql`
 drop view if exists report.vreport_guiasaida;
 
 create view report.vreport_guiasaida as

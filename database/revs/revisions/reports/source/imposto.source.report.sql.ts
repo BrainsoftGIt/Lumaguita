@@ -1,8 +1,6 @@
-import {block} from "../../../../core/updater";
+import {sql} from "kitres";
 
-block( module, { identifier: `report:source|imposto-v2.0.6-${Math.random()}`})
-    //language=PostgreSQL
-    .sql`
+export const vreport_imposto = sql`
 drop view if exists report.vreport_imposto;
 
 create or replace view report.vreport_imposto as

@@ -1,8 +1,6 @@
-import {block} from "../../../../core/updater";
+import {sql} from "kitres";
 
-block( module, { identifier: `report:source|venda-v2.0.6-${Math.random()}`})
-    //language=PostgreSQL
-    .sql`
+export const vreport_venda = sql`
 drop view if exists report.vreport_venda;
 
 create view report.vreport_venda as

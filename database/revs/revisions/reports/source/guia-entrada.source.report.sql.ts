@@ -1,6 +1,6 @@
-import {block} from "../../../../core/updater";
+import {sql} from "kitres";
 
-block( module, { identifier: `report.vreport_guiaentrada|v2.0.6-${Math.random()}` }).sql`
+export const vreport_guiaentrada =  sql`
 drop view if exists report.vreport_guiaentrada;
 create view report.vreport_guiaentrada as 
   select 
