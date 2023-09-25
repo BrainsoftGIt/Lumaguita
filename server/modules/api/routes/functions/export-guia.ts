@@ -284,21 +284,24 @@ export let create = async (instituition, fornecedor, guia, artigos, res, user, c
                                         columns: [
                                             {
                                                 bold: true,
-                                                width: "33.333333333%",
+                                                width: "30%",
                                                 color: '#000000',
-                                                text: "Data de Guia"
+                                                text: "Data de Guia",
+                                                alignment: "center"
                                             },
                                             {
                                                 bold: true,
-                                                width: "33.333333333%",
+                                                width: "30%",
                                                 color: '#000000',
-                                                text: "Nº de Documento",
+                                                text: "Nº Documento",
+                                                alignment: "center"
                                             },
                                             {
                                                 bold: true,
-                                                width: "33.333333333%",
+                                                width: "40%",
                                                 color: '#000000',
-                                                text: "Data de Doc. Fornecedor",
+                                                text: "Data Doc. Fornecedor",
+                                                alignment: "center"
                                             }
                                         ],
                                     },

@@ -54,21 +54,21 @@ export let create = async (instituition, account_content, res, user, date, num_a
                 margin: [0, 3, 0, 3],
                 fontSize: 6.5,
                 border: [false, false, false, false],
-                text: `${formattedString(cont.venda_imposto.toFixed(2))} STN`,
+                text: `${formattedString(cont.venda_imposto.toFixed(2))}`,
                 alignment: "right"
             },
             {
                 margin: [0, 3, 0, 3],
                 fontSize: 6.5,
                 border: [false, false, false, false],
-                text: formattedString(preco_artigo.toFixed(2) + "") + " STN",
+                text: formattedString(preco_artigo.toFixed(2) + ""),
                 alignment: "right"
             },
             {
                 margin: [0, 3, 0, 3],
                 fontSize: 6.5,
                 border: [false, false, false, false],
-                text: formattedString(cont.venda_montantesemimposto.toFixed(2) + "") + " STN",
+                text: formattedString(cont.venda_montantesemimposto.toFixed(2) + ""),
                 alignment: "right"
             }
         ]);
@@ -245,6 +245,7 @@ export let create = async (instituition, account_content, res, user, date, num_a
                                     {
                                         color: '#000000',
                                         text: `NOTA DE CREDITO`,
+                                        margin: [0, 0, 0, 4],
                                         bold: true,
                                     },
                                     {
@@ -282,7 +283,7 @@ export let create = async (instituition, account_content, res, user, date, num_a
                                             {
                                                 bold: true,
                                                 color: '#000000',
-                                                text: `Morada: `
+                                                text: `Endereço: `
                                             },
                                             (account_content?.main?.cliente_metadata?.morada || "---------------")
                                         ]
@@ -300,7 +301,7 @@ export let create = async (instituition, account_content, res, user, date, num_a
                                         text: "Nº de Nota de Credito"
                                     },
                                     {
-                                        margin: [0, 0, 0, 15],
+                                        margin: [0, 0, 0, 4],
                                         text: account_content.main.conta_serie.document,
                                     },
                                     {
@@ -308,6 +309,7 @@ export let create = async (instituition, account_content, res, user, date, num_a
                                         text: "Data de emissâo"
                                     },
                                     {
+                                        margin: [0, 0, 0, 4],
                                         width: "100%",
                                         text: moment(account_content.main.conta_data).format("DD-MM-YYYY"),
                                     },
