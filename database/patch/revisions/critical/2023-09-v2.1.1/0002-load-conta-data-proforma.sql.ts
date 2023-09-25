@@ -60,5 +60,83 @@ begin
     ;
 end
 $$;
+`;
 
+
+block( module, { identifier: "tweeks.funct_load_guia_data"}).sql`
+create or replace function tweeks.funct_load_guia_data(args jsonb) returns SETOF json
+  language plpgsql
+as
+$$
+declare
+  /**
+    args := {
+      guia_id UUID,
+      arg_colaborador_id UUID
+      arg_espaco_auth UUID
+    }
+   */
+  arg_colaborador_id uuid default args->>'arg_colaborador_id';
+  arg_espaco_auth uuid default args->>'arg_espaco_auth';
+
+  _guia tweeks.guia;
+  _const map.constant;
+  ___branch uuid default tweeks.__branch_uid( arg_colaborador_id, arg_espaco_auth );
+begin
+  _const := map.constant();
+  _guia := jsonb_populate_record( _guia, args );
+  select * into _guia
+    from tweeks.guia
+    where guia_uid = _guia.guia_uid
+      and _branch_uid = ___branch
+  ;
+
+  return next json_build_object( 'type', cluster.__format( pg_typeof( _guia )::text::regclass ), 'data', _guia );
+
+  return query with __custoguia as (
+    select ent as data, cluster.__format( ent.tableoid ) as type
+      from tweeks.custoguia ent
+      where ent.custoguia_guia_uid = _guia.guia_uid
+        and ent.custoguia_estado = _const.maguita_custoguia_estado_ativo
+        and ent._branch_uid = ___branch
+  ) select to_json( _e ) from __custoguia _e;
+
+  if _guia.guia_toperacao_id = _const.maguita_toperacao_entrada then
+    return query with __raw as (
+      select ent.*,
+             art.artigo_id,
+             art.artigo_nome,
+             art.artigo_codigo,
+             un.unit_id,
+             un.unit_code,
+             un.unit_name,
+             cluster.__format( ent.tableoid ) as type
+        from tweeks.entrada ent
+          inner join tweeks.artigo art on ent.entrada_artigo_id = art.artigo_id
+          left join tweeks.unit un on art.artigo_unit_id = un.unit_id
+        where ent.entrada_guia_id = _guia.guia_uid
+          and ent.entrada_estado = _const.entrada_estado_ativo
+          and ent._branch_uid = ___branch
+    ), __entrada as (
+      select to_json( r ) as data, r.type
+        from __raw r
+    ) select to_json( _e ) from __entrada _e;
+
+    return query with __fornecedor as (
+      select ent as data, cluster.__format( ent.tableoid ) as type
+        from tweeks.fornecedor ent
+      where ent._branch_uid = ___branch
+        and ent.fornecedor_id = _guia.guia_refuid
+        and _guia.guia_refclass::regclass = ent.TABLEOID::regclass
+    ) select to_json( _f ) from __fornecedor _f;
+
+  elseif _guia.guia_toperacao_id = _const.maguita_toperacao_venda then
+    return query with __venda as (
+      select ent as data, cluster.__format( 'tweeks.conta'::regclass ) as type
+      from tweeks.funct_pos_load_conta_data( args ) ent
+    ) select to_json( _e ) from __venda _e;
+
+  end if;
+end
+$$;
 `;
