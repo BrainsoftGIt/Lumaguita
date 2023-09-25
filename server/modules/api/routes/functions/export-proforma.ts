@@ -357,14 +357,14 @@ export let create = async (instituition, account, account_content, res, user, da
                                 margin: [0, 3, 0, 3],
                                 borderColor: [baseColor, baseColor, baseColor, baseColor],
                                 fillColor: baseColor,
-                                text: "Código",
+                                text: "Uni.",
                                 color: textcolor
                             },
                             {
                                 margin: [0, 3, 0, 3],
                                 borderColor: [baseColor, baseColor, baseColor, baseColor],
                                 fillColor: baseColor,
-                                text: "Uni.",
+                                text: "Código",
                                 color: textcolor
                             },
                             {
