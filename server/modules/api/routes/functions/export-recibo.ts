@@ -298,7 +298,7 @@ export let create = async (instituition, deposito, cliente, res, user, date, num
                                         text: "Nº do Recibo"
                                     },
                                     {
-                                        margin: [0, 0, 0, 4],
+                                        margin: [0, 0, 0, 15],
                                         text: deposito[0].data.deposito_documento
                                     },
                                     {

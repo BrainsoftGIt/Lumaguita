@@ -545,7 +545,8 @@ begin
           and c._branch_uid = ___branch
         group by c.conta_id, 
           de.deposito_id,
-         corigen.conta_id
+          ccl.cliente_id,
+          corigen.conta_id
      ) select to_jsonb( c ) || _client from __conta c
   ;
 

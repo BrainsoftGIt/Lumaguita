@@ -22,6 +22,8 @@ export let create = async (instituition, account, account_content, res, user, da
     let baseColor = instituition?.espaco_configuracao?.empresa_basecolor || "#000000";
     let textcolor = instituition?.espaco_configuracao?.empresa_textcolor || "#ffffff";
 
+    console.log(account)
+
     let sumImpost = {};
     console.log({conta_vendas: JSON.stringify(account_content?.main?.conta_vendas)});
     (account_content?.main?.conta_vendas || []).forEach((cont) => {
@@ -286,7 +288,7 @@ export let create = async (instituition, account, account_content, res, user, da
                                                 color: '#000000',
                                                 text: `Morada: `
                                             },
-                                            (account?.cliente_metadata?.morada || "---------------")
+                                            (account?.cliente_metadata?.morada || "---------")
                                         ]
                                     }
                                 ]
@@ -302,7 +304,7 @@ export let create = async (instituition, account, account_content, res, user, da
                                         text: "Nº de Fatura"
                                     },
                                     {
-                                        margin: [0, 0, 0, 4],
+                                        margin: [0, 0, 0, 15],
                                         text: account_content?.main?.conta_numero,
                                     },
                                     {

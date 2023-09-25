@@ -172,7 +172,7 @@ export let create = async (instituition, account_content, res, user, num_autoriz
                                             {
                                                 bold: true,
                                                 color: '#000000',
-                                                text: `Morada: `
+                                                text: `Endereço: `
                                             },
                                             (account_content?.main?.cliente_metadata?.morada || "---------------")
                                         ]
@@ -190,7 +190,7 @@ export let create = async (instituition, account_content, res, user, num_autoriz
                                         text: "Nº de guia de saída"
                                     },
                                     {
-                                        margin: [0, 0, 0, 4],
+                                        margin: [0, 0, 0, 15],
                                         text: guia.guia_numero,
                                     },
                                     {

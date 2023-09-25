@@ -277,28 +277,31 @@ export let create = async (instituition, fornecedor, guia, artigos, res, user, c
                                         text: "Guia de Entrada"
                                     },
                                     {
-                                        margin: [0, 0, 0, 4],
+                                        margin: [0, 0, 0, 15],
                                         text: guia.guia_numero,
                                     },
                                     {
                                         columns: [
                                             {
                                                 bold: true,
-                                                width: "33.333333333%",
+                                                width: "30%",
                                                 color: '#000000',
-                                                text: "Data de Guia"
+                                                text: "Data de Guia",
+                                                alignment: "center"
                                             },
                                             {
                                                 bold: true,
-                                                width: "33.333333333%",
+                                                width: "30%",
                                                 color: '#000000',
-                                                text: "Nº de Documento",
+                                                text: "Nº Documento",
+                                                alignment: "center"
                                             },
                                             {
                                                 bold: true,
-                                                width: "33.333333333%",
+                                                width: "40%",
                                                 color: '#000000',
-                                                text: "Data de Doc. Fornecedor",
+                                                text: "Data Doc. Fornecedor",
+                                                alignment: "center"
                                             }
                                         ],
                                     },
