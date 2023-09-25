@@ -99,7 +99,7 @@ $$;
 `;
 
 block( module, {
-    identifier: "unit:(sets,load)|v2.0.6-05",
+    identifier: "unit-v2.1.1-8393",
 }).sql`
 create or replace function tweeks.funct_sets_unit( args jsonb )
   returns lib.res
