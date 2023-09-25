@@ -115,7 +115,6 @@ UPDATE report.vcolumn SET position = null, show = false, init = false, format = 
 UPDATE report.vcolumn SET position = null, show = false, init = false, format = 'id', filter = '[]', agg = '[]', noagg = false, gen = '[]', rename = null, type = 'uuid[]' WHERE source = 'report.vreport_venda_artigo' AND name = '_tipoimposto_ids';
 UPDATE report.vcolumn SET position = null, show = false, init = false, format = 'id', filter = '[]', agg = '[]', noagg = false, gen = '[]', rename = null, type = 'uuid' WHERE source = 'report.vreport_venda_artigo' AND name = 'deposito_id';
 
-
 select *
   from report.vcolumn
   where source = 'report.vreport_venda_artigo'
