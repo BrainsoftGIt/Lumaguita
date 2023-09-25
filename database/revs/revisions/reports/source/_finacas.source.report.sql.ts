@@ -8,10 +8,6 @@ as
 $$
 declare
   /*
-    
-    
-    
-    
     args := {
       arg_colaborador_id: UID
       arg_espaco_auth: UID
