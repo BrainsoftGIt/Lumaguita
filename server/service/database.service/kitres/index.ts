@@ -1,9 +1,6 @@
 import {args} from "../../../global/args";
 import {PgCore} from "kitres";
-import {Client, ClientConfig, Pool} from "pg";
-
-
-
+import {Client, ClientConfig, Pool} from "pg"
 
 let configs:ClientConfig = {
     host: args.dbHost,

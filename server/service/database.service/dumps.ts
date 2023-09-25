@@ -36,14 +36,13 @@ export function dumpNow( instant?: moment.Moment, opts?:Options ){
         out.stderr.on( "data", chunk => {}  );
         process.stdin.pipe( out.stdin );
 
-        out.on("close", (code, signal) => {
+        out.on("close", ( code, signal) => {
             dumps.forEach( next => {
                 let dumpFile = instant.format( next.format ).toLowerCase();
                 let copyFile = path.join( folders.dumps, dumpFile );
-                console.log( "CREATE DUMP ", copyFile, " USING ", lastFile );
+                console.log( "CREATE DUMP ", new URL(`file://${copyFile}`).href );
                 fs.cpSync( lastFile, copyFile );
             });
-            console.log( "DROP DUMP FILE ", lastFile )
             fs.unlinkSync( lastFile );
             resolve( true );
         });
@@ -70,6 +69,7 @@ function dargs( filename ):[PostgresDumpArgs, PostgresOptions ]{
 }
 
 export function create_dump( fileName:string ){
+    console.log( "MAGUITA> create dump", fileName );
     if( !fs.existsSync( path.dirname( fileName ) ) ) fs.mkdirSync( path.dirname( fileName ) );
     return pg_dump( ...dargs( fileName ) )
 }

@@ -126,6 +126,9 @@ export const folders = {
     //Destined for permanent database resource
     get database () { return folder( this.home,  '/database' ); },
 
+    //language=file-reference
+    get databaseRevision () { return folder( __dirname, "../../database/revs" ); },
+
     //Destined for postgres mount point [PostgresCluster|PG_HOME's]
     get pgHome () { return folder( this.database,  '/postgres' ); },
 
