@@ -7,32 +7,40 @@ import detectPort from "detect-port";
 import {openPorts} from "./open-ports";
 import fs from "fs";
 import {folders} from "../global/project";
-import {applyDatabasePatches} from "../../database/patch";
-import {promiseResolve} from "../lib/utils/promise";
-import {autoDumpService, create_dump, dumpNow} from "../service/database.service/dumps";
+import {autoDumpService, dumpNow} from "../service/database.service/dumps";
+import {pgRevision} from "../service/database.service/kitres/revison";
 
 export function getSys(){
     return require("../global/sys").sys;
 }
 
-export function prepareDatabase(){
-    serverNotify.loadingBlock( "Manutenção de banco de dados" );
-    serverNotify.loadingBlockItem( "Criando copia de segurança preventiva..." );
-    return dumpNow(null, { suffix: "before-upgrade" }).then( value => {
-        return promiseResolve( applyDatabasePatches() ).then( value => {
-            if( value.success ) {
-                serverNotify.loadingBlockItem(  "Criando copia de segurança final..." );
-                dumpNow(null, { suffix: "before-upgrade" }).then( value1 => {
-                    autoDumpService().then()
-                });
-                return Promise.resolve( "ok" );
-            } else {
-                serverNotify.loading( "FAILED!" );
-                serverNotify.loadingBlock( "Database upgrade patches... [FAILED]" );
-                serverNotify.loadingBlockItem( "Falha ao aplicar atualização criticas de banco de dados." );
-            }
+export function prepareDatabase():Promise<boolean>{
+    return new Promise( (resolve, reject) => {
+        serverNotify.loadingBlock( "Manutenção de banco de dados" );
+        serverNotify.loadingBlockItem( "Criando copia de segurança preventiva..." );
+        dumpNow(null, { suffix: "before-upgrade" }).then( value => {
+            serverNotify.loadingBlock( "Database upgrade patches..." );
+            pgRevision.collect();
+            pgRevision.setup( (error, block) => {
+                if( error ){
+                    console.error( error )
+                    serverNotify.loading( "FAILED!" );
+                    serverNotify.loadingBlock( "Database upgrade patches... [FAILED]" );
+                    serverNotify.loadingBlockItem( "Falha ao aplicar atualização criticas de banco de dados." );
+                    return resolve( false );
+                }
+                autoDumpService().then()
+                serverNotify.loadingBlock( "Database upgrade patches... [SUCCESS]" );
+                resolve( true );
+            });
+
+        }).catch( reason => {
+            serverNotify.loading( "FAILED!" );
+            serverNotify.loadingBlock( "Database upgrade patches... [FAILED]" );
+            serverNotify.loadingBlockItem( "Falha ao aplicar atualização criticas de banco de dados." );
+            resolve( false );
         })
-    })
+    });
 }
 
 const startServer = ( onReady:()=>void )=>{
@@ -112,7 +120,6 @@ function proceedPlay(){
         } else if( args.dbMode === "system" ){
             serverNotify.loadingBlock( "A iniciar o servidor..." );
             prepareDatabase().then( value1 => {
-                console.log( { preparedValue: value1 })
                 if( !value1 ){
                     return process.exit(-1 );
                 }
