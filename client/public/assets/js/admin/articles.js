@@ -584,7 +584,7 @@ var article = {
             url: "/api/artigo/data",
             method: "POST",
             contentType: "application/json",
-            data: JSON.stringify({ artigos: [this.selected.artigo_id]}),
+            data: JSON.stringify({artigos: [this.selected.artigo_id]}),
             success(e) {
                 if(e.data.length > 0){
                     article.selected = e.data[0].funct_load_artigo_data;
