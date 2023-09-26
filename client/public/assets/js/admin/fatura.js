@@ -205,13 +205,14 @@ var faturaAdmin = {
         });
     },
     register_invoice({conta_id}){
+        let observacao_fatura = $("#observacao_fatura");
         let FATURA = 1;
         let dados = {};
         dados.conta_id = conta_id;
         dados.conta_extension = {};
         dados.conta_mesa =  { numero: null, descricao:null, lotacao:null };
         dados.conta_desconto = null;
-        dados.conta_titular =   $("[cliente_titular]").val().trim();
+        dados.conta_titular = $("[cliente_titular]").val().trim();
         dados.conta_titularnif = $("[cliente_nif]").val().trim() || null;
         dados.conta_data = $("#fatura_data_emissao").val() === "" ? null : alterFormatDate($("#fatura_data_emissao").val());
         dados.conta_cliente_id = articlesDocuments.customer_id;
@@ -223,8 +224,10 @@ var faturaAdmin = {
         dados.guia_dataopeacao = null;
         dados.guia_metadata = {};
         dados.custos = [];
+        dados.conta_props = {
+            terms: observacao_fatura.val() || ""
+        }
 
-        let observacao_fatura = $("#observacao_fatura");
 
         $.ajax({
             url: "/api/pos/pay",

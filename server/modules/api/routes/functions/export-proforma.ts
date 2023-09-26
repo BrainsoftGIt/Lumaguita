@@ -422,10 +422,10 @@ export let create = async (instituition, account, account_content, res, user, da
                     ]
                 }
             },
-            (account?.conta_proformaextras?.termos !== null ? {
+            (!!account?.conta_proformaextras?.termos ? {
                 fontSize: 8,
                 lineHeight: 1.5,
-                margin: [0, 10, 0, 0],
+                margin: [0, 40, 0, 0],
                 text: account?.conta_proformaextras.termos
             } : {})
         ],
