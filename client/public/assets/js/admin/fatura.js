@@ -244,7 +244,7 @@ var faturaAdmin = {
                     $("[tableDocumentArticles]").addClass("empty");
                     xAlert("Fatura", "Fatura emitida com sucesso!");
                     articlesDocuments.customer_id = null;
-                    open("/api/print/fatura/"+JSON.stringify({type: "pdf", conta_id: dados.conta_id, date: new Date().getTimeStampPt(), admin: true, observacao_fatura: observacao_fatura.val()}));
+                    open("/api/print/fatura/"+JSON.stringify({type: "pdf", conta_id: dados.conta_id, date: new Date().getTimeStampPt(), admin: true}));
                     if($("[imprimirGuiaSaida]").hasClass("active")){
                         open("/api/print/guia_saida/"+JSON.stringify({date: new Date().getTimeStampPt(), guia_uuid: e.data, conta_id: dados.conta_id }));
                     }

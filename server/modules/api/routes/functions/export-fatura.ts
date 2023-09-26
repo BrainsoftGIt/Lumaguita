@@ -399,7 +399,7 @@ export let create = async (instituition, account_content, res, user, date, num_a
             (!!account_content?.main?.conta_props?.terms) ? {
                 fontSize: 8,
                 lineHeight: 1.5,
-                margin: [0, 40, 0, 0],
+                margin: [10, 40, 0, 0],
                 text: observacao_fatura
             }: {}
         ],
