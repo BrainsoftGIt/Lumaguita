@@ -1,4 +1,4 @@
-import {sql} from "kitres";
+import {patchSQL, sql} from "kitres";
 
 export const vreport_venda_artigo = sql`
 drop view if exists report.vreport_venda_artigo;
@@ -126,5 +126,4 @@ select *
            source,
            name
 ;
-
 `;
