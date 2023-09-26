@@ -230,23 +230,23 @@ var faturaAdmin = {
             url: "/api/pos/pay",
             method: "POST",
             contentType: "application/json",
-            data: JSON.stringify({...dados, arg_tserie_id: FATURA, observacao_fatura }),
+            data: JSON.stringify({...dados, arg_tserie_id: FATURA }),
             error() {$("#finalizar_fatura").prop("disabled", false).removeClass("loading")},
             success(e) {
                 $("#finalizar_fatura").prop("disabled", false).removeClass("loading");
                 if(e.result){
-                    observacao_fatura.val("");
                     $("[isencaoImposto]").removeClass("active");
                     $("#faturaAdmin").find("input").val("");
                     $("[tableDocumentArticles]").empty();
                     $("[tableDocumentArticles]").addClass("empty");
                     xAlert("Fatura", "Fatura emitida com sucesso!");
                     articlesDocuments.customer_id = null;
-                    open("/api/print/fatura/"+JSON.stringify({type: "pdf", conta_id: dados.conta_id, date: new Date().getTimeStampPt(), admin: true }));
+                    open("/api/print/fatura/"+JSON.stringify({type: "pdf", conta_id: dados.conta_id, date: new Date().getTimeStampPt(), admin: true, observacao_fatura: observacao_fatura.val()}));
                     if($("[imprimirGuiaSaida]").hasClass("active")){
                         open("/api/print/guia_saida/"+JSON.stringify({date: new Date().getTimeStampPt(), guia_uuid: e.data, conta_id: dados.conta_id }));
                     }
                     $("[imprimirGuiaSaida]").removeClass("active");
+                    observacao_fatura.val("");
                 }
                 else xAlert("Fatura", e.data, "error");
             }

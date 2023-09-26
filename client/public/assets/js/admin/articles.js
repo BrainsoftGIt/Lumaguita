@@ -363,7 +363,7 @@ var article = {
         $("label.artigo[lab=FOTO]").text(".jpg, .png, .jpeg");
         $("#artigo_impostos_desc, #aplicacao_impostos_desc").val("");
         $("#artigo_impostos, #artigo_aplicacao_imposto, #artigo_unidade_desc").find("li").removeClass("active");
-        $("#artigo_foto, #artigo_nome, #artigo_observacao, #artigo_quantidade_composto").val("");
+        $("#artigo_foto, #artigo_nome, #artigo_observacao, #artigo_quantidade_composto, #artigo_unidade").val("");
         $("#armazens_artigos, #artigos_base").find("li").removeClass("active");
         $("#armazens_artigos").find("input").val("");
         $(".listCats").find("div").removeClass("active");
