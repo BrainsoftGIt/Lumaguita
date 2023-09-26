@@ -149,7 +149,6 @@ var faturaAdmin = {
         });
     },
     articles_added(){
-        console.log("ddndndnd")
         let articles_table = [];
         let montanteQuantidade = 0;
         let semImposto = $("[isencaoImposto]").hasClass("active");
@@ -187,11 +186,9 @@ var faturaAdmin = {
         conta.conta_mesa = {numero: null, descricao: null, lotacao: null};
         conta.conta_extension = {};
         conta.arg_vendas = this.articles_added();
-        console.log({conta})
         conta.admin = true;
         conta.conta_chave = faturaAdmin.key;
 
-        console.log({conta})
         $.ajax({
             url: "/api/pos/conta",
             method: "POST",
@@ -227,15 +224,18 @@ var faturaAdmin = {
         dados.guia_metadata = {};
         dados.custos = [];
 
+        let observacao_fatura = $("#observacao_fatura");
+
         $.ajax({
             url: "/api/pos/pay",
             method: "POST",
             contentType: "application/json",
-            data: JSON.stringify({...dados, arg_tserie_id: FATURA}),
+            data: JSON.stringify({...dados, arg_tserie_id: FATURA, observacao_fatura }),
             error() {$("#finalizar_fatura").prop("disabled", false).removeClass("loading")},
             success(e) {
                 $("#finalizar_fatura").prop("disabled", false).removeClass("loading");
                 if(e.result){
+                    observacao_fatura.val("");
                     $("[isencaoImposto]").removeClass("active");
                     $("#faturaAdmin").find("input").val("");
                     $("[tableDocumentArticles]").empty();

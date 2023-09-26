@@ -424,19 +424,10 @@ export let create = async (instituition, account, account_content, res, user, da
             },
             (account?.conta_proformaextras?.termos !== null ? {
                 fontSize: 8,
-                margin: [0, 50, 0, 0],
-                stack: [
-                    {
-                        bold: true,
-                        text: "Termos"
-                    },
-                    {
-                        margin: [0, 20, 0, 0],
-                        bold: false,
-                        text: account?.conta_proformaextras.termos
-                    }
-                ]
-            } : "")
+                lineHeight: 1.5,
+                margin: [0, 10, 0, 0],
+                text: account?.conta_proformaextras.termos
+            } : {})
         ],
         ...structure(user, num_autorization, instituition.espaco_configuracao.certification,
             (instituition?.espaco_configuracao?.cabecalho_referencia === null ? "" : clusterServer.res.resolve(instituition?.espaco_configuracao?.cabecalho_referencia)), textcolor, baseColor, rotape)

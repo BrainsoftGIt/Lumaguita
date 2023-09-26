@@ -6,7 +6,7 @@ import {clusterServer} from "../../../../service/cluster.service";
 import moment from "moment";
 import {formattedString} from "./formatValue";
 
-export let create = async (instituition, account_content, res, user, date, num_autorization) => {
+export let create = async (instituition, account_content, res, user, date, num_autorization, observacao_fatura) => {
     const pdfMake = require("../../../../../libs/js/pdfmake/pdfmake");
     const pdfFonts = require('../../../../../libs/js/pdfmake/vfs_fonts');
     const {formattedString} = require("./formatValue");
@@ -392,9 +392,15 @@ export let create = async (instituition, account_content, res, user, date, num_a
                                 alignment: "right"
                             }
                         ],
-                        ...artigosConta
+                        ...artigosConta,
                     ]
                 }
+            },
+            {
+                fontSize: 8,
+                lineHeight: 1.5,
+                margin: [0, 10, 0, 0],
+                text: observacao_fatura
             }
         ],
         ...structure(user, num_autorization, instituition.espaco_configuracao.certification,
