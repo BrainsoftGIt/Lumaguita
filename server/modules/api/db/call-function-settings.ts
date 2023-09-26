@@ -73,7 +73,7 @@ export function functLoadSpaceMigrate(args) {
 export function functRegistarImposto(paramn) {
     const {sql} = factory.create(Templates.PARAMETERIZED);
     return catchLast(
-        sql `select * from tweeks.main( 'tweeks.sets_tipoimposto', ${paramn}, ${  args.appMode})`
+        sql `select * from tweeks.main( 'tweeks.sets_tipoimposto', ${paramn}, ${args.appMode})`
     );
 }
 
@@ -86,6 +86,13 @@ export function functLoadImpostos(args) {
 export function functGetArticleTax(paramn) {
     const {sql} = factory.create(Templates.PARAMETERIZED);
     return catchAll(
-        sql `select * from tweeks.main( 'tweeks._get_impostos_taxa', ${paramn}, ${  args.appMode})`
+        sql `select * from tweeks.main( 'tweeks._get_impostos_taxa', ${paramn}, ${args.appMode})`
+    );
+}
+
+export function functUnits(paramn) {
+    const {sql} = factory.create(Templates.PARAMETERIZED);
+    return catchAll(
+        sql `select * from tweeks.main( 'tweeks.funct_load_unit', ${paramn}, ${args.appMode})`
     );
 }

@@ -287,36 +287,33 @@ export let create = async (instituition, fornecedor, guia, artigos, res, user, c
                                                 width: "30%",
                                                 color: '#000000',
                                                 text: "Data de Guia",
-                                                alignment: "center"
                                             },
                                             {
                                                 bold: true,
                                                 width: "30%",
                                                 color: '#000000',
                                                 text: "Nº Documento",
-                                                alignment: "center"
                                             },
                                             {
                                                 bold: true,
                                                 width: "40%",
                                                 color: '#000000',
                                                 text: "Data Doc. Fornecedor",
-                                                alignment: "center"
                                             }
                                         ],
                                     },
                                     {
                                         columns: [
                                             {
-                                                width: "33.333333333%",
+                                                width: "30%",
                                                 text: `${(moment(guia.guia_date).format("DD-MM-YYYY"))}`
                                             },
                                             {
-                                                width: "33.333333333%",
+                                                width: "30%",
                                                 text: `${(guia.guia_documentoperacao || "---------")}`
                                             },
                                             {
-                                                width: "33.333333333%",
+                                                width: "40%",
                                                 text: `${moment(guia.guia_dataoperacao).format("DD-MM-YYYY")}`,
                                             }
                                         ],

@@ -263,15 +263,15 @@
 					<label for="empresa_cabecalho" lab="Cabeçalho"><small id="empresa_cabecalho_nome"></small></label>
 				</div>
 				<div class="xinput grow-1 w100">
-					<input type="text" id="empresa_nome">
+					<input type="text" id="empresa_nome" placeholder="_">
 					<label for="empresa_nome">Nome</label>
 				</div>
 				<div class="xinput grow-1 w100">
-					<input type="text" id="empresa_nif" class="integer" maxlength="9">
+					<input type="text" id="empresa_nif" class="integer" maxlength="9" placeholder="_">
 					<label for="empresa_nif">NIF</label>
 				</div>
 				<div class="xinput grow-1 w100">
-					<input type="text" placeholder="_" id="empresa_email">
+					<input type="text" placeholder="_" id="empresa_email" >
 					<label for="empresa_email">Email</label>
 				</div>
 				<div class="xinput grow-1 w100">
@@ -283,11 +283,11 @@
 					<label for="empresa_endereco">Endereço</label>
 				</div>
 				<div class="xinput grow-1 w100">
-					<input type="text"  id="empresa_certificacao" _noObrigatory="true" class="_noObrigatory">
+					<input type="text"  id="empresa_certificacao" _noObrigatory="true" class="_noObrigatory" placeholder="_">
 					<label for="empresa_certificacao">Número de certificação</label>
 				</div>
 				<div class="xinput grow-1 w100">
-					<input type="text" class="_noObrigatory" id="empresa_gerente" _noObrigatory="true">
+					<input type="text" class="_noObrigatory" id="empresa_gerente" _noObrigatory="true" >
 					<label for="empresa_gerente">Nome do Gerente</label>
 				</div>
 				<div class="xinput grow-1 w100">
@@ -321,23 +321,23 @@
 			<h3 targetTitle>Adicionar Posto</h3>
 			<div class="xform">
 				<div class="xselect w100">
-					<input type="text" readonly id="postoCodigoDesc">
+					<input type="text" readonly id="postoCodigoDesc" placeholder="_">
 					<label>Código</label>
 					<ul codigos_posto>
 					</ul>
 				</div>
 				<div class="xselect w100">
-					<input type="text" readonly _noObrigatory="true" id="postoAssociarDesc">
+					<input type="text" readonly _noObrigatory="true" id="postoAssociarDesc" placeholder="_">
 					<label>Associar posto</label>
 					<ul postos_criados>
 					</ul>
 				</div>
 				<div class="xinput grow-1 w100">
-					<input type="text" id="posto_designacao">
+					<input type="text" id="posto_designacao" placeholder="_">
 					<label for="posto_designacao">Designação</label>
 				</div>
 				<div class="xselect w100">
-					<input type="text" readonly id="postoTipoDesc">
+					<input type="text" readonly id="postoTipoDesc" placeholder="_">
 					<label>Tipo de posto</label>
 					<ul tipoPosto>
 						<li id="1">Pedido</li>
@@ -345,7 +345,7 @@
 					</ul>
 				</div>
 				<div class="xselect w100">
-					<input type="text" readonly id="tipoCaixaDesc">
+					<input type="text" readonly id="tipoCaixaDesc" placeholder="_">
 					<label>Tipo de caixa</label>
 					<ul tipoCaixa>
 						<li class="tgl" tipo="1">Por pessoa</li>
@@ -354,7 +354,7 @@
 					</ul>
 				</div>
 				<div class="xselect w100">
-					<input type="text" readonly id="tipoAuthPOS">
+					<input type="text" readonly id="tipoAuthPOS" placeholder="_">
 					<label>PIN de autenticação POS</label>
 					<ul pinAuthPOS>
 						<li class="tgl" tipo="1">Pedir sempre</li>
@@ -399,11 +399,11 @@
 			<h3 targetTitle>Editar Posto</h3>
 			<div class="xform">
 				<div class="xinput grow-1 w100">
-					<input type="text" postoDesignacao>
+					<input type="text" postoDesignacao placeholder="_">
 					<label>Designação</label>
 				</div>
 				<div class="xselect w100">
-					<input type="text" readonly postoTipoDesc>
+					<input type="text" readonly postoTipoDesc placeholder="_">
 					<label>Tipo</label>
 					<ul tipoPostoEdit>
 						<li tipo_id="1">Venda</li>
@@ -411,7 +411,7 @@
 					</ul>
 				</div>
 				<div class="xselect w100">
-					<input type="text" readonly id="tipoCaixaDescEdit">
+					<input type="text" readonly id="tipoCaixaDescEdit" placeholder="_">
 					<label>Tipo de caixa</label>
 					<ul tipoCaixaEdit>
 						<li class="tgl" tipo="1">Por pessoa</li>
@@ -420,7 +420,7 @@
 					</ul>
 				</div>
 				<div class="xselect w100">
-					<input type="text" readonly id="pinAuthDescEdit">
+					<input type="text" readonly id="pinAuthDescEdit" placeholder="_">
 					<label>PIN de autenticação POS</label>
 					<ul pinAuthEdit>
 						<li class="tgl" tipo="1">Pedir sempre</li>
@@ -464,18 +464,18 @@
 			<h3 targetTitle>Adicionar Armazém</h3>
 			<div class="xform">
 				<div class="xinput grow-1 w100">
-					<input type="text" id="armazem_designacao">
+					<input type="text" id="armazem_designacao" placeholder="_">
 					<label for="armazem_designacao">Designação</label>
 				</div>
 				<div class="xselect flutuate w100">
-					<input type="text" readonly>
+					<input type="text" readonly placeholder="_">
 					<label>Núcleo</label>
 					<ul id="cluster_armazem">
 						<li class="tgl"></li>
 					</ul>
 				</div>
 				<div class="xselect w100">
-					<input type="text" readonly _noObrigatory="true" >
+					<input type="text" readonly _noObrigatory="true" placeholder="_">
 					<label>Posto alocado</label>
 					<ul id="postos_espaco">
 					</ul>

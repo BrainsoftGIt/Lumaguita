@@ -145,7 +145,7 @@ $('body').on('click', '.stepper h4', function (event) {
 let filterXSelect = "";
 function liPesquisaXSelect() {
     if (filterXSelect !== "") {
-        $(this).parents(".xselect").find(`[list] li`).each(function () {
+        $(this).parents(".xselect").find(`li`).each(function () {
             if ($(this).text().$$(filterXSelect)) {
                 $(this).show();
                 return;
@@ -153,7 +153,7 @@ function liPesquisaXSelect() {
             $(this).hide();
         });
     } else {
-        $(this).parents(".xselect").find(`[list] li:contains(${filterXSelect})`).show()
+        $(this).parents(".xselect").find(`li:contains(${filterXSelect})`).show()
     }
 }
 
