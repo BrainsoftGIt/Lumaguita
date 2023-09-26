@@ -1,7 +1,8 @@
-import {RevisionCore, tsutil} from "kitres";
+import {RevisionCore, RevisionRegistry, scriptUtil} from "kitres";
 import {pgCore} from "./index";
 import {folders} from "../../../global/project";
 import {VERSION} from "../../../version";
+import chalk from "chalk";
 
 export const pgRevision = new RevisionCore( pgCore, {
     schema: "kitres",
@@ -9,12 +10,26 @@ export const pgRevision = new RevisionCore( pgCore, {
     DATA_VERSION: VERSION.TAG
 });
 
+pgRevision.on("collectError", error =>{
+    console.log( error );
+
+});
+
 pgRevision.on( "register", block => {
-    console.log( `MAGUITA> collecting database path ${ new URL(`file:\\\\${ tsutil.tsof( block.filename )}`).href } identifier = "${ block.identifier }"` );
+    let filename = scriptUtil.typescriptOf( block.filename );
+    let lineNumber = block.line?.line as any;
+    if( lineNumber ) lineNumber = `:${ lineNumber }`;
+    console.log( `MAGUITA> collecting database path ${ new URL(`file:\\\\${ filename }${lineNumber}`).href } identifier = "${ block.identifier }"` );
 });
 
 pgRevision.on( "applierNotice", notice => {
-    console.log( `MAGUITA> apply database path ${ new URL(`file:\\\\${ tsutil.tsof( notice.filename )}`).href } identifier = "${ notice.identifier }" ${ notice.status }`);
+    let filename = scriptUtil.typescriptOf( notice.filename );
+    let lineNumber = notice.line?.line as any;
+    if( lineNumber ) lineNumber = `:${ lineNumber }`;
+    let status = chalk.blueBright.bold( notice.status );
+    if( notice.status === "ERROR" ) status = chalk.redBright.bold( notice.status );
+    if( notice.status === "FINALIZED" ) status = chalk.green.bold( notice.status );
+    console.log( `MAGUITA> apply database path ${ new URL(`file:\\\\${ filename }${ lineNumber }`).href } identifier = "${ notice.identifier }" ${ status }`);
 });
 
 
