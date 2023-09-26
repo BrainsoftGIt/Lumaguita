@@ -36,8 +36,8 @@ declare
         product_stock:?numeric                                // Valor para o acerto do stock na sincronização
 
         //Information about composition
-        product_product_compositioncode:?[REF#PRODUCT_CODE]   // Codigo do produto base usado para composição
-        product_compositionquantity:?numeric                  // Quantidade de produto base para compor um item do composto
+        product_product_compositioncode:?[REF#PRODUCT_CODE]   // Codigo do produto abase usado para composição
+        product_compositionquantity:?numeric                  // Quantidade de produto abase para compor um item do composto
 
         //Information about impost
         impost_name:?string                                   // Nome do imposto
@@ -284,8 +284,8 @@ language plpgsql as $$
         product_nostockcontroll:*boolean                      // Se o produto aceita stock negativo ou não
 
         //Information about composition
-        product_product_compositioncode:?[REF#PRODUCT_CODE]   // Codigo do produto base usado para composição
-        product_compositionquantity:?numeric                  // Quantidade de produto base para compor um item do composto
+        product_product_compositioncode:?[REF#PRODUCT_CODE]   // Codigo do produto abase usado para composição
+        product_compositionquantity:?numeric                  // Quantidade de produto abase para compor um item do composto
 
       }]
      }

@@ -306,6 +306,13 @@ $$;
 `;
 
 
+
+
 block( module, { identifier: "conta_props", flags:[ "@unique" ]} ).sql`
   alter table tweeks.conta add column if not exists conta_props jsonb default null;
+`;
+
+
+block( module, { identifier: "venda_proforma", flags:[ "@unique" ] } ).sql`
+alter table tweeks.venda add column if not exists venda_proforma boolean default false;
 `;
