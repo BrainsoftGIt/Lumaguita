@@ -183,6 +183,7 @@ declare
 begin
   _const := map.constant();
   _conta := tweeks._get_conta( arg_conta_id );
+  _conta.conta_data := current_date;
   
   if _conta.conta_id is null and exists(
     select *
