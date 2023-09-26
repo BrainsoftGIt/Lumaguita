@@ -14,26 +14,43 @@ export function getSys(){
     return require("../global/sys").sys;
 }
 
+let dbPatch = ():Promise<boolean>=>{
+    return new Promise( resolve => {
+        serverNotify.loadingBlock( "Database upgrade patches..." );
+        let collectResult = pgRevision.collect();
+        if( collectResult?.error ){
+            console.error( `Erro ao collectar os patches!` );
+            console.error( collectResult.error );
+            serverNotify.loading( "FAILED!" );
+            serverNotify.loadingBlock( "Database upgrade patches... [FAILED]" );
+            serverNotify.loadingBlockItem( "Falha ao aplicar atualização criticas de banco de dados | erro ao collectar os paths" );
+            return resolve( false );
+        }
+
+
+        pgRevision.setup( (error, block) => {
+            if( error ){
+                console.error( error )
+                serverNotify.loading( "FAILED!" );
+                serverNotify.loadingBlock( "Database upgrade patches... [FAILED]" );
+                serverNotify.loadingBlockItem( "Falha ao aplicar atualização criticas de banco de dados." );
+                return resolve( false );
+            }
+            autoDumpService().then()
+            serverNotify.loadingBlock( "Database upgrade patches... [SUCCESS]" );
+            resolve( true );
+        });
+    })
+}
+
 export function prepareDatabase():Promise<boolean>{
     return new Promise( (resolve, reject) => {
         serverNotify.loadingBlock( "Manutenção de banco de dados" );
         serverNotify.loadingBlockItem( "Criando copia de segurança preventiva..." );
         dumpNow(null, { suffix: "before-upgrade" }).then( value => {
-            serverNotify.loadingBlock( "Database upgrade patches..." );
-            pgRevision.collect();
-            pgRevision.setup( (error, block) => {
-                if( error ){
-                    console.error( error )
-                    serverNotify.loading( "FAILED!" );
-                    serverNotify.loadingBlock( "Database upgrade patches... [FAILED]" );
-                    serverNotify.loadingBlockItem( "Falha ao aplicar atualização criticas de banco de dados." );
-                    return resolve( false );
-                }
-                autoDumpService().then()
-                serverNotify.loadingBlock( "Database upgrade patches... [SUCCESS]" );
-                resolve( true );
-            });
-
+            dbPatch().then( pathResult => {
+                resolve( pathResult );
+            })
         }).catch( reason => {
             serverNotify.loading( "FAILED!" );
             serverNotify.loadingBlock( "Database upgrade patches... [FAILED]" );
