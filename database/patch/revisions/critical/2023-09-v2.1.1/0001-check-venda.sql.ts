@@ -92,7 +92,7 @@ create or replace function tweeks.funct_pos_generate_key( args jsonb )
   $$;
 `
 
-block( module, { identifier: "tweeks.funct_pos_reg_conta"}).sql`
+block( module, { identifier: "tweeks.funct_pos_reg_conta|-v2.0.1"}).sql`
 create or replace function tweeks.funct_pos_reg_conta(args jsonb) returns lib.res
   language plpgsql
 as
@@ -101,7 +101,6 @@ declare
   /**
     Essa função registra um nova conta
     arg = {
-
       -- obrigatorios
       arg_colaborador_id: ID,
       arg_espaco_auth: ID,
@@ -292,7 +291,6 @@ begin
     'sets', _reg_venda.data->'vendas',
     'unsets', coalesce( _unsets, array[]::jsonb[])
   ));
-
 
 exception  when others then
   <<_ex>> declare e text; m text; d text; h text; c text;
