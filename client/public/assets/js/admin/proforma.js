@@ -76,11 +76,14 @@ var proformaAdmin = {
             url: "/api/pos/conta/proforma",
             method: "POST",
             contentType: "application/json",
-            data: JSON.stringify({conta_id: conta_id,
+            data: JSON.stringify({
+                conta_id: conta_id,
                 conta_cliente_id: articlesDocuments.customer_id, admin: true,
                 conta_proformavencimento: ($("#proforma_admin_data_vencimento").val() !== "" ? alterFormatDate($("#proforma_admin_data_vencimento").val()) : null),
-                conta_proformaextras: {termos: ($("#proforma_admin_termos").val().trim() || null),
-                    data_emissao: ($("#proforma_admin_data_emissao").val() !== "" ? alterFormatDate($("#proforma_admin_data_emissao").val()) : null)}
+                conta_proformaextras: {
+                    termos: ($("#proforma_admin_termos").val().trim() || null),
+                    data_emissao: ($("#proforma_admin_data_emissao").val() !== "" ? alterFormatDate($("#proforma_admin_data_emissao").val()) : null)
+                }
             }),
             error(){$("#finalizar_proforma").prop("disabled", false).removeClass("loading")},
             success(e) {
