@@ -42,8 +42,7 @@ declare
 begin
     select max( ct.conta_data ) as conta_data
       from tweeks.conta ct 
-        inner join tweeks.serie s on ct.conta_serie_id = s.serie_id
-      where s.serie_tserie_id = _tserie_id 
+      where ct.conta_tserie_id = _tserie_id 
         and ct.conta_data <= current_date
       into _data
     ;

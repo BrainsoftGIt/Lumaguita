@@ -193,6 +193,10 @@ begin
 
   _change := json_populate_record( _conta, args::json );
   _change.conta_data := coalesce( _change.conta_data, current_date );
+  
+  if _change.conta_tserie_id is null then 
+      raise exception '%', format('O tipo de serie é obrigatorio na criação de uma nova conta!');
+  end if;
 
   if _change.conta_id is null then
     _change.conta_colaborador_id := arg_colaborador_id;
