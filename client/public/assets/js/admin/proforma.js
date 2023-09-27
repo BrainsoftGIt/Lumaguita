@@ -72,17 +72,19 @@ var proformaAdmin = {
         });
     },
     registar_proforma({conta_id}){
+        let conta_data = ($("#proforma_admin_data_emissao").val() !== "" ? alterFormatDate($("#proforma_admin_data_emissao").val()) : null);
         $.ajax({
             url: "/api/pos/conta/proforma",
             method: "POST",
             contentType: "application/json",
             data: JSON.stringify({
+                conta_data,
                 conta_id: conta_id,
                 conta_cliente_id: articlesDocuments.customer_id, admin: true,
                 conta_proformavencimento: ($("#proforma_admin_data_vencimento").val() !== "" ? alterFormatDate($("#proforma_admin_data_vencimento").val()) : null),
                 conta_proformaextras: {
                     termos: ($("#proforma_admin_termos").val().trim() || null),
-                    data_emissao: ($("#proforma_admin_data_emissao").val() !== "" ? alterFormatDate($("#proforma_admin_data_emissao").val()) : null)
+                    data_emissao: conta_data
                 }
             }),
             error(){$("#finalizar_proforma").prop("disabled", false).removeClass("loading")},
