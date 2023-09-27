@@ -58,6 +58,7 @@ var notacredito = {
     reg : () => {
         let { fatura : { conta_id }, key: conta_chave } = notacredito;
         let conta_posto_id = $("#colaborador_logado_armazens").find("li.active").attr("posto_admin");
+        let conta_observacao = $("[notacredito_observacao]").val();
         let itens = $("[tableDocumentArticles] ul").map(function (){
             let { venda_id } = $(this).data();
             return {
@@ -75,6 +76,11 @@ var notacredito = {
             return
         }
 
+        if(conta_observacao){
+            xAlert("Nota de cretido", "Digite uma observação!", "error");
+            return
+        }
+
         $.ajax({
             url: "/api/reg/credito/nota",
             method: "POST",
@@ -83,6 +89,7 @@ var notacredito = {
             complete() { $("#finalizarNotaCredito").attr("disabled", false).removeClass("loading") },
             data: JSON.stringify({
                 conta_id,
+                conta_observacao,
                 conta_posto_id,
                 conta_chave,
                 itens

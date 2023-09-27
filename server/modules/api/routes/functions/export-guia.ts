@@ -28,6 +28,12 @@ export let create = async (instituition, fornecedor, guia, artigos, res, user, c
                 margin: [0, 3, 0, 3],
                 fontSize: 6.5,
                 border: [false, false, false, false],
+                text: art.entrada_quantidade
+            },
+            {
+                margin: [0, 3, 0, 3],
+                fontSize: 6.5,
+                border: [false, false, false, false],
                 text: art.unit_code || "----"
             },
             {
@@ -41,18 +47,6 @@ export let create = async (instituition, fornecedor, guia, artigos, res, user, c
                 fontSize: 6.5,
                 border: [false, false, false, false],
                 text: art.entrada_descricao
-            },
-            /*{
-                margin: [0, 3, 0, 3],
-                fontSize: 6.5,
-                border: [false, false, false, false],
-                text: art.entrada_lote || "----"
-            },*/
-            {
-                margin: [0, 3, 0, 3],
-                fontSize: 6.5,
-                border: [false, false, false, false],
-                text: art.entrada_quantidade
             },
             {
                 margin: [0, 3, 0, 3],
@@ -345,9 +339,16 @@ export let create = async (instituition, fornecedor, guia, artigos, res, user, c
                 },
                 table: {
                     headerRows: 1,
-                    widths: ["11%", "10%", "33%", "8%", "17%", "21%"],
+                    widths: ["8%", "11%", "10%", "33%", "17%", "21%"],
                     body: [
                         [
+                            {
+                                margin: [0, 3, 0, 3],
+                                borderColor: [baseColor, baseColor, baseColor, baseColor],
+                                fillColor: baseColor,
+                                text: "Qtd",
+                                color: textcolor
+                            },
                             {
                                 margin: [0, 3, 0, 3],
                                 borderColor: [baseColor, baseColor, baseColor, baseColor],
@@ -367,20 +368,6 @@ export let create = async (instituition, fornecedor, guia, artigos, res, user, c
                                 borderColor: [baseColor, baseColor, baseColor, baseColor],
                                 fillColor: baseColor,
                                 text: "Descrição",
-                                color: textcolor
-                            },
-                            /*{
-                                margin: [0, 3, 0, 3],
-                                borderColor: [baseColor, baseColor, baseColor, baseColor],
-                                fillColor: baseColor,
-                                text: "Lote",
-                                color: textcolor
-                            },*/
-                            {
-                                margin: [0, 3, 0, 3],
-                                borderColor: [baseColor, baseColor, baseColor, baseColor],
-                                fillColor: baseColor,
-                                text: "Qtd",
                                 color: textcolor
                             },
                             {

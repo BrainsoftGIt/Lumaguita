@@ -115,7 +115,7 @@ app.get("/api/print/guia_saida/:dados", async (req, res) =>{
     await file.create(instituition, dadosConta.rows[0], res, user,  dadosConta.rows[0].main.conta_serie.serie_numatorizacao, guia);
 });
 app.get("/api/print/fatura/:dados", async (req, res) =>{
-    let {observacao_fatura, ...conta} = JSON.parse(req.params.dados);
+    let {...conta} = JSON.parse(req.params.dados);
     const file = require("./functions/export-fatura");
     const fatura_talao = require("./functions/export-fatura-talao");
     const fatura_talaoA5 = require("./functions/export-fatura-talao-a5");
@@ -135,7 +135,7 @@ app.get("/api/print/fatura/:dados", async (req, res) =>{
         user = req.session.user_pos.auth.colaborador_nome+" "+(req.session.user_pos.auth.colaborador_apelido === null ? "" : req.session.user_pos.auth.colaborador_apelido.split(" ").pop());
     }
     if(conta.type === "pdf")
-        await file.create(instituition, dadosConta.rows[0], res, user, conta.date, dadosConta.rows[0].main.conta_serie.serie_numatorizacao, observacao_fatura);
+        await file.create(instituition, dadosConta.rows[0], res, user, conta.date, dadosConta.rows[0].main.conta_serie.serie_numatorizacao);
     else {
         const printer_name = get_printer_name(instituition.espaco_configuracao.configuracao_impressoras, "fatura");
 
