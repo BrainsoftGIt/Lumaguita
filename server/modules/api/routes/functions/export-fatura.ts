@@ -90,17 +90,6 @@ export let create = async (instituition, account_content, res, user, date, num_a
 
     let rotape = {
         margin: [40, 0, 40, 0],
-        layout: {
-            fillColor: function (rowIndex, node, columnIndex) {
-                return (rowIndex % 2 === 0) ? '#F5F6F6' : null;
-            },
-            hLineWidth: function (i, node) {
-                return 0.8;
-            },
-            vLineWidth: function (i, node) {
-                return 0.8;
-            },
-        },
         table: {
             widths: ["5%", "6%", "14%", "35%", "10%", "13%", "17%"],
             body: [

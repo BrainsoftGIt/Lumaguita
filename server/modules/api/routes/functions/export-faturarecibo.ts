@@ -28,6 +28,7 @@ export let create = async (instituition, account_content, res, user, date, num_a
 
     let baseColor = instituition?.espaco_configuracao?.empresa_basecolor || "#000000";
     let textcolor = instituition?.espaco_configuracao?.empresa_textcolor || "#ffffff";
+    let imageCabecalho = (instituition?.espaco_configuracao?.cabecalho_referencia === null ? "" : clusterServer.res.resolve(instituition?.espaco_configuracao?.cabecalho_referencia));
 
     (account_content[0]?.main?.conta_vendas || []).forEach((cont) => {
 
@@ -453,7 +454,7 @@ export let create = async (instituition, account_content, res, user, date, num_a
                                 fillColor: baseColor,
                                 text: "Taxa",
                                 color: textcolor,
-                                alignment: "right"
+                                alignment: "center"
                             },
                             {
                                 margin: [0, 3, 0, 3],
@@ -477,8 +478,8 @@ export let create = async (instituition, account_content, res, user, date, num_a
                 }
             }
         ],
-        ...structure(user, num_autorization, instituition.espaco_configuracao.certification,
-            (instituition?.espaco_configuracao?.cabecalho_referencia === null ? "" : clusterServer.res.resolve(instituition?.espaco_configuracao?.cabecalho_referencia)), textcolor, baseColor, rotape)
+        ...structure(user, num_autorization, instituition.espaco_configuracao.certification, imageCabecalho, textcolor, baseColor, rotape),
+        pageMargins: [35, (imageCabecalho ? 90 : 50), 35, 130],
     };
 
     const pdfDocGenerator = pdfMake.createPdf(docDefinition);

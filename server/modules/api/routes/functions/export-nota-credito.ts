@@ -420,15 +420,15 @@ export let create = async (instituition, account_content, res, user, date, num_a
                             }
                         ],
                         ...artigosConta,
-                        (!!account_content.main.conta_observacao ? {
-                            fontSize: 8,
-                            lineHeight: 1.5,
-                            margin: [10, 25, 10, 0],
-                            text: account_content?.main.conta_observacao
-                        } : {})
                     ]
-                }
-            }
+                },
+            },
+            (!!account_content.main.conta_observacao ? {
+                fontSize: 8,
+                lineHeight: 1.5,
+                margin: [10, 25, 10, 0],
+                text: account_content?.main.conta_observacao
+            } : {})
         ],
         ...structure(user, num_autorization, instituition.espaco_configuracao.certification,
             (instituition?.espaco_configuracao?.cabecalho_referencia === null ? "" : clusterServer.res.resolve(instituition?.espaco_configuracao?.cabecalho_referencia)), textcolor, baseColor, rotape)

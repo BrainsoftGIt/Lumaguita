@@ -16,7 +16,7 @@ export let structure = (user, num_autorization, num_certification, imageCabecalh
     }
 
     return {
-        pageMargins: [35, (imageCabecalho ? 90 : 50), 35, 100],
+        pageMargins: [35, (imageCabecalho ? 90 : 50), 35, 110],
         background: function (page) {
             return [];
         },

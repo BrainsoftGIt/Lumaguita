@@ -20,6 +20,8 @@ export let create = async (instituition, fornecedor, guia, artigos, res, user, c
     let baseColor = instituition?.espaco_configuracao?.empresa_basecolor || "#000000";
     let textcolor = instituition?.espaco_configuracao?.empresa_textcolor || "#ffffff";
 
+    let imageCabecalho = (instituition?.espaco_configuracao?.cabecalho_referencia === null ? "" : clusterServer.res.resolve(instituition?.espaco_configuracao?.cabecalho_referencia));
+
     let hasPersonalizadoHarder = (instituition?.espaco_configuracao?.cabecalho_referencia === null ? "" : clusterServer.res.resolve(instituition?.espaco_configuracao?.cabecalho_referencia));
     artigos.forEach((art) => {
         art = art.data.data;
@@ -408,8 +410,7 @@ export let create = async (instituition, fornecedor, guia, artigos, res, user, c
                 }
             }
         ],
-        ...structure(user, null, instituition.espaco_configuracao.certification,
-            (instituition?.espaco_configuracao?.cabecalho_referencia === null ? "" : clusterServer.res.resolve(instituition?.espaco_configuracao?.cabecalho_referencia)), textcolor, baseColor, rotape)
+        ...structure(user, null, instituition.espaco_configuracao.certification,  imageCabecalho, textcolor, baseColor, rotape)
     };
 
     const pdfDocGenerator = pdfMake.createPdf(docDefinition);
