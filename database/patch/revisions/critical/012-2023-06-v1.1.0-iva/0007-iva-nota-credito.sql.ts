@@ -301,6 +301,7 @@ begin
       'arg_vendas', _vendas.arg_vendas,
       'conta_conta_docorigin', _conta.conta_id,
       'conta_observacao', _conta_args.conta_observacao,
+      'conta_tserie_id', _const.maguita_tserie_notacredito,
       'conta_espaco_notacredito', arg_espaco_auth
     )
   );
@@ -365,6 +366,7 @@ begin
       'conta_posto_fecho',  _conta_args.conta_posto_id,
       'conta_desconto', ( _conta.conta_desconto ),
       'conta_titular', _conta.conta_titular,
+      'conta_tserie_id', _const.maguita_tserie_notacredito,
       'conta_titularnif', _conta.conta_titularnif,
       'conta_data', coalesce( _conta_args.conta_data, now()::date),
       'conta_cliente_id', _conta_args.conta_cliente_id,
