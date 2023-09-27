@@ -53,7 +53,6 @@ create trigger tg_venda_before_check
   execute procedure tweeks.__tg_venda_before_check();
 `;
 
-
 block( module, { identifier: "tweeks.check-conta", flags: [ "@unique" ]}).sql`
 alter table tweeks.conta drop constraint if exists uk_conta_chave;
 alter table tweeks.conta add constraint uk_conta_chave unique ( conta_chave, _branch_uid );
@@ -193,41 +192,26 @@ begin
   ) then
     return lib.res_false( 'Já existe uma conta com a mesma chave (atualize a pagina e tente novamente)!' );
   end if;
-  
-  -- Carregar a conta com a chave correspondente
-  if _conta.conta_id is null and _conta.conta_chave is null then
-    select * into __conta_of_chave
-      from tweeks.conta ct
-      where ct.conta_chave = arg_conta_chave
-    ;
-  end if;
 
-  -- Tentitiva de criar uma segunda conta com a mensa chave (normalmente tentativa de duplo click na criação de uma nova conta)
-  if __conta_of_chave.conta_id is not null and _conta.conta_id is null then
-    args := args || lib.sets_ref( __conta_of_chave );
-    _conta := jsonb_populate_record( __conta_of_chave, args );
-  end if;
+  _change := json_populate_record( _conta, args::json );
+  _change.conta_data := coalesce( _change.conta_data, current_date );
 
-
-  if _conta.conta_id is null then
-    _conta.conta_colaborador_id := arg_colaborador_id;
-    _conta.conta_espaco_auth := arg_espaco_auth;
-    _conta.conta_numero := cluster.next( 'conta.conta_numero/seq',
+  if _change.conta_id is null then
+    _change.conta_colaborador_id := arg_colaborador_id;
+    _change.conta_espaco_auth := arg_espaco_auth;
+    _change.conta_numero := cluster.next( 'conta.conta_numero/seq',
       sub := _branch::text,
       lpad_char := '0',
       lpad := 5
     );
   else
-    _conta.conta_colaborador_atualizacao := arg_colaborador_id;
-    _conta.conta_dataatualizacao := current_timestamp;
-  
+    _change.conta_colaborador_atualizacao := arg_colaborador_id;
+    _change.conta_dataatualizacao := current_timestamp;
   end if;
-  
-  _change := json_populate_record( _conta, args::json );
   
   _message := tweeks.__check_conta_data(
     _change.conta_tserie_id,
-    coalesce( _change.conta_data, current_date ),
+    _change.conta_data,
     false
   );
   
