@@ -97,92 +97,129 @@ export let create = async (instituition, account_content, res, user, date, num_a
     let rotape = {
         margin: [30, 0, 30, 0],
         table: {
-            widths: ["100%"],
+            widths: [ "5%", "6%", "14%", "35%", "10%", "13%", "17%"],
             body: [
                 [
                     {
                         border: [false, false, false, false],
+                        text: "", colSpan: 5, fillColor: "#ffffff"
+                    },
+                    {text: ""},
+                    {text: ""},
+                    {text: ""},
+                    {text: ""},
+                    {
+                        fontSize: 6.5,
+                        border: [false, false, false, false],
+                        margin: [0, 0.5, 0, 0.5],
+                        text: "Subtotal"
+                    },
+                    {
+                        fontSize: 6.5,
+                        border: [false, false, false, false],
+                        margin: [0, 0.5, 0, 0.5],
+                        text: formattedString(subtotal.toFixed(2) + ""),
+                        alignment: "right"
+                    },
+                ],
+                ...Object.keys(sumImpost).map((key) => {
+                    return [
+                        {
+                            border: [false, false, false, false],
+                            text: "", colSpan: 5, fillColor: "#ffffff"
+                        },
+                        {text: ""},
+                        {text: ""},
+                        {text: ""},
+                        {text: ""},
+                        {
+                            fontSize: 6.5,
+                            border: [false, false, false, false],
+                            margin: [0, 0.5, 0, 0.5],
+                            text: `${sumImpost[key].name}`,
+                        },
+                        {
+                            fontSize: 6.5,
+                            border: [false, false, false, false],
+                            margin: [0, 0.5, 0, 0.5],
+                            text: formattedString(sumImpost[key].sum.toFixed(2) + ""),
+                            alignment: "right"
+                        }
+                    ]
+                }),
+                [
+                    {
+                        border: [false, false, false, false],
+                        text: "", colSpan: 5, fillColor: "#ffffff"
+                    },
+                    {text: ""},
+                    {text: ""},
+                    {text: ""},
+                    {text: ""},
+                    {
+                        fontSize: 7.5,
+                        border: [false, false, false, false],
                         fillColor: baseColor,
                         color: textcolor,
-                        columns: [
-                            {
-                                alignment: "center",
-                                fontSize: 6.5,
-                                margin: [0, 1, 0, 1],
-                                text: "Subtotal",
-                                bold: true
-                            },
-                            ...Object.keys(sumImpost).map((key) => {
-                                return {
-                                    bold: true,
-                                    alignment: "center",
-                                    fontSize: 6.5,
-                                    margin: [0, 1, 0, 1],
-                                    text: `${sumImpost[key].name}`,
-                                }
-                            }),
-                            {
-                                alignment: "center",
-                                fontSize: 7.5,
-                                margin: [0, 1, 0, 1],
-                                bold: true,
-                                text: "Total",
-                            },
-                            {
-                                alignment: "center",
-                                fontSize: 7.5,
-                                margin: [0, 1, 0, 1],
-                                bold: true,
-                                text: "Valor Pago",
-                            },
-                            {
-                                alignment: "center",
-                                fontSize: 7.5,
-                                margin: [0, 1, 0, 1],
-                                bold: true,
-                                text: "Troco",
-                            }
-                        ]
+                        margin: [0, 0.5, 0, 0.5],
+                        bold: true,
+                        text: "Total",
+                    },
+                    {
+                        fontSize: 7.5,
+                        border: [false, false, false, false],
+                        fillColor: baseColor,
+                        color: textcolor,
+                        margin: [0, 0.5, 0, 0.5],
+                        bold: true,
+                        text: formattedString(account_content[0]?.main?.conta_montante.toFixed(2) + ""),
+                        alignment: "right"
                     }
                 ],
                 [
                     {
                         border: [false, false, false, false],
-                        fillColor: "#F5F6F6",
-                        columns: [
-                            {
-                                fontSize: 6.5,
-                                margin: [0, 1, 0, 1],
-                                text: formattedString(subtotal.toFixed(2) + ""),
-                                alignment: "center"
-                            },
-                            ...Object.keys(sumImpost).map((key) => {
-                                return {
-                                    fontSize: 6.5,
-                                    margin: [0, 1, 0, 1],
-                                    text: formattedString(sumImpost[key].sum.toFixed(2) + ""),
-                                    alignment: "center"
-                                }
-                            }),
-                            {
-                                alignment: "center",
-                                fontSize: 6.5,
-                                margin: [0, 1, 0, 1],
-                                text: formattedString(account_content[0]?.main?.conta_montante.toFixed(2) + ""),
-                            },
-                            {
-                                alignment: "center",
-                                fontSize: 6.5,
-                                margin: [0, 1, 0, 1],
-                                text: formattedString(account_content[1]?.main?.deposito_montantemoeda.toFixed(2) + ""),
-                            },
-                            {
-                                alignment: "center",
-                                fontSize: 6.5,
-                                margin: [0, 1, 0, 1],
-                                text: formattedString(account_content[1].main.deposito_montantetroco.toFixed(2) + ""),
-                            }
-                        ]
+                        text: "", colSpan: 5, fillColor: "#ffffff"
+                    },
+                    {text: ""},
+                    {text: ""},
+                    {text: ""},
+                    {text: ""},
+                    {
+                        fontSize: 6.5,
+                        border: [false, false, false, false],
+                        margin: [0, 0.5, 0, 0.5],
+                        text: `Valor Pago ${account_content[1]?.main.currency_code}`
+                    },
+                    {
+                        fontSize: 6.5,
+                        border: [false, false, false, false],
+                        margin: [0, 0.5, 0, 0.5],
+                        text: formattedString(account_content[1]?.main?.deposito_montantemoeda.toFixed(2) + ""),
+                        alignment: "right"
+                    },
+                ],
+                [
+                    {
+                        border: [false, false, false, false],
+                        text: "", colSpan: 5, fillColor: "#ffffff"
+                    },
+                    {text: ""},
+                    {text: ""},
+                    {text: ""},
+                    {text: ""},
+                    {
+                        fontSize: 6.5,
+                        border: [false, false, false, false],
+                        margin: [0, 0.5, 0, 0.5],
+                        text: "Troco",
+                    },
+                    {
+                        fontSize: 6.5,
+                        border: [false, false, false, false],
+                        margin: [0, 0.5, 0, 0.5],
+                        text: formattedString(account_content[1].main.deposito_montantetroco.toFixed(2) + ""),
+                        alignment: "right"
                     }
                 ]
             ]
