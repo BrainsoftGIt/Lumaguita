@@ -177,8 +177,6 @@ declare
   _reg_venda record;
   _change tweeks.conta;
   _branch uuid default tweeks.__branch_uid( arg_colaborador_id, arg_espaco_auth );
-  
-  __conta_of_chave tweeks.conta;
   _message text;
 begin
   _const := map.constant();
