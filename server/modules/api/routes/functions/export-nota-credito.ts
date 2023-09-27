@@ -30,6 +30,12 @@ export let create = async (instituition, account_content, res, user, date, num_a
                 margin: [0, 3, 0, 3],
                 fontSize: 6.5,
                 border: [false, false, false, false],
+                text: cont.venda_quantidade
+            },
+            {
+                margin: [0, 3, 0, 3],
+                fontSize: 6.5,
+                border: [false, false, false, false],
                 text: cont?.unit_code || "---"
             },
             {
@@ -48,14 +54,8 @@ export let create = async (instituition, account_content, res, user, date, num_a
                 margin: [0, 3, 0, 3],
                 fontSize: 6.5,
                 border: [false, false, false, false],
-                text: cont.venda_quantidade
-            },
-            {
-                margin: [0, 3, 0, 3],
-                fontSize: 6.5,
-                border: [false, false, false, false],
                 text: `${formattedString(cont.venda_imposto.toFixed(2))}`,
-                alignment: "right"
+                alignment: "center"
             },
             {
                 margin: [0, 3, 0, 3],
@@ -347,9 +347,16 @@ export let create = async (instituition, account_content, res, user, date, num_a
                 },
                 table: {
                     headerRows: 1,
-                    widths: ["8%", "10%", "35%", "7%", "10%", "13%", "17%"],
+                    widths: [ "5%", "6%", "14%", "35%", "10%", "13%", "17%"],
                     body: [
                         [
+                            {
+                                margin: [0, 3, 0, 3],
+                                borderColor: [baseColor, baseColor, baseColor, baseColor],
+                                fillColor: baseColor,
+                                text: "Qtd",
+                                color: textcolor
+                            },
                             {
                                 margin: [0, 3, 0, 3],
                                 borderColor: [baseColor, baseColor, baseColor, baseColor],
@@ -375,16 +382,9 @@ export let create = async (instituition, account_content, res, user, date, num_a
                                 margin: [0, 3, 0, 3],
                                 borderColor: [baseColor, baseColor, baseColor, baseColor],
                                 fillColor: baseColor,
-                                text: "Qtd",
-                                color: textcolor
-                            },
-                            {
-                                margin: [0, 3, 0, 3],
-                                borderColor: [baseColor, baseColor, baseColor, baseColor],
-                                fillColor: baseColor,
                                 text: "Taxa",
                                 color: textcolor,
-                                alignment: "right"
+                                alignment: "center"
                             },
                             {
                                 margin: [0, 3, 0, 3],
