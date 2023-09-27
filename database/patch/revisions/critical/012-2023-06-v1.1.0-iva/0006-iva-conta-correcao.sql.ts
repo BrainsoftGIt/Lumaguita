@@ -39,7 +39,6 @@ block( module, { identifier: "maguita_cliente_final_maguita_cliente_finalnotacre
 `;
 
 block( module, { identifier: "correct-conta", flags:[]}).sql`
-
 create or replace function tweeks.funct_pos_change_conta_fechar(args jsonb) returns lib.res
   language plpgsql
 as
@@ -108,8 +107,7 @@ declare
     _deposito tweeks.deposito;
     _rec record;
     _guia tweeks.guia;
-    _data record;
-    _tserie tweeks.tserie;
+    _message text;
   begin
     _const := map.constant();
     _caixa := tweeks._get_caixa( arg_caixa_id );
@@ -117,35 +115,23 @@ declare
     _conta := jsonb_populate_record( _conta, args );
     _conta.conta_data := coalesce( _conta.conta_data, current_date );
     _deposito := jsonb_populate_record( _deposito, args->'deposito' );
+
+    _message := tweeks.__check_conta_data( 
+      _tserie_id := arg_tserie_id, 
+      _conta_data := _conta.conta_data,
+      _raise := false
+    );
     
-    select max( ct.conta_data ) as conta_data
-      from tweeks.conta ct 
-        inner join tweeks.serie s on ct.conta_serie_id = s.serie_id
-      where s.serie_tserie_id = arg_tserie_id 
-        and ct.conta_data < current_date
-      into _data
-    ;
-    
-    select *
-      from tweeks.tserie ts 
-      where ts.tserie_id = arg_tserie_id
-      into _tserie
-    ;
-    
-    if _conta.conta_data > current_date then 
-      raise exception '%', format( 'Data de emissão invalida para a operação! A data para a %I não pode ser superior a data atual!', _tserie.tserie_desc );
-    end if;
-    
-    if _conta.conta_data > _data.conta_data then 
-      raise exception '%', format( 'Data de emissão invalida para a operação! A ultima data de emissão para %I foi de %I!', _tserie.tserie_desc, _data.conta_data );
+    if _message is not null then 
+        return lib.res_false( _message );
     end if;
     
     if _conta.conta_id is null then 
-        raise exception '%', 'Identificador da conta a ser fechada não foi informado!';
+      raise exception '%', 'Identificador da conta a ser fechada não foi informado!';
     end if;
     
     if _conta.conta_estado = _const.maguita_conta_estado_fechado then
-        return lib.res_false( 'Essa conta já se encontra fechada!' );
+      return lib.res_false( 'Essa conta já se encontra fechada!' );
     end if;
     
     if arg_tserie_id not in (

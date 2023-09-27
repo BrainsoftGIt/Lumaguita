@@ -120,6 +120,7 @@ declare
       conta_titular: CLIENTE-NOME
       conta_titularnif: CLIENTE-NIF
       conta_data: DATA,
+      conta_tserie_id
 
       -- requerido
       arg_vendas: [
@@ -177,8 +178,9 @@ declare
   _reg_venda record;
   _change tweeks.conta;
   _branch uuid default tweeks.__branch_uid( arg_colaborador_id, arg_espaco_auth );
-
+  
   __conta_of_chave tweeks.conta;
+  _message text;
 begin
   _const := map.constant();
   _conta := tweeks._get_conta( arg_conta_id );
@@ -222,7 +224,17 @@ begin
   end if;
   
   _change := json_populate_record( _conta, args::json );
-
+  
+  _message := tweeks.__check_conta_data(
+    _change.conta_tserie_id,
+    coalesce( _change.conta_data, current_date ),
+    false
+  );
+  
+  if _message is not  null then
+    return lib.res_false( _message );
+  end if;
+  
   select ( "returning" ).* into _change
     from lib.sets( _conta, replacer := args )  sets
     where _conta::text != _change::text
