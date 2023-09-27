@@ -1,3 +1,4 @@
+var FATURARECIBO = 2;
 var payment = {
     valorTroco: 0,
     cambio_taxa: 1,
@@ -243,8 +244,11 @@ var payment = {
         let currentFunction = this.addAccount;
         this.addAccount = function () {}
         let conta = {};
-        conta.conta_mesa = {numero: ($("#numeroMesa").text().trim() === "" || $("#numeroMesa").text().trim() === "N/D" ? null : $("#numeroMesa").text().trim() ),
-            descricao: null, lotacao: null};
+        conta.conta_mesa = {
+            numero: ($("#numeroMesa").text().trim() === "" || $("#numeroMesa").text().trim() === "N/D" ? null : $("#numeroMesa").text().trim()),
+            descricao: null, lotacao: null
+        };
+        conta.conta_tserie_id = FATURARECIBO;
         conta.conta_extension = {};
         conta.arg_vendas = this.getArticles();
         conta.conta_chave = account.key;
@@ -288,11 +292,14 @@ var payment = {
         let currentFunction = this.editAccount;
         this.editAccount = function () {}
         let conta = {};
-        conta.conta_mesa = {numero: ($("#numeroMesa").text().trim() === "" || $("#numeroMesa").text().trim() === "N/D" ? null : $("#numeroMesa").text().trim() ),
-            descricao: null, lotacao: null};
+        conta.conta_mesa = {
+            numero: ($("#numeroMesa").text().trim() === "" || $("#numeroMesa").text().trim() === "N/D" ? null : $("#numeroMesa").text().trim()),
+            descricao: null, lotacao: null
+        };
         conta.conta_extension = {};
         conta.arg_vendas = this.getArticles(false);
         conta.conta_id = pos.conta_id;
+        conta.conta_tserie_id = FATURARECIBO;
         conta.conta_chave = account.key;
 
         $(".fk-body").addClass("loading");
@@ -344,8 +351,10 @@ var payment = {
         dados.conta_numero = pos.conta_numero;
         dados.conta_id = pos.conta_id;
         dados.conta_extension = {};
-        dados.conta_mesa =  { numero: (numeroMesa.text().trim() === "" || numeroMesa.text().trim() === "N/D" ? null : numeroMesa.text().trim()),
-            descricao:null, lotacao:null };
+        dados.conta_mesa = {
+            numero: (numeroMesa.text().trim() === "" || numeroMesa.text().trim() === "N/D" ? null : numeroMesa.text().trim()),
+            descricao: null, lotacao: null
+        };
         dados.conta_desconto = null;
         dados.conta_titular = $("#titular_compra").val().trim();
         dados.conta_titularnif = $("#nif_titular_compra").val() || null;

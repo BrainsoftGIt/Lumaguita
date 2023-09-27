@@ -1,4 +1,5 @@
 M.AutoInit();
+var FATURARECIBO = 2;
 var pos = {
     selectedArticle: null,
     selectedCartElement: null,
@@ -317,9 +318,13 @@ var pos = {
         let currentFunction = this.registerAccount;
         this.registerAccount = function () {}
         let conta = {};
-        conta.conta_mesa = {numero: ($("#numeroMesa").text().trim() === "" || $("#numeroMesa").text().trim() === "N/D" ? null : $("#numeroMesa").text().trim() ),
-            descricao: null, lotacao: null};
+        conta.conta_mesa = {
+            numero: ($("#numeroMesa").text().trim() === "" || $("#numeroMesa").text().trim() === "N/D" ? null : $("#numeroMesa").text().trim()),
+            descricao: null,
+            lotacao: null
+        };
         conta.conta_extension = {};
+        conta.conta_tserie_id = FATURARECIBO;
         conta.arg_vendas = this.getArticlesAccount();
         conta.conta_chave = account.key;
         $("body").addClass("loading");
@@ -363,6 +368,7 @@ var pos = {
         conta.conta_mesa = {numero: ($("#numeroMesa").text().trim() === "" || $("#numeroMesa").text().trim() === "N/D" ? null : $("#numeroMesa").text().trim() ),
             descricao: null, lotacao: null};
         conta.conta_extension = {};
+        conta.conta_tserie_id = FATURARECIBO;
         conta.arg_vendas = this.getArticlesAccount(false);
         conta.conta_id = this.conta_id;
         conta.conta_chave = account.key;

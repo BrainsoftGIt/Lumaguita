@@ -48,11 +48,13 @@ var proformaAdmin = {
         return articles_table;
     },
     add_account(){
+        let PROFORMA = 6;
         let conta = {};
         conta.conta_mesa = {numero: null, descricao: null, lotacao: null};
         conta.conta_extension = {};
         conta.arg_vendas = this.articles_added;
         conta.admin = true;
+        conta.conta_tserie_id = PROFORMA;
         conta.conta_chave = proformaAdmin.key;
         $.ajax({
             url: "/api/pos/conta",
