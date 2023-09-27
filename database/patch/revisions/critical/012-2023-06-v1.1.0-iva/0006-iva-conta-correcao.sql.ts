@@ -108,7 +108,8 @@ declare
     _deposito tweeks.deposito;
     _rec record;
     _guia tweeks.guia;
-    _conta_estado record;
+    _data record;
+    _tserie tweeks.tserie;
   begin
     _const := map.constant();
     _caixa := tweeks._get_caixa( arg_caixa_id );
@@ -116,7 +117,28 @@ declare
     _conta := jsonb_populate_record( _conta, args );
     _conta.conta_data := coalesce( _conta.conta_data, current_date );
     _deposito := jsonb_populate_record( _deposito, args->'deposito' );
-
+    
+    select max( ct.conta_data ) as conta_data
+      from tweeks.conta ct 
+        inner join tweeks.serie s on ct.conta_serie_id = s.serie_id
+      where s.serie_tserie_id = arg_tserie_id 
+        and ct.conta_data < current_date
+      into _data
+    ;
+    
+    select *
+      from tweeks.tserie ts 
+      where ts.tserie_id = arg_tserie_id
+      into _tserie
+    ;
+    
+    if _conta.conta_data > current_date then 
+      raise exception '%', format( 'Data de emissão invalida para a operação! A data para a %I não pode ser superior a data atual!', _tserie.tserie_desc );
+    end if;
+    
+    if _conta.conta_data > _data.conta_data then 
+      raise exception '%', format( 'Data de emissão invalida para a operação! A ultima data de emissão para %I foi de %I!', _tserie.tserie_desc, _data.conta_data );
+    end if;
     
     if _conta.conta_id is null then 
         raise exception '%', 'Identificador da conta a ser fechada não foi informado!';

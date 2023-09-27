@@ -304,8 +304,6 @@ begin
       'conta_espaco_notacredito', arg_espaco_auth
     )
   );
-
-  raise notice '%', to_jsonb(_conta_res);
   
   if not _conta_res.result then
     return _conta_res;
@@ -380,6 +378,13 @@ begin
   );
 
   return _conta_close_res;
+
+exception  when others then
+    <<_ex>> declare e text; m text; d text; h text; c text;
+    begin
+        get stacked diagnostics e=returned_sqlstate, m=message_text, d=pg_exception_detail, h=pg_exception_hint, c=pg_exception_context;
+        return lib.res_exception( _ex.e, _ex.m, _ex.h, _ex.d, _ex.c );
+    end;
 end
 $$;
 
