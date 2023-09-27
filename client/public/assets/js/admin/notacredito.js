@@ -18,7 +18,7 @@ var notacredito = {
                 $("[tableDocumentArticles]").empty();
                 if(!conta_vendas){
                     $(" [tableDocumentArticles] ").addClass("empty");
-                    xAlert("Nota de cretido", "Não foi encontrado numa fatura com esse número!", "error");
+                    xAlert("Nota de credito", "Não foi encontrado numa fatura com esse número!", "error");
                     return
                 }
 
@@ -67,17 +67,17 @@ var notacredito = {
         }).get();
 
         if( !conta_id ){
-            xAlert("Nota de cretido", "Selecione uma conta!", "error");
+            xAlert("Nota de credito", "Selecione uma conta!", "error");
             return;
         }
 
         if( !itens.length ){
-            xAlert("Nota de cretido", "Sem item para efetuar a nota de credito!", "error");
+            xAlert("Nota de credito", "Sem item para efetuar a nota de credito!", "error");
             return
         }
 
         if(conta_observacao){
-            xAlert("Nota de cretido", "Digite uma observação!", "error");
+            xAlert("Nota de credito", "Digite uma observação!", "error");
             return
         }
 
@@ -96,7 +96,7 @@ var notacredito = {
             }),
             success: ({data : {conta : { conta_id } }, result, message}) => {
                 if(result){
-                    xAlert("Nota de cretido", "Operação efetuada com sucesso!");
+                    xAlert("Nota de credito", "Operação efetuada com sucesso!");
                     $("[tableDocumentArticles]").empty().addClass("empty");
                     $("[cliente_titular]").val("");
                     $("[cliente_nif]").val("");
@@ -106,7 +106,7 @@ var notacredito = {
                     return
                 }
 
-                xAlert("Nota de cretido", message, "error");
+                xAlert("Nota de credito", message, "error");
             }
         });
     },
@@ -134,7 +134,7 @@ $("[pesquisarFatura]").on("keyup", function ({keyCode}){
         loadData();
         return
     }
-    xAlert("Nota de cretido", "Priencha o campo fatura!", "error");
+    xAlert("Nota de credito", "Priencha o campo fatura!", "error");
 })
 
 $("#finalizarNotaCredito").on("click", function (){
