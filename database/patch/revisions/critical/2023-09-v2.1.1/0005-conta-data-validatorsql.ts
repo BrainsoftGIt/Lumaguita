@@ -47,6 +47,8 @@ begin
       into _data
     ;
     
+    _data.conta_data := coalesce( _data.conta_data, _conta_data, current_date );
+    
     select *
       from tweeks.tserie ts 
       where ts.tserie_id = _tserie_id

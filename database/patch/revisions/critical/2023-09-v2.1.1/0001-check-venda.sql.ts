@@ -178,6 +178,8 @@ declare
   _change tweeks.conta;
   _branch uuid default tweeks.__branch_uid( arg_colaborador_id, arg_espaco_auth );
   _message text;
+  _new jsonb;
+  _old jsonb;
 begin
   _const := map.constant();
   _conta := tweeks._get_conta( arg_conta_id );
@@ -190,9 +192,11 @@ begin
   ) then
     return lib.res_false( 'Já existe uma conta com a mesma chave (atualize a pagina e tente novamente)!' );
   end if;
-
-  _change := json_populate_record( _conta, args::json );
+  
+  _old := coalesce( to_jsonb( _conta ), jsonb_build_object() );
+  _change := jsonb_populate_record( _conta, args );
   _change.conta_data := coalesce( _change.conta_data, current_date );
+  _new := to_jsonb( _change );
   
   if _change.conta_tserie_id is null then 
       raise exception '%', format('O tipo de serie é obrigatorio na criação de uma nova conta!');
@@ -206,8 +210,10 @@ begin
       lpad_char := '0',
       lpad := 5
     );
+    _new := to_jsonb( _change );
   else
     _change.conta_colaborador_atualizacao := arg_colaborador_id;
+    _new := to_jsonb( _change );
     _change.conta_dataatualizacao := current_timestamp;
   end if;
   
@@ -221,13 +227,11 @@ begin
     return lib.res_false( _message );
   end if;
   
-  select ( "returning" ).* into _change
-    from lib.sets( _conta, replacer := args )  sets
-    where _conta::text != _change::text
+  select ( "returning" ).* into _conta
+    from lib.sets( _change, replacer := args )  sets
+    where _new != _old
   ;
   
-  if _change.conta_id is not null then _conta := _change; end if;
-
   -- Canselar as vendas que não fazem mais parte de conta
   with recursive __venda as (
       select

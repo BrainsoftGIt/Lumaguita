@@ -27,6 +27,7 @@ declare
       arg_colaborador_id: UID
       arg_espaco_auth: UID
       conta_id: UID,
+      conta_data: DATE,
       conta_posto_id: UID
       conta_observacao
       itens: [
@@ -279,9 +280,11 @@ begin
   end if;
   
   _conta_args.conta_cliente_id := _conta.conta_cliente_id;
+  _conta_args.conta_data := coalesce( _conta_args.conta_data, current_date );
   if _conta_args.conta_cliente_id is null or _conta_args.conta_cliente_id = _const.maguita_cliente_final then
       _conta_args.conta_cliente_id := _const.maguita_cliente_finalnotacredito;
   end if;
+  
 
 
   _conta_res := tweeks.funct_pos_reg_conta(
@@ -297,7 +300,7 @@ begin
       'conta_cliente_id', _conta_args.conta_cliente_id,
       'conta_titular', _conta.conta_titular,
       'conta_titularnif', _conta.conta_titularnif,
-      'conta_data', current_date,
+      'conta_data', _conta_args.conta_data,
       'arg_vendas', _vendas.arg_vendas,
       'conta_conta_docorigin', _conta.conta_id,
       'conta_observacao', _conta_args.conta_observacao,
