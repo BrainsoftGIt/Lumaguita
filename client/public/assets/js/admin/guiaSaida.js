@@ -53,6 +53,7 @@ var guiaSaida = {
         conta.conta_mesa = {numero: null, descricao: null, lotacao: null};
         conta.conta_extension = {};
         conta.arg_vendas = this.articles_added;
+        conta.conta_data = new Date().getDateEn();
         conta.conta_tserie_id = GUIA;
         conta.conta_chave = guiaSaida.key;
         conta.admin = true;

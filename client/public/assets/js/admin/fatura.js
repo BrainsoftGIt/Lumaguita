@@ -183,6 +183,7 @@ var faturaAdmin = {
         let conta = {};
         conta.conta_mesa = {numero: null, descricao: null, lotacao: null};
         conta.conta_extension = {};
+        conta.conta_data = $("#fatura_data_emissao").val() === "" ? new Date().getDateEn() : alterFormatDate($("#fatura_data_emissao").val());
         conta.arg_vendas = this.articles_added();
         conta.admin = true;
         conta.conta_tserie_id = FATURA;
