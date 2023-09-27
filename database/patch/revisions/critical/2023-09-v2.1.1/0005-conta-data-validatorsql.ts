@@ -135,3 +135,43 @@ begin
 end;
 $$;
 `;
+
+
+block( module, { identifier: "funct_load_pos", flags:["@unique"]}).sql`
+create or replace function tweeks.funct_load_chave(args jsonb) returns SETOF jsonb
+  language plpgsql
+as
+$$
+declare
+  /**
+    arg_chave_temporaria: CHAVE-TEMP
+   */
+    arg_chave_temporaria character varying default args->>'arg_chave_temporaria';
+    _const map.constant;
+begin
+  _const := map.constant();
+  delete
+    from tweeks.chave s
+    where chave_definitiva is null
+      and chave_date < now() - interval '1' day
+  ;
+  
+  if arg_chave_temporaria is null then
+      return query
+          select to_jsonb( ch )
+            from tweeks.chave ch
+            where (ch.chave_date + interval '24' hour )  > now()
+              and ch.chave_definitiva is null;
+  else
+      return query
+          select to_jsonb( ch ) || coalesce( to_jsonb( p ), jsonb_build_object()) || jsonb_build_object(
+                'posto_disponivel', coalesce( p.posto_estado != _const.maguita_posto_estado_encerado, false )
+            )
+          from tweeks.chave ch
+            left join tweeks.posto p on ch.chave_definitiva = p.posto_chave
+          where ch.chave_temporarai = arg_chave_temporaria
+      ;
+  end if;
+end;
+$$;
+`;
