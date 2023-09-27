@@ -326,7 +326,9 @@ var pos = {
         conta.conta_extension = {};
         conta.conta_tserie_id = FATURARECIBO;
         conta.arg_vendas = this.getArticlesAccount();
+        conta.conta_data = new Date().getDateEn();
         conta.conta_chave = account.key;
+
         $("body").addClass("loading");
         $.ajax({
             url: "/api/pos/conta",
@@ -370,6 +372,7 @@ var pos = {
         conta.conta_extension = {};
         conta.conta_tserie_id = FATURARECIBO;
         conta.arg_vendas = this.getArticlesAccount(false);
+        conta.conta_data = new Date().getDateEn();
         conta.conta_id = this.conta_id;
         conta.conta_chave = account.key;
 

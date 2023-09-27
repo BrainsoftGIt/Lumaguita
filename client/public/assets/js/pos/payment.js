@@ -249,6 +249,7 @@ var payment = {
             descricao: null, lotacao: null
         };
         conta.conta_tserie_id = FATURARECIBO;
+        conta.conta_data = new Date().getDateEn();
         conta.conta_extension = {};
         conta.arg_vendas = this.getArticles();
         conta.conta_chave = account.key;
@@ -299,6 +300,7 @@ var payment = {
         conta.conta_extension = {};
         conta.arg_vendas = this.getArticles(false);
         conta.conta_id = pos.conta_id;
+        conta.conta_data = new Date().getDateEn();
         conta.conta_tserie_id = FATURARECIBO;
         conta.conta_chave = account.key;
 
