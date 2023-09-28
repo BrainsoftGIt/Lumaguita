@@ -17,11 +17,10 @@ export let create = async (instituition, account_content, res, user, num_autoriz
     let textcolor = instituition?.espaco_configuracao?.empresa_textcolor || "#ffffff";
 
     let hasPersonalizadoHarder = (instituition?.espaco_configuracao?.cabecalho_referencia === null ? "" : clusterServer.res.resolve(instituition?.espaco_configuracao?.cabecalho_referencia));
-
+    let imageCabecalho = (instituition?.espaco_configuracao?.cabecalho_referencia === null ? "" : clusterServer.res.resolve(instituition?.espaco_configuracao?.cabecalho_referencia));
 
     let artigosConta = [];
     (account_content.main.conta_vendas || []).forEach((cont) => {
-        console.log(cont);
         artigosConta.push([
             {
                 margin: [0, 3, 0, 3],
@@ -301,8 +300,8 @@ export let create = async (instituition, account_content, res, user, num_autoriz
                 ]
             }
         ],
-        ...structure(user, num_autorization, instituition.espaco_configuracao.certification,
-            (instituition?.espaco_configuracao?.cabecalho_referencia === null ? "" : clusterServer.res.resolve(instituition?.espaco_configuracao?.cabecalho_referencia)), textcolor, baseColor)
+        ...structure(user, num_autorization, instituition.espaco_configuracao.certification, imageCabecalho, textcolor, baseColor),
+        pageMargins: [35, (imageCabecalho ? 90 : 50), 35, 50],
     };
 
     const pdfDocGenerator = pdfMake.createPdf(docDefinition);
