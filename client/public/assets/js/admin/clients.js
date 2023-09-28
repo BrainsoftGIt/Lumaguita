@@ -85,7 +85,7 @@ var clients = {
                     xAlert("Registar Cliente", "Cliente registado com sucesso!");
                     xModalCRUCustomer.find(".hideTarget").click();
                     xModalCRUCustomer.find("input").val("");
-                } else xAlert("Registar Cliente", e.data, "error");
+                } else xAlert("Registar Cliente", e.message, "error");
             }
         });
     },
@@ -118,7 +118,7 @@ var clients = {
                     xAlert("Editar Cliente", "Cliente editado com sucesso!");
                     xModalCRUCustomer.find(".hideTarget").click();
                     xModalCRUCustomer.find("input").val("");
-                } else xAlert("Editar Cliente", e.data, "error");
+                } else xAlert("Editar Cliente", e.message, "error");
             }
         });
     },
@@ -141,7 +141,7 @@ var clients = {
                     clients.load();
                     $("#xModalChangeCustomerStatus").find(".hideTarget").click();
                     xAlert("Alterar estado cliente", "Operação efetuada com sucesso!");
-                } else xAlert("Alterar estado cliente", e.data, "error");
+                } else xAlert("Alterar estado cliente", e.message, "error");
             }
         });
     }
@@ -164,6 +164,15 @@ $("[bt_cliente]").on("click", function () {
             return;
         }
     }
+
+    let cliente_nif = $("#cliente_nif").val();
+    if(!!cliente_nif){
+        if( cliente_nif.length < 9 ){
+            xAlert("Registar cliente", `Nif inválido! ${cliente_nif.length}/9`, "error");
+            return;
+        }
+    }
+
     if (xModalCRUCustomer.find("h3[targetTitle]").text().toLowerCase().includes("adicionar")) clients.registarCliente();
     else clients.editarCliente();
 });

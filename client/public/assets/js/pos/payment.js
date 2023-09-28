@@ -538,6 +538,14 @@ $("[btCliente]").on("click", function () {
             return;
         }
     }
+
+    let cliente_nif = $("#cliente_nif_contacorrente").val();
+    if(!!cliente_nif){
+        if( cliente_nif.length < 9 ){
+            xAlert("Registar cliente", `Nif inválido! ${cliente_nif.length}/9`, "error");
+            return;
+        }
+    }
     payment.addCustomer();
 });
 $("#posPay").on("click", function () {
