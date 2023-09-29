@@ -136,7 +136,7 @@ begin
     return lib.res_false( _message );
   end if;
   
-  if _new != _old is null then 
+  if _new != _old then 
     select ( "returning" ).* into _conta
       from lib.sets( _change, replacer := args )  sets
     ;
