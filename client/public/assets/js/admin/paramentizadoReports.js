@@ -125,7 +125,7 @@ var paramentizadoReports = {
             method: "POST",
             contentType: "application/json",
             data: JSON.stringify({
-                _grants: "" || undefined
+                _grants:  paramentizadoReports?.posto_id || undefined
             }),
             success({data: list}) {
                 paramentizadoReports.list = list;

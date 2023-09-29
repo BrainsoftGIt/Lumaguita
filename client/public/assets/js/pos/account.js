@@ -127,7 +127,7 @@ var account = {
                    setTimeout(() => {
                        const iframe = document.getElementById('ifReport');
                        iframe.contentWindow.showReportParametizadeOnly(account.post.posto_id);
-                   }, 4000)
+                   }, 1000)
 
                     if(account.post.chave_definitiva === null) $(".postatus").addClass("unregistered");
                     else{

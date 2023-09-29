@@ -46,6 +46,13 @@
 			$('[xmodalsavereport]').parent("div").remove()
 			$('[xModalMasterFilter]').parent("div").remove()
 			$('[target="xModalExportFileFinanca"]').remove()
+
+			console.log("ddhdjddh")
+			let {loadPosto, loadArmazem, load} = paramentizadoReports;
+			loadPosto();
+			loadArmazem();
+			load()
+			console.log({paramentizadoReports}, "jdjdjd")
 		})
 	}
 	$(".div-include-pages").load("report.html");
