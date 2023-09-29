@@ -1,1 +1,0 @@
-alter table tweeks.entrada drop if exists  entrada_valiade;

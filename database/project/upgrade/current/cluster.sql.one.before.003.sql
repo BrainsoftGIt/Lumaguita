@@ -1,1 +1,0 @@
-alter table cluster.object add if not exists object_outdate boolean not null default false;

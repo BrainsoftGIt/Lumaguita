@@ -1,1 +1,0 @@
-alter table tweeks.custoguia rename _braunc_uid to _branch_uid;
