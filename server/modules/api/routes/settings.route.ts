@@ -2,7 +2,7 @@ import {app, storage} from '../../../service/storage.service';
 import fs from "fs";
 import path from "path";
 import {clusterServer} from "../../../service/cluster.service";
-
+import {getUserSession} from "./functions/get-session";
 app.post("/api/armazem", async (req, res) => {
     const {functRegArmazem} = require("../db/call-function-settings");
     let before =  await clusterServer.service.loadLocalCluster();
@@ -118,6 +118,7 @@ app.post("/api/space/migrate", async (req, res) => {
 app.post("/api/empresa/load/data", async (req, res) => {
     const {functLoadDadosEmpresa} = require("../db/call-function-settings");
     req.body.arg_espaco_auth = req.session.auth_data.auth.armazem_atual;
+    req.body.arg_colaborador_id = req.session.auth_data.auth.colaborador_id;
     const response = await functLoadDadosEmpresa(req.body);
     res.json({empresa: response.rows});
 });
@@ -231,6 +232,31 @@ app.post("/api/spaces/migrate/load", async (req, res) => {
     req.body.arg_espaco_id = req.session.auth_data.auth.armazem_atual;
     const response = await functLoadSpaceMigrate(req.body);
     res.json({spaces: response.rows});
+});
+
+
+app.post("/api/empresa/load/parametizacao", async (req, res) => {
+    let _session = getUserSession( req );
+    const {functLoadSetting} = require("../db/call-function-settings");
+
+    let args = req.body;
+    args.arg_colaborador_id = _session.user_id;
+    args.arg_espaco_auth = _session.workspace;
+    args.parametrizacao_tags = [ args.arg_espaco_auth ];
+
+    res.json(await functLoadSetting(args))
+});
+
+
+app.post("/api/empresa/reg/parametizacao", async (req, res) => {
+    let _session = getUserSession( req );
+    const {functRegSetting} = require("../db/call-function-settings");
+
+    let args = req.body;
+    args.arg_colaborador_id = _session.user_id;
+    args.arg_espaco_auth = _session.workspace;
+
+    res.json(await functRegSetting(args))
 });
 
 

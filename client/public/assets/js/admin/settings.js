@@ -386,7 +386,7 @@ var settings = {
         });
     },
     configurarDadosEmpresa(){
-        let dados = {};
+        let dados = { ...this.empresa };
         $("[bt_empresa]").attr("disabled", true).addClass("loading");
         dados.empresa_nome = $("#empresa_nome").val().trim();
         dados.empresa_nif = $("#empresa_nif").val();
