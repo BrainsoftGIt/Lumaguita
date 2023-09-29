@@ -148,7 +148,7 @@ var paramentizadoReports = {
                 let { loadFilterSelectData, types: { DatadoProcessamento, RelativoaDataAtual, ValorAtual, PedirSempre}} = paramentizadoReports;
                 let listFiterData = $('[list-load="filter"]').empty();
                 list.forEach(({ filter_valuemode, filter_value, filter_column, filter_name, filter_opr, filter_props: { key, format, src, source }, filter_type, filter_mode }) => {
-                    let disabled = (DatadoProcessamento === filter_valuemode || ValorAtual === filter_valuemode || RelativoaDataAtual === filter_valuemode);
+                    let disabled = (+DatadoProcessamento === filter_valuemode || +ValorAtual === filter_valuemode || +RelativoaDataAtual === filter_valuemode);
                     let disabledText = (disabled) ? `disabled="${disabled}"` : "";
                     if (format === "select") {
                         listFiterData.append(` <div valuemode="${filter_valuemode}" class="xselect w100" dataType="${filter_type}" name="${filter_name.replaceAll(" ", "")}"
