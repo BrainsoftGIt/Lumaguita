@@ -106,9 +106,9 @@ begin
   _change := jsonb_populate_record( _conta, args );
   _change.conta_data := coalesce( _change.conta_data, current_date );
   _new := to_jsonb( _change );
-  
-  if _change.conta_tserie_id is null then 
-      raise exception '%', format('O tipo de serie é obrigatorio na criação de uma nova conta!');
+
+  if _change.conta_tserie_id is null then
+      return lib.res_false(format('O tipo de serie é não foi especificada, contactar o supporte!' ) );
   end if;
 
   if _change.conta_id is null then
