@@ -39,7 +39,7 @@ pgRevision.on( "applierNotice", notice => {
 pgRevision.on( "revision", (error, blocks) => {
     if( !blocks.length ) return;
     if( error ) return;
-    
+
     eventsListener.notifySafe("revision", blocks );
     if( args.appMode === "dev" ){
         const {dbCataloger} = require("./calatoger");

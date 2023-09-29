@@ -1,6 +1,8 @@
 import {RevisionRegistry} from "kitres";
 
 export interface LumaguitaEvents {
-    dataChange( changeCode:string, ... args:any[] ),
+    localDataChange( changeCode:string, ... args:any[] ),
     revision(blocks:RevisionRegistry[])
+    startService(),
+    stopService()
 }
