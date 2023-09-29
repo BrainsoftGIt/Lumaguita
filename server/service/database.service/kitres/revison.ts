@@ -4,6 +4,7 @@ import {folders} from "../../../global/project";
 import {VERSION} from "../../../version";
 import chalk from "chalk";
 import {args} from "../../../global/args";
+import {eventsListener} from "../../notify.service/notify";
 
 export const pgRevision = new RevisionCore( pgCore, {
     schema: "kitres",
@@ -36,16 +37,20 @@ pgRevision.on( "applierNotice", notice => {
 });
 
 pgRevision.on( "revision", (error, blocks) => {
-    if( args.appMode !== "dev" ) return;
     if( !blocks.length ) return;
-    const {dbCataloger} = require("./calatoger");
-    dbCataloger.generateCatalog().then( value => {
-        if( value?.error ) {
-            console.error( value.error );
-            return;
-        }
-        console.log( "Database cataloged successfully!")
-    });
+    if( error ) return;
+    
+    eventsListener.notifySafe("revision", blocks );
+    if( args.appMode === "dev" ){
+        const {dbCataloger} = require("./calatoger");
+        dbCataloger.generateCatalog().then( value => {
+            if( value?.error ) {
+                console.error( value.error );
+                return;
+            }
+            console.log( "Database cataloged successfully!")
+        });
+    }
 });
 
 
