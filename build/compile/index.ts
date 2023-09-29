@@ -10,5 +10,6 @@ export const tsc = ( cwd ) => {
     console.log( "[TSC] start... [END]")
 }
 
+//language=file-reference
 tsc(path.join( __dirname, "../.." ));
 require("./compile");
