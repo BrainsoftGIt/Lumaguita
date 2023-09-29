@@ -292,7 +292,8 @@ var report = {
             if (!paramentizadoReports.report){
                 paramentizadoReports.ready = true;
                 object = report.selectedFilter.obj;
-                paramentizadoReports.object = object;
+                let headers = report.selectedFilter.headers;
+                paramentizadoReports.object = { headers, ...object };
             }
 
             object.limit = limit;
@@ -379,6 +380,7 @@ var report = {
     export(){
 
         let { objectView: object, headers} =  paramentizadoReports;
+        console.log(paramentizadoReports.report, headers)
         if (!paramentizadoReports.report) {
             object = report.selectedFilter.obj;
             headers = report.selectedFilter.headers;
