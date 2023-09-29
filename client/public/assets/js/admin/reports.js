@@ -497,6 +497,7 @@ $("#tipo_relatorios").on("click", "li", function () {
     let filtros_relatorio = $("#filtros_relatorio");
     let colunas_relatorio = $("#colunas_relatorio");
     let grupos_colunas_relatorio = $("#grupos_colunas_relatorio");
+    $('[list="filter"]').empty();
     filtros_relatorio.empty();
     grupos_colunas_relatorio.empty();
     colunas_relatorio.empty();

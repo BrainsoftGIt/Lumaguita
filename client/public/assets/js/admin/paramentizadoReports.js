@@ -58,11 +58,16 @@ var paramentizadoReports = {
         }
 
         let { totalColumnsWeight, listFormats} = report;
+        let erroFilter = false;
 
         let filters = _filters.map(({ column: filter_column, key, opr: filter_opr, value: filter_basevalue } ) => {
             let element = $(`div[list="filter"] [data-column='${filter_column}']`);
             let { name : filter_name, datatype: filter_type, mask, init, src, rename, mode: filter_mode, format, source, func} = element.data() || {};
-            let {id: filter_valuemode} = element.find(`ul li.active`).data();
+            let {id: filter_valuemode} = element.find(`ul li.active`)?.data() || {};
+
+            if(!filter_valuemode){
+                erroFilter = true;
+            }
 
             return {
                 filter_name,
@@ -84,7 +89,12 @@ var paramentizadoReports = {
                 filter_basevalue,
                 filter_valuemode
             }
-        })
+        });
+
+        if(erroFilter){
+            xAlert("Relatório", "Confirgure correctamente o relatório!", "warning");
+            return;
+        }
 
         $.ajax({
             url: "/api/report/parametrized/sets",
