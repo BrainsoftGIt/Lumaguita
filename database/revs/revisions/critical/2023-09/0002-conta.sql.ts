@@ -108,7 +108,7 @@ begin
   _new := to_jsonb( _change );
 
   if _change.conta_tserie_id is null then
-      return lib.res_false(format('O tipo de serie é não foi especificada, contactar o supporte!' ) );
+      return lib.res_false(format('O tipo de serie é não foi especificada, contactar o suporte!' ) );
   end if;
 
   if _change.conta_id is null then
