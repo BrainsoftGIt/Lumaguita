@@ -380,7 +380,6 @@ var report = {
     export(){
 
         let { objectView: object, headers} =  paramentizadoReports;
-        console.log(paramentizadoReports.report, headers)
         if (!paramentizadoReports.report) {
             object = report.selectedFilter.obj;
             headers = report.selectedFilter.headers;

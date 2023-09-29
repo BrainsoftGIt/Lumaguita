@@ -221,7 +221,6 @@ $('[list="report-paramentidado"]').on("mousedown", "li", function (){
     let {id, index} = $(this).data();
     let {loadFilterReport} = paramentizadoReports; loadFilterReport(id);
     paramentizadoReports.seleted = paramentizadoReports.list[index];
-    console.log(paramentizadoReports.seleted)
 })
 
 $("#loadReport").on("click", function (){
