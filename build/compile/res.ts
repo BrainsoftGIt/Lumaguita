@@ -1,5 +1,5 @@
 import path from "path";
-import {compileArgs, CompileArgs} from "./index";
+import {compileArgs, CompileArgs} from "./compile";
 import fs from "fs";
 import * as Path from "path";
 export type ResourceItem =  { base: string,                    dist: string,                  filter: string|RegExp };
