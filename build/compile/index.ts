@@ -242,7 +242,6 @@ line.defineCommand( { name: "nexe", callback: receiver => {
 }})
 
 line.defineCommand( { name: "start", callback: receiver => {
-    VERSION.increment();
     build( receiver.options ).then()
 }})
 
