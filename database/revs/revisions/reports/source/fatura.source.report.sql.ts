@@ -1,8 +1,6 @@
-import {block} from "../../../../core/updater";
+import {sql} from "kitres";
 
-block( module, { identifier: `report:source|fatura-v2.0.6-${Math.random()}`, flags:[] })
-    //language=PostgreSQL
-    .sql`
+export const vreport_fatura = sql`
 drop view if exists report.vreport_fatura;
 
 create or replace view report.vreport_fatura as

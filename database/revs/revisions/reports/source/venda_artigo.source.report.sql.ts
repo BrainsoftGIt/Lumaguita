@@ -1,7 +1,6 @@
-import {block} from "../../../../core/updater";
-import {VERSION} from "../../../../../../server/version";
+import {patchSQL, sql} from "kitres";
 
-block( module, { identifier: `report.vreport_venda_artigo|${ VERSION.TAG }`}).sql`
+export const vreport_venda_artigo = sql`
 drop view if exists report.vreport_venda_artigo;
 
 create or replace view report.vreport_venda_artigo as
@@ -116,7 +115,6 @@ UPDATE report.vcolumn SET position = null, show = false, init = false, format = 
 UPDATE report.vcolumn SET position = null, show = false, init = false, format = 'id', filter = '[]', agg = '[]', noagg = false, gen = '[]', rename = null, type = 'uuid[]' WHERE source = 'report.vreport_venda_artigo' AND name = '_tipoimposto_ids';
 UPDATE report.vcolumn SET position = null, show = false, init = false, format = 'id', filter = '[]', agg = '[]', noagg = false, gen = '[]', rename = null, type = 'uuid' WHERE source = 'report.vreport_venda_artigo' AND name = 'deposito_id';
 
-
 select *
   from report.vcolumn
   where source = 'report.vreport_venda_artigo'
@@ -128,5 +126,4 @@ select *
            source,
            name
 ;
-
 `;

@@ -25,3 +25,4 @@ bin/maguita.exe
 /build/compile/installer.iss
 /VERSION.look
 /client/app/index.js
+/database/revs/resolved/

@@ -1,8 +1,6 @@
-import {block} from "../../core/updater";
+import {sql} from "kitres";
 
-block( module, {
-    identifier: "lumaguita-menus"
-}).sql`
+export const menuPatch = sql`
 
 do $block$
   declare
@@ -12,7 +10,6 @@ do $block$
     for _data in
       select *
         from jsonb_array_elements($jsonb$[
-   
         
   {
     "menu_id": 89,
