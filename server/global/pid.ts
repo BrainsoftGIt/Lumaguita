@@ -64,6 +64,18 @@ export function showUncaughtError(){
         console.error( err );
         console.log( "================ Uncaught Exception thrown ================]]" );
     });
+
+    process.on('uncaughtExceptionMonitor', err => {
+        console.log( "[[================ Uncaught Exception thrown ================" );
+        console.error( err );
+        console.log( "================ Uncaught Exception thrown ================]]" );
+    });
+
+    process.on('rejectionHandled', err => {
+        console.log( "[[================ Uncaught Exception thrown ================" );
+        console.error( err );
+        console.log( "================ Uncaught Exception thrown ================]]" );
+    });
 }
 
 export type ExitSignalCallback = ( exitCode:number )=> void;
