@@ -27,3 +27,4 @@ bin/maguita.exe
 /client/app/index.js
 /database/revs/resolved/
 /database/cataloger/lumaguita.ts
+/database/revs/last.revision.sql
