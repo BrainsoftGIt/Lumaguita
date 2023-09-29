@@ -13,6 +13,7 @@ var article = {
         this.loadWarehouses();
         this.loadSimpleTaxs();
         this.loadTaxCode();
+        this.loadUnits();
         if(currentSystem.type === "loja"){
             let xModalAllAboutArtigo = $("#xModalAllAboutArtigo");
             $("#artigo_confecionado, #hasExtraItem").remove();
@@ -103,6 +104,20 @@ var article = {
                 article.taxCodes = taxCodes;
                 taxCodes.forEach(({codigoimposto_codigo, codigoimposto_descricao}) =>{
                     TaxCodes.append(`<li style="line-height: 1.7rem" class="tgl" codigoimposto_id="${codigoimposto_codigo}"><text style="font-weight: bold; font-size: 12px">${codigoimposto_codigo}</text> - ${codigoimposto_descricao}</li>`);
+                });
+            }
+        });
+    },
+    loadUnits(){
+        $.ajax({
+            url: "/api/load/units",
+            method: "GET",
+            contentType: "application/json",
+            success({units}) {
+                let unitsE = $("#artigo_unidade");
+                article.units = units;
+                units.forEach(( { main : {unit_id, unit_code, unit_name} }) =>{
+                    unitsE.append(`<li units_id="${unit_id}">${unit_code} - ${unit_name}</li>`);
                 });
             }
         });
@@ -347,8 +362,8 @@ var article = {
         $(".theArtg .xchip").find("ul").empty();
         $("label.artigo[lab=FOTO]").text(".jpg, .png, .jpeg");
         $("#artigo_impostos_desc, #aplicacao_impostos_desc").val("");
-        $("#artigo_impostos, #artigo_aplicacao_imposto").find("li").removeClass("active");
-        $("#artigo_foto, #artigo_nome, #artigo_observacao, #artigo_quantidade_composto").val("");
+        $("#artigo_impostos, #artigo_aplicacao_imposto, #artigo_unidade_desc").find("li").removeClass("active");
+        $("#artigo_foto, #artigo_nome, #artigo_observacao, #artigo_quantidade_composto, #artigo_unidade").val("");
         $("#armazens_artigos, #artigos_base").find("li").removeClass("active");
         $("#armazens_artigos").find("input").val("");
         $(".listCats").find("div").removeClass("active");
@@ -384,13 +399,22 @@ var article = {
         let formData = new FormData();
         let nomeArtigo = $("#artigo_nome").val().trim();
 
-        formData.append("data", JSON.stringify({ artigo_artigo_id: (artigo_composto.hasClass("active") ? $("#artigos_base").find("li.active").attr("artigo_id") : null),
+        formData.append("data", JSON.stringify({
+            artigo_artigo_id: (artigo_composto.hasClass("active") ? $("#artigos_base").find("li.active").attr("artigo_id") : null),
             artigo_compostoquantidade: (artigo_composto.hasClass("active") ? $("#artigo_quantidade_composto").val().unFormatter() : null),
-            artigo_classe_id:  $(".listCats").find("div.active").attr("cat_id"), artigo_id: null,
+            artigo_classe_id: $(".listCats").find("div.active").attr("cat_id"),
+            artigo_id: null,
             artigo_codigo: ($("#artigo_codigo").val().trim() || generateCode()),
-            artigo_nome: nomeArtigo, artigo_preparacao: $("#artigo_confecionado").hasClass("active"),
-            artigo_stocknegativo: $("#artigo_stock_negativo").hasClass("active"), artigo_foto: null, artigo_descricao: ($("#artigo_observacao").val().trim() || null),
-            arg_items: this.selectedExtraItems, arg_imposto: article.impostos_selecionados, arg_links: this.selectedWarehouses, arg_ean_codes: this.addedEAN,
+            artigo_nome: nomeArtigo,
+            artigo_preparacao: $("#artigo_confecionado").hasClass("active"),
+            artigo_stocknegativo: $("#artigo_stock_negativo").hasClass("active"),
+            artigo_foto: null,
+            artigo_unit_id: $("#artigo_unidade").find("li.active").attr("units_id") || null,
+            artigo_descricao: ($("#artigo_observacao").val().trim() || null),
+            arg_items: this.selectedExtraItems,
+            arg_imposto: article.impostos_selecionados,
+            arg_links: this.selectedWarehouses,
+            arg_ean_codes: this.addedEAN,
             artigo_codigoimposto: $("#artigo_codigoimpostolist").find("li.active").attr("codigoimposto_id") || null
         }));
         formData.append("file",  $("#artigo_foto")[0].files[0]);
@@ -421,12 +445,22 @@ var article = {
         $("[bt_artigo]").attr("disabled", true).addClass("loading");
         let artigo_composto = $("#artigo_composto");
         let formData = new FormData();
-        formData.append("data", JSON.stringify({ artigo_artigo_id: (artigo_composto.hasClass("active") ? $("#artigos_base").find("li.active").attr("artigo_id") : null),
+        formData.append("data", JSON.stringify({
+            artigo_artigo_id: (artigo_composto.hasClass("active") ? $("#artigos_base").find("li.active").attr("artigo_id") : null),
             artigo_compostoquantidade: (artigo_composto.hasClass("active") ? $("#artigo_quantidade_composto").val().unFormatter() : null),
-            artigo_classe_id:  $(".listCats").find("div.active").attr("cat_id"), artigo_id: this.selected.artigo_id,
-            artigo_codigo: article.selected.artigo_codigo, artigo_nome: $("#artigo_nome").val().trim(), artigo_preparacao: $("#artigo_confecionado").hasClass("active"),
-            artigo_stocknegativo: $("#artigo_stock_negativo").hasClass("active"), artigo_foto: article.selected.artigo_foto, artigo_descricao: ($("#artigo_observacao").val().trim() || null),
-            arg_items: this.selectedExtraItems, arg_imposto: article.impostos_selecionados, arg_links: this.selectedWarehouses, arg_ean_codes: this.addedEAN,
+            artigo_classe_id: $(".listCats").find("div.active").attr("cat_id"),
+            artigo_id: this.selected.artigo_id,
+            artigo_codigo: article.selected.artigo_codigo,
+            artigo_nome: $("#artigo_nome").val().trim(),
+            artigo_preparacao: $("#artigo_confecionado").hasClass("active"),
+            artigo_stocknegativo: $("#artigo_stock_negativo").hasClass("active"),
+            artigo_foto: article.selected.artigo_foto,
+            artigo_descricao: ($("#artigo_observacao").val().trim() || null),
+            artigo_unit_id: $("#artigo_unidade").find("li.active").attr("units_id") || null,
+            arg_items: this.selectedExtraItems,
+            arg_imposto: article.impostos_selecionados,
+            arg_links: this.selectedWarehouses,
+            arg_ean_codes: this.addedEAN,
             artigo_codigoimposto: $("#artigo_codigoimpostolist").find("li.active").attr("codigoimposto_id")
         }));
         formData.append("file",  $("#artigo_foto")[0].files[0]);
@@ -501,7 +535,6 @@ var article = {
         if(article.selected.artigo_foto === null) $("label.artigo[lab=FOTO]").text(".jpg, .png, .jpeg");
         else $("label.artigo[lab=FOTO]").text(article.selected.artigo_foto.split(";")[1]);
         $("#artigo_observacao").val(article.selected.artigo_descricao);
-        $("#artigo_nome").val(article.selected.artigo_nome);
         $(".listCats").find(`div.inList[cat_id=${article.selected.artigo_classe_id}]`).click();
         if(article.selected.artigo_stocknegativo){
             $("#artigo_stock_negativo").addClass("active");
@@ -538,6 +571,10 @@ var article = {
             artigo_aplicacao_imposto.parents(".xselect").find("input").val(artigo_aplicacao_imposto.find(`li.active`).text());
         }
 
+        let artigo_unidade = $("#artigo_unidade");
+        artigo_unidade.find(`li[units_id=${article.selected?.artigo_unit_id}]`).addClass("active");
+        artigo_unidade.parents(".xselect").find("input").val(artigo_unidade.find(`li.active`).text());
+
         let artigo_codigoimpostolist = $("#artigo_codigoimpostolist").find(`li[codigoimposto_id="${article.selected.artigo_codigoimposto}"]`).addClass("active")
         $("#artigo_codigoimposto").val(artigo_codigoimpostolist.text())
         showTarget("xModalCtrlArtigo", "Editar artigo");
@@ -547,7 +584,7 @@ var article = {
             url: "/api/artigo/data",
             method: "POST",
             contentType: "application/json",
-            data: JSON.stringify({ artigos: [this.selected.artigo_id]}),
+            data: JSON.stringify({artigos: [this.selected.artigo_id]}),
             success(e) {
                 if(e.data.length > 0){
                     article.selected = e.data[0].funct_load_artigo_data;
@@ -734,6 +771,12 @@ $("[bt_artigo]").on("click", function () {
                 return;
             }
         }
+
+        if($("#artigo_unidade").find("li.active").attr("units_id") === undefined){
+            xAlert("Artigo", "Escolha a unidade para o artigo!", "info");
+            return;
+        }
+
         if($("#artigo_aplicacao_imposto").find("li.active").attr("taplicar_id") !== undefined ){
             if($("#artigo_impostos").find("li.active").attr("imposto_id") === undefined){
                 xAlert("Artigo", "Escolha o imposto!", "info");

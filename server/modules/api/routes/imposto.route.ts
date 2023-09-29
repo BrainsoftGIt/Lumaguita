@@ -1,6 +1,6 @@
 import {app, storage} from '../../../service/storage.service';
 import {clusterServer} from "../../../service/cluster.service";
-import {functGetArticleTax, functLoadImpostos} from "../db/call-function-settings";
+import {functGetArticleTax, functLoadImpostos, functUnits} from "../db/call-function-settings";
 import fs from "fs";
 import path from "path";
 
@@ -33,6 +33,17 @@ app.get("/api/impostos/codes", async (req, res) => {
     const {functLoadTaxCodes} = require("../db/call-function-settings");
     const {rows: taxCodes} = await functLoadTaxCodes();
     res.json({ taxCodes });
+});
+
+app.get("/api/load/units", async (req, res) => {
+    const {functUnits} = require("../db/call-function-settings");
+    let data = {};
+    // @ts-ignore
+    data._espaco_auth = req.session.auth_data.auth.armazem_atual;
+    // @ts-ignore
+    data._user_id = req.session.auth_data.auth.colaborador_id;
+    const {rows: units} = await functUnits(data);
+    res.json({ units });
 });
 
 app.post("/api/imposto/artigo", async (req, res) => {

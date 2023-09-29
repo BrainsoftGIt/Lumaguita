@@ -39,7 +39,6 @@ block( module, { identifier: "maguita_cliente_final_maguita_cliente_finalnotacre
 `;
 
 block( module, { identifier: "correct-conta", flags:[]}).sql`
-
 create or replace function tweeks.funct_pos_change_conta_fechar(args jsonb) returns lib.res
   language plpgsql
 as
@@ -108,7 +107,7 @@ declare
     _deposito tweeks.deposito;
     _rec record;
     _guia tweeks.guia;
-    _conta_estado record;
+    _message text;
   begin
     _const := map.constant();
     _caixa := tweeks._get_caixa( arg_caixa_id );
@@ -117,13 +116,22 @@ declare
     _conta.conta_data := coalesce( _conta.conta_data, current_date );
     _deposito := jsonb_populate_record( _deposito, args->'deposito' );
 
+    _message := tweeks.__check_conta_data( 
+      _tserie_id := arg_tserie_id, 
+      _conta_data := _conta.conta_data,
+      _raise := false
+    );
+    
+    if _message is not null then 
+        return lib.res_false( _message );
+    end if;
     
     if _conta.conta_id is null then 
-        raise exception '%', 'Identificador da conta a ser fechada não foi informado!';
+      raise exception '%', 'Identificador da conta a ser fechada não foi informado!';
     end if;
     
     if _conta.conta_estado = _const.maguita_conta_estado_fechado then
-        return lib.res_false( 'Essa conta já se encontra fechada!' );
+      return lib.res_false( 'Essa conta já se encontra fechada!' );
     end if;
     
     if arg_tserie_id not in (
@@ -513,11 +521,21 @@ begin
           c.conta_mesa,
           c.conta_estado,
           c.conta_serie,
+          c.conta_observacao,
+          c.conta_extension,
+          c.conta_props,
           c.conta_serie_id,
           c._tgrupo_id,
           c.conta_data,
           c.conta_dataregistro,
           c.conta_conta_docorigin,
+          c.conta_titular,
+          c.conta_titularnif,
+          ccl.cliente_id,
+          ccl.cliente_code,
+          ccl.cliente_nif,
+          ccl.cliente_titular,
+          ccl.cliente_metadata,
           de.deposito_montante,
           de.deposito_montantetroco,
           de.deposito_montantefinal,
@@ -526,6 +544,7 @@ begin
           corigen.conta_numerofatura as conta_documentoorigem,
           array_agg( to_jsonb( v )||to_jsonb( vg ) order by v.artigo_nome ) as conta_vendas
         from tweeks.conta c
+          left join tweeks.cliente ccl on c.conta_cliente_id = ccl.cliente_id
           left join tweeks.conta corigen on c.conta_conta_docorigin = corigen.conta_id
           left join __venda_group vg on c.conta_id = vg._venda_conta_id
           left join __venda v on vg._venda_id = v.venda_id
@@ -534,7 +553,8 @@ begin
           and c._branch_uid = ___branch
         group by c.conta_id, 
           de.deposito_id,
-         corigen.conta_id
+          ccl.cliente_id,
+          corigen.conta_id
      ) select to_jsonb( c ) || _client from __conta c
   ;
 

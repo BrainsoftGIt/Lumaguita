@@ -27,8 +27,10 @@ export let VERSION = {
         versionsParts[2]++;
         VERSION.NUMBER = versionsParts.join(".");
         fs.writeFileSync( Path.join( __dirname, "../VERSION"), VERSION.NUMBER );
-        fs.writeFileSync( Path.join( __dirname, "../client/public/VERSION"), VERSION.NUMBER );
         return  VERSION;
+    },
+    get TAG(){
+        return `v${VERSION.NUMBER}`
     }
 };
 

@@ -17,12 +17,23 @@ export let create = async (instituition, account_content, res, user, num_autoriz
     let textcolor = instituition?.espaco_configuracao?.empresa_textcolor || "#ffffff";
 
     let hasPersonalizadoHarder = (instituition?.espaco_configuracao?.cabecalho_referencia === null ? "" : clusterServer.res.resolve(instituition?.espaco_configuracao?.cabecalho_referencia));
-
+    let imageCabecalho = (instituition?.espaco_configuracao?.cabecalho_referencia === null ? "" : clusterServer.res.resolve(instituition?.espaco_configuracao?.cabecalho_referencia));
 
     let artigosConta = [];
     (account_content.main.conta_vendas || []).forEach((cont) => {
-        console.log(cont);
         artigosConta.push([
+            {
+                margin: [0, 3, 0, 3],
+                fontSize: 6.5,
+                border: [false, false, false, false],
+                text: cont.venda_quantidade
+            },
+            {
+                margin: [0, 3, 0, 3],
+                fontSize: 6.5,
+                border: [false, false, false, false],
+                text: cont.unit_code || "---"
+            },
             {
                 margin: [0, 3, 0, 3],
                 fontSize: 6.5,
@@ -34,19 +45,6 @@ export let create = async (instituition, account_content, res, user, num_autoriz
                 fontSize: 6.5,
                 border: [false, false, false, false],
                 text: cont.artigo_nome
-            },
-            {
-                margin: [0, 3, 0, 3],
-                fontSize: 6.5,
-                border: [false, false, false, false],
-                text: cont.venda_quantidade
-            },
-            {
-                margin: [0, 3, 0, 3],
-                fontSize: 6.5,
-                border: [false, false, false, false],
-                text: cont.venda_lote || "---",
-                alignment: "right"
             },
             {
                 margin: [0, 3, 0, 3],
@@ -172,9 +170,9 @@ export let create = async (instituition, account_content, res, user, num_autoriz
                                             {
                                                 bold: true,
                                                 color: '#000000',
-                                                text: `Morada: `
+                                                text: `Endereço: `
                                             },
-                                            (/*account_content.main.cliente_nif ||*/ "---------------")
+                                            (account_content?.main?.cliente_metadata?.morada || "---------------")
                                         ]
                                     }
                                 ]
@@ -190,7 +188,7 @@ export let create = async (instituition, account_content, res, user, num_autoriz
                                         text: "Nº de guia de saída"
                                     },
                                     {
-                                        margin: [0, 0, 0, 4],
+                                        margin: [0, 0, 0, 15],
                                         text: guia.guia_numero,
                                     },
                                     {
@@ -227,9 +225,23 @@ export let create = async (instituition, account_content, res, user, num_autoriz
                 },
                 table: {
                     headerRows: 1,
-                    widths: ["10%", "44%", "8%", "17%", "21%"],
+                    widths: ["8%", "10%", "44%", "17%", "21%"],
                     body: [
                         [
+                            {
+                                margin: [0, 3, 0, 3],
+                                borderColor: [baseColor, baseColor, baseColor, baseColor],
+                                fillColor: baseColor,
+                                text: "Qtd",
+                                color: textcolor
+                            },
+                            {
+                                margin: [0, 3, 0, 3],
+                                borderColor: [baseColor, baseColor, baseColor, baseColor],
+                                fillColor: baseColor,
+                                text: "Uni.",
+                                color: textcolor
+                            },
                             {
                                 margin: [0, 3, 0, 3],
                                 borderColor: [baseColor, baseColor, baseColor, baseColor],
@@ -243,21 +255,6 @@ export let create = async (instituition, account_content, res, user, num_autoriz
                                 fillColor: baseColor,
                                 text: "Descrição",
                                 color: textcolor
-                            },
-                            {
-                                margin: [0, 3, 0, 3],
-                                borderColor: [baseColor, baseColor, baseColor, baseColor],
-                                fillColor: baseColor,
-                                text: "Qtd",
-                                color: textcolor
-                            },
-                            {
-                                margin: [0, 3, 0, 3],
-                                borderColor: [baseColor, baseColor, baseColor, baseColor],
-                                fillColor: baseColor,
-                                text: "Lote",
-                                color: textcolor,
-                                alignment: "right"
                             },
                             {
                                 margin: [0, 3, 0, 3],
@@ -303,8 +300,8 @@ export let create = async (instituition, account_content, res, user, num_autoriz
                 ]
             }
         ],
-        ...structure(user, num_autorization, instituition.espaco_configuracao.certification,
-            (instituition?.espaco_configuracao?.cabecalho_referencia === null ? "" : clusterServer.res.resolve(instituition?.espaco_configuracao?.cabecalho_referencia)), textcolor, baseColor)
+        ...structure(user, num_autorization, instituition.espaco_configuracao.certification, imageCabecalho, textcolor, baseColor),
+        pageMargins: [35, (imageCabecalho ? 90 : 50), 35, 50],
     };
 
     const pdfDocGenerator = pdfMake.createPdf(docDefinition);

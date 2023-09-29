@@ -17,20 +17,30 @@
     </datalist>
     <div class="_body" id="faturaAdmin">
         <div class="inputs flex xform">
-            <div class="w8"></div>
-            <div class="xinput w25">
-                <input type="text" placeholder="Pesquisar fatura" pesquisarFatura>
-                <label>Pesquisar fatura</label>
+
+            <div class="flex w100 h-sb">
+                <div class="w8"></div>
+                <div class="xinput w25">
+                    <input type="text" placeholder="Pesquisar fatura" pesquisarFatura>
+                    <label>Pesquisar fatura</label>
+                </div>
+                <div class="xinput w25">
+                    <input type="text" disabled cliente_titular>
+                    <label>Nome do cliente</label>
+                </div>
+                <div class="xinput w25">
+                    <input type="text" placeholder="NIF" maxlength="9" disabled cliente_nif _noObrigatory="true">
+                    <label>NIF</label>
+                </div>
+                <div class="w8"></div>
             </div>
-            <div class="xinput w25">
-                <input type="text" disabled cliente_titular>
-                <label>Nome do cliente</label>
+
+            <div class="flex w100 h-ct">
+                <div class="xinput w80">
+                    <textarea placeholder="Observação" _noObrigatory="true" notacredito_observacao></textarea>
+                    <label notacredito_observacao>Observação</label>
+                </div>
             </div>
-            <div class="xinput w25">
-                <input type="text" placeholder="NIF" maxlength="9" disabled cliente_nif _noObrigatory="true">
-                <label>NIF</label>
-            </div>
-            <div class="w8"></div>
         </div>
         <div class="x-table hovered grow-1">
             <div class="xheader">

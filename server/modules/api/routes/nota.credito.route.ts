@@ -16,8 +16,8 @@ app.post( "/api/load/fatura/to/credito/nota", (req, res, next) => {
             if( error ){
                 res.json({
                     result:false,
-                    message: 'Error ao salar  o relatorio parametizados',
-                    hint: error.message
+                    message: error.message,
+                    hint: error
                 })
                 console.error( error );
                 return;
@@ -43,8 +43,8 @@ app.post( "/api/reg/credito/nota", (req, res, next) => {
             if( error ){
                 res.json({
                     result:false,
-                    message: 'Error ao salar  o relatorio parametizados',
-                    hint: error.message
+                    message: error.message,
+                    hint: error
                 })
                 console.error( error );
                 return;

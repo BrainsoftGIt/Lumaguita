@@ -124,8 +124,10 @@ var account = {
                     account.pos_user = e.pos_user_name;
                     account.pos_user_session_uuid = e.pos_user_session_uuid;
 
-                    const iframe = document.getElementById('ifReport');
-                    iframe.contentWindow.showReportParametizadeOnly(account.post.posto_id);
+                   setTimeout(() => {
+                       const iframe = document.getElementById('ifReport');
+                       iframe.contentWindow.showReportParametizadeOnly(account.post.posto_id);
+                   }, 4000)
 
                     if(account.post.chave_definitiva === null) $(".postatus").addClass("unregistered");
                     else{
@@ -364,6 +366,7 @@ $(".credentialPIN").on("click", ".list-users li", function () {
        setStep.callStep[account.operation]();
 });
 $("[newAccount]").on("click", function () {
+    $("#fkPGReport").removeClass("show");
     if(account.hasValidPost()){
         account.operation = "addAccount";
         account.resetModalAuthentication();

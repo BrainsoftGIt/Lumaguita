@@ -20,10 +20,24 @@ export let create = async (instituition, fornecedor, guia, artigos, res, user, c
     let baseColor = instituition?.espaco_configuracao?.empresa_basecolor || "#000000";
     let textcolor = instituition?.espaco_configuracao?.empresa_textcolor || "#ffffff";
 
+    let imageCabecalho = (instituition?.espaco_configuracao?.cabecalho_referencia === null ? "" : clusterServer.res.resolve(instituition?.espaco_configuracao?.cabecalho_referencia));
+
     let hasPersonalizadoHarder = (instituition?.espaco_configuracao?.cabecalho_referencia === null ? "" : clusterServer.res.resolve(instituition?.espaco_configuracao?.cabecalho_referencia));
     artigos.forEach((art) => {
         art = art.data.data;
         artigosEntrada.push([
+            {
+                margin: [0, 3, 0, 3],
+                fontSize: 6.5,
+                border: [false, false, false, false],
+                text: art.entrada_quantidade
+            },
+            {
+                margin: [0, 3, 0, 3],
+                fontSize: 6.5,
+                border: [false, false, false, false],
+                text: art.unit_code || "----"
+            },
             {
                 margin: [0, 3, 0, 3],
                 fontSize: 6.5,
@@ -40,26 +54,14 @@ export let create = async (instituition, fornecedor, guia, artigos, res, user, c
                 margin: [0, 3, 0, 3],
                 fontSize: 6.5,
                 border: [false, false, false, false],
-                text: art.entrada_lote || "----"
-            },
-            {
-                margin: [0, 3, 0, 3],
-                fontSize: 6.5,
-                border: [false, false, false, false],
-                text: art.entrada_quantidade
-            },
-            {
-                margin: [0, 3, 0, 3],
-                fontSize: 6.5,
-                border: [false, false, false, false],
-                text: formattedString(art.entrada_custounitario + "") + " STN",
+                text: formattedString(art.entrada_custounitario + ""),
                 alignment: "right"
             },
             {
                 margin: [0, 3, 0, 3],
                 fontSize: 6.5,
                 border: [false, false, false, false],
-                text: formattedString((Number(art.entrada_quantidade) * Number(art.entrada_custounitario)) + "") + " STN",
+                text: formattedString((Number(art.entrada_quantidade) * Number(art.entrada_custounitario)) + ""),
                 alignment: "right"
             }
         ]);
@@ -73,62 +75,78 @@ export let create = async (instituition, fornecedor, guia, artigos, res, user, c
     let rotape = {
         margin: [30, 0, 30, 0],
         table: {
-            widths: ["100%"],
+            widths: ["8%", "11%", "10%", "33%", "17%", "21%"],
             body: [
                 [
                     {
                         border: [false, false, false, false],
-                        fillColor: baseColor,
-                        color: textcolor,
-                        columns: [
-                            {
-                                alignment: "center",
-                                fontSize: 6.5,
-                                margin: [0, 1, 0, 1],
-                                text: "Subtotal",
-                                bold: true
-                            },
-                            {
-                                alignment: "center",
-                                fontSize: 6.5,
-                                margin: [0, 1, 0, 1],
-                                text: "Seguro e tarifas de transporte",
-                                bold: true
-                            },
-                            {
-                                alignment: "center",
-                                fontSize: 7.5,
-                                margin: [0, 1, 0, 1],
-                                bold: true,
-                                text: "Total",
-                            }
-                        ]
+                        text: "", colSpan: 4, fillColor: "#ffffff"
+                    },
+                    {text: ""},
+                    {text: ""},
+                    {text: ""},
+                    {
+                        fontSize: 6.5,
+                        border: [false, false, false, false],
+                        margin: [0, 0.5, 0, 0.5],
+                        text: "Subtotal"
+                    },
+                    {
+                        fontSize: 6.5,
+                        border: [false, false, false, false],
+                        margin: [0, 0.5, 0, 0.5],
+                        text: formattedString(subtotal.toFixed(2) + ""),
+                        alignment: "right"
+                    },
+                ],
+                [
+                    {
+                        border: [false, false, false, false],
+                        text: "", colSpan: 4, fillColor: "#ffffff"
+                    },
+                    {text: ""},
+                    {text: ""},
+                    {text: ""},
+                    {
+                        fontSize: 6.5,
+                        border: [false, false, false, false],
+                        margin: [0, 0.5, 0, 0.5],
+                        text: "Seguro tarifas transporte",
+                    },
+                    {
+                        fontSize: 6.5,
+                        border: [false, false, false, false],
+                        margin: [0, 0.5, 0, 0.5],
+                        text: (custo_guia.length === 0 ? "" : formattedString(custo_guia[0].data.data.custoguia_montante.toFixed(2) + "")),
+                        alignment: "right"
                     }
                 ],
                 [
                     {
                         border: [false, false, false, false],
-                        fillColor: "#F5F6F6",
-                        columns: [
-                            {
-                                fontSize: 6.5,
-                                margin: [0, 1, 0, 1],
-                                text: formattedString(subtotal.toFixed(2) + ""),
-                                alignment: "center"
-                            },
-                            {
-                                fontSize: 6.5,
-                                margin: [0, 1, 0, 1],
-                                text: (custo_guia.length === 0 ? "" : formattedString(custo_guia[0].data.data.custoguia_montante.toFixed(2) + "")),
-                                alignment: "center"
-                            },
-                            {
-                                alignment: "center",
-                                fontSize: 6.5,
-                                margin: [0, 1, 0, 1],
-                                text: formattedString(total.toFixed(2) + ""),
-                            }
-                        ]
+                        text: "", colSpan: 4, fillColor: "#ffffff"
+                    },
+                    {text: ""},
+                    {text: ""},
+                    {text: ""},
+                    {
+                        fontSize: 6.5,
+                        border: [false, false, false, false],
+                        fillColor: baseColor,
+                        color: textcolor,
+                        margin: [0, 0.5, 0, 0.5],
+                        bold: true,
+                        text: "Total",
+                    },
+                    {
+                        fontSize: 6.5,
+                        border: [false, false, false, false],
+                        fillColor: baseColor,
+                        color: textcolor,
+                        margin: [0, 0.5, 0, 0.5],
+                        bold: true,
+                        text: formattedString(total.toFixed(2) + ""),
+                        alignment: "right"
                     }
                 ]
             ]
@@ -271,43 +289,43 @@ export let create = async (instituition, fornecedor, guia, artigos, res, user, c
                                         text: "Guia de Entrada"
                                     },
                                     {
-                                        margin: [0, 0, 0, 4],
+                                        margin: [0, 0, 0, 15],
                                         text: guia.guia_numero,
                                     },
                                     {
                                         columns: [
                                             {
                                                 bold: true,
-                                                width: "33.333333333%",
+                                                width: "30%",
                                                 color: '#000000',
-                                                text: "Data de Guia"
+                                                text: "Data de Guia",
                                             },
                                             {
                                                 bold: true,
-                                                width: "33.333333333%",
+                                                width: "30%",
                                                 color: '#000000',
-                                                text: "Nº de Documento",
+                                                text: "Nº Documento",
                                             },
                                             {
                                                 bold: true,
-                                                width: "33.333333333%",
+                                                width: "40%",
                                                 color: '#000000',
-                                                text: "Data de Doc. Fornecedor",
+                                                text: "Data Doc. Fornecedor",
                                             }
                                         ],
                                     },
                                     {
                                         columns: [
                                             {
-                                                width: "33.333333333%",
+                                                width: "30%",
                                                 text: `${(moment(guia.guia_date).format("DD-MM-YYYY"))}`
                                             },
                                             {
-                                                width: "33.333333333%",
+                                                width: "30%",
                                                 text: `${(guia.guia_documentoperacao || "---------")}`
                                             },
                                             {
-                                                width: "33.333333333%",
+                                                width: "40%",
                                                 text: `${moment(guia.guia_dataoperacao).format("DD-MM-YYYY")}`,
                                             }
                                         ],
@@ -339,9 +357,23 @@ export let create = async (instituition, fornecedor, guia, artigos, res, user, c
                 },
                 table: {
                     headerRows: 1,
-                    widths: ["10%", "33%", "11%", "8%", "17%", "21%"],
+                    widths: ["8%", "11%", "10%", "33%", "17%", "21%"],
                     body: [
                         [
+                            {
+                                margin: [0, 3, 0, 3],
+                                borderColor: [baseColor, baseColor, baseColor, baseColor],
+                                fillColor: baseColor,
+                                text: "Qtd",
+                                color: textcolor
+                            },
+                            {
+                                margin: [0, 3, 0, 3],
+                                borderColor: [baseColor, baseColor, baseColor, baseColor],
+                                fillColor: baseColor,
+                                text: "Uni.",
+                                color: textcolor
+                            },
                             {
                                 margin: [0, 3, 0, 3],
                                 borderColor: [baseColor, baseColor, baseColor, baseColor],
@@ -354,20 +386,6 @@ export let create = async (instituition, fornecedor, guia, artigos, res, user, c
                                 borderColor: [baseColor, baseColor, baseColor, baseColor],
                                 fillColor: baseColor,
                                 text: "Descrição",
-                                color: textcolor
-                            },
-                            {
-                                margin: [0, 3, 0, 3],
-                                borderColor: [baseColor, baseColor, baseColor, baseColor],
-                                fillColor: baseColor,
-                                text: "Lote",
-                                color: textcolor
-                            },
-                            {
-                                margin: [0, 3, 0, 3],
-                                borderColor: [baseColor, baseColor, baseColor, baseColor],
-                                fillColor: baseColor,
-                                text: "Qtd",
                                 color: textcolor
                             },
                             {
@@ -392,8 +410,7 @@ export let create = async (instituition, fornecedor, guia, artigos, res, user, c
                 }
             }
         ],
-        ...structure(user, null, instituition.espaco_configuracao.certification,
-            (instituition?.espaco_configuracao?.cabecalho_referencia === null ? "" : clusterServer.res.resolve(instituition?.espaco_configuracao?.cabecalho_referencia)), textcolor, baseColor, rotape)
+        ...structure(user, null, instituition.espaco_configuracao.certification,  imageCabecalho, textcolor, baseColor, rotape)
     };
 
     const pdfDocGenerator = pdfMake.createPdf(docDefinition);

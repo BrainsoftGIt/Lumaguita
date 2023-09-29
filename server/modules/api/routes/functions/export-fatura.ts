@@ -25,7 +25,20 @@ export let create = async (instituition, account_content, res, user, date, num_a
 
     (account_content.main.conta_vendas || []).forEach((cont) => {
         preco_artigo = cont.venda_montantesemimposto / cont.venda_quantidade;
+        console.log(cont)
         artigosConta.push([
+            {
+                margin: [0, 3, 0, 3],
+                fontSize: 6.5,
+                border: [false, false, false, false],
+                text: cont.venda_quantidade
+            },
+            {
+                margin: [0, 3, 0, 3],
+                fontSize: 6.5,
+                border: [false, false, false, false],
+                text: cont?.unit_code || "---"
+            },
             {
                 margin: [0, 3, 0, 3],
                 fontSize: 6.5,
@@ -42,27 +55,21 @@ export let create = async (instituition, account_content, res, user, date, num_a
                 margin: [0, 3, 0, 3],
                 fontSize: 6.5,
                 border: [false, false, false, false],
-                text: cont.venda_quantidade
+                text: `${cont.taxa_percentagem || cont.taxa_taxa || ""} ${(!cont.taxa_taxa && !cont.taxa_percentagem) ? "" : (cont.taxa_taxa) ? "" : "%"}`,
+                alignment: "center"
             },
             {
                 margin: [0, 3, 0, 3],
                 fontSize: 6.5,
                 border: [false, false, false, false],
-                text: `${formattedString(cont.venda_imposto.toFixed(2))} STN`,
+                text: formattedString(preco_artigo.toFixed(2) + ""),
                 alignment: "right"
             },
             {
                 margin: [0, 3, 0, 3],
                 fontSize: 6.5,
                 border: [false, false, false, false],
-                text: formattedString(preco_artigo.toFixed(2) + "") + " STN",
-                alignment: "right"
-            },
-            {
-                margin: [0, 3, 0, 3],
-                fontSize: 6.5,
-                border: [false, false, false, false],
-                text: formattedString(cont.venda_montantesemimposto.toFixed(2) + "") + " STN",
+                text: formattedString(cont.venda_montantesemimposto.toFixed(2) + ""),
                 alignment: "right"
             }
         ]);
@@ -82,68 +89,85 @@ export let create = async (instituition, account_content, res, user, date, num_a
     });
 
     let rotape = {
-        margin: [30, 0, 30, 0],
+        margin: [40, 0, 40, 0],
         table: {
-            widths: ["100%"],
+            widths: ["5%", "6%", "14%", "35%", "10%", "13%", "17%"],
             body: [
                 [
                     {
                         border: [false, false, false, false],
-                        fillColor: baseColor,
-                        color: textcolor,
-                        columns: [
-                            {
-                                alignment: "center",
-                                fontSize: 6.5,
-                                margin: [0, 1, 0, 1],
-                                text: "Subtotal",
-                                bold: true
-                            },
-                            ...Object.keys(sumImpost).map((key) => {
-                                return {
-                                    bold: true,
-                                    alignment: "center",
-                                    fontSize: 6.5,
-                                    margin: [0, 1, 0, 1],
-                                    text: `${sumImpost[key].name}`,
-                                }
-                            }),
-                            {
-                                alignment: "center",
-                                fontSize: 7.5,
-                                margin: [0, 1, 0, 1],
-                                bold: true,
-                                text: "Total",
-                            }
-                        ]
-                    }
+                        text: "", colSpan: 5, fillColor: "#ffffff"
+                    },
+                    {text: ""},
+                    {text: ""},
+                    {text: ""},
+                    {text: ""},
+                    {
+                        fontSize: 6.5,
+                        border: [false, false, false, false],
+                        margin: [0, 0.5, 0, 0.5],
+                        text: "Subtotal"
+                    },
+                    {
+                        fontSize: 6.5,
+                        border: [false, false, false, false],
+                        margin: [0, 0.5, 0, 0.5],
+                        text: formattedString(subtotal.toFixed(2) + ""),
+                        alignment: "right"
+                    },
                 ],
+                ...Object.keys(sumImpost).map((key) => {
+                    return [
+                        {
+                            border: [false, false, false, false],
+                            text: "", colSpan: 5, fillColor: "#ffffff"
+                        },
+                        {text: ""},
+                        {text: ""},
+                        {text: ""},
+                        {text: ""},
+                        {
+                            fontSize: 6.5,
+                            border: [false, false, false, false],
+                            margin: [0, 0.5, 0, 0.5],
+                            text: `${sumImpost[key].name}`,
+                        },
+                        {
+                            fontSize: 6.5,
+                            border: [false, false, false, false],
+                            margin: [0, 0.5, 0, 0.5],
+                            text: formattedString(sumImpost[key].sum.toFixed(2) + ""),
+                            alignment: "right"
+                        }
+                    ]
+                }),
                 [
                     {
                         border: [false, false, false, false],
-                        fillColor: "#F5F6F6",
-                        columns: [
-                            {
-                                fontSize: 6.5,
-                                margin: [0, 1, 0, 1],
-                                text: formattedString(subtotal.toFixed(2) + ""),
-                                alignment: "center"
-                            },
-                            ...Object.keys(sumImpost).map((key) => {
-                                return {
-                                    fontSize: 6.5,
-                                    margin: [0, 1, 0, 1],
-                                    text: formattedString(sumImpost[key].sum.toFixed(2) + ""),
-                                    alignment: "center"
-                                }
-                            }),
-                            {
-                                alignment: "center",
-                                fontSize: 6.5,
-                                margin: [0, 1, 0, 1],
-                                text: formattedString(account_content?.main?.conta_montante.toFixed(2) + ""),
-                            }
-                        ]
+                        text: "", colSpan: 5, fillColor: "#ffffff",
+                    },
+                    {text: ""},
+                    {text: ""},
+                    {text: ""},
+                    {text: ""},
+                    {
+                        fontSize: 6.5,
+                        border: [false, false, false, false],
+                        fillColor: baseColor,
+                        color: textcolor,
+                        margin: [0, 0.5, 0, 0.5],
+                        bold: true,
+                        text: "Total",
+                    },
+                    {
+                        fontSize: 6.5,
+                        border: [false, false, false, false],
+                        fillColor: baseColor,
+                        color: textcolor,
+                        margin: [0, 0.5, 0, 0.5],
+                        bold: true,
+                        text: formattedString(account_content?.main?.conta_montante.toFixed(2) + ""),
+                        alignment: "right"
                     }
                 ]
             ]
@@ -269,6 +293,16 @@ export let create = async (instituition, account_content, res, user, date, num_a
                                             },
                                             (account_content.main.cliente_mail || "---------------")
                                         ]
+                                    },
+                                    {
+                                        text: [
+                                            {
+                                                bold: true,
+                                                color: '#000000',
+                                                text: `Endereço: `
+                                            },
+                                            (account_content?.main?.cliente_metadata?.morada || "---------------")
+                                        ]
                                     }
                                 ]
                             },
@@ -283,7 +317,7 @@ export let create = async (instituition, account_content, res, user, date, num_a
                                         text: "Nº da FATURA"
                                     },
                                     {
-                                        margin: [0, 0, 0, 4],
+                                        margin: [0, 0, 0, 15],
                                         text: account_content.main.conta_serie.document,
                                     },
                                     {
@@ -320,9 +354,23 @@ export let create = async (instituition, account_content, res, user, date, num_a
                 },
                 table: {
                     headerRows: 1,
-                    widths: ["10%", "39%", "8%", "11%", "14%", "18%"],
+                    widths: ["5%", "6%", "14%", "35%", "10%", "13%", "17%"],
                     body: [
                         [
+                            {
+                                margin: [0, 3, 0, 3],
+                                borderColor: [baseColor, baseColor, baseColor, baseColor],
+                                fillColor: baseColor,
+                                text: "Qtd",
+                                color: textcolor
+                            },
+                            {
+                                margin: [0, 3, 0, 3],
+                                borderColor: [baseColor, baseColor, baseColor, baseColor],
+                                fillColor: baseColor,
+                                text: "Uni.",
+                                color: textcolor
+                            },
                             {
                                 margin: [0, 3, 0, 3],
                                 borderColor: [baseColor, baseColor, baseColor, baseColor],
@@ -341,16 +389,9 @@ export let create = async (instituition, account_content, res, user, date, num_a
                                 margin: [0, 3, 0, 3],
                                 borderColor: [baseColor, baseColor, baseColor, baseColor],
                                 fillColor: baseColor,
-                                text: "Qtd",
-                                color: textcolor
-                            },
-                            {
-                                margin: [0, 3, 0, 3],
-                                borderColor: [baseColor, baseColor, baseColor, baseColor],
-                                fillColor: baseColor,
                                 text: "Taxa",
                                 color: textcolor,
-                                alignment: "right"
+                                alignment: "center"
                             },
                             {
                                 margin: [0, 3, 0, 3],
@@ -369,10 +410,16 @@ export let create = async (instituition, account_content, res, user, date, num_a
                                 alignment: "right"
                             }
                         ],
-                        ...artigosConta
+                        ...artigosConta,
                     ]
                 }
-            }
+            },
+            (!!account_content?.main?.conta_props?.terms) ? {
+                fontSize: 8,
+                lineHeight: 1.5,
+                margin: [10, 25, 10, 0],
+                text: account_content?.main?.conta_props?.terms
+            } : {}
         ],
         ...structure(user, num_autorization, instituition.espaco_configuracao.certification,
             (instituition?.espaco_configuracao?.cabecalho_referencia === null ? "" : clusterServer.res.resolve(instituition?.espaco_configuracao?.cabecalho_referencia)), textcolor, baseColor, rotape)

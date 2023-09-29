@@ -201,5 +201,11 @@ $("[remove_printer]").on("click", function () {
 });
 $("#hasKuchen").on("mousedown" ,function () {
     $(this).toggleClass("active");
-    $("#xModalPrintSett").toggleClass("haveKuchen");
+    setTimeout(() => {
+        if ($(this).hasClass("active")) {
+            $("#xModalPrintSett").addClass("haveKuchen");
+            return
+        }
+        $(" #xModalPrintSett ").removeClass("haveKuchen");
+    }, 10)
 });

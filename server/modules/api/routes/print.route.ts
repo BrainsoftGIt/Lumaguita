@@ -115,7 +115,7 @@ app.get("/api/print/guia_saida/:dados", async (req, res) =>{
     await file.create(instituition, dadosConta.rows[0], res, user,  dadosConta.rows[0].main.conta_serie.serie_numatorizacao, guia);
 });
 app.get("/api/print/fatura/:dados", async (req, res) =>{
-    let conta = JSON.parse(req.params.dados);
+    let {...conta} = JSON.parse(req.params.dados);
     const file = require("./functions/export-fatura");
     const fatura_talao = require("./functions/export-fatura-talao");
     const fatura_talaoA5 = require("./functions/export-fatura-talao-a5");

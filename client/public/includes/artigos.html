@@ -360,22 +360,32 @@
 									<label for="artigo_nome">Nome</label>
 								</div>
 								<div class="xselect flutuate w100">
-									<input type="text" readonly _noObrigatory="true" id="artigo_impostos_desc">
+									<input type="text" id="artigo_unidade_desc" readonly placeholder="_">
+									<label for="artigo_unidade_desc">Unidades</label>
+									<ul id="artigo_unidade">
+									</ul>
+									<div class="fakearrow flex"><span></span><span></span></div>
+								</div>
+								<div class="xselect flutuate w100">
+									<input type="text" readonly _noObrigatory="true" id="artigo_impostos_desc" placeholder="_">
 									<label for="artigo_impostos_desc">Impostos</label>
 									<ul id="artigo_impostos">
 									</ul>
+									<div class="fakearrow flex"><span></span><span></span></div>
 								</div>
 								<div class="xselect flutuate w100">
-									<input type="text" readonly _noObrigatory="true" id="aplicacao_impostos_desc">
+									<input type="text" readonly _noObrigatory="true" id="aplicacao_impostos_desc" placeholder="_">
 									<label for="aplicacao_impostos_desc">Forma de aplicação de imposto</label>
 									<ul id="artigo_aplicacao_imposto">
 									</ul>
+									<div class="fakearrow flex"><span></span><span></span></div>
 								</div>
 								<div class="xselect flutuate w100">
-									<input type="text" readonly _noObrigatory="true" id="artigo_codigoimposto">
+									<input type="text" readonly _noObrigatory="true" id="artigo_codigoimposto" placeholder="_">
 									<label for="artigo_codigoimposto">Código de Inclusão/exclusão</label>
 									<ul id="artigo_codigoimpostolist">
 									</ul>
+									<div class="fakearrow flex"><span></span><span></span></div>
 								</div>
 								<div class="xinput grow-1 w100">
 									<textarea id="artigo_observacao" _noObrigatory="true" placeholder="_"></textarea>

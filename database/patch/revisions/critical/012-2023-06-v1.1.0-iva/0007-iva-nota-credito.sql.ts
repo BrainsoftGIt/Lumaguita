@@ -27,7 +27,9 @@ declare
       arg_colaborador_id: UID
       arg_espaco_auth: UID
       conta_id: UID,
+      conta_data: DATE,
       conta_posto_id: UID
+      conta_observacao
       itens: [
         { venda_id:ID },
         { venda_id:ID },
@@ -278,9 +280,11 @@ begin
   end if;
   
   _conta_args.conta_cliente_id := _conta.conta_cliente_id;
+  _conta_args.conta_data := coalesce( _conta_args.conta_data, current_date );
   if _conta_args.conta_cliente_id is null or _conta_args.conta_cliente_id = _const.maguita_cliente_final then
       _conta_args.conta_cliente_id := _const.maguita_cliente_finalnotacredito;
   end if;
+  
 
 
   _conta_res := tweeks.funct_pos_reg_conta(
@@ -296,14 +300,14 @@ begin
       'conta_cliente_id', _conta_args.conta_cliente_id,
       'conta_titular', _conta.conta_titular,
       'conta_titularnif', _conta.conta_titularnif,
-      'conta_data', current_date,
+      'conta_data', _conta_args.conta_data,
       'arg_vendas', _vendas.arg_vendas,
       'conta_conta_docorigin', _conta.conta_id,
+      'conta_observacao', _conta_args.conta_observacao,
+      'conta_tserie_id', _const.maguita_tserie_notacredito,
       'conta_espaco_notacredito', arg_espaco_auth
     )
   );
-
-  raise notice '%', to_jsonb(_conta_res);
   
   if not _conta_res.result then
     return _conta_res;
@@ -363,8 +367,9 @@ begin
       'conta_extension', jsonb_build_object(),
       'conta_posto_id',  _conta_args.conta_posto_id,
       'conta_posto_fecho',  _conta_args.conta_posto_id,
-      'conta_desconto', ( _conta.conta_desconto * -1 ),
+      'conta_desconto', ( _conta.conta_desconto ),
       'conta_titular', _conta.conta_titular,
+      'conta_tserie_id', _const.maguita_tserie_notacredito,
       'conta_titularnif', _conta.conta_titularnif,
       'conta_data', coalesce( _conta_args.conta_data, now()::date),
       'conta_cliente_id', _conta_args.conta_cliente_id,
@@ -378,6 +383,13 @@ begin
   );
 
   return _conta_close_res;
+
+exception  when others then
+    <<_ex>> declare e text; m text; d text; h text; c text;
+    begin
+        get stacked diagnostics e=returned_sqlstate, m=message_text, d=pg_exception_detail, h=pg_exception_hint, c=pg_exception_context;
+        return lib.res_exception( _ex.e, _ex.m, _ex.h, _ex.d, _ex.c );
+    end;
 end
 $$;
 

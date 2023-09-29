@@ -153,19 +153,25 @@ var settings = {
                         if(settings.empresa?.configuracao_impressoras === undefined){
                             settings.empresa["configuracao_impressoras"] = [];
                         }
-                        if(settings.empresa?.impressoras_cozinha === undefined){
+
+                        $("#printTalaoA5, #printTalaoA6").removeClass( "active");
+                        $(" #hasKuchen ").removeClass("active");
+                        $(" #xModalPrintSett ").removeClass("haveKuchen");
+
+                        if(!settings?.empresa?.impressoras_cozinha){
                             settings.empresa["impressoras_cozinha"] = {
                                 nome: null,
                                 ip: null
                             }
                         }
-                        else{
-                            if(settings.empresa.impressoras_cozinha.nome !== null || settings.empresa.impressoras_cozinha.ip !== null){
-                                $("#nome_impressora_cozinha").val(settings.empresa.impressoras_cozinha.nome || "");
-                                $("#ip_impressora_cozinha").val(settings.empresa.impressoras_cozinha.ip || "");
-                                $("#hasKuchen").addClass("active");
-                            }
+
+                        if(!!settings?.empresa?.impressoras_cozinha?.nome || !!settings?.empresa?.impressoras_cozinha?.ip){
+                            $("#nome_impressora_cozinha").val(settings.empresa.impressoras_cozinha.nome || "");
+                            $("#ip_impressora_cozinha").val(settings.empresa.impressoras_cozinha.ip || "");
+                            $("#hasKuchen").addClass("active");
+                            $("#xModalPrintSett").addClass("haveKuchen");
                         }
+
 
                         $("#printTalaoA5").addClass(settings.empresa.printTalaoA5 ? "active" : "");
                         $("#printTalaoA6").addClass(settings.empresa.printTalaoA6 ? "active" : "");
@@ -386,7 +392,7 @@ var settings = {
         });
     },
     configurarDadosEmpresa(){
-        let dados = {};
+        let dados = { ...this.empresa };
         $("[bt_empresa]").attr("disabled", true).addClass("loading");
         dados.empresa_nome = $("#empresa_nome").val().trim();
         dados.empresa_nif = $("#empresa_nif").val();

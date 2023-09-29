@@ -1,7 +1,7 @@
 import {block} from "../../../core/updater";
 
 block( module, {
-    identifier: "unit|v2.0.6-07",
+    identifier: "unit|v2.1.1-5656",
     flags: [ "@unique" ]
 }).sql`
     drop view if exists report.vreport_balanco;
@@ -99,7 +99,7 @@ $$;
 `;
 
 block( module, {
-    identifier: "unit:(sets,load)|v2.0.6-05",
+    identifier: "unit-v2.1.1-8393",
 }).sql`
 create or replace function tweeks.funct_sets_unit( args jsonb )
   returns lib.res

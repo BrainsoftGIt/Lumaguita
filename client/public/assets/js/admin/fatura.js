@@ -1,3 +1,4 @@
+var FATURA = 1;
 var faturaAdmin = {
     proformas: [],
     conta_id: null,
@@ -46,7 +47,6 @@ var faturaAdmin = {
                                             <li price="${art.venda_custounitario}">${art.venda_custounitario.formatter()+" STN"}</li>
                                             <li>${total_value+" STN"}</li>
                                             <li class="flex v-ct">
-<!--                                               <span class="noLabel"></span>-->
                                                     <span class="flex v-ct">            
                                                          <a tooltip="Eliminar" flow="top" title="Remover">
                                                         <svg class="delete" viewBox="-40 0 427 427.00131">
@@ -103,7 +103,6 @@ var faturaAdmin = {
                                                     <li class="vencimento" date="${(prof.conta_proformavencimento || "")}">${(prof.conta_proformavencimento === null ? "N/D" : alterFormatDate(prof.conta_proformavencimento))}</li>
                                                     <li>${data_emissao}</li>
                                                     <li class="flex v-ct j-stp">
-<!--                                                       <span class="noLabel"></span>-->
                                                             <span class="flex v-ct">
                                                                 <a class="editar" title="Editar" i="${idx}">
                                                                     <svg viewBox="0 0 512 512"><path d="m368 511.957031h-309.332031c-32.363281 0-58.667969-26.304687-58.667969-58.667969v-309.332031c0-32.363281 26.304688-58.667969 58.667969-58.667969h181.332031c8.832031 0 16 7.167969 16 16 0 8.832032-7.167969 16-16 16h-181.332031c-14.699219 0-26.667969 11.96875-26.667969 26.667969v309.332031c0 14.699219 11.96875 26.667969 26.667969 26.667969h309.332031c14.699219 0 26.667969-11.96875 26.667969-26.667969v-181.332031c0-8.832031 7.167969-16 16-16s16 7.148438 16 16v181.332031c0 32.363282-26.304688 58.667969-58.667969 58.667969zm0 0"/><path d="m187.136719 340.820312c-4.203125 0-8.300781-1.664062-11.308594-4.691406-3.796875-3.777344-5.417969-9.21875-4.371094-14.445312l15.082031-75.433594c.617188-3.113281 2.152344-5.953125 4.371094-8.171875l220.953125-220.925781c22.867188-22.871094 60.074219-22.871094 82.964844 0 11.070313 11.070312 17.171875 25.792968 17.171875 41.472656s-6.101562 30.398438-17.195312 41.472656l-220.925782 220.949219c-2.21875 2.238281-5.078125 3.753906-8.171875 4.371094l-75.414062 15.082031c-1.046875.214844-2.113281.320312-3.15625.320312zm75.433593-31.082031h.214844zm-45.609374-52.457031-9.410157 47.144531 47.125-9.429687 217.515625-217.511719c5.035156-5.058594 7.808594-11.734375 7.808594-18.859375s-2.773438-13.804688-7.808594-18.859375c-10.367187-10.390625-27.285156-10.390625-37.714844 0zm0 0"/><path d="m453.332031 134.976562c-4.09375 0-8.191406-1.558593-11.304687-4.695312l-60.332032-60.351562c-6.25-6.25-6.25-16.382813 0-22.632813s16.382813-6.25 22.636719 0l60.328125 60.351563c6.25 6.25 6.25 16.382812 0 22.632812-3.136718 3.117188-7.230468 4.695312-11.328125 4.695312zm0 0"/></svg>
@@ -149,7 +148,6 @@ var faturaAdmin = {
         });
     },
     articles_added(){
-        console.log("ddndndnd")
         let articles_table = [];
         let montanteQuantidade = 0;
         let semImposto = $("[isencaoImposto]").hasClass("active");
@@ -178,20 +176,19 @@ var faturaAdmin = {
                 venda_taxas: taxasArtigos.getImpostos($(this).attr("article_id"))
             });
         });
-
-        console.log({articles_table})
         return articles_table;
     },
     add_account: function (){
+
         let conta = {};
         conta.conta_mesa = {numero: null, descricao: null, lotacao: null};
         conta.conta_extension = {};
+        conta.conta_data = $("#fatura_data_emissao").val() === "" ? new Date().getDateEn() : alterFormatDate($("#fatura_data_emissao").val());
         conta.arg_vendas = this.articles_added();
-        console.log({conta})
         conta.admin = true;
+        conta.conta_tserie_id = FATURA;
         conta.conta_chave = faturaAdmin.key;
 
-        console.log({conta})
         $.ajax({
             url: "/api/pos/conta",
             method: "POST",
@@ -208,13 +205,13 @@ var faturaAdmin = {
         });
     },
     register_invoice({conta_id}){
-        let FATURA = 1;
+        let observacao_fatura = $("#observacao_fatura");
         let dados = {};
         dados.conta_id = conta_id;
         dados.conta_extension = {};
         dados.conta_mesa =  { numero: null, descricao:null, lotacao:null };
         dados.conta_desconto = null;
-        dados.conta_titular =   $("[cliente_titular]").val().trim();
+        dados.conta_titular = $("[cliente_titular]").val().trim();
         dados.conta_titularnif = $("[cliente_nif]").val().trim() || null;
         dados.conta_data = $("#fatura_data_emissao").val() === "" ? null : alterFormatDate($("#fatura_data_emissao").val());
         dados.conta_cliente_id = articlesDocuments.customer_id;
@@ -226,12 +223,16 @@ var faturaAdmin = {
         dados.guia_dataopeacao = null;
         dados.guia_metadata = {};
         dados.custos = [];
+        dados.conta_props = {
+            terms: observacao_fatura.val() || ""
+        }
+
 
         $.ajax({
             url: "/api/pos/pay",
             method: "POST",
             contentType: "application/json",
-            data: JSON.stringify({...dados, arg_tserie_id: FATURA}),
+            data: JSON.stringify({ ...dados, arg_tserie_id: FATURA }),
             error() {$("#finalizar_fatura").prop("disabled", false).removeClass("loading")},
             success(e) {
                 $("#finalizar_fatura").prop("disabled", false).removeClass("loading");
@@ -242,11 +243,12 @@ var faturaAdmin = {
                     $("[tableDocumentArticles]").addClass("empty");
                     xAlert("Fatura", "Fatura emitida com sucesso!");
                     articlesDocuments.customer_id = null;
-                    open("/api/print/fatura/"+JSON.stringify({type: "pdf", conta_id: dados.conta_id, date: new Date().getTimeStampPt(), admin: true }));
+                    open("/api/print/fatura/"+JSON.stringify({type: "pdf", conta_id: dados.conta_id, date: new Date().getTimeStampPt(), admin: true}));
                     if($("[imprimirGuiaSaida]").hasClass("active")){
                         open("/api/print/guia_saida/"+JSON.stringify({date: new Date().getTimeStampPt(), guia_uuid: e.data, conta_id: dados.conta_id }));
                     }
                     $("[imprimirGuiaSaida]").removeClass("active");
+                    observacao_fatura.val("");
                 }
                 else xAlert("Fatura", e.data, "error");
             }

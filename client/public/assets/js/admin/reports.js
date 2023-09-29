@@ -46,9 +46,9 @@ var report = {
                     tipo_relatorios.append(`<li class="tgl" source="${conf.report_source}">${conf.report_name}</li>`);
                 });
                 tipo_relatorios.find("li").eq(0).click();
-                if($("#colunas_relatorio").find("li.active").length >= 2) {
+                /*if($("#colunas_relatorio").find("li.active").length >= 2) {
                     $("#filterReport").click();
-                }
+                }*/
             }
         });
     },

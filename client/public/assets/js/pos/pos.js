@@ -1,4 +1,5 @@
 M.AutoInit();
+var FATURARECIBO = 2;
 var pos = {
     selectedArticle: null,
     selectedCartElement: null,
@@ -97,9 +98,9 @@ var pos = {
     },
     reduceQuantity(){
         let quantidadeCarrinho = Number(this.selectedCartElement.find("span.amount").text());
-        // if((quantidadeCarrinho -1) !== 0) {
+        if((quantidadeCarrinho -1) !== 0) {
             this.selectedCartElement.find("span.amount").text((Number(quantidadeCarrinho) -1));
-        // }
+        }
         this.determinateTotalValues();
     },
     addToCart(){
@@ -317,11 +318,17 @@ var pos = {
         let currentFunction = this.registerAccount;
         this.registerAccount = function () {}
         let conta = {};
-        conta.conta_mesa = {numero: ($("#numeroMesa").text().trim() === "" || $("#numeroMesa").text().trim() === "N/D" ? null : $("#numeroMesa").text().trim() ),
-            descricao: null, lotacao: null};
+        conta.conta_mesa = {
+            numero: ($("#numeroMesa").text().trim() === "" || $("#numeroMesa").text().trim() === "N/D" ? null : $("#numeroMesa").text().trim()),
+            descricao: null,
+            lotacao: null
+        };
         conta.conta_extension = {};
+        conta.conta_tserie_id = FATURARECIBO;
         conta.arg_vendas = this.getArticlesAccount();
+        conta.conta_data = new Date().getDateEn();
         conta.conta_chave = account.key;
+
         $("body").addClass("loading");
         $.ajax({
             url: "/api/pos/conta",
@@ -348,8 +355,11 @@ var pos = {
                         $("#kitchen_obs").val("");
                         showTarget("xModalKuchenObservation", "");
                     }
+                    return
                 }
-                else M.toast({html: e.data.message, classes: 'rounded'});
+
+                pos.registerAccount = currentFunction;
+                M.toast({html: e?.message || e?.data?.message || "Erro ao salvar!", classes: 'rounded'});
             }
         });
     },
@@ -360,7 +370,9 @@ var pos = {
         conta.conta_mesa = {numero: ($("#numeroMesa").text().trim() === "" || $("#numeroMesa").text().trim() === "N/D" ? null : $("#numeroMesa").text().trim() ),
             descricao: null, lotacao: null};
         conta.conta_extension = {};
+        conta.conta_tserie_id = FATURARECIBO;
         conta.arg_vendas = this.getArticlesAccount(false);
+        conta.conta_data = new Date().getDateEn();
         conta.conta_id = this.conta_id;
         conta.conta_chave = account.key;
 
@@ -389,8 +401,11 @@ var pos = {
                         $("#kitchen_obs").val("");
                         showTarget("xModalKuchenObservation", "");
                     }
+                    return
                 }
-                else M.toast({html: e.message, classes: 'rounded'});
+
+                pos.updateAccount = currentFunction;
+                M.toast({html: e?.message || e?.data?.message || "Erro ao salvar!", classes: 'rounded'});
             }
         });
     },

@@ -18,7 +18,7 @@ var notacredito = {
                 $("[tableDocumentArticles]").empty();
                 if(!conta_vendas){
                     $(" [tableDocumentArticles] ").addClass("empty");
-                    xAlert("Nota de cretido", "Não foi encontrado numa fatura com esse número!", "error");
+                    xAlert("Nota de credito", "Não foi encontrado numa fatura com esse número!", "error");
                     return
                 }
 
@@ -58,6 +58,7 @@ var notacredito = {
     reg : () => {
         let { fatura : { conta_id }, key: conta_chave } = notacredito;
         let conta_posto_id = $("#colaborador_logado_armazens").find("li.active").attr("posto_admin");
+        let conta_observacao = $("[notacredito_observacao]").val();
         let itens = $("[tableDocumentArticles] ul").map(function (){
             let { venda_id } = $(this).data();
             return {
@@ -66,12 +67,17 @@ var notacredito = {
         }).get();
 
         if( !conta_id ){
-            xAlert("Nota de cretido", "Selecione uma conta!", "error");
+            xAlert("Nota de credito", "Selecione uma conta!", "error");
             return;
         }
 
         if( !itens.length ){
-            xAlert("Nota de cretido", "Sem item para efetuar a nota de credito!", "error");
+            xAlert("Nota de credito", "Sem item para efetuar a nota de credito!", "error");
+            return
+        }
+
+        if(conta_observacao){
+            xAlert("Nota de credito", "Digite uma observação!", "error");
             return
         }
 
@@ -83,13 +89,14 @@ var notacredito = {
             complete() { $("#finalizarNotaCredito").attr("disabled", false).removeClass("loading") },
             data: JSON.stringify({
                 conta_id,
+                conta_observacao,
                 conta_posto_id,
                 conta_chave,
                 itens
             }),
             success: ({data : {conta : { conta_id } }, result, message}) => {
                 if(result){
-                    xAlert("Nota de cretido", "Operação efetuada com sucesso!");
+                    xAlert("Nota de credito", "Operação efetuada com sucesso!");
                     $("[tableDocumentArticles]").empty().addClass("empty");
                     $("[cliente_titular]").val("");
                     $("[cliente_nif]").val("");
@@ -99,7 +106,7 @@ var notacredito = {
                     return
                 }
 
-                xAlert("Nota de cretido", message, "error");
+                xAlert("Nota de credito", message, "error");
             }
         });
     },
@@ -127,7 +134,7 @@ $("[pesquisarFatura]").on("keyup", function ({keyCode}){
         loadData();
         return
     }
-    xAlert("Nota de cretido", "Priencha o campo fatura!", "error");
+    xAlert("Nota de credito", "Priencha o campo fatura!", "error");
 })
 
 $("#finalizarNotaCredito").on("click", function (){

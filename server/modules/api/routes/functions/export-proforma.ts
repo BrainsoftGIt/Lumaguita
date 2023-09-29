@@ -22,6 +22,8 @@ export let create = async (instituition, account, account_content, res, user, da
     let baseColor = instituition?.espaco_configuracao?.empresa_basecolor || "#000000";
     let textcolor = instituition?.espaco_configuracao?.empresa_textcolor || "#ffffff";
 
+    console.log(account)
+
     let sumImpost = {};
     console.log({conta_vendas: JSON.stringify(account_content?.main?.conta_vendas)});
     (account_content?.main?.conta_vendas || []).forEach((cont) => {
@@ -42,6 +44,18 @@ export let create = async (instituition, account, account_content, res, user, da
                 margin: [0, 3, 0, 3],
                 fontSize: 6.5,
                 border: [false, false, false, false],
+                text: cont?.venda_quantidade || "---"
+            },
+            {
+                margin: [0, 3, 0, 3],
+                fontSize: 6.5,
+                border: [false, false, false, false],
+                text: cont?.unit_code || "----"
+            },
+            {
+                margin: [0, 3, 0, 3],
+                fontSize: 6.5,
+                border: [false, false, false, false],
                 text: cont?.artigo_codigo || "----"
             },
             {
@@ -54,27 +68,21 @@ export let create = async (instituition, account, account_content, res, user, da
                 margin: [0, 3, 0, 3],
                 fontSize: 6.5,
                 border: [false, false, false, false],
-                text: cont?.venda_quantidade || "---"
+                text: `${formattedString(cont.venda_imposto.toFixed(2))}`,
+                alignment: "center"
             },
             {
                 margin: [0, 3, 0, 3],
                 fontSize: 6.5,
                 border: [false, false, false, false],
-                text: `${formattedString(cont.venda_imposto.toFixed(2))} STN`,
+                text: formattedString(preco_artigo.toFixed(2) + ""),
                 alignment: "right"
             },
             {
                 margin: [0, 3, 0, 3],
                 fontSize: 6.5,
                 border: [false, false, false, false],
-                text: formattedString(preco_artigo.toFixed(2) + "") + " STN",
-                alignment: "right"
-            },
-            {
-                margin: [0, 3, 0, 3],
-                fontSize: 6.5,
-                border: [false, false, false, false],
-                text: formattedString(cont.venda_montantesemimposto.toFixed(2) + "") + " STN",
+                text: formattedString(cont.venda_montantesemimposto.toFixed(2) + ""),
                 alignment: "right"
             }
         ]);
@@ -273,6 +281,16 @@ export let create = async (instituition, account, account_content, res, user, da
                                             (account?.cliente_email || "---------")
                                         ]
                                     },
+                                    {
+                                        text: [
+                                            {
+                                                bold: true,
+                                                color: '#000000',
+                                                text: `Morada: `
+                                            },
+                                            (account?.cliente_metadata?.morada || "---------")
+                                        ]
+                                    }
                                 ]
                             },
                             {
@@ -286,7 +304,7 @@ export let create = async (instituition, account, account_content, res, user, da
                                         text: "Nº de Fatura"
                                     },
                                     {
-                                        margin: [0, 0, 0, 4],
+                                        margin: [0, 0, 0, 15],
                                         text: account_content?.main?.conta_numero,
                                     },
                                     {
@@ -344,9 +362,23 @@ export let create = async (instituition, account, account_content, res, user, da
                 },
                 table: {
                     headerRows: 1,
-                    widths: ["10%", "39%", "8%", "11%", "14%", "18%"],
+                    widths: [ "5%", "6%", "14%", "35%", "10%", "13%", "17%"],
                     body: [
                         [
+                            {
+                                margin: [0, 3, 0, 3],
+                                borderColor: [baseColor, baseColor, baseColor, baseColor],
+                                fillColor: baseColor,
+                                text: "Qtd",
+                                color: textcolor
+                            },
+                            {
+                                margin: [0, 3, 0, 3],
+                                borderColor: [baseColor, baseColor, baseColor, baseColor],
+                                fillColor: baseColor,
+                                text: "Uni.",
+                                color: textcolor
+                            },
                             {
                                 margin: [0, 3, 0, 3],
                                 borderColor: [baseColor, baseColor, baseColor, baseColor],
@@ -365,16 +397,9 @@ export let create = async (instituition, account, account_content, res, user, da
                                 margin: [0, 3, 0, 3],
                                 borderColor: [baseColor, baseColor, baseColor, baseColor],
                                 fillColor: baseColor,
-                                text: "Qtd",
-                                color: textcolor
-                            },
-                            {
-                                margin: [0, 3, 0, 3],
-                                borderColor: [baseColor, baseColor, baseColor, baseColor],
-                                fillColor: baseColor,
                                 text: "Taxa",
                                 color: textcolor,
-                                alignment: "right"
+                                alignment: "center"
                             },
                             {
                                 margin: [0, 3, 0, 3],
@@ -397,21 +422,12 @@ export let create = async (instituition, account, account_content, res, user, da
                     ]
                 }
             },
-            (account?.conta_proformaextras?.termos !== null ? {
+            (!!account?.conta_proformaextras?.termos ? {
                 fontSize: 8,
-                margin: [0, 50, 0, 0],
-                stack: [
-                    {
-                        bold: true,
-                        text: "Termos"
-                    },
-                    {
-                        margin: [0, 20, 0, 0],
-                        bold: false,
-                        text: account?.conta_proformaextras.termos
-                    }
-                ]
-            } : "")
+                lineHeight: 1.5,
+                margin: [10, 25, 10, 0],
+                text: account?.conta_proformaextras.termos
+            } : {})
         ],
         ...structure(user, num_autorization, instituition.espaco_configuracao.certification,
             (instituition?.espaco_configuracao?.cabecalho_referencia === null ? "" : clusterServer.res.resolve(instituition?.espaco_configuracao?.cabecalho_referencia)), textcolor, baseColor, rotape)
