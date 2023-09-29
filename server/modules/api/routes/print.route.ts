@@ -5,6 +5,7 @@ import {functReportVendaPOS} from "../db/call-function-report";
 export async function load_space_configuration(req, admin) {
     const {functLoadDadosEmpresa} = require("../db/call-function-settings");
     req.body.arg_espaco_auth = admin ? req.session.auth_data.auth.armazem_atual : req.session.user_pos.auth.armazem_atual;
+    req.body.arg_colaborador_id = admin ? req.session.auth_data.auth.colaborador_id : req.session.user_pos.auth.colaborador_id;
     return  (await functLoadDadosEmpresa(req.body)).rows;
 }
 
