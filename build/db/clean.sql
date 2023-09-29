@@ -352,5 +352,6 @@ truncate cluster.cluster cascade;
 truncate cluster.sequence cascade;
 truncate cluster.break cascade;
 truncate cluster.ignore cascade;
+truncate cluster.resource cascade;
 
 

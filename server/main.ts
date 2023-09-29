@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 
 require( 'source-map-support' ).install();
+require('./global/pid').showUncaughtError();
 
 import * as path from "path";
 import {FileUtil} from "zoo.util/lib/file-util";
 import {launcherStatus} from "./launcher/status";
 import {serverNotify} from "./snotify";
-import {showUncaughtError} from "./global/pid";
 import {folders} from "./global/project";
 import {args, lineArgs} from "./global/args";
 
@@ -39,10 +39,6 @@ process.env[ "PATH" ] = _path.join( path.delimiter );
 //Apply os correction
 serverNotify.loadingBlockItem( "Aplicando patches...", { notifier:false});
 require( "./patches" ).patchesInstall();
-
-showUncaughtError();
-
-
 
 if( args.dbMode === "app" ){
     args.dbPort = args.dbPortDatabaseApp;

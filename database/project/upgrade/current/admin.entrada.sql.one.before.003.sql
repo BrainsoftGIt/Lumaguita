@@ -1,1 +1,0 @@
-alter table tweeks.entrada add entrada_metadata json default null;

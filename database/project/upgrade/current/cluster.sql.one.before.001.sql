@@ -1,1 +1,0 @@
-alter table cluster.cluster add if not exists cluster_verbose boolean not null default false;

@@ -1,1 +1,0 @@
-alter table tweeks.conta add conta_serie json default null;
