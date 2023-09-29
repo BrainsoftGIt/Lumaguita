@@ -154,7 +154,6 @@ var settings = {
                             settings.empresa["configuracao_impressoras"] = [];
                         }
 
-
                         $("#printTalaoA5, #printTalaoA6").removeClass( "active");
                         $(" #hasKuchen ").removeClass("active");
                         $(" #xModalPrintSett ").removeClass("haveKuchen");
