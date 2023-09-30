@@ -79,6 +79,8 @@ var setStep = {
                     $("#MST-PIN").find(".hideTarget").click();
                     showTarget("fkPGReport");
                     valide = true;
+                    const iframe = document.getElementById('ifReport');
+                    iframe.contentWindow.showReportParametizadeOnly(account.post.posto_id);
                 };
             }
             else{
@@ -93,16 +95,10 @@ var setStep = {
                     else{
                         $("#MST-PIN").find(".hideTarget").click();
                         showTarget("fkPGReport");
-                        valide = true;
+                        const iframe = document.getElementById('ifReport');
+                        iframe.contentWindow.showReportParametizadeOnly(account.post.posto_id);
                     }
                 };
-            }
-
-            if(valide){
-                setTimeout(() => {
-                    const iframe = document.getElementById('ifReport');
-                    iframe.contentWindow.showReportParametizadeOnly(account.post.posto_id);
-                }, 1000)
             }
         },
         fecharCaixa(){
