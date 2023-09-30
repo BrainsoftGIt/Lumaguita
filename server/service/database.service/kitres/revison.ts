@@ -23,6 +23,10 @@ export const pgRevision = new RevisionCore( pgCore, {
     history: history
 });
 
+pgRevision.on("log", (level, message) => {
+    console.log( message );
+});
+
 pgRevision.on("collectError", error =>{
     console.error( error );
 });

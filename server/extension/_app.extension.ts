@@ -17,7 +17,9 @@ export function getSys(){
 let dbPatch = ():Promise<boolean>=>{
     return new Promise( resolve => {
         serverNotify.loadingBlock( "Database upgrade patches..." );
+        serverNotify.loadingBlock( "Database upgrade patches... collecting patch" );
         let collectResult = pgRevision.collect();
+        serverNotify.loadingBlock( "Database upgrade patches... applying patch" );
         if( collectResult?.error ){
             console.error( `Erro ao collectar os patches!` );
             console.error( collectResult.error );
