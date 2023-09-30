@@ -1,5 +1,4 @@
 import {app, storage} from '../../../../service/storage.service';
-import {functLoadPatient, functSetPatient} from "../../db/clinic/call-function-patient";
 import {functLoadItens} from "../../db/clinic/call-function-fixacao";
 
 app.post("/api/clinica/fixacao/set", async (req, res) =>{
