@@ -118,16 +118,11 @@ var account = {
                 if(e.not_registrated !== undefined){
                     $(".postatus").addClass("unregistered");
                 }
-                else{
+                else {
                     account.post = e.post;
                     account.session = e.hasSession;
                     account.pos_user = e.pos_user_name;
                     account.pos_user_session_uuid = e.pos_user_session_uuid;
-
-                   setTimeout(() => {
-                       const iframe = document.getElementById('ifReport');
-                       iframe.contentWindow.showReportParametizadeOnly(account.post.posto_id);
-                   }, 1000)
 
                     if(account.post.chave_definitiva === null) $(".postatus").addClass("unregistered");
                     else{

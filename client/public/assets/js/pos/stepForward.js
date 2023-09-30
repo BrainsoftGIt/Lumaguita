@@ -71,12 +71,14 @@ var setStep = {
             }
         },
         showReports(){
+            let valide = false;
             if(account.post.posto_authmode === 2
                 && $(".credentialPIN").find(".list-users li.active").attr("colab_id") === account.pos_user_session_uuid){
                 $('.credentialPIN').find(".pinkey li").css("pointer-events", "none");
                 account.functionGoForward = function () {
                     $("#MST-PIN").find(".hideTarget").click();
                     showTarget("fkPGReport");
+                    valide = true;
                 };
             }
             else{
@@ -91,8 +93,16 @@ var setStep = {
                     else{
                         $("#MST-PIN").find(".hideTarget").click();
                         showTarget("fkPGReport");
+                        valide = true;
                     }
                 };
+            }
+
+            if(valide){
+                setTimeout(() => {
+                    const iframe = document.getElementById('ifReport');
+                    iframe.contentWindow.showReportParametizadeOnly(account.post.posto_id);
+                }, 1000)
             }
         },
         fecharCaixa(){
