@@ -88,19 +88,18 @@ if ( args.appMode !== "public" ){
     cron.schedule('0 0 0 * * *', async () => {
         funLoadSchedules()
     });
+
+    setInterval(() => {
+        if(noLoadAlerts && !listEventToNotify.length || forceReloadAlerts)
+            funLoadSchedules()
+        listEventToNotify.forEach(({schedule_startdate, ...data}) => {
+            if(schedule_startdate === moment().format("YYYY-MM-DD HH:mm")) {
+                setTimeout(() => {
+                    Schedule.notify({...data, schedule_startdate}).then(() => {
+
+                    })
+                }, 1000)
+            }
+        })
+    }, 60000)
 }
-
-
-setInterval(() => {
-    if(noLoadAlerts && !listEventToNotify.length || forceReloadAlerts)
-    funLoadSchedules()
-    listEventToNotify.forEach(({schedule_startdate, ...data}) => {
-        if(schedule_startdate === moment().format("YYYY-MM-DD HH:mm")) {
-            setTimeout(() => {
-                Schedule.notify({...data, schedule_startdate}).then(() => {
-
-                })
-            }, 1000)
-        }
-    })
-}, 60000)
