@@ -40,7 +40,9 @@ export function dumpNow( instant?: moment.Moment, opts?:Options ){
             dumps.forEach( next => {
                 let dumpFile = instant.format( next.format ).toLowerCase();
                 let copyFile = path.join( folders.dumps, dumpFile );
-                console.log( "CREATE DUMP ", new URL(`file://${copyFile}`).href );
+                console.log( "CREATE DUMP COPY ", new URL(`file://${copyFile}`).href );
+                console.log( "CREATE DUMP COPY FROM: ", lastFile );
+                console.log( "CREATE DUMP COPY TO: ", copyFile );
                 fs.cpSync( lastFile, copyFile );
             });
             fs.unlinkSync( lastFile );
