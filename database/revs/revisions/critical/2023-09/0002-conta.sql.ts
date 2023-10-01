@@ -1,4 +1,4 @@
-import {sql} from "kitres";
+import {patchSQL, sql} from "kitres";
 
 export const funct_pos_reg_conta = sql`
 create or replace function tweeks.funct_pos_reg_conta(args jsonb) returns lib.res
@@ -212,4 +212,19 @@ exception  when others then
   end;
 end;
 $$;
+`;
+
+
+export const fauraSimplificada = patchSQL({ unique: true }).sql`
+select * from lib.sets( jsonb_populate_record( 
+  null::tweeks.tserie,
+  '{
+    "tserie_id": 7,
+    "tserie_desc": "Fatura simplificada",
+    "tserie_code": "FS",
+    "tserie_seqlimit": 6,
+    "tserie_numlimit": 7
+  }'::jsonb
+));
+select map.constant('maguita_tserie_faturasimplificada', 'int2', 7, 'Fatura simplificada' );
 `;
