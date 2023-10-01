@@ -1,7 +1,7 @@
 import {sql} from "kitres";
 
+
 export const vreport_imposto_financas = sql`
-select * from now();
 create or replace function report.vreport_imposto_financas(args jsonb) returns SETOF jsonb
   language plpgsql
 as
@@ -73,7 +73,8 @@ begin
         and ts.tserie_id in (
           _const.maguita_tserie_fatura,  
           _const.maguita_tserie_faturarecibo,  
-          _const.maguita_tserie_notacredito
+          _const.maguita_tserie_notacredito,
+          _const.maguita_tserie_faturasimplificada
         )
     ) select to_jsonb( _de ) from __declaracao _de
   ;
