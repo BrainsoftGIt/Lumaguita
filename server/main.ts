@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-
+console.log("NODE VERSION:", process.version )
 require( 'source-map-support' ).install();
 require('./global/pid').showUncaughtError();
 

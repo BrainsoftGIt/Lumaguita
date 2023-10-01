@@ -1,4 +1,4 @@
-import {app, storage} from '../../../../service/storage.service';
+import {app} from '../../../../service/web.service';
 
 app.post("/api/clinica/paciente/set", async (req, res) =>{
     const {functSetPatient} = require("../../db/clinic/call-function-patient");

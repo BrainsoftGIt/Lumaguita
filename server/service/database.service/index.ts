@@ -1,8 +1,6 @@
 import { PostgresFactory, Types, Result, Templates } from "zoo.pg";
 export { PostgresFactory, Types, Result, Templates } from "zoo.pg";
 
-
-
 export { DBK } from "../../global/autogen/DBK";
 
 import {args} from "../../global/args";
@@ -31,15 +29,7 @@ export const factory = new PostgresFactory( {
     database: args.dbName,
     user: args.dbUser,
     password: args.dbPassword,
-} );
-
-export const factoryClinic = new PostgresFactory( {
-    host: args.dbHostClinic,
-    port: args.dbPort,
-    database: args.dbNameClinic,
-    user: args.dbUserClinic,
-    password: args.dbPasswordClinic,
-} );
+});
 
 export const replicateFactory = new PostgresFactory( {
     host: args.dbHost,
