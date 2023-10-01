@@ -17,7 +17,7 @@ export function getPatient(args) {
 }
 
 export function functLoadScheduler(args) {
-    const factoryClinic = require("../../../../service/database.service/clinica.factory");
+    const {factoryClinic} = require("../../../../service/database.service/clinica.factory");
     const {sql} = factoryClinic.create(Templates.PARAMETERIZED);
     return catchAll(
         sql `select * from clinic.funct_load_scheduler( ${ args }) data`
