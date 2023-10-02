@@ -2,7 +2,6 @@ import {clusterServer} from "../../../service/cluster.service";
 import {Ignore, Preparation} from "../../../lib/cluster/agents/RevisionAgent";
 import {Cluster, ObjectRevision, RevisionRequest} from "../../../lib/cluster/types";
 import {branchIgnore} from "../db/branch.ignore";
-import {Resource} from "../../../lib/cluster/resource";
 
 export type Branch = {
     branch_uid

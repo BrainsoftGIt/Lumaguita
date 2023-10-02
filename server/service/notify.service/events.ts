@@ -1,8 +1,8 @@
-import {RevisionRegistry} from "kitres";
+import {RevisionPatch} from "kitres";
 
 export interface LumaGuitaEvents {
     localDataChange( changeCode:string, ... args:any[] ),
-    revision(blocks:RevisionRegistry[])
+    revision(blocks:RevisionPatch[])
     userLogged( user?:{
         user_id:string,
         user_name:string,

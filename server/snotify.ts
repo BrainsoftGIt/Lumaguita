@@ -11,6 +11,9 @@ function asOptions( opts ):{notifier?:boolean, nw?:boolean}{
     return opts;
 }
 export const serverNotify = {
+    log( message:string ){
+      this.loadingBlockItem( message )
+    },
     loading(message:string, opts?:{ notifier?:boolean, nw?:boolean} ){
         opts = asOptions( opts );
         if( nwAppStatus.runningIntoNW ){
@@ -24,15 +27,15 @@ export const serverNotify = {
                 timeout: 1000,
             });
         }
-        console.log( "[MAGUITA] MSG>", message );
+        console.log( "[maguita]", message );
     }, loadingBlock( message , opts?:{ notifier?:boolean, nw?:boolean} ){
         opts = asOptions( opts );
         if( nwAppStatus.runningIntoNW ){
             nwAppStatus.notify( "loading:message|block", message );
         }
-        console.log( "[MAGUITA] MSG>", message );
+        console.log( "[maguita]", message );
     }, loadingBlockItem( message, opts?:{ notifier?:boolean, nw?:boolean}, ... extras ){
-        console.log( "[MAGUITA] MSG>", message, ...extras );
+        console.log( "[maguita]", message, ...extras );
         opts = asOptions( opts );
         if( nwAppStatus.runningIntoNW ){
             nwAppStatus.notify( "loading:message|block-item", message);
@@ -56,6 +59,6 @@ export const serverNotify = {
                 if( response && response.toLowerCase() === "abrir" ) getSys().openApp( );
             });
         }
-        console.log( "[MAGUITA] MSG>", "Application is ready!")
+        console.log( "[maguita] MSG>", "Application is ready!")
     }
 }

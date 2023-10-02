@@ -17,6 +17,7 @@ export function grantsSql( args:DBArgs, opts:CompileDatabaseOpts ){
     let _clone = ident( args.dbUserClone );
     let _dbname = ident( args.dbName );
     return [
+
         //language=PostgreSQL
         `grant USAGE ON SCHEMA auth, cluster, lib, geoinfo, map, public, rule, tweeks to ${ _clone }`,
         //language=PostgreSQL

@@ -17,7 +17,7 @@ Object.entries( nets ).forEach( (next)=>{
     const [ name, value ]  =next;
     value.forEach( (address)=>{
         if( address.family !== "IPv4" || address.internal ) return;
-        console.log( `[MAGUITA] Detected interface ${ name } ${ address.address }/${ address.netmask }` );
+        console.log( `[maguita] Detected interface ${ name } ${ address.address }/${ address.netmask }` );
         results.push( { title: `Endereço ${ name }`, tooltip: `Abrir com endereço de ${name} | ${ address.address }`, enabled: true ,click(): any {
                 sys.openApp( { address: address.address })
             }})
@@ -117,9 +117,9 @@ export const menuItemsMap:GenericMenuMaps = {
                 return tray.close();
             })
         }},
-    exit: { title: "Sair", tooltip: "Encerrar o sistema", click( tray) { sys.exit( () => {
-            return tray.close()
-        })}}
+    // exit: { title: "Sair", tooltip: "Encerrar o sistema", click( tray) { sys.exit( () => {
+    //         return tray.close()
+    //     })}}
 };
 
 prepare( menuItemsMap );

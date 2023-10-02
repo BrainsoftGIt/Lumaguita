@@ -104,7 +104,12 @@ export async function compileDatabase( args:DBArgs, opts?:CompileDatabaseOpts ){
 
 
     if( opts.create ){
-        let compile = toSQLTempFile( require( "./install.sql" ).createUserDatabase( args, opts ), _dirOpts );
+        let commands = require( "./install.sql" ).createUserDatabase( args, opts );
+        console.log("====================== INSTALL =====================")
+
+        console.log( commands.join("\n") );
+        let compile = toSQLTempFile( commands, _dirOpts );
+
         await pexec( compile.file, superMode);
 
         //language=file-reference
@@ -115,13 +120,16 @@ export async function compileDatabase( args:DBArgs, opts?:CompileDatabaseOpts ){
     }
 
     //language=file-reference
-    if( opts.clean ) await pexec( path.join(__dirname, "clean.sql" ), app,  false );
+    if( opts.clean ) await pexec( path.join( __dirname, "clean.sql" ), app,  false );
 
     //language=file-reference
     if( opts.menu ) await pexec( path.join(__dirname, "menu.sql" ), app,  false );
 
     if( opts.grants ){
-        let compile = toSQLTempFile( require( "./grants.sql" ).grantsSql( args, opts ), _dirOpts );
+        let commands = require( "./grants.sql" ).grantsSql( args, opts );
+        console.log("====================== GRANTS =====================")
+        console.log( commands.join("\n"));
+        let compile = toSQLTempFile( commands, _dirOpts );
         await pexec( compile.file, superModeApp  );
     }
 

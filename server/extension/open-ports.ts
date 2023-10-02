@@ -3,43 +3,55 @@ import {serverNotify} from "../snotify";
 import {netshRuleManage} from "../lib/utils/win32/netsh/manager";
 import {args} from "../global/args";
 
-export async function openPorts(){
+export function openPorts(){
     if( os.platform() === "win32" ) {
         serverNotify.loadingBlock("Abrindo portas");
         serverNotify.loadingBlockItem("Liberando acesso remoto para a aplicação...");
 
-        let entry, entryName;
-        entryName =  `lumaguita_application_port_${args.appPort}`;
-        entry = await netshRuleManage.get({name: entryName, dir: "in"});
-        console.log( "[MAGUITA] FirewallRule>", `Application inbound rule ${ entryName } ${ !!entry? "OK": "NO" }`);
+        let entries = [{
+            port:args.appPort,
+            prefix:`lumaguita_application_port`,
+            description: `Porta de entrada remota para o aplicativo de lumaguita`,
+            label:"Application"
+        }, {
+            port: args.dbPort,
+            prefix: "lumaguita_database_port",
+            description: "Porta de entrada remota para o aplicativo de lumaguita",
+            label:"Database"
+        }];
 
-        if (!entry) {
-            await netshRuleManage.sets({
-                name: `lumaguita_application_port_${args.appPort}`,
-                description: "Porta de entrada remota para o aplicativo de lumaguita",
-                dir: 'in',
-                action: 'allow',
-                protocol: 'tcp',
-                localport: args.appPort
-            });
-        }
+        let waits = entries.map( (value, index) => {
+            return new Promise( resolve => {
+                let entryName = `${value.prefix}_${value.port}`;
+                netshRuleManage.get({name: entryName, dir: "in"})
+                    .then( entry => {
+                        serverNotify.log( `${ value.label } FirewallRule inbound rule ${ entryName } ${ !!entry? "OK": "NO" }`);
 
-
-        serverNotify.loadingBlockItem("Liberando acesso remoto para o banco de dados...");
-        entryName = `lumaguita_database_port_${(args).dbPort}`;
-        entry = await netshRuleManage.get({name: entryName, dir: "in"});
-
-        if (args.dbMode === "app" && !entry) {
-            entry = await netshRuleManage.sets({
-                name: `lumaguita_database_port_${(args).dbPort}`,
-                description: "Porta de entrada para o cluster do banco de dados do aplicativo lumaguita",
-                dir: 'in',
-                action: 'allow',
-                protocol: 'tcp',
-                localport: args.dbPort
+                        if( !entry) {
+                            netshRuleManage.sets({
+                                name: entryName,
+                                description: value.description,
+                                dir: 'in',
+                                action: 'allow',
+                                protocol: 'tcp',
+                                localport: args.appPort
+                            }).then( value1 => {
+                                resolve( true )
+                            }).catch( reason => {
+                                resolve( false )
+                            })
+                        }
+                    }).catch( reason => {
+                        resolve( false );
+                });
             })
-        }
-        console.log( "[MAGUITA] FirewallRule>", `Database inbound rule ${ entryName } ${ !!entry? "OK": "NO" }`);
+        });
+
+        Promise.all( waits ).then( value => {
+
+        }).catch( reason => {
+
+        });
 
     }
 }

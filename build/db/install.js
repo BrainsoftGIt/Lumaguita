@@ -99,7 +99,10 @@ function compileDatabase(args, opts) {
             extension: ".sql"
         };
         if (opts.create) {
-            let compile = toSQLTempFile(require("./install.sql").createUserDatabase(args, opts), _dirOpts);
+            let commands = require("./install.sql").createUserDatabase(args, opts);
+            console.log("====================== INSTALL =====================");
+            console.log(commands.join("\n"));
+            let compile = toSQLTempFile(commands, _dirOpts);
             yield pexec(compile.file, superMode);
             //language=file-reference
             yield pexec(path_1.default.join(__dirname, "extension.sql"), superModeApp);
@@ -113,7 +116,10 @@ function compileDatabase(args, opts) {
         if (opts.menu)
             yield pexec(path_1.default.join(__dirname, "menu.sql"), app, false);
         if (opts.grants) {
-            let compile = toSQLTempFile(require("./grants.sql").grantsSql(args, opts), _dirOpts);
+            let commands = require("./grants.sql").grantsSql(args, opts);
+            console.log("====================== GRANTS =====================");
+            console.log(commands.join("\n"));
+            let compile = toSQLTempFile(commands, _dirOpts);
             yield pexec(compile.file, superModeApp);
         }
         let compile = toSQLTempFile(require("./users.sql").usersSql(args, opts), _dirOpts);

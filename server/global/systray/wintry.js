@@ -59,27 +59,27 @@ function createWinSysTray() {
         setTimeout(() => {
             genericTray.systray = new systray2_1.default(trayConfigs);
             genericTray.systray.onClick(action => {
-                console.log("[MAGUITA] Systray>", "click menu sys tray", action.item.title);
+                console.log("[maguita] Systray>", "click menu sys tray", action.item.title);
                 if (typeof action.item["click"] === "function") {
                     action.item["click"](action);
                 }
             });
-            console.log("[MAGUITA] Systray>", 'Starting windows-systray2...');
+            console.log("[maguita] Systray>", 'Starting windows-systray2...');
             genericTray.systray.ready().then(() => {
                 genericTray.ready = true;
-                console.log("[MAGUITA] Systray>", `Starting windows-systray2... ${chalk_1.default.greenBright("OK!")}`);
+                console.log("[maguita] Systray>", `Starting windows-systray2... ${chalk_1.default.greenBright("OK!")}`);
             }).catch(err => {
-                console.log("[MAGUITA] Systray>", `Starting windows-systray2... ${chalk_1.default.redBright("ERROR!")}`);
+                console.log("[maguita] Systray>", `Starting windows-systray2... ${chalk_1.default.redBright("ERROR!")}`);
                 console.error(err);
             });
         }, 1500);
         retry = (retry || 0) + 1;
         if (retry > 0)
-            console.log("[MAGUITA] Systray>", "Retry start windows systray again " + retry + " time ");
+            console.log("[maguita] Systray>", "Retry start windows systray again " + retry + " time ");
         setTimeout(() => {
-            console.log("[MAGUITA] Systray>", "NEXT TIMEOUT SYSTRAY READY", genericTray.ready);
+            console.log("[maguita] Systray>", "NEXT TIMEOUT SYSTRAY READY", genericTray.ready);
             if (!genericTray.ready) {
-                console.log("[MAGUITA] Systray>", "STOP WIN-SYSTRAY...");
+                console.log("[maguita] Systray>", "STOP WIN-SYSTRAY...");
                 genericTray.systray.kill(false);
                 create(retry);
             }

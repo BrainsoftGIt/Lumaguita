@@ -20,6 +20,7 @@ const child_acceptor_1 = require("./child-acceptor");
 const propagation_listener_1 = require("../listeners/propagation.listener");
 const enuns_1 = require("../enuns");
 const chalk_1 = __importDefault(require("chalk"));
+const snotify_1 = require("../../../snotify");
 class Connector {
     constructor(context) {
         this._connectionCreate = [];
@@ -93,17 +94,17 @@ class Connector {
             if (_clusterLevelType === server_1.ClusterLevelType.TRUNC) {
                 this.masterConnect = () => __awaiter(this, void 0, void 0, function* () {
                     var _a, _b, _c;
-                    console.log("[MAGUITA]", `Master connection start...`);
+                    snotify_1.serverNotify.log(`master connection start...`);
                     const change = yield loader.loadChange();
                     if (!change)
                         return;
                     this._cluster_key = yield this.context.service.privateKey();
                     if (change.changeConnect && ((_b = (_a = this === null || this === void 0 ? void 0 : this._masterGetAway) === null || _a === void 0 ? void 0 : _a.connection) === null || _b === void 0 ? void 0 : _b.connected)) {
-                        console.log("[MAGUITA]", "MASTER CONNECTION RESTART:DISCONNECT");
+                        console.log("MASTER CONNECTION RESTART:DISCONNECT");
                         (_c = this._masterGetAway) === null || _c === void 0 ? void 0 : _c.connection.disconnect();
                     }
                     if (change.connect) {
-                        console.log("[MAGUITA]", "Create master socket connection...");
+                        snotify_1.serverNotify.log("Create master socket connection...");
                         const socket = this._masterGetAway.createMasterConnection(change.master);
                         this._propagation.onMasterPropagation(socket, change.master);
                         socket.on(enuns_1.ClusterEvent.CONFIGS, (cluster) => {

@@ -19,7 +19,7 @@ export function appInitialize( win:Window ){
             title: "MAGUITA",
             subtitle: "Modo de execusão",
             message: "DEV MODE",
-        } );
+        });
         try{
             const menu = new nw.Menu();
             const item = new nw.MenuItem({ label: 'DEV MODE' });
@@ -56,9 +56,9 @@ export function appInitialize( win:Window ){
     nwAppStatus.currentWindow = win;
     let count = 0;
 
-    let TIME_MESSAGE = 400;
-    let TIME_BLOCK = 250;
-    let TIME_ITEM = 100;
+    let TIME_MESSAGE = 200;
+    let TIME_BLOCK = 100;
+    let TIME_ITEM = 5;
 
     ctrlConnect().then( socket => {
         listenCRTLEvent( socket, "loading:message", ( event, message ) => {
@@ -78,7 +78,6 @@ export function appInitialize( win:Window ){
                 getSplashElement( 'blockItem' ).innerHTML = ``;
                 count-=TIME_BLOCK;
             }, count+=TIME_BLOCK );
-            // count++;
         });
 
         listenCRTLEvent( socket, "loading:message|block-item", ( event, message ) => {
@@ -87,7 +86,6 @@ export function appInitialize( win:Window ){
                 getSplashElement( 'blockItem' ).innerHTML = message;
                 count-=TIME_ITEM;
             }, count+=TIME_ITEM );
-            // iCountBlockItem++;
         });
         let openApp = ()=>{
             openApp = ()=>{}
@@ -112,7 +110,7 @@ export function appInitialize( win:Window ){
     });
 
     //language=file-reference
-    let child = spawn( Path.join( __dirname, "../../bin/maguita.exe" ), [ "--appWithNodeWebKit" ] );
+    let child = spawn( Path.join( __dirname, "../../bin/maguita.bat" ), [ "--appWithNodeWebKit" ] );
     child.on("close", code => {
         process.exit( code );
     });

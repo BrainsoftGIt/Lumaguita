@@ -1,9 +1,5 @@
 import {registerTools, tools, toolsName} from "../../../service/tools.service";
-import {pgCtl} from "../../../service/pgcluster.service";
-import {args} from "../../../global/args";
-import * as path from "path";
 import {folders} from "../../../global/project";
-import {mkdirSync} from "fs";
 import {execBlock} from "../../../lib/utils/process/win32";
 
 registerTools( "terminal",  {

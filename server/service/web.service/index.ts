@@ -7,7 +7,7 @@ import { folders } from '../../global/project';
 import { args } from "../../global/args";
 const multerConfig = require("../../lib/multer/config");
 
-console.log( "[MAGUITA] WebService>", `building service ${ args.app }`, `${ args.webProtocol }://127.0.0.1:${ args.appPort }` );
+console.log( "[maguita] WebService>", `building service ${ args.app }`, `${ args.webProtocol }://127.0.0.1:${ args.appPort }` );
 
 export const app:Express = express();
 
@@ -182,10 +182,10 @@ console.log( `using connection host: ${ db.dbConfig.host }, port: ${ db.dbConfig
 export const server:Server = require( args.webProtocol ).createServer( {}, app );
 
 server.listen( args.appPort, (...values )=>{
-    console.log( "[MAGUITA] Service>", `Running webserver application ${ args.app } on`, `${ args.webProtocol }://127.0.0.1:${ args.appPort }`, "...values", ...values );
+    console.log( "[maguita] Service>", `Running webserver application ${ args.app } on`, `${ args.webProtocol }://127.0.0.1:${ args.appPort }`, "...values", ...values );
 });
 
-console.log( "[MAGUITA] WebService>",  `building service ${ args.app }`, `${ args.webProtocol }://127.0.0.1:${ args.appPort }`, "ok..." );
+console.log( "[maguita] WebService>",  `building service ${ args.app }`, `${ args.webProtocol }://127.0.0.1:${ args.appPort }`, "ok..." );
 
 
 //Statics files

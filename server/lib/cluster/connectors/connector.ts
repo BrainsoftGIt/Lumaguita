@@ -6,6 +6,7 @@ import {ChildAcceptor} from "./child-acceptor";
 import {PropagationListener} from "../listeners/propagation.listener";
 import {ClusterEvent, ClusterType} from "../enuns";
 import chalk from "chalk";
+import {serverNotify} from "../../../snotify";
 
 export class Connector {
 
@@ -91,17 +92,17 @@ export class Connector {
 
         if( _clusterLevelType === ClusterLevelType.TRUNC ){
             this.masterConnect = async ()=>{
-                console.log( "[MAGUITA]", `Master connection start...` );
+                serverNotify.log(  `master connection start...` );
                 const change = await loader.loadChange();
                 if( !change ) return;
                 this._cluster_key = await this.context.service.privateKey();
                 if( change.changeConnect && this?._masterGetAway?.connection?.connected ) {
-                    console.log( "[MAGUITA]", "MASTER CONNECTION RESTART:DISCONNECT" )
+                    console.log( "MASTER CONNECTION RESTART:DISCONNECT" )
                     this._masterGetAway?.connection.disconnect();
                 }
 
                 if( change.connect ){
-                    console.log("[MAGUITA]", "Create master socket connection...")
+                    serverNotify.log( "Create master socket connection...")
                     const socket = this._masterGetAway.createMasterConnection( change.master );
                     this._propagation.onMasterPropagation( socket, change.master );
 

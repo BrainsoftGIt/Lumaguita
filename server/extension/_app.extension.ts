@@ -48,17 +48,12 @@ let dbPatch = ():Promise<boolean>=>{
 export function prepareDatabase():Promise<boolean>{
     return new Promise( (resolve, reject) => {
         serverNotify.loadingBlock( "Manutenção de banco de dados" );
-        serverNotify.loadingBlockItem( "Criando copia de segurança preventiva..." );
-        dumpNow(null, { suffix: "before-upgrade" }).then( value => {
-            dbPatch().then( pathResult => {
-                resolve( pathResult );
-            })
+        dbPatch().then( pathResult => {
+            resolve( pathResult );
         }).catch( reason => {
-            serverNotify.loading( "FAILED!" );
-            serverNotify.loadingBlock( "Database upgrade patches... [FAILED]" );
-            serverNotify.loadingBlockItem( "Falha ao aplicar atualização criticas de banco de dados." );
             resolve( false );
-        })
+        });
+
     });
 }
 
@@ -103,7 +98,6 @@ export function requireAppUpdated ( next:()=>void ){
 
 
 function proceedPlay(){
-    const { autoDumpService } = require( "../service/database.service/dumps" );
     const { startApplicationDatabase } = require( "./database.extension" );
     createCTRL();
     detectPort( args.appPort ).then( async port => {
@@ -111,7 +105,7 @@ function proceedPlay(){
         args.appPort = port;
         serverNotify.loading( "A configurar ambiente..." );
 
-        openPorts().then()
+        openPorts()
 
         serverNotify.loading( "A carregar módulos..." );
 
@@ -131,7 +125,7 @@ function proceedPlay(){
                         if( !value ){
                             return process.exit(-1 );
                         }
-                        serverNotify.loadingBlock( "A iniciar o servidor..." );
+                        serverNotify.loadingBlock( "startApplicationDatabase A iniciar o servidor..." );
                         startServer( serverNotify.ready );
                     })
 

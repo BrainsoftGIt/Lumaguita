@@ -70,7 +70,7 @@ function dargs( filename ):[PostgresDumpArgs, PostgresOptions ]{
 }
 
 export function create_dump( fileName:string ){
-    console.log( `[maguita] create backup file = "${fileName}"` );
+    console.log( `[maguita] create backup file = "${ new URL( `file://${fileName}` ).href}"` );
     if( !fs.existsSync( path.dirname( fileName ) ) ) fs.mkdirSync( path.dirname( fileName ) );
     return pg_dump( ...dargs( fileName ) )
 }

@@ -46,7 +46,7 @@ function describeArgs() {
 }
 exports.describeArgs = describeArgs;
 file_util_1.FileUtil.loadAllFiles(__dirname, /.*args.js$/, deps => {
-    console.log("[MAGUITA] Definer>", deps.path);
+    console.log("[maguita] Definer>", deps.path);
     require(deps.path);
 }, { recursive: true });
 exports.args = exports.lineArgs.values;

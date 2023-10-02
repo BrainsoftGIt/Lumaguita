@@ -203,7 +203,7 @@ export class ClusterContext {
         let path = type === ClusterLevelType.ROOT? "/"
             : localCluster.cluster_path;
 
-        console.log( "[MAGUITA] Cluster>", "Status" );
+        console.log( "[maguita] Cluster>", "Status" );
         console.table([{
             id: localCluster.cluster_identifier,
             path: path,

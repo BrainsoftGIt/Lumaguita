@@ -28,3 +28,4 @@ bin/maguita.exe
 /database/revs/resolved/
 /database/cataloger/lumaguita.ts
 /database/revs/last.revision.sql
+/bin/node.exe

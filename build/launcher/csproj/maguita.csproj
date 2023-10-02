@@ -1,0 +1,17 @@
+<Project DefaultTargets="Compile" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="Current">
+    <PropertyGroup>
+        <appname>lumaguita</appname>
+    </PropertyGroup>
+    <ItemGroup>
+        <CSFile Include="./maguita.cs"/>
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="../../../server/resources/fav/fav.ico"/>
+    </ItemGroup>
+    <Target Name="Compile">
+        <CSC Sources="@(CSFile)" OutputAssembly="../../../bin/maguita.exe" TargetType="WinExe" Win32Icon="../../../server/resources/fav/fav.ico">
+           <Output TaskParameter="OutputAssembly" ItemName="EXEFile"/>
+        </CSC>
+        <Message Text="The output file is @(EXEFile)"/>
+    </Target>
+</Project>

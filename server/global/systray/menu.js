@@ -17,7 +17,7 @@ Object.entries(nets).forEach((next) => {
     value.forEach((address) => {
         if (address.family !== "IPv4" || address.internal)
             return;
-        console.log(`[MAGUITA] Detected interface ${name} ${address.address}/${address.netmask}`);
+        console.log(`[maguita] Detected interface ${name} ${address.address}/${address.netmask}`);
         results.push({ title: `Endereço ${name}`, tooltip: `Abrir com endereço de ${name} | ${address.address}`, enabled: true, click() {
                 sys_1.sys.openApp({ address: address.address });
             } });
@@ -116,11 +116,9 @@ exports.menuItemsMap = {
                 return tray.close();
             });
         } },
-    exit: { title: "Sair", tooltip: "Encerrar o sistema", click(tray) {
-            sys_1.sys.exit(() => {
-                return tray.close();
-            });
-        } }
+    // exit: { title: "Sair", tooltip: "Encerrar o sistema", click( tray) { sys.exit( () => {
+    //         return tray.close()
+    //     })}}
 };
 (0, engine_1.prepare)(exports.menuItemsMap);
 //# sourceMappingURL=menu.js.map

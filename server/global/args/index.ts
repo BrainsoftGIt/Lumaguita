@@ -60,7 +60,7 @@ export function describeArgs(){
 
 
 FileUtil.loadAllFiles(__dirname, /.*args.js$/, deps => {
-    console.log( "[MAGUITA] Definer>", deps.path );
+    console.log( "[maguita] Definer>", deps.path );
     require( deps.path );
 },{ recursive: true });
 

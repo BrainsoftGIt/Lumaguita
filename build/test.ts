@@ -10,10 +10,17 @@
 //
 // child.stderr.pipe( process.stderr );
 // child.stdout.pipe( process.stdout );
+//
+// import detectPort from "detect-port";
+// detectPort( 36901 ).then( value => console.log( value ))
+//
+// // let s = 10;
+// // console.log( s+=14 )
+//
+//
+//
 
-import detectPort from "detect-port";
-detectPort( 36901 ).then( value => console.log( value ))
 
-// let s = 10;
-// console.log( s+=14 )
+import moment from "moment";
 
+console.log( )

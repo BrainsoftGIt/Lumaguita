@@ -104,7 +104,7 @@ export const cronManager = {
         if( typeof _opts === "string" ) expression = _opts;
         else expression = createExpression( _opts );
 
-        console.log( `[MAGUITA] Cron> service ${name} ->> ${ expression }...` );
+        console.log( `[maguita] Cron> service ${name} ->> ${ expression }...` );
         const _service: CronService = {
             callback,
             task: cron.schedule( expression, ()=>{
@@ -116,33 +116,33 @@ export const cronManager = {
             opts: _opts
         };
         services[ name ] = _service;
-        console.log( `[MAGUITA] Cron> service ${name} ->> ${ expression }... CREATED REGISTERED STARTED!` );
+        console.log( `[maguita] Cron> service ${name} ->> ${ expression }... CREATED REGISTERED STARTED!` );
         return services[ name ];
     }, getService( name ){
         return services[ name ];
     }, start( name ){
         const _service =  services[ name ];
         if( !_service ) return;
-        console.log( `[MAGUITA] Cron> service ${name} ->> ${ _service.expression }... START!` );
+        console.log( `[maguita] Cron> service ${name} ->> ${ _service.expression }... START!` );
         return _service.task.start();
 
     }, restart( name ){
         const _service =  services[ name ];
         if( !_service ) return;
-        console.log( `[MAGUITA] Cron> service ${name} ->> ${ _service.expression }... RESTART!` );
+        console.log( `[maguita] Cron> service ${name} ->> ${ _service.expression }... RESTART!` );
         _service.task.stop();
         _service.task.start();
 
     }, play( name ){
         const _service =  services[ name ];
         if( !_service ) return;
-        console.log( `[MAGUITA] Cron> service ${name} ->> ${ _service.expression }... PLAY-NOW!` );
+        console.log( `[maguita] Cron> service ${name} ->> ${ _service.expression }... PLAY-NOW!` );
         return _service.callback( moment( new Date() ))
 
     }, stopService( name ){
         const _service =  services[ name ];
         if( !_service ) return;
-        console.log( `[MAGUITA] Cron> service ${name} ->> ${ _service.expression }... STOPPED!` );
+        console.log( `[maguita] Cron> service ${name} ->> ${ _service.expression }... STOPPED!` );
         return _service.task.stop();
     }, stopAllService(){
         return Object.keys( services ).map( key => services[ key ].task )
@@ -153,7 +153,7 @@ export const cronManager = {
     }, unRegister( serviceName:string ){
         let _service = services[ serviceName ];
         if( !_service ) return;
-        console.log( `[MAGUITA] Cron> service ${serviceName} ->> ${ _service.expression }... UNREGISTERED!` );
+        console.log( `[maguita] Cron> service ${serviceName} ->> ${ _service.expression }... UNREGISTERED!` );
         _service.task.stop();
         delete services[ serviceName ];
     }, existsService (serviceName){
