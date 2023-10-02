@@ -68,8 +68,8 @@ begin
         and ct._branch_uid = arg_branch_uid
         and ct.conta_estado = _const.maguita_conta_estado_fechado
         and ve.venda_estado = _const.maguita_venda_estado_fechado
-        and ct.conta_datafecho >= coalesce( arg_datainicio, ct.conta_data )
-        and ct.conta_datafecho <= coalesce( arg_datafim, ct.conta_data )
+        and ct.conta_data >= coalesce( arg_datainicio, ct.conta_data )
+        and ct.conta_data <= coalesce( arg_datafim, ct.conta_data )
         and ts.tserie_id in (
           _const.maguita_tserie_fatura,  
           _const.maguita_tserie_faturarecibo,  
