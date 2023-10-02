@@ -7,7 +7,7 @@ import path from "path";
 import {folders} from "../../../global/project";
 import moment from "moment";
 import {dbRes} from "../../../service/database.service/kitres/res";
-import {getUserSession} from "./functions/get-session";
+import {getUserSession, getUserSessionPOS} from "./functions/get-session";
 import {SQL} from "kitres/src/core/pg-core/scape";
 import { Result } from 'kitres';
 
@@ -190,9 +190,8 @@ app.post( "/api/report/parametrized/sets", (req, res, next) => {
 
 
 app.post( "/api/report/parametrized/load", (req, res, next) => {
-    console.log( { etag: req.headers.etag} );
-    let _session = getUserSession( req );
     let args = req.body;
+    let _session = (!args._grants) ? getUserSession( req ) : getUserSessionPOS( req );
     args._user_id = _session.user_id;
     args._workspace = _session.workspace;
     args._branch = _session.branch_uid;
