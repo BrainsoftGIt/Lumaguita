@@ -38,7 +38,6 @@ app.post("/api/report/filter", async (req, res) => {
     const {functFilterReport} = require("../db/call-function-report");
     req.body._branch_uid = req.session.auth_data.auth.branch_uuid;
     const response = await functFilterReport(req.body);
-    // response.notices.forEach( value => console.log( value.message ) );
     res.json({reportData: response.rows});
 });
 app.get("/api/date/representation", async (req, res) => {
@@ -108,11 +107,9 @@ app.post("/api/report/export/imposto", async (req, res) =>{
 
     let ordenList = {};
     list.forEach(({vreport_imposto_financas: {...artigo}}) => {
-        console.log(artigo);
         if(!ordenList[artigo.conta_id]){
             ordenList[artigo.conta_id] = []
         }
-
         ordenList[artigo.conta_id].push(artigo);
     })
 

@@ -293,10 +293,12 @@ app.get("/api/exportar/modelo/artigos/:dados", async (req, res) =>{
     workSheet.columns = [
         {header: "EAN", key: "ean", width: 30, alignment: "center" },
         {header: "Código", key: "codigo", width: 30, alignment: "center" },
+        {header: "Unidade", key: "unit", width: 30, alignment: "center" },
         {header: "Nome", key: "nome", width: 70, alignment: "center" },
         {header: "Categoria", key: "cat", width: 45},
         {header: "Imposto", key: "imp", width: 45},
         {header: "Aplicação de imposto", key: "aplic_imp", width: 45},
+        {header: "Código Imposto", key: "impcode", width: 45},
         {header: "Stock negativo (S/N)", key: "stock", width: 25},
         {header: "Quantidade", key: "quant", width: 20},
         ...(()=>{
@@ -324,24 +326,42 @@ app.get("/api/exportar/modelo/artigos/:dados", async (req, res) =>{
     let aplicacaoImposto = dados.aplicImposto.map((ap) =>{
         return ap.taplicar_descricao;
     }).join(",");
+    let unidades = dados.units.map(({main: {unit_code}}) => {
+        return unit_code;
+    }).join(",");
+    let codigosImpoosto = dados.taxCodes.map((ap) =>{
+        return ap.codigoimposto_codigo;
+    }).join(",");
     for(let i=2;i<=900;i++){
-        workSheet.getCell(`D${i}`).dataValidation = {
+        workSheet.getCell(`E${i}`).dataValidation = {
             type: 'list',
             allowBlank: false,
             formulae: ['"'+categorias+ '"'],
             tooltip: "Clique para selecionar a categoria"
         };
-        workSheet.getCell(`E${i}`).dataValidation = {
+        workSheet.getCell(`F${i}`).dataValidation = {
             type: 'list',
             allowBlank: false,
             formulae: ['"'+impostos+ '"'],
             tooltip: "Clique para selecionar o imposto"
         };
-        workSheet.getCell(`F${i}`).dataValidation = {
+        workSheet.getCell(`G${i}`).dataValidation = {
             type: 'list',
             allowBlank: false,
             formulae: ['"'+aplicacaoImposto+ '"'],
             tooltip: "Clique para selecionar a forma de aplicar o imposto"
+        };
+        workSheet.getCell(`C${i}`).dataValidation = {
+            type: 'list',
+            allowBlank: false,
+            formulae: ['"'+unidades+ '"'],
+            tooltip: "Clique para selecionar a unidade"
+        };
+        workSheet.getCell(`H${i}`).dataValidation = {
+            type: 'list',
+            allowBlank: false,
+            formulae: ['"'+codigosImpoosto+ '"'],
+            tooltip: "Clique para selecionar o código imposto"
         };
     }
 
@@ -352,6 +372,17 @@ app.get("/api/exportar/modelo/artigos/:dados", async (req, res) =>{
         });
     });
 });
+
+app.post("/api/importacao/artigo/data", async (req, res) =>{
+    let random = (Math.random() + 1).toString(36).substring(7);
+    let data = new Date();
+    let file = `${random}-${data.getSeconds()}.json`
+    fs.writeFile(path.join(folders.temp, file), JSON.stringify(req.body), function (err) {
+        if (err) return console.log(err);
+        res.json(file)
+    });
+});
+
 app.post("/api/search/provider", async (req, res) =>{
     const {functSearchProvider} = require("../db/call-function-article");
     req.body.arg_espaco_auth = req.session.auth_data.auth.armazem_atual;

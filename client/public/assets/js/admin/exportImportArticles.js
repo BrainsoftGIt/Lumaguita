@@ -11,14 +11,16 @@ var artigosImportacao = {
     },
      exportarModelo(){
          $.ajax({
-             url: "/api/clinica/consulta/export/receita/data",
+             url: "/api/importacao/artigo/data",
              method: "POST",
              contentType: "application/json",
              data: JSON.stringify({
-                 categs: artigosImportacao.lista_categorias_exportar,
-                 spaces: artigosImportacao.armazensSelecionadosExportar,
+                 units: article.units,
                  taxs: article.impostos,
-                 aplicImposto: article.imposto_lista_tipo_aplicacao
+                 taxCodes: article.taxCodes,
+                 aplicImposto: article.imposto_lista_tipo_aplicacao,
+                 categs: artigosImportacao.lista_categorias_exportar,
+                 spaces: artigosImportacao.armazensSelecionadosExportar
              }),
              success: (file) => {
                  open("/api/exportar/modelo/artigos/" + JSON.stringify({file}));
@@ -33,6 +35,7 @@ var artigosImportacao = {
         formData.append("categorias", JSON.stringify(artigosImportacao.lista_categorias_exportar));
         formData.append("impostos", JSON.stringify(article.impostos));
         formData.append("aplic_imposto", JSON.stringify(article.imposto_lista_tipo_aplicacao));
+        formData.append("unidades", JSON.stringify(article.units));
         formData.append("file",  $("#artigoImportIpt")[0].files[0]);
         $("#xModalExImportArt").find(".hideTarget").click();
         $("#artigoImportIpt").val("");

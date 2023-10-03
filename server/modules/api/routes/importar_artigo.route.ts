@@ -27,7 +27,7 @@ function clearText( text ) {
 }
 function getSpacePrices(req, row, headers, spaces, errors, rowNumber) {
     let precosArmazens = [];
-    let pricePosition = 9;
+    let pricePosition = 11;
     let isValid = true;
     for (let i = 0; i < headers.length; i++) {
         if(row.values[pricePosition] !== undefined){
@@ -52,11 +52,13 @@ app.post("/api/importar_artigos", async (req, res) =>{
     let categorias = JSON.parse(req.body.categorias);
     let impostos = JSON.parse(req.body.impostos);
     let aplicacao_imposto = JSON.parse(req.body.aplic_imposto);
+    let unidades = JSON.parse(req.body.unidades);
     let listaImpostoSelecionado = [];
     let headers = [];
     let spaces;
     let worksheetSpace;
     let result;
+    let artigo_unit_id;
     let stockNegativo;
     let categoriasInexistentes = [];
     if(req.file) {
@@ -68,56 +70,78 @@ app.post("/api/importar_artigos", async (req, res) =>{
         workbook.getWorksheet("Modelo de artigos").eachRow({includeEmpty: false},  function (row, rowNumber) {
             if (rowNumber > 1) {
                 listaImpostoSelecionado = [];
-                if (row.values[3] === undefined || typeof row.values[3] !== "string") {
+                if (row.values[4] === undefined || typeof row.values[4] !== "string") {
                     errors.push("Nome do artigo não foi encontrado na coluna C linha " + rowNumber + ".");
                     validRow = false;
                 }
-                if(row.values[5] !== undefined){
-                    if (impostos.find(imp => imp.data.tipoimposto_nome === row.values[5])) {
-                        if(aplicacao_imposto.find(aplic => aplic.taplicar_descricao === (row.values[6] || "NA"))){
+                if(row.values[6] !== undefined){
+                    if (impostos.find(imp => imp.data.tipoimposto_nome === row.values[6])) {
+                        if(aplicacao_imposto.find(aplic => aplic.taplicar_descricao === (row.values[7] || "NA"))){
                             listaImpostoSelecionado.push({
-                                arg_tipoimposto_id: impostos.find(imp => imp.data.tipoimposto_nome === row.values[5]).data.tipoimposto_id,
-                                arg_taplicar_id: aplicacao_imposto.find(aplic => aplic.taplicar_descricao === row.values[6]).taplicar_id,
+                                arg_tipoimposto_id: impostos.find(imp => imp.data.tipoimposto_nome === row.values[6]).data.tipoimposto_id,
+                                arg_taplicar_id: aplicacao_imposto.find(aplic => aplic.taplicar_descricao === row.values[7]).taplicar_id,
                                 arg_imposto_valor: null,
                                 arg_imposto_percentagem: null
                             });
                         }
                         else{
-                            errors.push("Selecione a forma de aplicar o imposto na coluna F linha " + rowNumber+".");
+                            errors.push("Selecione a forma de aplicar o imposto na coluna G linha " + rowNumber+".");
                             validRow = false;
                         }
                     }
                     else{
-                        errors.push("O imposto deve ser selecionado e não digitado na coluna E linha " + rowNumber+".");
+                        errors.push("O imposto deve ser selecionado e não digitado na coluna F linha " + rowNumber+".");
                         validRow = false;
                     }
                 }
-                if(row.values[8] !== undefined){
-                    if (typeof row.values[8] !== "number") {
-                        errors.push("Valor de quantidade de artigo no stock incorreto na coluna H linha " + rowNumber+".");
+                if(row.values[10] !== undefined){
+                    if (typeof row.values[10] !== "number") {
+                        errors.push("Valor de quantidade de artigo no stock incorreto na coluna J linha " + rowNumber+".");
                         validRow = false;
                     }
                 }
-                if(row.values[7] === undefined || typeof row.values[7] !== "string") stockNegativo = false;
-                else stockNegativo = row.values[7].toLowerCase().includes("sim") || row.values[7].toLowerCase().includes("s");
+                if(row.values[9] === undefined || typeof row.values[9] !== "string") stockNegativo = false;
+                else stockNegativo = row.values[9].toLowerCase().includes("sim") || row.values[9].toLowerCase().includes("s");
+
+                let { main : { unit_id : artigo_unit_id } } = unidades.find(({main: {unit_code}}) => unit_code === row.values[3]) || {};
 
                 result = getSpacePrices(req, row, headers, spaces, errors, rowNumber);
                 if(validRow){
-                    listCorrectData.push({artigo_artigo_id: null, artigo_compostoquantidade: null, artigo_classe_id: null,
-                        classe_nome: (row.values[4] || "Sem categoria"), artigo_id: null, artigo_codigo: (row.values[2] || generateCode()),
-                        artigo_nome: clearText(row.values[3]), artigo_preparacao: false,
-                        artigo_stocknegativo: stockNegativo, artigo_foto: null, artigo_descricao: null, arg_items: [], arg_imposto: listaImpostoSelecionado,
-                        arg_links: result[1], arg_ean_codes: (row.values[1] === undefined ? [] : [{ean_code: row.values[1], ean_dateout: null, ean_datein: null}]),
-                        arg_espaco_auth: req.session.auth_data.auth.armazem_atual, arg_colaborador_id: req.session.auth_data.auth.colaborador_id,
-                        acerto_quantidade: (row.values[8] || 0)
+                    listCorrectData.push({
+                        artigo_artigo_id: null,
+                        artigo_compostoquantidade: null,
+                        artigo_classe_id: null,
+                        classe_nome: (row.values[5] || "Sem categoria"),
+                        artigo_id: null,
+                        artigo_codigo: (row.values[2] || generateCode()),
+                        artigo_unit_id,
+                        artigo_nome: clearText(row.values[4]),
+                        artigo_codigoimposto: row.values[8] || null,
+                        artigo_preparacao: false,
+                        artigo_stocknegativo: stockNegativo,
+                        artigo_foto: null,
+                        artigo_descricao: null,
+                        arg_items: [],
+                        arg_imposto: listaImpostoSelecionado,
+                        arg_links: result[1],
+                        arg_ean_codes: (row.values[1] === undefined ? [] : [{
+                            ean_code: row.values[1],
+                            ean_dateout: null,
+                            ean_datein: null
+                        }]),
+                        arg_espaco_auth: req.session.auth_data.auth.armazem_atual,
+                        arg_colaborador_id: req.session.auth_data.auth.colaborador_id,
+                        acerto_quantidade: (row.values[10] || 0)
                     });
-                    if(categorias.findIndex(cat => cat.classe_nome === clearText((row.values[4] || "Sem categoria"))) === -1){
-                        categoriasInexistentes.push({classe_nome: (row.values[4] || "Sem categoria"), classe_id: null});
+                    if(categorias.findIndex(cat => cat.classe_nome === clearText((row.values[5] || "Sem categoria"))) === -1){
+                        categoriasInexistentes.push({classe_nome: (row.values[5] || "Sem categoria"), classe_id: null});
                     }
+
+                    console.log(listCorrectData)
                 }
             } else{
                 headers = row.values.filter(function(value, index, arr){
-                    return index > 8;
+                    return index > 10;
                 });
             }
         });

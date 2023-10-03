@@ -186,7 +186,6 @@ var article = {
                 else artigos.removeClass("empty");
 
                 article.list.forEach((art, idx) =>{
-                    console.log(art)
                     art = art.funct_load_artigo;
                     minimoAtingido = "";
                     articlesActions = "";
