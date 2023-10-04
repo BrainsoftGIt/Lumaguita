@@ -9,6 +9,7 @@ import fs from "fs";
 import {folders} from "../global/project";
 import {autoDumpService, dumpNow} from "../service/database.service/dumps";
 import {pgRevision} from "../service/database.service/kitres/revison";
+import chalk from "chalk";
 
 export function getSys(){
     return require("../global/sys").sys;
@@ -101,6 +102,9 @@ function proceedPlay(){
     const { startApplicationDatabase } = require( "./database.extension" );
     createCTRL();
     detectPort( args.appPort ).then( async port => {
+        if( args.appPort !== port ) {
+            serverNotify.log(chalk.redBright.bold( `A porta padrão do sistema esta sendo ocupado por outro software. O sistema estara funcionando na porta alternativa de ${ port }` ) )
+        }
 
         args.appPort = port;
         serverNotify.loading( "A configurar ambiente..." );
@@ -115,7 +119,7 @@ function proceedPlay(){
 
         fs.writeFileSync( path.join( folders.home, "current.pid" ), String( process.pid ) );
 
-        console.log( args.dbMode );
+        serverNotify.log( `Lumaguina application runnning in mode = "${ args.dbMode }"` );
         if( args.dbMode === "app" ){
             args.dbPort = args.dbPortDatabaseApp;
             serverNotify.loadingBlock( "A Recuperar base de dados..." );
@@ -142,7 +146,6 @@ function proceedPlay(){
 
             return;
         } else{
-            console.log( { prepareDb:true })
             prepareDatabase().then( value1 => {
                 if( !value1 ){
                     return process.exit( -1 );
