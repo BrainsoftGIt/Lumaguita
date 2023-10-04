@@ -35,8 +35,8 @@ let dbPatch = ():Promise<boolean>=>{
             if( error ){
                 console.error( error )
                 serverNotify.loading( "FAILED!" );
-                serverNotify.loadingBlock( "Database upgrade patches... [FAILED]" );
-                serverNotify.loadingBlockItem( "Falha ao aplicar atualização criticas de banco de dados." );
+                serverNotify.loadingBlock( "Database upgrade patches... [dbPatch|FAILED]" );
+                serverNotify.loadingBlockItem( "Falha ao aplicar atualização criticas de banco de dados [dbPatch|FAILED]." );
                 return resolve( false );
             }
             autoDumpService().then()
@@ -124,10 +124,10 @@ function proceedPlay(){
             args.dbPort = args.dbPortDatabaseApp;
             serverNotify.loadingBlock( "A Recuperar base de dados..." );
             startApplicationDatabase()
-                .then( value => {
-                    prepareDatabase().then( value1 => {
-                        if( !value ){
-                            return process.exit(-1 );
+                .then( startDatabaseResult => {
+                    prepareDatabase().then( prepareResult => {
+                        if( !prepareResult ){
+                            return;
                         }
                         serverNotify.loadingBlock( "startApplicationDatabase A iniciar o servidor..." );
                         startServer( serverNotify.ready );
@@ -136,9 +136,9 @@ function proceedPlay(){
                 });
         } else if( args.dbMode === "system" ){
             serverNotify.loadingBlock( "A iniciar o servidor..." );
-            prepareDatabase().then( value1 => {
-                if( !value1 ){
-                    return process.exit(-1 );
+            prepareDatabase().then( prepareResult => {
+                if( !prepareResult ){
+                    return;
                 }
                 serverNotify.loadingBlock( "A iniciar o servidor..." );
                 startServer( serverNotify.ready );
@@ -146,9 +146,9 @@ function proceedPlay(){
 
             return;
         } else{
-            prepareDatabase().then( value1 => {
-                if( !value1 ){
-                    return process.exit( -1 );
+            prepareDatabase().then( prepareResult => {
+                if( !prepareResult ){
+                    return;
                 }
                 serverNotify.loadingBlock( "A iniciar o servidor..." );
                 startServer( serverNotify.ready );

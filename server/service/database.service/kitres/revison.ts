@@ -75,22 +75,23 @@ pgRevision.on( "revision", (error, blocks) => {
     }
 });
 
-function preventiveBackup():Promise<boolean>{
+function preventiveBackup():Promise<string[]>{
     return new Promise( resolve => {
         serverNotify.log(`gerando dumps preventivos...` );
         dumpNow(null, { suffix: "before-upgrade" }).then( value => {
             serverNotify.log(`gerando dumps preventivos... ok!` );
-            resolve( true );
+            resolve( value );
         }).catch( reason => {
+            console.error( "preventiveBackup:catch", reason );
             serverNotify.loading( "FAILED!" );
-            serverNotify.loadingBlock( "Database upgrade patches... [FAILED]" );
-            serverNotify.loadingBlockItem( "Falha ao aplicar atualização criticas de banco de dados." );
-            resolve( false );
+            serverNotify.loadingBlock( "Database upgrade patches... [FAILED|preventiveBackup]" );
+            serverNotify.loadingBlockItem( "Falha ao aplicar atualização criticas de banco de dados. [FAILED|preventiveBackup]" );
+            resolve( null );
         })
     })
 }
 
-function saveBackup():Promise<RevisionsChecks>{
+function saveBackup( dumps:string[]):Promise<RevisionsChecks>{
     return new Promise( (resolve ) => {
         dbRes.call.cluster._get_cluster_local<MaguitaTableOf<"cluster", "cluster">,any>({
             try: 0,
@@ -113,17 +114,19 @@ function saveBackup():Promise<RevisionsChecks>{
                 });
 
                 zip.pipe( output );
-                zip.directory( folders.dumps, "dumps" );
+                zip.file( dumps.shift(), { name:"dumps.sql" } );
                 zip.directory( folders.pgHome, "cluster" );
 
                 output.on("error", err => {
                     serverNotify.log( `Erro ao criar o backups: ${ err.message }`);
+                    console.error( err );
                     resolve({ error: err })
                 });
 
                 serverNotify.log(`create backup into ${ new URL(`file://${ backupFileName }`).href } ...`);
                 zip.on( "error", error1 => {
                     serverNotify.log( `Erro ao criar o backups: ${ error1.message }`);
+                    console.error( error1 );
                     resolve({ error: error1 } );
                 });
 
@@ -141,9 +144,9 @@ function saveBackup():Promise<RevisionsChecks>{
 
 pgRevision.on("news", blocks => {
     return new Promise( (resolve) => {
-        preventiveBackup().then( value => {
-            if( !value ) resolve({ accept: false, message: "Falha ao criar dumps preventivo!" } );
-            saveBackup().then( value1 => {
+        preventiveBackup().then( dumps => {
+            if( !dumps ) resolve({ accept: false, message: "Falha ao criar dumps preventivo!" } );
+            saveBackup( dumps ).then( value1 => {
                 resolve( value1 )
             }).catch( reason => resolve({ error: reason } ))
         }).catch( reason => resolve({ error: reason } ));

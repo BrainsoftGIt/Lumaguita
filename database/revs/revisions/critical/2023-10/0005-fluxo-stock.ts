@@ -1,37 +1,5 @@
 import {sql} from "kitres";
 
-// export const fluxoStockV2 = sql`
-// create or replace function tweeks.__fluxo_stock_v2(_artigo_uid uuid DEFAULT NULL::uuid, _espaco_uid uuid DEFAULT NULL::uuid, _classe_uid uuid DEFAULT NULL::uuid, _branch uuid DEFAULT NULL::uuid)
-//   returns TABLE(espaco_id uuid, artigo_id uuid, stock_quantidade double precision)
-//   language sql
-// as
-// $$
-//   with __fluxo_saida as (
-//     select
-//         f.fluxo_artigo_out as artigo_id,
-//         f.fluxo_espaco_out as espaco_id,
-//         sum( f.fluxo_quantidadeout ) as out
-//       from tweeks.fluxo f
-//       group by
-//         f.fluxo_artigo_out,
-//         f.fluxo_espaco_out
-//   ), __fluxo_entrada as (
-//       select
-//           f.fluxo_artigo_in as artigo_id,
-//           f.fluxo_espaco_in as espaco_id,
-//           sum( f.fluxo_quantidadeout ) as out
-//       from tweeks.fluxo f
-//       group by
-//         f.fluxo_artigo_in,
-//         f.fluxo_espaco_in
-//   ), __fluxo as (
-//     select
-//       from
-//   )
-// $$;
-// `;
-
-
 export const tweeksStock = sql`
 drop view tweeks.stock;
 

@@ -37,7 +37,6 @@ export const nwAppStatus:NwAppStatus = {
     runningIntoNW: false,
     status: "init",
     notify(event: ListenEvent|string, ...args) {
-        console.log( event, ...args );
         // _on[ event ].forEach( cb => cb( ...a rgs ) );
         // _once[ event ].splice(0, _once[ event ].length ).forEach( cb => cb( ...args ) );
         // _on[ ListenEvent.ANY ].forEach( cb => cb( ...args ) );

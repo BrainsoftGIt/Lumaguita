@@ -60,6 +60,7 @@ begin
     where art._branch_uid = ___branch
       group by art.artigo_id,
         c.classe_id,
+        
         u.unit_id,
         s.stock_quantidade,
         l.link_metadata,
@@ -79,6 +80,7 @@ begin
           or  _search_text = any ( a.ean_code )
   ;
 end
+
 $$;
 `;
 

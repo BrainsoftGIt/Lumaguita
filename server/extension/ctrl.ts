@@ -133,12 +133,10 @@ export function ctrlBroadcast(event:string, ...data:any ){
         args: data
     });
     broadcasts.push( text );
-    console.log( `BroadCsat|${text}`)
     connections.forEach( socket => ___broadcasts( socket, text ) );
 }
 
 function ___broadcasts ( socket:net.Socket, text:string){
-    console.log( `BroadCsatNext|${text}`)
     if( !socket[ "connected" ] ) return;
     socket.write( text+"\n" );
 }
