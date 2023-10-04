@@ -11,6 +11,7 @@ import {cronManager, CronService, interval, intervalNames} from "../cron.service
 import fs from "fs";
 import {PostgresOptions} from "../../lib/postgres/tools";
 import {DEFAULTS} from "../../global/defaults";
+import {serverNotify} from "../../snotify";
 
 const acceptsInterval:(typeof interval[ number ])[] = [ "week-day", "week" ];
 
@@ -18,8 +19,8 @@ type Options  = {
     prefix?:string,
     suffix?:string
 }
-export function dumpNow( instant?: moment.Moment, opts?:Options ){
-    return new Promise( (resolve, reject) => {
+export function dumpNow( instant?: moment.Moment, opts?:Options ):Promise<string[]>{
+    return new Promise( (resolve) => {
         if( !instant ) instant = moment( new Date() );
         let prefix = "", suffix = "";
         if( opts?.prefix ) prefix = `-${opts.prefix}`;
@@ -36,16 +37,19 @@ export function dumpNow( instant?: moment.Moment, opts?:Options ){
         out.stderr.on( "data", chunk => {}  );
         process.stdin.pipe( out.stdin );
 
+        let files:string[] = [];
+
         out.on("close", ( code, signal) => {
             dumps.forEach( next => {
                 let dumpFile = instant.format( next.format ).toLowerCase();
                 let copyFile = path.join( folders.dumps, dumpFile );
+                files.push( copyFile );
                 console.log( `[maguita] copy dump database backup from = "${new URL(`file://${lastFile}`).href}"`);
                 console.log( `[maguita] copy dump database backup into = "${new URL(`file://${copyFile}`).href}"` );
                 fs.cpSync( lastFile, copyFile );
             });
             fs.unlinkSync( lastFile );
-            resolve( true );
+            resolve( files );
         });
     });
 }
@@ -70,7 +74,7 @@ function dargs( filename ):[PostgresDumpArgs, PostgresOptions ]{
 }
 
 export function create_dump( fileName:string ){
-    console.log( `[maguita] create backup file = "${ new URL( `file://${fileName}` ).href}"` );
+    serverNotify.log( `create backup file = "${ new URL( `file://${fileName}` ).href}"` );
     if( !fs.existsSync( path.dirname( fileName ) ) ) fs.mkdirSync( path.dirname( fileName ) );
     return pg_dump( ...dargs( fileName ) )
 }

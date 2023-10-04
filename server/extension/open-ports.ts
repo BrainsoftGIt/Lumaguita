@@ -26,6 +26,7 @@ export function openPorts(){
                 netshRuleManage.get({name: entryName, dir: "in"})
                     .then( entry => {
                         serverNotify.log( `${ value.label } FirewallRule inbound rule ${ entryName } ${ !!entry? "OK": "NO" }`);
+                        if( entry ) return  resolve( true );
 
                         if( !entry) {
                             netshRuleManage.sets({
@@ -48,7 +49,7 @@ export function openPorts(){
         });
 
         Promise.all( waits ).then( value => {
-
+            serverNotify.log( `Todas as portas necessarias foram abertas` )
         }).catch( reason => {
 
         });
