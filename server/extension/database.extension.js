@@ -17,7 +17,6 @@ function startApplicationDatabase() {
     return new Promise((resolve, reject) => {
         getInstallation(installation => {
             if (installation) {
-                console.log(installation);
                 let path = process.env["Path"].split(path_1.default.delimiter);
                 path.unshift(path_1.default.join(installation.installation, "bin"));
                 process.env["Path"] = path.join(path_1.default.delimiter);
@@ -49,7 +48,6 @@ function getInstallation(response) {
             return { message: "Missing current.json5" };
         let content = fs_1.default.readFileSync(path_1.default.join(project_1.folders.pgHome, "current.json5")).toString().trim();
         let parse = json5_1.default.parse(content);
-        console.log(parse);
         if (!fs_1.default.existsSync(path_1.default.join(parse.dataDirname, "PG_VERSION")))
             return { message: "Missing current.json5 -> PG_VERSION" };
         content = fs_1.default.readFileSync(path_1.default.join(parse.dataDirname, "PG_VERSION")).toString().trim();
@@ -59,7 +57,9 @@ function getInstallation(response) {
         return { version };
     };
     let { version, message } = currentVersion();
-    console.log({ currentVersion: version, message });
+    if (version) {
+        snotify_1.serverNotify.log(`Found current cluster running with version = "${version}"`);
+    }
     (0, kitres_1.lookupPostgresRegister)((result) => {
         let bestVersion = result.installations.find(next => {
             if (version)

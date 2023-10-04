@@ -31,7 +31,6 @@ export function startApplicationDatabase(){
     return new Promise( (resolve, reject) => {
         getInstallation( installation => {
             if( installation ){
-                console.log( installation)
                 let path = process.env["Path"].split( Path.delimiter );
                 path.unshift( Path.join( installation.installation, "bin") );
                 process.env["Path"] = path.join( Path.delimiter );
@@ -66,7 +65,6 @@ export function getInstallation( response:( installation:PgInstallation, error?:
         if( !fs.existsSync( Path.join( folders.pgHome, "current.json5")) ) return { message: "Missing current.json5"};
         let content = fs.readFileSync( Path.join(folders.pgHome, "current.json5") ).toString().trim();
         let parse:DatabaseConfigs = JSON5.parse( content );
-        console.log( parse )
         if( !fs.existsSync( Path.join( parse.dataDirname, "PG_VERSION" ) ) ) return { message: "Missing current.json5 -> PG_VERSION"}
         content = fs.readFileSync( Path.join( parse.dataDirname, "PG_VERSION" ) ).toString().trim();
         let version = Number( content );
@@ -74,11 +72,10 @@ export function getInstallation( response:( installation:PgInstallation, error?:
         if( Number.isNaN( version) || !Number.isFinite( version ) || !Number.isSafeInteger( version ) ) return { message: "Invalid Version Number"};
         return {version};
     }
-    let {version, message } = currentVersion();
-    console.log( { currentVersion: version, message })
-
-
-
+    let { version, message } = currentVersion();
+    if( version ){
+        serverNotify.log( `Found current cluster running with version = "${version}"` );
+    }
     lookupPostgresRegister(( result)=>{
         let bestVersion = result.installations.find( next=>{
             if( version ) return next.versionNumber === version;

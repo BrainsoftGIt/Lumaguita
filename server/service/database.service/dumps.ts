@@ -11,6 +11,7 @@ import {cronManager, CronService, interval, intervalNames} from "../cron.service
 import fs from "fs";
 import {PostgresOptions} from "../../lib/postgres/tools";
 import {DEFAULTS} from "../../global/defaults";
+import {serverNotify} from "../../snotify";
 
 const acceptsInterval:(typeof interval[ number ])[] = [ "week-day", "week" ];
 
@@ -73,7 +74,7 @@ function dargs( filename ):[PostgresDumpArgs, PostgresOptions ]{
 }
 
 export function create_dump( fileName:string ){
-    console.log( `[maguita] create backup file = "${ new URL( `file://${fileName}` ).href}"` );
+    serverNotify.log( `create backup file = "${ new URL( `file://${fileName}` ).href}"` );
     if( !fs.existsSync( path.dirname( fileName ) ) ) fs.mkdirSync( path.dirname( fileName ) );
     return pg_dump( ...dargs( fileName ) )
 }
