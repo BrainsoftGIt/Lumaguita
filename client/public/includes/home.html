@@ -44,10 +44,14 @@
     </footer>
 </div>
 <script>
-    var {dataDesejadaFormatada, cluster_class, diasRestantes} = vStatus;
-    $("date").html(new Date().getFullYear());
-    $("#version").text(`v${version}`);
-    var textRestante = `dia${diasRestantes === 1 ? "" : "s"} restante${diasRestantes === 1 ? "" : "s"}`
-    $("#dataDesejadaFormatada").html(`${dataDesejadaFormatada}.`);
-    $("#diasRestantes").html(`${diasRestantes} ${textRestante}`).addClass(cluster_class);
+    if (!!window?.version) {
+        $("#version").text(`v${version}`);
+    }
+    if (!!window?.vStatus) {
+        var {dataDesejadaFormatada, cluster_class, diasRestantes} = vStatus;
+        $("date").html(new Date().getFullYear());
+        var textRestante = `dia${diasRestantes === 1 ? "" : "s"} restante${diasRestantes === 1 ? "" : "s"}`
+        $("#dataDesejadaFormatada").html(`${dataDesejadaFormatada}.`);
+        $("#diasRestantes").html(`${diasRestantes} ${textRestante}`).addClass(cluster_class);
+    }
 </script>
