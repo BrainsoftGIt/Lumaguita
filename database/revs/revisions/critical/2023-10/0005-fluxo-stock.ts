@@ -68,7 +68,6 @@ begin
 
 
   _fluxo.fluxo_toperacao_id := _const.maguita_toperacao_acerto;
-  -- AC#3049940
   _fluxo.fluxo_documento := _new.acerto_codigo;
   _fluxo.fluxo_data := null;
   _fluxo.fluxo_referencia := lib.sets_ref(new );
