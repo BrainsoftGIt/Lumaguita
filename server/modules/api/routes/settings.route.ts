@@ -3,6 +3,7 @@ import fs from "fs";
 import path from "path";
 import {clusterServer} from "../../../service/cluster.service";
 import {getUserSession} from "./functions/get-session";
+import {functLoadDataCluster} from "../db/call-function-settings";
 app.post("/api/armazem", async (req, res) => {
     const {functRegArmazem} = require("../db/call-function-settings");
     let before =  await clusterServer.service.loadLocalCluster();
@@ -257,6 +258,11 @@ app.post("/api/empresa/reg/parametizacao", async (req, res) => {
     args.arg_espaco_auth = _session.workspace;
 
     res.json(await functRegSetting(args))
+});
+
+app.get("/api/cluster/STATUS", async (req, res) => {
+    const {functLoadDataCluster} = require("../db/call-function-settings");
+    res.json(await functLoadDataCluster())
 });
 
 

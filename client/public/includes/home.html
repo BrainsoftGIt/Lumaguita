@@ -15,11 +15,14 @@
         background-color: transparent;
         -webkit-text-decoration-skip: objects;
     }
-    .licenceNearOut{
+
+    .licenceNearOut {
         color: tomato;
-    } .licenceFull{
-          color: green;
-      }
+    }
+
+    .licenceFull {
+        color: green;
+    }
 </style>
 <title>Luma | Software de faturação e POS</title>
 <div class="prima">
@@ -36,11 +39,15 @@
     <footer>
         <div class="flex h-sb">
             <span>Copyright © <date></date>&nbsp;<a href="https://www.brainsoftstp.com" target="_blank" style="font-size: 1rem;">| Desenvolvido por Brainsoft</a></span>
-            <p style="text-align: right">Licença válida até <b>2 de Novembro de 2023.</b> | <b class="licenceNearOut"> 20 dias restantes</b></p>
+            <p style="text-align: right">Licença válida até <b id="dataDesejadaFormatada"></b> | <b id="diasRestantes" class="licenceNearOut"> 20 dias restantes</b></p>
         </div>
     </footer>
 </div>
 <script>
-    $("date").html(new Date().getFullYear())
-    $("#version").text(`v${version}`)
+    var {dataDesejadaFormatada, cluster_class, diasRestantes} = vStatus;
+    $("date").html(new Date().getFullYear());
+    $("#version").text(`v${version}`);
+    var textRestante = `dia${diasRestantes === 1 ? "" : "s"} restante${diasRestantes === 1 ? "" : "s"}`
+    $("#dataDesejadaFormatada").html(`${dataDesejadaFormatada}.`);
+    $("#diasRestantes").html(`${diasRestantes} ${textRestante}`).addClass(cluster_class);
 </script>

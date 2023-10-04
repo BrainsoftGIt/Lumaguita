@@ -3,6 +3,7 @@ import {  factory } from "../../../service/database.service";
 import {args} from "../../../global/args";
 import {dbRes} from "../../../service/database.service/kitres/res";
 import {Result} from "kitres";
+import moment from "moment-timezone";
 
 
 export function functRegArmazem(args) {
@@ -235,6 +236,36 @@ export function functLoadSetting(args) {
                     result: !!result?.rows?.[0]?.["result"],
                     message: result?.rows?.[0]?.["message"] || "",
                     data:result?.rows
+                })
+            }
+        })
+    })
+}
+
+export function functLoadDataCluster() {
+    moment.locale('pt-br');
+    return new Promise((resolve) => {
+        dbRes.call.cluster.licence_status({}, {
+            onResult(error: Error, result?: Result<any, any>): any {
+                if( error ){
+                    resolve({
+                        result:false,
+                        message: error.message,
+                        hint: error
+                    })
+                    return;
+                }
+
+                let {cluster_license, class: cluster_class} = result?.rows?.[0] || {};
+                const dataAtual = moment().tz("Africa/Sao_Tome");
+                const dataDesejada = moment(cluster_license).tz("Africa/Sao_Tome");
+                const diasRestantes = dataDesejada.diff(dataAtual, 'days');
+                const dataDesejadaFormatada = dataDesejada.format("LLLL");
+
+                resolve({
+                    diasRestantes,
+                    dataDesejadaFormatada,
+                    cluster_class
                 })
             }
         })
