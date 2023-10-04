@@ -55,12 +55,12 @@ var box = {
                     else{
                         box.id = caixa.caixa_id;
                         box.montante_inicial = caixa.caixa_montanteinicial;
-                        $("#valorTotalCaixaFaturado").val((caixa.caixa_montanteinicial + caixa.deposito_montantefinal).formatter() || "");
+                        $("#valorTotalCaixaFaturado").val((caixa.caixa_montanteinicial + caixa.deposito_montantefinal).dc().formatter() || "");
                         if(account.post.posto_vermontatefaturado) {
                             $("[for='valorTotalCaixaFaturado']").addClass("active");
                         }
                         $("#totalChequesCaixaFaturado, #caixa_fechar_obs").val("");
-                        $("#caixa_montanteinicial").text("STN "+caixa.caixa_montanteinicial.formatter());
+                        $("#caixa_montanteinicial").text("STN "+caixa.caixa_montanteinicial.dc().formatter());
                         $("#MST-PIN").find(".hideTarget").click();
                         showTarget("xModalCloseBox");
                     }

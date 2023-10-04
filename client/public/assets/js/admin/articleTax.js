@@ -44,11 +44,11 @@ var taxasArtigos = {
               }
               if(Number(tax.taxa_adicionar) > 0){
                   hasTax = true;
-                  return {valor: tax.taxa_adicionar.formatter()+" STN", tipo: "add"};
+                  return {valor: tax.taxa_adicionar.dc().formatter()+" STN", tipo: "add"};
               }
               if(Number(tax.taxa_retirar) > 0){
                   hasTax = true;
-                  return {valor: tax.taxa_retirar.formatter()+" STN", tipo: "remove"};
+                  return {valor: tax.taxa_retirar.dc().formatter()+" STN", tipo: "remove"};
               }
               if(!hasTax) return {valor: null};
           }

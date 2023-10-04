@@ -37,7 +37,7 @@ var article = {
                     extraItemsArticle.append(`<li class="flex h-sb v-ct stgl" extra_id="${extra.artigo_id}">
                                                 <p>${extra.artigo_nome.toUpperCase()}</p>
                                                 <div class="flex v-ct">
-                                                    <b class="is-money-text">${(extra.precario_custo || 0).formatter()}</b>
+                                                    <b class="is-money-text">${(extra.precario_custo || 0).dc().formatter()}</b>
                                                     <a tooltip="Editar" flow="top" class="showTarget" target="addEditExtraItem" tTitle="Editar item extra" title="Editar">
                                                         <svg class="edit showTarget" viewBox="0 0 512 512">
                                                             <path
@@ -246,7 +246,7 @@ var article = {
                                             ${fotoArtigo}
                                         <h4>${art.artigo_nome}</h4>
                                         <div class="inb flex h-sb">
-                                            <p class="top ${(art.precario_custo ? "is-money-text" : "")}" coin="STN">${(art.precario_custo ? art.precario_custo.formatter() : "Sem preço definido")}</p>
+                                            <p class="top ${(art.precario_custo ? "is-money-text" : "")}" coin="STN">${(art.precario_custo ? art.precario_custo.dc().formatter() : "Sem preço definido")}</p>
                                             <span class="j-stp ${(article.categoria_id === category.ITEM_EXTRA_CATEGORIA_ID ? "" : "select")}" artigo_id="${art.artigo_id}" artigo_nome="${art.artigo_nome}" title="Clique para selecionar"></span>
                                         </div>
                                         ${(article.categoria_id === category.ITEM_EXTRA_CATEGORIA_ID ?  "" : articlesActions)}  
@@ -615,7 +615,7 @@ var article = {
                         espacosPrecos.forEach((arm) =>{
                             xModalAllAboutArtigo.find(".prices ul").append(`<li class="flex h-sb">
                                                                                          <span>${arm.link_nome}</span>
-                                                                                        <span class="is-money-text">${(arm?.link_metadata?.precario_custo ? arm?.link_metadata?.precario_custo.formatter() : "Sem preço definido")}</span>
+                                                                                        <span class="is-money-text">${(arm?.link_metadata?.precario_custo ? arm?.link_metadata?.precario_custo.dc().formatter() : "Sem preço definido")}</span>
                                                                                     </li>`);
                         });
                         if(espacosPrecos.length === 0){
@@ -630,7 +630,7 @@ var article = {
                                                                                     </li>`);
                             xModalAllAboutArtigo.find(".composal ul").append(`<li class="flex h-sb">
                                                                                         <span>Valor do composto</span>
-                                                                                        <span class="is-money-text">${article.selected.artigo_compostoquantidade.formatter()}</span>
+                                                                                        <span class="is-money-text">${article.selected.artigo_compostoquantidade.dc().formatter()}</span>
                                                                                      </li>`);
                         }
                         else{

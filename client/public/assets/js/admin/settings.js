@@ -259,7 +259,7 @@ var settings = {
                 });
                 e.cab.forEach((ca) =>{
                     ca = ca.data;
-                    cambios.find(`span[code=${ca.currency_code.toLowerCase()}]`).attr("value", ca.cambio_taxa).text(ca.cambio_taxa.formatter()+" STN");
+                    cambios.find(`span[code=${ca.currency_code.toLowerCase()}]`).attr("value", ca.cambio_taxa).text(ca.cambio_taxa.dc().formatter()+" STN");
                 });
             }
         });

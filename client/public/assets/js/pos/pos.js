@@ -34,13 +34,13 @@ var pos = {
          pos.contas.forEach((con) =>{
             artigosRacharConta.append(`<li class="active" artigo_id="${con.artigo_id}" custoquantidade="${con.venda_custoquantidade}" venda_id="${con.venda_id}">
                                         <b amount="${con.venda_quantidade}" name="${con.artigo_nome}">${con.venda_quantidade+" - "+con.artigo_nome}</b>
-                                        <p><span class="is-money-text" coin="STN" price="${con.venda_custounitario}">${con.venda_custounitario.formatter()}</span></p>
+                                        <p><span class="is-money-text" coin="STN" price="${con.venda_custounitario}">${con.venda_custounitario.dc().formatter()}</span></p>
                                      </li>`);
             artigos_carrinho.append(`<li class="flex h-sb sended" artigo_id="${con.artigo_id}" custoquantidade="${con.venda_custoquantidade}" venda_id="${con.venda_id}" negativo="">
                                             <div class="articleCart">
                                                 <b>${con.artigo_nome}</b>
                                                 <p class="is-money-text stn"  ${(pos.hasAccessChangePrice("maguita.pos.alterar_preco") ? " contenteditable=true" : "")}
-                                                 currentprice="${con.venda_custounitario}">${con.venda_custounitario.formatter()}</p>
+                                                 currentprice="${con.venda_custounitario}">${con.venda_custounitario.dc().formatter()}</p>
                                             </div>
                                             <div class="counter flex v-ct h-ct">
                                                ${(pos.haveAccessGranted("maguita.pos.remover", true) ? '<i class="material-icons waves-effect delete-me" title="Remover">delete</i>' : "")} 
@@ -50,7 +50,7 @@ var pos = {
                                             </div>
                                         </li>`);
             con.venda_itens.forEach((item) =>{
-                itemNome = Number(item.venda_custounitario) === 0 ? item.artigo_nome : item.artigo_nome+" - "+item.venda_custounitario.formatter();
+                itemNome = Number(item.venda_custounitario) === 0 ? item.artigo_nome : item.artigo_nome+" - "+item.venda_custounitario.dc().formatter();
                 artigos_carrinho.find(`li:last .articleCart`).append(`<p venda_id="${item.venda_id}" artigo_id="${item.artigo_id}" price="${item.venda_custounitario}" class="extra" custoquantidade="${item.venda_custoquantidade}">${itemNome}</p>`);
                 artigosRacharConta.find("li:last").append(`<p venda_id="${item.venda_id}" artigo_id="${item.artigo_id}" price="${item.venda_custounitario}" custoquantidade="${item.venda_custoquantidade}" class="extra">${itemNome}</p>`);
             });
@@ -78,7 +78,7 @@ var pos = {
                                                     <span class="nome">${item.artigo_nome}</span>
                                                 </div>
                                                 <span class="${(Number(item.link_metadata.precario_custo) === 0 ? "" : "is-money-text")}" coin="STN">
-                                                    ${(Number(item.link_metadata.precario_custo) === 0 ? "" : item.link_metadata.precario_custo.formatter())}
+                                                    ${(Number(item.link_metadata.precario_custo) === 0 ? "" : item.link_metadata.precario_custo.dc().formatter())}
                                                 </span>
                                             </li>`);
                 });
@@ -109,7 +109,7 @@ var pos = {
         artigos_carrinho.prepend(`<li class="flex h-sb" artigo_id="${this.selectedArticle.artigo_id}"  custoquantidade="${this.selectedArticle.link_metadata.precario_quantidade}">
                                             <div class="articleCart">
                                                 <b>${this.selectedArticle.artigo_nome}</b>
-                                                <p class="is-money-text stn"  ${(pos.hasAccessChangePrice("maguita.pos.alterar_preco") ? " contenteditable=true" : "")} currentprice="${this.selectedArticle.link_metadata.precario_custo}">${this.selectedArticle.link_metadata.precario_custo.formatter()}</p>
+                                                <p class="is-money-text stn"  ${(pos.hasAccessChangePrice("maguita.pos.alterar_preco") ? " contenteditable=true" : "")} currentprice="${this.selectedArticle.link_metadata.precario_custo}">${this.selectedArticle.link_metadata.precario_custo.dc().formatter()}</p>
                                             </div>
                                             <div class="counter flex v-ct h-ct">
                                                 <i class="material-icons waves-effect delete-me" title="Remover">delete</i>
@@ -119,7 +119,7 @@ var pos = {
                                             </div>
                                         </li>`);
         $("#itensExtraArtigo").find("li.active").each(function () {
-            item = Number($(this).attr("price")) === 0 ? $(this).find("span.nome").text() : $(this).find("span.nome").text()+" - "+$(this).attr("price").formatter();
+            item = Number($(this).attr("price")) === 0 ? $(this).find("span.nome").text() : $(this).find("span.nome").text()+" - "+$(this).attr("price").dc().formatter();
             artigos_carrinho.find(`li:first .articleCart`).append(`<p artigo_id="${$(this).attr("artigo_id")}" price="${$(this).attr("price")}" class="extra" custoquantidade="${$(this).attr("custoquantidade")}">${item}</p>`);
         });
         this.determinateTotalValues();
