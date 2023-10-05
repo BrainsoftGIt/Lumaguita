@@ -1,6 +1,7 @@
 import {sql} from "kitres";
 
 export const generateDocumentSerie = sql`
+drop function if exists tweeks.__sets_generate_documento(arg_espaco_auth uuid, arg_tserie integer);
 create or replace function tweeks.__sets_generate_documento(arg_espaco_auth uuid, arg_tserie integer)
   returns TABLE(document character varying, serie_id uuid, serie_numero character varying, serie_numatorizacao character varying, serie_numcertificacao character varying, serie_sequencia bigint, serie_quantidade bigint, autorizacao_uid uuid, autorizacao_ano integer, autorizacao_numero character varying)
   strict
