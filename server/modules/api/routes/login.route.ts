@@ -45,7 +45,6 @@ app.post("/api/login/admin", async (req, res) =>{
 });
 app.get("/api/workspace", async (req, res) =>{
     const {functLoadWorkSpaces} = require("../db/call-function-login");
-    console.log( req.session.auth_data.colaborador_id);
     const response = await functLoadWorkSpaces({arg_colaborador_id: req.session.auth_data.colaborador_id});
     if(response.rows.length > 0){
         req.session.auth_space = response.rows[0].funct_load_trabalha;
