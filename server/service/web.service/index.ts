@@ -50,7 +50,7 @@ require( './middlewares/cookie' );
 require( './middlewares/session' );
 
 app.use( (req, res, next) => {
-    console.log(`[maguita] req: ${req.method}${req.path} session = "${req.session.id}"`)
+    console.log(`[maguita] new request from ${req.headers.host} | ${req.method}${req.path} session = "${req.session.id}"`)
     next();
 });
 
