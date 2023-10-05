@@ -113,7 +113,7 @@ app.post("/api/importar_artigos", async (req, res) =>{
                         artigo_classe_id: null,
                         classe_nome: (row.values[5] || "Sem categoria"),
                         artigo_id: null,
-                        artigo_codigo: (row.values[2] || generateCode()),
+                        artigo_codigo: (row.values[2] || generateCode().toUpperCase()),
                         artigo_unit_id,
                         artigo_nome: clearText(row.values[4]),
                         artigo_codigoimposto: row.values[8] || null,
@@ -145,7 +145,8 @@ app.post("/api/importar_artigos", async (req, res) =>{
                 });
             }
         });
-        fs.unlinkSync(req.file.path);
+        if( fs.existsSync( req.file.path )) fs.unlinkSync(req.file.path);
+
         if(errors.length === 0){
             const {functRegArticle, functChangeAmountInStock} = require("../db/call-function-article");
             let response;
