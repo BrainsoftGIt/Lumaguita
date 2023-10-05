@@ -2,7 +2,7 @@ import {app, storage} from '../../../service/storage.service';
 import {debugResponse, factory} from "../../../service/database.service";
 import {Templates} from "zoo.pg";
 import {clusterServer} from "../../../service/cluster.service";
-import {functloadKey} from "../db/call-function-posto";
+import {functGenerateKey, functloadKey} from "../db/call-function-posto";
 
 app.post("/api/post/key", async (req, res) =>{
     const {functGenerateKey} = require("../db/call-function-posto");
@@ -11,11 +11,10 @@ app.post("/api/post/key", async (req, res) =>{
     let _data = [];
     let response = null;
     let before =  await clusterServer.service.loadLocalCluster();
-     const cluster_status = await clusterServer.status();
+    const cluster_status = await clusterServer.status();
 
-
-    if(req.session.post_key === undefined){
-         response = await functGenerateKey();
+    let generateKey = async ()=>{
+        response = await functGenerateKey();
         let after = await clusterServer.service.loadLocalCluster();
         if(before.cluster_version < after.cluster_version){
             clusterServer.notifyLocalChange({event: "kEY:POST", extras: null, message: "Chave de posto gerada."});
@@ -27,7 +26,11 @@ app.post("/api/post/key", async (req, res) =>{
                 cluster_status:  cluster_status});
         });
     }
-    else{
+
+
+    if(req.session.post_key === undefined){
+        return await generateKey();
+    } else {
         req.body.arg_chave_temporaria = req.session.post_key;
         const { sql } = factory.create( Templates.PARAMETERIZED );
         sql`
@@ -36,14 +39,20 @@ app.post("/api/post/key", async (req, res) =>{
             _data.push(data);
         }).catch(err => {
         }).finally(async function () {
-            let after = await clusterServer.service.loadLocalCluster();
-            if(before.cluster_version < after.cluster_version){
-                clusterServer.notifyLocalChange({event: "kEY:POST", extras: null, message: "Chave de posto gerada."});
+            if( !_data.length ){
+                req.session.post_key = null;
+                return await generateKey()
+            } else {
+                let after = await clusterServer.service.loadLocalCluster();
+                if(before.cluster_version < after.cluster_version){
+                    clusterServer.notifyLocalChange({event: "kEY:POST", extras: null, message: "Chave de posto gerada."});
+                }
+                if(!!_data[0]?.row?.chave_definitiva)
+                    res.json({key: _data[0].row.posto_designacao, statusCluster: clusterServer.online, cluster_status:  cluster_status});
+                else
+                    res.json({key: _data[0].row.chave_temporarai, statusCluster: clusterServer.online, cluster_status:  cluster_status});
             }
-            if(!!_data[0]?.row?.chave_definitiva)
-                res.json({key: _data[0].row.posto_designacao, statusCluster: clusterServer.online, cluster_status:  cluster_status});
-            else
-                res.json({key: _data[0].row.chave_temporarai, statusCluster: clusterServer.online, cluster_status:  cluster_status});
+
         });
     }
 });
