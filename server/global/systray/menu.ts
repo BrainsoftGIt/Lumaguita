@@ -8,6 +8,9 @@ import {appToaster} from "../../lib/toaster";
 import notifier from "node-notifier";
 import NotificationCenter from "node-notifier/notifiers/notificationcenter";
 import op from "open";
+import fs from "fs";
+import {nw} from "../../../client/app/nw";
+import {nwAppStatus} from "../../../client/app/status";
 
 const nets: NodeJS.Dict<os.NetworkInterfaceInfo[]> = os.networkInterfaces();
 
@@ -45,6 +48,12 @@ function onChangeRemoteAccessResult( result:{ result:boolean, old:boolean }, opt
     appToaster( notification );
 }
 
+function openBackgroundDevTools(){
+    if( nwAppStatus.runningIntoNW ){
+        nwAppStatus.notify("open-background-dev-tools")
+    }
+}
+
 export const menuItemsMap:GenericMenuMaps = {
     home: { title: "Abrir", tooltip: "Abrir pÁgina inicial", click() { sys.openApp( { /*language=file-reference*/ app: "/client/app/page/index.html"}) } },
     pos:  { title: "POS", tooltip: "PÁgina de POS", click() { sys.openApp( { browser: "pos", /*language=file-reference*/ app: "/client/app/page/pos.html" } ) } },
@@ -80,7 +89,10 @@ export const menuItemsMap:GenericMenuMaps = {
             click(): any {
             const { launch } = require( "../../service/log.service/logview" );
             launch({ logSnapshot: true })
-        }}
+        }},
+            { title: "DEV Tools", tooltip: "Open background dev tools", click(tray: GenericTray<any, any>, GenericMenuItem): any {
+                openBackgroundDevTools();
+            }}
         ]
     }, [ Math.random() ]: GENERIC_SEPARATOR,
 

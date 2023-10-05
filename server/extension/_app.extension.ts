@@ -7,7 +7,7 @@ import detectPort from "detect-port";
 import {openPorts} from "./open-ports";
 import fs from "fs";
 import {folders} from "../global/project";
-import {autoDumpService, dumpNow} from "../service/database.service/dumps";
+import {autoDumpService} from "../service/database.service/dumps";
 import {pgRevision} from "../service/database.service/kitres/revison";
 import chalk from "chalk";
 

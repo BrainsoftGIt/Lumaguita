@@ -1,6 +1,6 @@
 import {patchSQL, sql} from "kitres";
 
-export const activityReportStructure = patchSQL<any,any>({ unique: true }).sql`
+export const activityReportStructure = patchSQL<any,any, any>({ unique: true }).sql`
 create table if not exists tweeks.tatividade(
   tatividade_id int not null primary key,
   tatividade_code character varying not null,

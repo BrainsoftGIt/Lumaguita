@@ -9,17 +9,9 @@ import {spawn} from "child_process";
 import * as Path from "path";
 import {ctrlConnect, listenCRTLEvent} from "../../server/extension/ctrl";
 
-
-export function appInitialize( win:Window ){
+function openBackgroundDevTools(){
     let dirname = path.dirname( process.execPath );
     if( fs.existsSync( path.join( dirname, "nwjc.exe" )) || fs.existsSync( path.join( dirname, "nwjc" ) )){
-        appToaster( {
-            //language=file-reference
-            icon: path.join( __dirname, "../../server/resources/fav/fav.ico" ),
-            title: "MAGUITA",
-            subtitle: "Modo de execusão",
-            message: "DEV MODE",
-        });
         try{
             const menu = new nw.Menu();
             const item = new nw.MenuItem({ label: 'DEV MODE' });
@@ -42,6 +34,10 @@ export function appInitialize( win:Window ){
                 appID: "lumaguita"
             })}
     }
+}
+
+
+export function appInitialize( win:Window ){
 
     win.on( "closed", ()=>{
         if( nwAppStatus.mainWindows === win ) nwAppStatus.mainWindows = null;
@@ -78,6 +74,10 @@ export function appInitialize( win:Window ){
                 getSplashElement( 'blockItem' ).innerHTML = ``;
                 count-=TIME_BLOCK;
             }, count+=TIME_BLOCK );
+        });
+
+        listenCRTLEvent( socket, "open-background-dev-tools", ( event, message ) => {
+            openBackgroundDevTools()
         });
 
         listenCRTLEvent( socket, "loading:message|block-item", ( event, message ) => {

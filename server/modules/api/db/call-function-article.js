@@ -35,7 +35,6 @@ function functLoadProviders(args) {
 }
 exports.functLoadProviders = functLoadProviders;
 function functLoadArticles(args) {
-    console.log(args);
     const { sql } = database_service_1.factory.create(zoo_pg_1.Templates.PARAMETERIZED);
     return (0, zoo_pg_1.catchAll)(sql `select * from tweeks.funct_load_artigo( ${args})`);
 }

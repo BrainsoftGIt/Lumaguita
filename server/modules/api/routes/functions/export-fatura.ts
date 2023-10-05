@@ -30,7 +30,6 @@ export let create = async (instituition, account_content, res, user, date, num_a
 
     (account_content.main.conta_vendas || []).forEach((cont) => {
         preco_artigo = cont.venda_montantesemimposto / cont.venda_quantidade;
-        console.log(cont)
         artigosConta.push([
             {
                 margin: [0, 3, 0, 3],

@@ -2,6 +2,8 @@ import path from "path";
 import {compileArgs, CompileArgs} from "./compile";
 import fs from "fs";
 import * as Path from "path";
+import {spawnSync} from "child_process";
+import chalk from "chalk";
 export type ResourceItem =  { base: string,                    dist: string,                  filter: string|RegExp };
 export type CompileRes = {
     entry:string,
@@ -61,11 +63,19 @@ const  raws:ResourceItem[] = [
     /*language=file-reference*/  { base: "/database/revs",      dist: "/database/revs",            filter: "**/*.sql" },
 ];
 
-//language=file-reference
-if( fs.existsSync( Path.join( __dirname, "../../nw/nw.exe" ) ) ){
-    raws.push(
-        /*language=file-reference*/  { base: "/nw",    dist: "/nw",  filter: "**" }
-    )
+
+let result = spawnSync("where", ["nw"]);
+
+if( result.status === 0 ){
+    let res = result.stdout.toString().trim();
+    let dir = Path.dirname( res );
+    //language=file-reference
+    let base = Path.relative(Path.join(__dirname, "../../"), dir );
+    console.log( { res, dir, base })
+    raws.push( { base:base, dist:"/nw", filter: "**" } );
+} else {
+    console.error( chalk.redBright.bold( "NW not founds" ) );
+    process.exit(0);
 }
 
 const temps:ResourceItem[] = [

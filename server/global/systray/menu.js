@@ -10,6 +10,7 @@ const app_1 = require("../version/app");
 const path_1 = __importDefault(require("path"));
 const engine_1 = require("./engine");
 const toaster_1 = require("../../lib/toaster");
+const status_1 = require("../../../client/app/status");
 const nets = os_1.default.networkInterfaces();
 const results = [];
 Object.entries(nets).forEach((next) => {
@@ -43,6 +44,11 @@ function onChangeRemoteAccessResult(result, opt) {
     else
         notification.message = "Acesso remoto desativo";
     (0, toaster_1.appToaster)(notification);
+}
+function openBackgroundDevTools() {
+    if (status_1.nwAppStatus.runningIntoNW) {
+        status_1.nwAppStatus.notify("open-background-dev-tools");
+    }
 }
 exports.menuItemsMap = {
     home: { title: "Abrir", tooltip: "Abrir pÁgina inicial", click() { sys_1.sys.openApp({ /*language=file-reference*/ app: "/client/app/page/index.html" }); } },
@@ -78,6 +84,9 @@ exports.menuItemsMap = {
                 click() {
                     const { launch } = require("../../service/log.service/logview");
                     launch({ logSnapshot: true });
+                } },
+            { title: "DEV Tools", tooltip: "Open background dev tools", click(tray, GenericMenuItem) {
+                    openBackgroundDevTools();
                 } }
         ]
     }, [Math.random()]: engine_1.GENERIC_SEPARATOR,
