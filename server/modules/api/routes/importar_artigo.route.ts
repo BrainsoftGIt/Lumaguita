@@ -68,6 +68,10 @@ app.post("/api/importar_artigos", async (req, res) =>{
         spaces.shift();
 
         workbook.getWorksheet("Modelo de artigos").eachRow({includeEmpty: false},  function (row, rowNumber) {
+            if(!row.values[4]){
+                return
+            }
+
             if (rowNumber > 1) {
                 listaImpostoSelecionado = [];
                 if (row.values[4] === undefined || typeof row.values[4] !== "string") {
