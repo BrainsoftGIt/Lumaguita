@@ -160,8 +160,8 @@ begin
     into _tserie
   ;
   
-  if _serie.serie_quantidade::text > _tserie.tserie_seqlimit::text then
-    raise exception '%', format( 'A quantidade definida para a serie ultrapassa o limite previsto de %I!', lpad('', '9', _tserie.tserie_seqlimit::int) );
+  if length(_serie.serie_quantidade::text) > _tserie.tserie_seqlimit then
+    raise exception '%', format( 'A quantidade definida para a serie para %I ultrapassa o limite previsto de %I!', _tserie.tserie_desc, lpad(''::text,  _tserie.tserie_seqlimit::int, '9'::text) );
   end if;
 
   if _serie.serie_id is null then

@@ -7,8 +7,8 @@
   "main": "client/app/page/launcher.html",
   "window": {
     "icon": "/server/resources/fav/fav.png",
-    "width": 550,
-    "height": 350,
+    "width": 600,
+    "height": 400,
     "frame": false,
     "always_on_top": true,
     "position": "center",
