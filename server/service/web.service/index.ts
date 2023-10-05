@@ -49,6 +49,10 @@ require( './middlewares/cookie' );
 // Session Express
 require( './middlewares/session' );
 
+app.use( (req, res, next) => {
+    console.log(`[maguita] req: ${req.method}${req.path} session = "${req.session.id}"`)
+    next();
+});
 
 //http://zootakuxy6.luma.brainsoftstp.com/
 //http://v207.pirata.luma.brainsoftstp.com/
