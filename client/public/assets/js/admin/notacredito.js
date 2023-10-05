@@ -76,7 +76,7 @@ var notacredito = {
             return
         }
 
-        if(conta_observacao){
+        if(!conta_observacao){
             xAlert("Nota de credito", "Digite uma observação!", "error");
             return
         }
