@@ -5,6 +5,7 @@ import {folders} from "../../../../global/project";
 import {clusterServer} from "../../../../service/cluster.service";
 import moment from "moment";
 import {formattedString} from "./formatValue";
+import Path from "path";
 
 export let create = async (instituition, account_content, res, user, date, num_autorization) => {
     const pdfMake = require("../../../../../libs/js/pdfmake/pdfmake");
@@ -13,6 +14,10 @@ export let create = async (instituition, account_content, res, user, date, num_a
     pdfMake.vfs = pdfFonts.pdfMake.vfs;
     pdfMake.fonts = getFonts();
     let logoTipo = clusterServer.res.resolve(instituition?.espaco_configuracao?.logo_referencia);
+    if( !fs.existsSync( logoTipo ) ){
+        //language=file-reference
+        logoTipo = Path.join( __dirname,"../../../../resources/000-404.png" );
+    }
     let artigosConta = [];
     let sumImpost = {};
     let subtotal = 0;
@@ -187,7 +192,7 @@ export let create = async (instituition, account_content, res, user, date, num_a
                 lineHeight: 1.3,
                 columns: [
                     (logoTipo ? {
-                        image: 'data:image/png;base64,' + fs.readFileSync(logoTipo).toString('base64'),
+                        image: 'data:image/png;base64,' + fs.readFileSync( logoTipo ).toString('base64'),
                         width: 80,
                     } : {}),
                     {
