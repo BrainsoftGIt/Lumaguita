@@ -44,7 +44,7 @@ var faturaAdmin = {
                                             <li>${art.venda_lote || ""}</li>
                                             <li>${(art.venda_validade === null ? "" : alterFormatDate(art.venda_validade))}</li>
                                             <li>${art.taxa_percentagem || art.taxa_taxa || ""} ${(!art.taxa_taxa && !art.taxa_percentagem) ? "" : (art.taxa_taxa) ? "STN" : "%"}</li>
-                                            <li price="${art.venda_custounitario}">${art.venda_custounitario.formatter()+" STN"}</li>
+                                            <li price="${art.venda_custounitario}">${art.venda_custounitario.dc().formatter()+" STN"}</li>
                                             <li>${total_value+" STN"}</li>
                                             <li class="flex v-ct">
                                                     <span class="flex v-ct">            
@@ -99,7 +99,7 @@ var faturaAdmin = {
                                                     <li>${prof.conta_numero}</li>
                                                     <li>${prof.colaborador_nome}</li>
                                                     <li>${(prof.cliente_titular || "N/D")}</li>
-                                                    <li>${"STN "+prof.conta_montante.formatter()}</li>
+                                                    <li>${"STN "+prof.conta_montante.dc().formatter()}</li>
                                                     <li class="vencimento" date="${(prof.conta_proformavencimento || "")}">${(prof.conta_proformavencimento === null ? "N/D" : alterFormatDate(prof.conta_proformavencimento))}</li>
                                                     <li>${data_emissao}</li>
                                                     <li class="flex v-ct j-stp">

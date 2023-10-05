@@ -29,8 +29,8 @@ var notacredito = {
                         <li>${artigo_nome}</li>
                         <li>${venda_quantidade}</li>
                         <li>${ (!taxa_percentagem) ? taxa_taxa || "" : `${taxa_percentagem}%` }</li>          
-                        <li>${venda_custounitario.formatter()+" STN"}</li>                                               
-                        <li>${venda_montantecomimposto.formatter()+" STN"}</li>                              
+                        <li>${venda_custounitario.dc().formatter()+" STN"}</li>                                               
+                        <li>${venda_montantecomimposto.dc().formatter()+" STN"}</li>                              
                         <li class="flex v-ct">
                                 <span del class="flex v-ct">
                                      <a tooltip="Eliminar" flow="top" title="Remover">

@@ -468,7 +468,6 @@ function validation1(_element) {
 function formatted(nStr) {
     var num = nStr.val().replace(/(\s)/g, '');
     nStr.val(num.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1 "));
-
 }
 
 function updateMaterializeFields() {

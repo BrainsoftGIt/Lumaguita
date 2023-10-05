@@ -26,9 +26,9 @@ var sales = {
                                                     <li>${sale.conta_numerofatura}</li>
                                                     <li>${sale.colaborador_nome}</li>
                                                     <li>${(sale.conta_titular || "N/D")}</li>                      
-                                                    <li>${sale.conta_montante.formatter()+" STN"}</li>
-                                                    <li>${sale.deposito_montantemoeda.formatter()+" "+sale.currency_code}</li>
-                                                    <li>${sale.deposito_montantetroco.formatter()+" STN"}</li>
+                                                    <li>${sale.conta_montante.dc().formatter()+" STN"}</li>
+                                                    <li>${sale.deposito_montantemoeda.dc().formatter()+" "+sale.currency_code}</li>
+                                                    <li>${sale.deposito_montantetroco.dc().formatter()+" STN"}</li>
                                                     <li>${new Date(sale.conta_dataregistro).getDatePt()+", "+new Date(sale.conta_dataregistro).getTime2H()}</li>
                                                     <li class="flex v-ct j-stp reimprimir" title="Reimprimir" style="cursor: pointer;">
                                                         <span class="flex v-ct">
