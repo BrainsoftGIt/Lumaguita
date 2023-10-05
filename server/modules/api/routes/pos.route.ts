@@ -146,7 +146,6 @@ app.post("/api/pos/conta/proforma", async (req, res) =>{
 app.post("/api/search/articles", async (req, res) =>{
     const {functSearchArtigoPOS} = require("../db/call-function-pos");
     req.body.arg_espaco_auth = req.session.user_pos.auth.armazem_atual;
-    console.log( req.body );
     const response = await functSearchArtigoPOS(req.body);
     console.log( response );
     res.json({artigos: response.rows});

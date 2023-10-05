@@ -41,7 +41,6 @@ export function functLoadProviders(args) {
     );
 }
 export function functLoadArticles(args) {
-    console.log( args );
     const {sql} = factory.create(Templates.PARAMETERIZED);
     return catchAll(
         sql `select * from tweeks.funct_load_artigo( ${ args })`

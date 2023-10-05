@@ -28,8 +28,12 @@ export const pgRevision = new RevisionCore( pgCore, {
     dirname: folders.databaseRevision,
     DATA_VERSION: VERSION.TAG,
     resolvedDirectory: resolvedRevisions,
-    history: history
+    history: history,
+    props: {
+        DATA_VERSION: VERSION.TAG
+    }
 });
+
 
 pgRevision.on("log", (level, message) => {
     // console.log( message );

@@ -38,7 +38,6 @@ app.post("/api/provider", async (req, res) =>{
 app.post("/api/articles/load", async (req, res) =>{
     const {functLoadArticles} = require("../db/call-function-article");
     req.body.arg_espaco_auth = req.session.auth_data.auth.armazem_atual;
-    console.log( req.body );
     const response = await functLoadArticles(req.body) ;
     res.json({artcls: response.rows});
 });
