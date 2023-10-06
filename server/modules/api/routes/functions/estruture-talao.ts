@@ -21,9 +21,9 @@ export let structure = (user) => {
                 bold: true,
             },
         },
-        pageMargins: [ 5, 0, 60, 0 ],
+        pageMargins: [ 5, -10, 5, 0 ],
         pageSize: {
-            width : 226.772,
+            width : 200,
             height: 595 * 2
         },
         background: function (page) {
