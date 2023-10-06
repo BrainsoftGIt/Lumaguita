@@ -40,7 +40,7 @@ export let create = async (instituition, accounts, res, user, printer_name, arg_
                         alignment: "center",
                         stack: [
                             (logoTipo && instituition?.espaco_configuracao.logo_talao ? {
-                                margin: [0, 10, 0, 5],
+                                margin: [0, 0, 0, 5],
                                 image:  'data:image/png;base64,' + fs.readFileSync(logoTipo).toString('base64'),
                                 width: 100,
                             } : {}),
