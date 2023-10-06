@@ -118,7 +118,6 @@
     "@types/tmp": "^0.2.2",
     "@types/treeify": "^1.0.0",
     "kconst": "^1.0.21",
-    "nexe": "^4.0.0-rc.1",
     "nwjs-types": "^1.0.0"
   }
 }
