@@ -39,8 +39,6 @@ let remoteStaticResource = express.static( folders.public, {
 
 
 //Body Parser
-// require( './middlewares/vhost' );
-
 require( './middlewares/body-parser' );
 
 // Cookie Parser
