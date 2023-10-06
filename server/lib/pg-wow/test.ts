@@ -1,5 +1,4 @@
 import {Pool} from "pg";
-import cli from "nexe/lib/steps/cli";
 
 let pool = new Pool({
     host: "127.0.0.1",

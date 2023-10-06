@@ -1,4 +1,3 @@
-import {nexeStart} from "./nexe";
 
 require( 'source-map-support' ).install();
 
@@ -225,14 +224,6 @@ line.defineCommand( { name: "destroy", callback: receiver => {
     compileArgs.full = true;
     clean( compileArgs );
 }});
-
-line.defineCommand( { name: "nexe", callback: receiver => {
-    tsc( path.join( __dirname, "../.." ) );
-    nexeStart().then( value => {
-        console.log( value );
-        console.log( "NEXE: compiled" );
-    })
-}})
 
 line.defineCommand( { name: "start", callback: receiver => {
     VERSION.increment();

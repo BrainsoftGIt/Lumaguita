@@ -33,13 +33,21 @@ export function dumpNow( instant?: moment.Moment, opts?:Options ):Promise<string
         let lastFile =path.join( folders.dumps, `last-${Math.random()}.base.db` );
 
         const out = create_dump( lastFile );
-        out.stdout.on( "data", chunk => {}  )
-        out.stderr.on( "data", chunk => {}  );
+        let data = "";
+        let err = "";
+        out.stdout.on( "data", chunk => data+=chunk.toString()  )
+        out.stderr.on( "data", chunk => err+=chunk.toString  );
         process.stdin.pipe( out.stdin );
 
         let files:string[] = [];
 
-        out.on("close", ( code, signal) => {
+        out.on("exit", ( code, signal) => {
+            serverNotify.log( `database dumps end with code = "${code}"`);
+            if( code !== 0 ){
+                // serverNotify.log( `database dumps end with stdout = "${data}"`);
+                // serverNotify.log( `database dumps end with stderr = "${err}"`);
+                return resolve( null );
+            }
             dumps.forEach( next => {
                 let dumpFile = instant.format( next.format ).toLowerCase();
                 let copyFile = path.join( folders.dumps, dumpFile );
@@ -80,7 +88,6 @@ export function create_dump( fileName:string ){
 }
 
 export function create_dump_sync(filename:string ){
-    console.log( { filename })
     return pg_dump_sync( ...dargs( filename ));
 }
 

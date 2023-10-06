@@ -149,7 +149,7 @@ function saveBackup( dumps:string[]):Promise<RevisionsChecks>{
 pgRevision.on("news", blocks => {
     return new Promise( (resolve) => {
         preventiveBackup().then( dumps => {
-            if( !dumps ) resolve({ accept: false, message: "Falha ao criar dumps preventivo!" } );
+            if( !dumps ) return  resolve({ accept: false, message: "Falha ao criar dumps preventivo!" } );
             saveBackup( dumps ).then( value1 => {
                 resolve( value1 )
             }).catch( reason => resolve({ error: reason } ))

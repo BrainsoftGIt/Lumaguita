@@ -6,6 +6,10 @@ using System.ComponentModel;
 namespace MyProcessSample {
     class MyProcess {
         public static void Main(string[] args) {
+           if (args.Length == 0) {
+                Console.WriteLine("use: elevate-wait <executable-file>");
+                return;
+            }
             // App Name
             const string AppName = "elevate";
             try {
