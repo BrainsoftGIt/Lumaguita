@@ -37,7 +37,7 @@ export function loadNamespaceConfigs( listen:( error: Error, nsp?:Namespace )=> 
 
             fs.readdirSync( directory ).forEach( value => {
                 let filename = Path.join( directory, value );
-                if(  !/.*.int.js$/.test( filename ) ) return;
+                if(  !/.*.init.js$/.test( filename ) ) return;
                 if( !fs.statSync( filename ).isFile() ) return;
                 serverNotify.log( `init namespace dependency: ${ new URL( `file://${filename}`) } ...`)
                 let __ini = require( filename );
