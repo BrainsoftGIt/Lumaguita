@@ -39,6 +39,12 @@ export let create = async (instituition, account_content, res, user, date, num_a
                 margin: [0, 3, 0, 3],
                 fontSize: 6.5,
                 border: [false, false, false, false],
+                text: cont?.venda_quantidade || "---"
+            },
+            {
+                margin: [0, 3, 0, 3],
+                fontSize: 6.5,
+                border: [false, false, false, false],
                 text: cont?.unit_code || "---"
             },
             {
@@ -51,13 +57,7 @@ export let create = async (instituition, account_content, res, user, date, num_a
                 margin: [0, 3, 0, 3],
                 fontSize: 6.5,
                 border: [false, false, false, false],
-                text: cont?.artigo_nome || "---"
-            },
-            {
-                margin: [0, 3, 0, 3],
-                fontSize: 6.5,
-                border: [false, false, false, false],
-                text: cont?.venda_quantidade || "----"
+                text: cont?.artigo_nome || "----"
             },
             {
                 margin: [0, 3, 0, 3],
