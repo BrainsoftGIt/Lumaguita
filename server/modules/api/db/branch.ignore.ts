@@ -2,7 +2,6 @@ import {factory} from "../../../service/database.service";
 import {catchAll, Templates} from "zoo.pg";
 import {Cluster, RevisionRequest} from "../../../lib/cluster/types";
 import {Branch} from "../socket/cluster.socket.listener";
-import {catchFirst} from "zoo.pg/lib/result";
 import {ClusterType} from "../../../lib/cluster/enuns";
 
 export async function branchIgnore( req: RevisionRequest ) {

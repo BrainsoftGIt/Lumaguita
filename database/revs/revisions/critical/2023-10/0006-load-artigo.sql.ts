@@ -291,3 +291,159 @@ begin
 end
 $$;
 `;
+
+
+export const funct_load_stoks = sql`
+create or replace function tweeks.funct_load_stoks(args jsonb) returns SETOF jsonb
+  language plpgsql
+as
+$$
+declare
+  /**
+    Essa função serve para carragar a quantidade em stock dos diferentes espaços
+    args := {
+      arg_colaborador_id: UUID
+      arg_espaco_auth: UUID
+      espaco_destino: UUID,
+      artigos:[ UUID, UUID, UUID ]
+    }
+   */
+  arg_colaborador_id uuid not null default args->>'arg_colaborador_id';
+  arg_espaco_auth uuid not null default args->>'arg_espaco_auth';
+
+  arg_espaco_destino uuid default args->>'espaco_destino';
+  arg_artigos uuid[] default array( select jsonb_array_elements_text( args->'artigos' )::uuid);
+begin
+  if jsonb_array_length( args->'artigos' )  = 0 then
+    arg_artigos := null;
+  end if;
+
+  return query
+    with __stoks as (
+        select
+            art.artigo_id,
+            art.artigo_nome,
+            e.espaco_id,
+            e.espaco_nome,
+            coalesce( s.stock_quantidade, 0 ),
+            n.index
+          from tweeks.artigo art
+            inner join tweeks.espaco e on e.espaco_id = coalesce( arg_espaco_destino, e.espaco_id )
+            left join tweeks._get_stock( art.artigo_id, arg_espaco_destino ) s on art.artigo_id = s.stock_artigo_id
+            left join unnest( arg_artigos ) with ordinality n( id, index ) on art.artigo_id = n.id
+          where art.artigo_id = any( coalesce( arg_artigos, array[]::uuid[] ) )
+
+    ) select to_jsonb( s )
+      from __stoks s
+      order by s.index
+      ;
+end;
+$$;
+`;
+
+
+export const _get_stock = sql`
+create or replace function tweeks._get_stock(_artigo_id uuid, _espaco_id uuid)
+  returns TABLE(stock_artigo_id uuid, stock_espaco_id uuid, stock_quantidade double precision)
+  strict
+  language sql
+as
+$$
+  with __value ( one) as (
+    values ( 1 )
+  )
+  select
+      coalesce( s.artigo_id, _artigo_id ) as artigo_id,
+      coalesce( s.espaco_id, _espaco_id ) as espaco_id,
+      coalesce( sum( s.stock_quantidade )::double precision, 0 )
+    from __value 
+      left join tweeks.stock s on s.artigo_id = coalesce( _artigo_id, s.artigo_id )
+        and s.espaco_id = coalesce( _espaco_id, s.espaco_id)
+    group by s.artigo_id, s.espaco_id;
+$$;
+`;
+
+
+export const funct_reg_acerto = sql`
+create or replace function tweeks.funct_reg_acerto(args jsonb) returns lib.result
+  language plpgsql
+as
+$$
+declare
+  /**
+    Essa função serve para efetuar o acerto do stock
+    args = {
+      arg_espaco_auth: ID
+      arg_espaco_id: ID,
+      arg_colaborador_id := ID,
+
+      acerto_observacao: OBS
+      arg_acerto: [{
+        artigo_id:UUID,
+        acerto_quantidade: QUANTIDADE
+      }]
+    }
+  */
+
+  arg_colaborador_id uuid not null default args->>'arg_colaborador_id';
+  arg_espaco_auth uuid not null default args->>'arg_espaco_auth';
+  arg_espaco_id uuid not null default args->>'arg_espaco_id';
+  arg_acerto_observacao varchar default args->>'acerto_observacao';
+
+  arg_acerto_corecao double precision;
+
+  _const map.constant;
+  _stock record;
+  _acerto tweeks.acerto;
+  _new tweeks.acerto;
+
+  _acerto_group uuid;
+  _data record;
+  acertos jsonb default jsonb_build_array();
+  ___branch uuid default tweeks.__branch_uid( arg_colaborador_id, arg_espaco_auth );
+begin
+  _const := map.constant();
+
+  for _data in
+    select
+        (e.doc->>'artigo_id')::uuid as artigo_id,
+        (e.doc->>'acerto_quantidade')::double precision as acerto_quantidade
+      from jsonb_array_elements( args->'arg_acerto' ) e( doc )
+  loop
+
+    select 
+        stock_quantidade,
+        stock_artigo_id,
+        stock_espaco_id
+      from tweeks._get_stock( _data.artigo_id, arg_espaco_id )
+      into _stock;
+    arg_acerto_corecao := _stock.stock_quantidade - _data.acerto_quantidade;
+    _acerto_group := public.uuid_generate_v4();
+    _new.acerto_codigo := tweeks.__generate_acerto_code( ___branch );
+    _new.acerto_colaborador_id :=    arg_colaborador_id;
+    _new.acerto_quantidade :=        _data.acerto_quantidade;
+    _new.acerto_quantidadeinicial := _stock.stock_quantidade;
+    _new.acerto_correcao :=          arg_acerto_corecao;
+    _new.acerto_observacao :=        arg_acerto_observacao;
+    _new.acerto_espaco_auth :=       arg_espaco_auth;
+    _new.acerto_oprgroup :=          _acerto_group;
+    _new.acerto_artigo_id :=         _data.artigo_id;
+    _new.acerto_espaco_id :=         arg_espaco_id;
+
+    -- Save acerto
+    select ( "returning" ).* into _acerto
+      from lib.sets_in( _new )
+    ;
+
+    _stock := tweeks._get_stock( _data.artigo_id, arg_espaco_id );
+    acertos := acertos || jsonb_build_object(
+      'acerto', _acerto,
+      'stock', _stock,
+      'artigo', tweeks._get_artigo( _stock.stock_artigo_id )
+    );
+  end loop;
+
+  return  lib.result_true( acertos );
+end;
+$$;
+`;

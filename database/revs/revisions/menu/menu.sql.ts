@@ -333,7 +333,7 @@ do $block$
     "menu_raiz": "71",
     "menu_nivel": 1,
     "menu_icon": null,
-    "menu_nome": "Retalho de artigos",
+    "menu_nome": "Retalhar artigos",
     "menu_link": null,
     "menu_estado": 1,
     "menu_children": 0,
