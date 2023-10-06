@@ -24,7 +24,6 @@ export function loadNamespaceConfigs( listen:( error: Error, nsp?:Namespace )=> 
         onResult(error: PgCoreError, result?: Result<MaguitaTableOf<"cluster", "cluster">, any>): any {
             if( error ) return listen( error );
             let cluster = result.rows[0];
-            console.log( cluster )
             if( !cluster ) return listen( null);
             let directory = Path.join( __dirname, cluster.cluster_path );
             if( !fs.existsSync( directory ) ) return listen( null ) ;
