@@ -167,6 +167,7 @@ app.get("/api/print/nota-credito/:dados", async (req, res) =>{
 app.post("/api/print/fatura/talao", async (req, res) =>{
     const fatura_talao = require("./functions/export-fatura-talao");
     const fatura_talaoA5 = require("./functions/export-fatura-talao-a5");
+    const fatura_talaoA6 = require("./functions/export-fatura-talao-a6");
     let instituition = await load_space_configuration(req, false);
     let dadosConta;
     let user;
@@ -178,6 +179,11 @@ app.post("/api/print/fatura/talao", async (req, res) =>{
 
     if(instituition.espaco_configuracao.printTalaoA5) {
         await fatura_talaoA5.create(instituition, dadosConta.rows[0], res, user, req.body.date, printer_name, dadosConta.rows[0].main.conta_serie.serie_numatorizacao);
+        return
+    }
+
+    if(instituition.espaco_configuracao.printTalaoA6) {
+        await fatura_talaoA6.create(instituition, dadosConta.rows[0], res, user, req.body.date, printer_name, dadosConta.rows[0].main.conta_serie.serie_numatorizacao);
         return
     }
     await fatura_talao.create(instituition, dadosConta.rows[0], res, user, req.body.date, printer_name, dadosConta.rows[0].main.conta_serie.serie_numatorizacao);
