@@ -243,7 +243,7 @@ app.post("/api/empresa/load/parametizacao", async (req, res) => {
     let args = req.body;
     args.arg_colaborador_id = _session.user_id;
     args.arg_espaco_auth = _session.workspace;
-    args.parametrizacao_tags = [ args.arg_espaco_auth ];
+    // args.parametrizacao_tags = [ args.arg_espaco_auth ];
 
     res.json(await functLoadSetting(args))
 });

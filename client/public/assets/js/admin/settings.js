@@ -148,8 +148,8 @@ var settings = {
                         $("#empresa_telef").val(emp.empresa_telef);
                         $("#empresa_endereco").val(emp.empresa_endereco);
                         $("#empresa_gerente").val(emp.empresa_gerente);
-                        $("#empresa_textcolor").val(emp.empresa_textcolor);
-                        $("#empresa_basecolor").val(emp.empresa_basecolor);
+                        $("#empresa_textcolor").val(emp?.empresa_textcolor || "#ffffff");
+                        $("#empresa_basecolor").val(emp?.empresa_basecolor || "#000000");
                         if(settings.empresa?.configuracao_impressoras === undefined){
                             settings.empresa["configuracao_impressoras"] = [];
                         }

@@ -167,6 +167,7 @@ app.get("/api/print/nota-credito/:dados", async (req, res) =>{
 app.post("/api/print/fatura/talao", async (req, res) =>{
     const fatura_talao = require("./functions/export-fatura-talao");
     const fatura_talaoA5 = require("./functions/export-fatura-talao-a5");
+    const fatura_talaoA6 = require("./functions/export-fatura-talao-a6");
     let instituition = await load_space_configuration(req, false);
     let dadosConta;
     let user;
@@ -178,6 +179,11 @@ app.post("/api/print/fatura/talao", async (req, res) =>{
 
     if(instituition.espaco_configuracao.printTalaoA5) {
         await fatura_talaoA5.create(instituition, dadosConta.rows[0], res, user, req.body.date, printer_name, dadosConta.rows[0].main.conta_serie.serie_numatorizacao);
+        return
+    }
+
+    if(instituition.espaco_configuracao.printTalaoA6) {
+        await fatura_talaoA6.create(instituition, dadosConta.rows[0], res, user, req.body.date, printer_name, dadosConta.rows[0].main.conta_serie.serie_numatorizacao);
         return
     }
     await fatura_talao.create(instituition, dadosConta.rows[0], res, user, req.body.date, printer_name, dadosConta.rows[0].main.conta_serie.serie_numatorizacao);
@@ -301,7 +307,6 @@ app.post("/api/print/kitchen", async (req, res) =>{
 
         let user = req.session.user_pos.auth.colaborador_nome+" "+(req.session.user_pos.auth.colaborador_apelido === null ? "" : req.session.user_pos.auth.colaborador_apelido.split(" ").pop());
 
-
         if(!instituition?.espaco_configuracao?.impressoras_cozinha?.ip){
             if(instituition.espaco_configuracao.printTalaoA5) {
                 await createA5(instituition, req.body.articles, res, req.body.date, req.body.table, req.body.obs, user);
@@ -312,6 +317,7 @@ app.post("/api/print/kitchen", async (req, res) =>{
                 await createA6(instituition, req.body.articles, res, req.body.date, req.body.table, req.body.obs, user);
                 return
             }
+
             await create(instituition, req.body.articles, res, req.body.date, req.body.table, req.body.obs);
         }
         else if(instituition?.espaco_configuracao?.impressoras_cozinha?.ip){
