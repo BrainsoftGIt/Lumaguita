@@ -59,15 +59,19 @@ export function prepareDatabase():Promise<boolean>{
 }
 
 const startServer = ( onReady:()=>void )=>{
-    serverNotify.loadingBlock( "A iniciar o servidor..." );
-    const { appModules } = require( "../modules" );
-    module.exports = {
-        appModules
-    }
+    let { loadNamespaceConfigs } = require( "../nsp/index" );
 
-    if( typeof onReady === "function" ){
-        onReady();
-    }
+    loadNamespaceConfigs( (error, nsp) => {
+        serverNotify.loadingBlock( "A iniciar o servidor..." );
+        const { appModules } = require( "../modules" );
+        module.exports = {
+            appModules
+        }
+
+        if( typeof onReady === "function" ){
+            onReady();
+        }
+    });
 }
 
 export function requireAppUpdated ( next:()=>void ){
