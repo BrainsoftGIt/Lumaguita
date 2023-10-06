@@ -24,15 +24,16 @@ export function loadNamespaceConfigs( listen:( error: Error, nsp?:Namespace )=> 
         onResult(error: PgCoreError, result?: Result<MaguitaTableOf<"cluster", "cluster">, any>): any {
             if( error ) return listen( error );
             let cluster = result.rows[0];
+            console.log( cluster )
             if( !cluster ) return listen( null);
-            let directory = Path.join( __dirname, cluster.cluster_namespace ||"/" );
+            let directory = Path.join( __dirname, cluster.cluster_path );
             if( !fs.existsSync( directory ) ) return listen( null ) ;
             let env;
             let conf;
 
             if( fs.existsSync( Path.join( directory, ".env" ) ) ){
                 let content = fs.readFileSync( Path.join( directory, ".env" ) ).toString();
-                env = ini.parse( content );
+                env = JSON5.parse( JSON5.stringify( ini.parse( content ) ));
             }
 
             if( fs.existsSync( Path.join( directory, "conf.json" ) ) ){
@@ -42,6 +43,7 @@ export function loadNamespaceConfigs( listen:( error: Error, nsp?:Namespace )=> 
 
             namespace.env = env;
             namespace.conf = conf;
+            namespace.directory = directory;
             namespace.clusterName = cluster.cluster_name;
 
             fs.readdirSync( directory ).forEach( value => {
