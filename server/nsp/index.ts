@@ -5,9 +5,11 @@ import fs from "fs";
 import Path from "path";
 import ini from "ini";
 import {serverNotify} from "../snotify";
+import JSON5 from "json5";
 
 export type Namespace = {
     env?:any,
+    conf?:any,
     directory?:string,
     clusterName?:string
 }
@@ -26,13 +28,20 @@ export function loadNamespaceConfigs( listen:( error: Error, nsp?:Namespace )=> 
             let directory = Path.join( __dirname, cluster.cluster_namespace ||"/" );
             if( !fs.existsSync( directory ) ) return listen( null ) ;
             let env;
+            let conf;
 
             if( fs.existsSync( Path.join( directory, ".env" ) ) ){
-                let content = fs.readFileSync( Path.join( __dirname, cluster.cluster_namespace ||"/", ".env" ) ).toString();
+                let content = fs.readFileSync( Path.join( directory, ".env" ) ).toString();
                 env = ini.parse( content );
             }
 
+            if( fs.existsSync( Path.join( directory, "conf.json" ) ) ){
+                let content = fs.readFileSync( Path.join( directory, "conf.json" ) ).toString();
+                conf = JSON5.parse( content );
+            }
+
             namespace.env = env;
+            namespace.conf = conf;
             namespace.clusterName = cluster.cluster_name;
 
             fs.readdirSync( directory ).forEach( value => {
