@@ -88,10 +88,10 @@ export function functLoadDadosEmpresa(args) {
         ).then((dados) => {
             if(dados.rows[0]){
                 args = {...args};
-                args.parametrizacao_tags = [args.arg_espaco_auth];
+                // args.parametrizacao_tags = [args.arg_espaco_auth];
                 functLoadSetting(args).then((result) => {
                     // @ts-ignore
-                    let {data} = result || {};
+                    let {data} = result || [];
                     let obj = {};
                     data.forEach(({parametrizacao_props, parametrizacao_tags, parametrizacao_uid}) => {
                         obj = {...obj, ...parametrizacao_props, [`${parametrizacao_tags[0]}_id`]: parametrizacao_uid };
@@ -189,46 +189,6 @@ export function functLoadSetting(args) {
                         message: error.message,
                         hint: error
                     })
-                    return;
-                }
-
-                if(!result.rows.length){
-                    functLoadDadosEmpresaOld(args).then(async ({rows}) => {
-                        let {funct_load_espaco_configuracao} = rows?.[0] || {};
-                        let { espaco } = funct_load_espaco_configuracao || {};
-                        let { espaco_configuracao } = espaco || {};
-                        let {configuracao_impressoras, impressoras_cozinha, ...configuracao} = espaco_configuracao || {};
-
-                        if(configuracao) {
-                            args = {...args};
-                            args.parametrizacao_props = configuracao || {};
-                            args.parametrizacao_tags = ["empresa_data", args.arg_espaco_auth];
-                            await functRegSetting(args);
-                        }
-
-                        if(configuracao_impressoras) {
-                            args = {...args};
-                            args.parametrizacao_props = {configuracao_impressoras} || {};
-                            args.parametrizacao_tags = ["configuracao_impressoras", args.arg_espaco_auth];
-                            await functRegSetting(args);
-                        }
-
-                        if(impressoras_cozinha) {
-                            args = {...args};
-                            args.parametrizacao_props = {impressoras_cozinha} || {};
-                            args.parametrizacao_tags = ["impressoras_cozinha", args.arg_espaco_auth];
-                            await functRegSetting(args);
-                        }
-
-
-                        args = {...args};
-                        args.parametrizacao_tags = [args.arg_espaco_auth];
-                        functLoadSetting(args).then((result) => {
-                            resolve(result)
-                        })
-
-
-                    });
                     return;
                 }
 

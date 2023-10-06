@@ -301,7 +301,6 @@ app.post("/api/print/kitchen", async (req, res) =>{
 
         let user = req.session.user_pos.auth.colaborador_nome+" "+(req.session.user_pos.auth.colaborador_apelido === null ? "" : req.session.user_pos.auth.colaborador_apelido.split(" ").pop());
 
-
         if(!instituition?.espaco_configuracao?.impressoras_cozinha?.ip){
             if(instituition.espaco_configuracao.printTalaoA5) {
                 await createA5(instituition, req.body.articles, res, req.body.date, req.body.table, req.body.obs, user);
@@ -312,6 +311,7 @@ app.post("/api/print/kitchen", async (req, res) =>{
                 await createA6(instituition, req.body.articles, res, req.body.date, req.body.table, req.body.obs, user);
                 return
             }
+
             await create(instituition, req.body.articles, res, req.body.date, req.body.table, req.body.obs);
         }
         else if(instituition?.espaco_configuracao?.impressoras_cozinha?.ip){
