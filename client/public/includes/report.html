@@ -244,22 +244,35 @@
             </div>
         </div>
     </div>
-    <div id="xModalExportFileFinanca" class="x-mobdal flex v-ct h-ct hideTarget" target="xModalExportFileFinanca">
+    <div id="xModalExportFileFinanca" class="x-mobdal flex v-ct h-ct" target="xModalExportFileFinanca">
         <div class="modal-frame j-stp">
             <h3>Exportação relatório imposto</h3>
             <div class="xform">
                 <div class="flex h-ct v-ct w100">
-                    <div class="xinput w25">
-                        <input type="text" placeholder="Data de inicio" _noObrigatory="true" id="financa_report_start"
-                               data-inputmask-alias="dd-mm-yyyy" data-val="true">
-                        <label for="financa_report_start">Data de inicio</label>
+                    <div class="xselect flutuate w25">
+                        <input type="text" readonly>
+                        <label>Escolha a ordem da coluna</label>
+                        <ul id="financa_report_month">
+                            <li class="tgl" data-value="01">Janeiro</li>
+                            <li class="tgl" data-value="02">Fevereiro</li>
+                            <li class="tgl" data-value="03">Março</li>
+                            <li class="tgl" data-value="04">Abril</li>
+                            <li class="tgl" data-value="05">Maio</li>
+                            <li class="tgl" data-value="06">Junho</li>
+                            <li class="tgl" data-value="07">Julho</li>
+                            <li class="tgl" data-value="08">Agosto</li>
+                            <li class="tgl" data-value="09">Setembro</li>
+                            <li class="tgl" data-value="10">Outubro</li>
+                            <li class="tgl" data-value="11">Novembro</li>
+                            <li class="tgl" data-value="12">Dezembro</li>
+                        </ul>
                     </div>
-                    <div class="xinput w25" style="margin-left: 0.5em">
-                        <input type="text" placeholder="Data de fim" _noObrigatory="true" id="financa_report_end"
-                               data-inputmask-alias="dd-mm-yyyy" data-val="true">
-                        <label for="financa_report_end">Data de fim</label>
+                    <div class="xselect flutuate w25">
+                        <input type="text" readonly>
+                        <label>Escolha a ordem da coluna</label>
+                        <ul id="financa_report_yaer">
+                        </ul>
                     </div>
-
                     <button class="xbtn" style="margin-left: 0.9em; margin-top: -0.5em" load-report-imposto>Carregar</button>
                 </div>
             </div>
