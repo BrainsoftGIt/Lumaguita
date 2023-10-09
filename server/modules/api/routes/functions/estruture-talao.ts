@@ -23,7 +23,7 @@ export let structure = (user) => {
         },
         pageMargins: [ 5, 0, 5, 0 ],
         pageSize: {
-            width : 200,
+            width : 210,
             height: 595 * 2
         },
         background: function (page) {

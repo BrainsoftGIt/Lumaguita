@@ -279,6 +279,30 @@ if(!String.prototype.dc){
     }
 }
 
+if(!Number.prototype.tc){
+    Number.prototype.tc = function () {
+        return Number(this.toFixed(2));
+    }
+}
+
+if(!String.prototype.tc){
+    String.prototype.tc = function () {
+        return Number(Number.parseFloat(this).toFixed(3));
+    }
+}
+
+if(!String.prototype.sc){
+    String.prototype.sc = function () {
+        return Number(Number.parseFloat(this).toFixed(6));
+    }
+}
+
+if(!Number.prototype.sc){
+    Number.prototype.sc = function () {
+        return Number(this.toFixed(6));
+    }
+}
+
 if(!Number.prototype.rp){
     Number.prototype.rp = function () {
         return this.toString().replace(".",",");

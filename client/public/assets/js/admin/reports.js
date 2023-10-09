@@ -404,14 +404,18 @@ var report = {
             return
         }
 
+
+        let {value: year} = $("#financa_report_yaer li.active").data();
+        let {value: month} = $("#financa_report_month li.active").data();
+
         $("body").addClass("loading");
         $.ajax({
             url: "/api/report/export/imposto",
             method: "POST",
             contentType: "application/json",
             data: JSON.stringify({
-                arg_datainicio: $("#financa_report_start").val().stringToDate().getDateEn(),
-                arg_datafim: $("#financa_report_end").val().stringToDate().getDateEn(),
+                arg_datainicio: new Date(year, month-1, 1).getDateEn(),
+                arg_datafim: new Date(year, month, 0).getDateEn()
             }),
             success(ordenList) {
                 $("body").removeClass("loading");
@@ -442,7 +446,7 @@ var report = {
                                 <li></li>
                                 <li></li>
                                 <li></li>
-                                <li>${sumatorio}</li>
+                                <li>${sumatorio.sc().formatter()}</li>
                                 <li></li>
                                 <li></li>
                             </ul>`);
@@ -481,13 +485,15 @@ var report = {
             }
         })
 
+        let {value: year} = $("#financa_report_yaer li.active").data();
+        let {text: month} = $("#financa_report_month li.active").data();
         let data = JSON.stringify(json, null, 2);
         const blob = new Blob([data], { type: 'application/javascript' });
         const url = window.URL.createObjectURL(blob)
         const a = document.createElement('a')
         a.setAttribute('href', url)
         a.setAttribute('target', "_blank")
-        a.setAttribute('download', 'upload_documentos_v1.5.json');
+        a.setAttribute('download', `${month} ${year} IVA.json`);
         a.click()
     }
 };
@@ -724,3 +730,14 @@ $("#footer_values_type").on("click", "li", function () {
 });
 
 $('[data-inputmask-alias]').inputmask();
+xTableGenerate();
+
+var financa_report_yaer = 2022;
+while (financa_report_yaer <= new Date().getFullYear()){
+    $("#financa_report_yaer").prepend(`<li class="tgl" data-value="${financa_report_yaer}">${financa_report_yaer}</li>`);
+    financa_report_yaer++;
+}
+
+var month = new Date().getMonth().add0ToTimer()
+$("#financa_report_yaer li:first").mousedown()
+$(`#financa_report_month li[data-value='${month}']`).mousedown()
