@@ -28,8 +28,8 @@ export function loadNamespaceConfigs( listen:( error: Error, nsp?:Namespace )=> 
             if(!cluster.cluster_path)  return listen( null);
             let directory = Path.join( __dirname, cluster.cluster_path );
             if( !fs.existsSync( directory ) ) return listen( null ) ;
-            let env;
-            let conf;
+            let env:any;
+            let conf:any;
 
             if( fs.existsSync( Path.join( directory, ".env" ) ) ){
                 let content = fs.readFileSync( Path.join( directory, ".env" ) ).toString();
