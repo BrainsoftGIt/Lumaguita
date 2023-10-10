@@ -339,7 +339,7 @@ app.get("/api/exportar/modelo/artigos/:dados", async (req, res) => {
     ]
 
 
-    workSheetSpaces.state = 'hidden';
+    // workSheetSpaces.state = 'hidden';
     workSheet.getRow(1).font = {family: 2, size: 13, bold: true};
     workSheet.getRow(1).alignment = {vertical: 'middle', horizontal: 'center'};
 
@@ -367,31 +367,31 @@ app.get("/api/exportar/modelo/artigos/:dados", async (req, res) => {
         workSheet.getCell(`E${i}`).dataValidation = {
             type: 'list',
             allowBlank: false,
-            formula: [`Armazens!$B$2:$B$${(dados.categs.length || 1)+1}`],
+            formula: [`Armazens!$B$1:$B$${(dados.categs.length || 1)}`],
             tooltip: "Clique para selecionar a categoria"
         };
         workSheet.getCell(`F${i}`).dataValidation = {
             type: 'list',
             allowBlank: false,
-            formulae: [`Armazens!$C$2:$C$${(dados.taxs.length || 1)+1}`],
+            formulae: [`Armazens!$C$1:$C$${(dados.taxs.length || 1)}`],
             tooltip: "Clique para selecionar o imposto"
         };
         workSheet.getCell(`G${i}`).dataValidation = {
             type: 'list',
             allowBlank: false,
-            formulae: [`Armazens!$D$2:$D$${(dados.aplicImposto.length || 1)+1}`],
+            formulae: [`Armazens!$D$1:$D$${(dados.aplicImposto.length || 1)}`],
             tooltip: "Clique para selecionar a forma de aplicar o imposto"
         };
         workSheet.getCell(`C${i}`).dataValidation = {
             type: 'list',
             allowBlank: false,
-            formulae: [`Armazens!$E$2:$E$${(dados.units.length || 1)+1}`],
+            formulae: [`Armazens!$E$1:$E$${(dados.units.length || 1)}`],
             tooltip: "Clique para selecionar a unidade"
         };
         workSheet.getCell(`H${i}`).dataValidation = {
             type: 'list',
             allowBlank: false,
-            formulae: [`Armazens!$F$2:$F$${(dados.taxCodes.length || 1)+1}`],
+            formulae: [`Armazens!$F$1:$F$${(dados.taxCodes.length || 1)}`],
             tooltip: "Clique para selecionar o código imposto"
         };
     }
