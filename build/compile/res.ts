@@ -64,6 +64,24 @@ const  raws:ResourceItem[] = [
 ];
 
 
+let getNodeJs = ()=>{
+
+//language=file-reference
+    if( !fs.existsSync( Path.join(__dirname, "../bin/node.exe")) ){
+        let result = spawnSync("where", [ "node.exe" ], {
+            shell: "cmd"
+        });
+        if( result.status !== 0 ) return;
+        let node_exe = result.stdout.toString("utf-8" ).trim();
+        if( !fs.existsSync( node_exe ) ) throw new Error( "node.exe not found!" );
+        //language=file-reference
+        raws.push({base: Path.relative( Path.join(__dirname, "../"), Path.dirname(node_exe)), dist: "/bin", filter: "node.exe"})
+    }
+}
+
+getNodeJs();
+
+
 let result = spawnSync("where", ["nw"]);
 
 if( result.status === 0 ){
