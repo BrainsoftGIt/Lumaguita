@@ -25,6 +25,7 @@ export function loadNamespaceConfigs( listen:( error: Error, nsp?:Namespace )=> 
             if( error ) return listen( error );
             let cluster = result.rows[0];
             if( !cluster ) return listen( null);
+            if(!cluster.cluster_path)  return listen( null);
             let directory = Path.join( __dirname, cluster.cluster_path );
             if( !fs.existsSync( directory ) ) return listen( null ) ;
             let env;
