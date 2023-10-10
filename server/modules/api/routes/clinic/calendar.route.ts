@@ -67,7 +67,7 @@ let funLoadSchedules = () => {
 
     listEventToNotify = [];
     functLoadScheduler(req).then((response) => {
-        response.rows.forEach(({data}) => {
+        (response?.rows || []).forEach(({data}) => {
             if(typeEvent !== data.schedule_type){
                 let originalDate = data.schedule_startdate;
                 data.schedule_startdate_origin = moment(originalDate, "YYYY-MM-DD HH:mm").format("YYYY-MM-DD HH:mm")

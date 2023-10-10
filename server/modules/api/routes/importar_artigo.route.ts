@@ -63,7 +63,7 @@ app.post("/api/importar_artigos", async (req, res) =>{
     let categoriasInexistentes = [];
     if(req.file) {
         await workbook.xlsx.readFile(req.file.path);
-        worksheetSpace = workbook.getWorksheet("Armazéns");
+        worksheetSpace = workbook.getWorksheet("Armazens");
         spaces = worksheetSpace.getRow(1).values;
         spaces.shift();
 
