@@ -103,7 +103,7 @@ export function requireAppUpdated ( next:()=>void ){
 
 
 function proceedPlay(){
-    const { startApplicationDatabase } = require( "./database.extension" );
+    // const { startApplicationDatabase } = require( "./database.extension" );
     createCTRL();
     detectPort( args.appPort ).then( async port => {
         if( args.appPort !== port ) {
@@ -127,17 +127,24 @@ function proceedPlay(){
         if( args.dbMode === "app" ){
             args.dbPort = args.dbPortDatabaseApp;
             serverNotify.loadingBlock( "A Recuperar base de dados..." );
-            startApplicationDatabase()
-                .then( startDatabaseResult => {
-                    prepareDatabase().then( prepareResult => {
-                        if( !prepareResult ){
-                            return;
-                        }
-                        serverNotify.loadingBlock( "startApplicationDatabase A iniciar o servidor..." );
-                        startServer( serverNotify.ready );
-                    })
-
-                });
+            const { pgContext } =  require("../service/database.service/kitres/setup");
+            pgContext.setup( (error, result) => {
+                if( error || !result.status ){
+                    return;
+                }
+                prepareDatabase().then( prepareResult => {
+                    if( !prepareResult ){
+                        return;
+                    }
+                    serverNotify.loadingBlock( "startApplicationDatabase A iniciar o servidor..." );
+                    startServer( serverNotify.ready );
+                })
+            });
+            // startApplicationDatabase()
+            //     .then( startDatabaseResult => {
+            //
+            //
+            //     });
         } else if( args.dbMode === "system" ){
             serverNotify.loadingBlock( "A iniciar o servidor..." );
             prepareDatabase().then( prepareResult => {

@@ -13,6 +13,7 @@ kconst.declares( (exports, override, SELF_NAME, props) => {
         superuser:"postgres",
         passwordClone:"1234",
         passwordSuperUser:"1234",
+        dbServiceName: "lumaguita-database-service"
     }; exports( targets.dbConnection );
 });
 
@@ -56,6 +57,8 @@ kconst.declares( (exports, override, SELF_NAME, props) => {
             userClinic: "clinic", // database name,
             passwordClinic: "1234@cli", // database name,
             hostClinic: "216.137.179.55", // database name,
+            dbServiceName: "lumaguita-database-service"
+
         }; exports( targets.dbConnection );
     })
 }, { user: [ "Daniel Costa", "zootakuxy" ] } );
@@ -81,6 +84,8 @@ kconst.declares( (exports, override, SELF_NAME, props) => {
             userClinic: "clinic", // database name,
             passwordClinic: "1234@cli", // database name,
             hostClinic: "216.137.179.55", // database name,
+            dbServiceName: "lumaguita-database-service"
+
         }; exports( targets.dbConnection );
     })
 }, { user: [ "Daniel Costa", "zootakuxy" ], mode: "local-test" } );
@@ -105,6 +110,8 @@ kconst.declares( (exports, override, SELF_NAME, props) => {
             userClinic: "clinic", // database name,
             passwordClinic: "1234@cli", // database name,
             hostClinic: "216.137.179.55", // database name,
+            dbServiceName: "lumaguita-database-service"
+
         }; exports( targets.dbConnection );
     })
 }, { user: "helcioguadalupe" } );
@@ -129,7 +136,7 @@ kconst.declares( (exports, override, SELF_NAME, props) => {
             userClinic: "clinic", // database name,
             passwordClinic: "1234@cli", // database name,
             hostClinic: "216.137.179.55", // database name,
-
+            dbServiceName: "lumaguita-database-service"
         }; exports( targets.dbConnection );
     })
 }, { user: "ahmedjorge" } );
@@ -154,6 +161,8 @@ kconst.declares( (exports, override, SELF_NAME, props) => {
             userClinic: "clinic", // database name,
             passwordClinic: "1234@cli", // database name,
             hostClinic: "216.137.179.55", // database name,
+            dbServiceName: "lumaguita-database-service"
+
         }; exports( targets.dbConnection );
     })
 }, { mode: "test" })
@@ -177,6 +186,8 @@ kconst.declares( (exports, override, SELF_NAME, props) => {
             userClinic: "proclinic", // database name,
             passwordClinic: "1234@cli-pro", // database name,
             hostClinic: "216.137.179.55", // database name,
+            dbServiceName: "lumaguita-database-service"
+
         }; exports( targets.dbConnection );
     })
 }, { mode: "prod" })
@@ -202,6 +213,8 @@ kconst.declares( (exports, override, SELF_NAME, props) => {
             userClinic: "clinic", // database name,
             passwordClinic: "1234@cli", // database name,
             hostClinic: "216.137.179.55", // database name,
+            dbServiceName: "lumaguita-database-service"
+
         }; exports( targets.dbConnection );
     })
 }, { mode: [ "public", "exe" ] })

@@ -12,6 +12,7 @@ import fs from "fs";
 import {PostgresOptions} from "../../lib/postgres/tools";
 import {DEFAULTS} from "../../global/defaults";
 import {serverNotify} from "../../snotify";
+import Path from "path";
 
 const acceptsInterval:(typeof interval[ number ])[] = [ "week-day", "week" ];
 
@@ -43,26 +44,32 @@ export function dumpNow( instant?: moment.Moment, opts?:Options ):Promise<string
 
         out.on("exit", ( code, signal) => {
             serverNotify.log( `database dumps end with code = "${code}"`);
-            if( code !== 0 ){
-                // serverNotify.log( `database dumps end with stdout = "${data}"`);
-                // serverNotify.log( `database dumps end with stderr = "${err}"`);
-                return resolve( null );
-            }
-            dumps.forEach( next => {
-                let dumpFile = instant.format( next.format ).toLowerCase();
-                let copyFile = path.join( folders.dumps, dumpFile );
-                files.push( copyFile );
-                console.log( `[maguita] copy dump database backup from = "${new URL(`file://${lastFile}`).href}"`);
-                console.log( `[maguita] copy dump database backup into = "${new URL(`file://${copyFile}`).href}"` );
-                fs.cpSync( lastFile, copyFile );
-            });
-            fs.unlinkSync( lastFile );
-            resolve( files );
+                if( code !== 0 ){
+                    // serverNotify.log( `database dumps end with stdout = "${data}"`);
+                    // serverNotify.log( `database dumps end with stderr = "${err}"`);
+                    return resolve( null );
+                }
+                let content = fs.readFileSync( lastFile );
+                fs.unlinkSync( lastFile );
+                dumps.forEach( (next, index) => {
+                    // setTimeout(()=>{
+
+                    let dumpFile = instant.format( next.format ).toLowerCase();
+                    let copyFile = path.join( folders.dumps, dumpFile );
+                    files.push( copyFile );
+                    console.log( `[maguita] copy dump database backup from = "${new URL(`file://${ lastFile }`).href}"`);
+                    console.log( `[maguita] copy dump database backup into = "${new URL(`file://${ copyFile }`).href}"` );
+                    if( !fs.existsSync( Path.dirname( copyFile ) ) ) {
+                        fs.mkdirSync( Path.dirname( copyFile ), { recursive: true });
+                    }
+                    fs.writeFileSync( copyFile, content );
+                });
+                resolve( files );
         });
     });
 }
 
-function dargs( filename ):[PostgresDumpArgs, PostgresOptions ]{
+function dargs( filename:string ):[PostgresDumpArgs, PostgresOptions ]{
     return [
         {
             dbname: args.dbName,
