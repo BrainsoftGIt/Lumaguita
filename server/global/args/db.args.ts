@@ -13,6 +13,7 @@ declare module "./index" {
         dbNameClinic:string,
         dbUserClone: string,
         dbSupperUser:string
+        dbServiceName:string
         dbMode: "app"|"system"
         dbForce: boolean
     }
@@ -63,4 +64,5 @@ hide("dbPasswordClone", String, { conf:"passwordClone" });
 
 //Supper
 define("dbSupperUser",  String,{ conf: "superuser", def: "DB_SUPERUSER" } );
+define("dbServiceName",  String,{ conf: "dbServiceName", def: "DB_SERVICE_NAME" } );
 hide("dbPasswordSuperUser", String, { conf: "passwordSuperUser" } );

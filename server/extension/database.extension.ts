@@ -8,6 +8,8 @@ import {folders} from "../global/project";
 import JSON5 from "json5";
 import { lookupPostgresRegister, PgInstallation } from "kitres";
 import {spawnSync} from "child_process";
+import {pgContext} from "../service/database.service/kitres/setup";
+import {prepareDatabase} from "./_app.extension";
 
 export type DatabaseConfigs = {
     /**C:\ProgramData\BrainsoftSTP.com\com.brainsoftstp.maguita\public\var\home\database\postgres\base*/
@@ -26,39 +28,39 @@ export type DatabaseConfigs = {
     },
 }
 
-export function startApplicationDatabase(){
-    serverNotify.loadingBlockItem(  "Ligando ao banco de dados local..." );
-    return new Promise( (resolve, reject) => {
-        getInstallation( installation => {
-            if( installation ){
-                let path = process.env["Path"].split( Path.delimiter );
-                path.unshift( Path.join( installation.installation, "bin") );
-                process.env["Path"] = path.join( Path.delimiter );
-            }
-
-            let result = spawnSync("pg_ctl", [ "--version"]);
-
-            console.log( "result.stdout.toString()", result.stdout.toString(), installation.installation )
-            console.log( "result.stderr.toString()", result.stderr.toString() )
-
-            setTimeout(()=>{
-                const { pgCtl } = require("../service/pgcluster.service" );
-                pgCtl.debug = (details, message, ... extras ) => {
-                    serverNotify.loadingBlockItem( message, null, ...extras );
-                };
-                const { ListenerEvent } = require("../lib/postgres/pg-ctl" );
-                pgCtl.instance.on( ListenerEvent.READY, (EVENT, any) => {
-                    serverNotify.loadingBlockItem(  "Ligando ao banco de dados local... [OK]" );
-
-                    resolve({
-                        status: EVENT,
-                        any: any
-                    })
-                })
-            }, 1)
-        })
-    })
-}
+// export function startApplicationDatabase(){
+//     serverNotify.loadingBlockItem(  "Ligando ao banco de dados local..." );
+//     return new Promise( (resolve, reject) => {
+//         getInstallation( installation => {
+//             if( installation ){
+//                 let path = process.env["Path"].split( Path.delimiter );
+//                 path.unshift( Path.join( installation.installation, "bin") );
+//                 process.env["Path"] = path.join( Path.delimiter );
+//             }
+//
+//             let result = spawnSync("pg_ctl", [ "--version" ]);
+//
+//             console.log( "result.stdout.toString()", result.stdout.toString(), installation.installation )
+//             console.log( "result.stderr.toString()", result.stderr.toString() )
+//
+//             setTimeout(()=>{
+//                 const { pgCtl } = require("../service/pgcluster.service" );
+//                 pgCtl.debug = (details, message, ... extras ) => {
+//                     serverNotify.loadingBlockItem( message, null, ...extras );
+//                 };
+//                 const { ListenerEvent } = require("../lib/postgres/pg-ctl" );
+//                 pgCtl.instance.on( ListenerEvent.READY, (EVENT, any) => {
+//                     serverNotify.loadingBlockItem(  "Ligando ao banco de dados local... [OK]" );
+//
+//                     resolve({
+//                         status: EVENT,
+//                         any: any
+//                     })
+//                 })
+//             }, 1)
+//         })
+//     })
+// }
 
 export function getInstallation( response:( installation:PgInstallation, error?:Error )=>void){
     let currentVersion = ()=>{
@@ -95,9 +97,27 @@ export function stopDatabaseApplication(){
 lineArgs.defineCommand( { name: "database",  callback: ( receiver )=>{
     let next = receiver.params.shift();
     if( next === "start" ){
-        startApplicationDatabase().then( value => {
-            process.exit( 0 );
+        const { pgContext } =  require("../service/database.service/kitres/setup");
+        pgContext.setup( (error, result) => {
+            if( error || !result.status ){
+                return;
+            }
+            prepareDatabase().then( prepareResult => {
+                if( !prepareResult ){
+                    return process.exit( 1 );
+                }
+                serverNotify.loadingBlock( "startApplicationDatabase A iniciar o servidor..." );
+                process.exit( 0 )
+            })
         });
+        // startApplicationDatabase()
+        //     .then( startDatabaseResult => {
+        //
+        //
+        //     });
+        // startApplicationDatabase().then( value => {
+        //     process.exit( 0 );
+        // });
     } else if( next === "stop" ){
         stopDatabaseApplication().then( value => process.exit( 0 ) );
     }

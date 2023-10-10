@@ -29,6 +29,7 @@ export const DEFAULTS = new Proxy({
     DB_SUPERUSER : "postgres",
     DB_USERNAME : "maguita",
     DB_USERNAME_CLONE : "maguita_clone",
+    DB_SERVICE_NAME : "lumaguita-database-service",
 
 
     WEB_PROTOCOL: "http",

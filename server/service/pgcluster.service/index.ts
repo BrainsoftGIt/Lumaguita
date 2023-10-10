@@ -37,7 +37,7 @@ export const pgCtl = new (class Service {
 
     private start (){
         const selfPgCtl = this;
-        console.log( "check database server app support status... ")
+        console.log( "check database server app support status..." )
         if( !this.__instance ) this.__instance = new PostgresCluster( DEFAULTS.DB_VERSION, DEFAULTS.DB_VERSION_UP, folders.pgHome, "base", {
             superuserPassword: args.dbPasswordSuperUser,
             detached: true,
