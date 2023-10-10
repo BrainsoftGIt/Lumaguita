@@ -39,7 +39,7 @@
     <footer>
         <div class="flex h-sb">
             <span>Copyright © <date></date>&nbsp;<a href="https://www.brainsoftstp.com" target="_blank" style="font-size: 1rem;">| Desenvolvido por Brainsoft</a></span>
-            <p style="text-align: right">Licença válida até <b id="dataDesejadaFormatada"></b> | <b id="diasRestantes" class="licenceNearOut"> 20 dias restantes</b></p>
+            <p style="text-align: right">Licença válida até <b id="dataDesejadaFormatada"></b> | <b id="diasRestantes"> 20 dias restantes</b></p>
         </div>
     </footer>
 </div>
@@ -51,7 +51,7 @@
         var {dataDesejadaFormatada, cluster_class, diasRestantes} = vStatus;
         $("date").html(new Date().getFullYear());
         var textRestante = `dia${diasRestantes === 1 ? "" : "s"} restante${diasRestantes === 1 ? "" : "s"}`
-        $("#dataDesejadaFormatada").html(`${dataDesejadaFormatada}.`);
-        $("#diasRestantes").html(`${diasRestantes} ${textRestante}`).addClass(cluster_class);
+        $("#dataDesejadaFormatada").html(`${dataDesejadaFormatada || ".."}.`);
+        $("#diasRestantes").html(`${diasRestantes || "..."} ${textRestante || "..."}`).addClass(cluster_class);
     }
 </script>

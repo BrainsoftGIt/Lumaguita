@@ -4,30 +4,30 @@ import path from "path";
 import {clusterServer} from "../../../service/cluster.service";
 import {folders} from "../../../global/project";
 
-app.get("/api/categorias", async (req, res) =>{
+app.get("/api/categorias", async (req, res) => {
     const {functLoadCategories} = require("../db/call-function-article");
     const response = await functLoadCategories({arg_espaco_auth: req.session.auth_data.auth.armazem_atual});
     res.json({categs: response.rows});
 });
-app.get("/api/article/warehouses", async (req, res) =>{
+app.get("/api/article/warehouses", async (req, res) => {
     const {functLoadArmazensColaboradorAlocar} = require("../db/call-function-colaborador");
     const response = await functLoadArmazensColaboradorAlocar({arg_espaco_auth: req.session.auth_data.auth.armazem_atual});
     res.json({armazens: response.rows});
 });
-app.get("/api/fornecedores", async (req, res) =>{
+app.get("/api/fornecedores", async (req, res) => {
     const {functLoadProviders} = require("../db/call-function-article");
     const response = await functLoadProviders({arg_espaco_auth: req.session.auth_data.auth.armazem_atual});
     res.json({provds: response.rows});
 });
-app.post("/api/provider", async (req, res) =>{
+app.post("/api/provider", async (req, res) => {
     const {functSetProvider} = require("../db/call-function-article");
     req.body.arg_colaborador_id = req.session.auth_data.auth.colaborador_id;
     req.body.arg_espaco_auth = req.session.auth_data.auth.armazem_atual;
-    let before =  await clusterServer.service.loadLocalCluster();
+    let before = await clusterServer.service.loadLocalCluster();
     const response = await functSetProvider(req.body);
     let after = await clusterServer.service.loadLocalCluster();
     res.json({result: response.row.result, message: response.row.message.text});
-    if(response.row.result && before.cluster_version < after.cluster_version){
+    if (response.row.result && before.cluster_version < after.cluster_version) {
         clusterServer.notifyLocalChange({
             event: "APROVIDER",
             extras: null,
@@ -35,31 +35,36 @@ app.post("/api/provider", async (req, res) =>{
         });
     }
 });
-app.post("/api/articles/load", async (req, res) =>{
+app.post("/api/articles/load", async (req, res) => {
     const {functLoadArticles} = require("../db/call-function-article");
     req.body.arg_espaco_auth = req.session.auth_data.auth.armazem_atual;
-    const response = await functLoadArticles(req.body) ;
+    const response = await functLoadArticles(req.body);
     res.json({artcls: response.rows});
 });
-app.post("/api/categoria", async (req, res) =>{
+app.post("/api/categoria", async (req, res) => {
     const {functRegCategory} = require("../db/call-function-article");
     let data = JSON.parse(req.body.data);
-    let before =  await clusterServer.service.loadLocalCluster();
+    let before = await clusterServer.service.loadLocalCluster();
 
     data.arg_espaco_auth = req.session.auth_data.auth.armazem_atual;
     data.arg_colaborador_id = req.session.auth_data.auth.colaborador_id;
-    if(req.file){
-        clusterServer.res.create({resource_subpath: "cloud/data/files", resource_name: req.file.originalname,
-            resource_metadata: {_branch_uid: req.session.auth_data.auth.branch_uuid }
+    if (req.file) {
+        clusterServer.res.create({
+            resource_subpath: "cloud/data/files", resource_name: req.file.originalname,
+            resource_metadata: {_branch_uid: req.session.auth_data.auth.branch_uuid}
         }).then(async value => {
-            data.classe_foto = value.resource_url+";"+req.file.originalname;
+            data.classe_foto = value.resource_url + ";" + req.file.originalname;
             const response = await functRegCategory(data);
             let after = await clusterServer.service.loadLocalCluster();
             res.json({result: response.row.result, message: response.row.message.text});
 
-            if(response.row.result){
-                if(before.cluster_version < after.cluster_version){
-                    clusterServer.notifyLocalChange({event: "ADD_UPDATE:CATEGORY", extras: null, message: "Registao edicção de categoria"});
+            if (response.row.result) {
+                if (before.cluster_version < after.cluster_version) {
+                    clusterServer.notifyLocalChange({
+                        event: "ADD_UPDATE:CATEGORY",
+                        extras: null,
+                        message: "Registao edicção de categoria"
+                    });
                 }
                 fs.rename(req.file.path, value.resolve, function (err) {
                     if (err) console.log(err);
@@ -67,35 +72,43 @@ app.post("/api/categoria", async (req, res) =>{
                 });
             }
         });
-    }
-    else{
+    } else {
         const response = await functRegCategory(data);
         let after = await clusterServer.service.loadLocalCluster();
         res.json({result: response.row.result, message: response.row.message.text});
-        if(response.row.result && before.cluster_version < after.cluster_version){
-            clusterServer.notifyLocalChange({event: "ADD_UPDATE:CATEGORY", extras: null, message: "Registo ou edição de categoria"});
+        if (response.row.result && before.cluster_version < after.cluster_version) {
+            clusterServer.notifyLocalChange({
+                event: "ADD_UPDATE:CATEGORY",
+                extras: null,
+                message: "Registo ou edição de categoria"
+            });
         }
     }
 });
-app.post("/api/artigo", async (req, res) =>{
+app.post("/api/artigo", async (req, res) => {
     const {functRegArticle} = require("../db/call-function-article");
-    let before =  await clusterServer.service.loadLocalCluster();
+    let before = await clusterServer.service.loadLocalCluster();
     let data = JSON.parse(req.body.data);
 
     data.arg_espaco_auth = req.session.auth_data.auth.armazem_atual;
     data.arg_colaborador_id = req.session.auth_data.auth.colaborador_id;
-    if(req.file){
-        clusterServer.res.create({resource_subpath: "cloud/data/files", resource_name: req.file.originalname,
-            resource_metadata: {_branch_uid: req.session.auth_data.auth.branch_uuid }
+    if (req.file) {
+        clusterServer.res.create({
+            resource_subpath: "cloud/data/files", resource_name: req.file.originalname,
+            resource_metadata: {_branch_uid: req.session.auth_data.auth.branch_uuid}
         }).then(async value => {
-            data.artigo_foto = value.resource_url+";"+req.file.originalname;
+            data.artigo_foto = value.resource_url + ";" + req.file.originalname;
             const response = await functRegArticle(data);
             let after = await clusterServer.service.loadLocalCluster();
 
             res.json({result: response.row.result, message: response.row.message.text});
-            if(response.row.result){
-                if(before.cluster_version < after.cluster_version)
-                    clusterServer.notifyLocalChange({event: "ADD_UPDATE:ARTICLE", extras: null, message: "Registo ou alteração de artigo"});
+            if (response.row.result) {
+                if (before.cluster_version < after.cluster_version)
+                    clusterServer.notifyLocalChange({
+                        event: "ADD_UPDATE:ARTICLE",
+                        extras: null,
+                        message: "Registo ou alteração de artigo"
+                    });
 
                 fs.rename(req.file.path, value.resolve, function (err) {
                     if (err) console.log(err);
@@ -103,46 +116,53 @@ app.post("/api/artigo", async (req, res) =>{
                 });
             }
         });
-    }
-    else{
+    } else {
         const response = await functRegArticle(data);
         let after = await clusterServer.service.loadLocalCluster();
         res.json({result: response.row.result, message: response.row.message.text});
-        if(response.row.result && before.cluster_version < after.cluster_version){
-            clusterServer.notifyLocalChange({event: "ADD_UPDATE:ARTICLE", extras: null, message: "Registo ou alteração de artigo"});
+        if (response.row.result && before.cluster_version < after.cluster_version) {
+            clusterServer.notifyLocalChange({
+                event: "ADD_UPDATE:ARTICLE",
+                extras: null,
+                message: "Registo ou alteração de artigo"
+            });
         }
     }
 });
-app.post("/api/extraItems/load", async (req, res) =>{
+app.post("/api/extraItems/load", async (req, res) => {
     const {functLoadArticles} = require("../db/call-function-article");
-    const response = await functLoadArticles({arg_artigo_estado: 1, arg_classe_id: "00000000-0000-0000-0000-000000000001", arg_espaco_auth: req.session.auth_data.auth.armazem_atual}) ;
+    const response = await functLoadArticles({
+        arg_artigo_estado: 1,
+        arg_classe_id: "00000000-0000-0000-0000-000000000001",
+        arg_espaco_auth: req.session.auth_data.auth.armazem_atual
+    });
     res.json({items: response.rows});
 });
-app.post("/api/article/extra", async (req, res) =>{
+app.post("/api/article/extra", async (req, res) => {
     const {functRegItem} = require("../db/call-function-article");
     req.body.arg_espaco_auth = req.session.auth_data.auth.armazem_atual;
     req.body.arg_colaborador_id = req.session.auth_data.auth.colaborador_id;
-    let before =  await clusterServer.service.loadLocalCluster();
-    const response = await functRegItem(req.body) ;
+    let before = await clusterServer.service.loadLocalCluster();
+    const response = await functRegItem(req.body);
     let after = await clusterServer.service.loadLocalCluster();
     res.json({result: response.row.result, message: response.row.message.text});
-    if(response.row.result && before.cluster_version < after.cluster_version){
+    if (response.row.result && before.cluster_version < after.cluster_version) {
         clusterServer.notifyLocalChange({
             event: "ADD_UPDATE:ITEM",
             extras: null,
-            message: (req.body.artigo_id === null ? "Item "+req.body.artigo_nome+" foi registado." : "Item "+req.body.artigo_nome+" foi editado.")
+            message: (req.body.artigo_id === null ? "Item " + req.body.artigo_nome + " foi registado." : "Item " + req.body.artigo_nome + " foi editado.")
         });
     }
 });
-app.post("/api/category/remove", async (req, res) =>{
+app.post("/api/category/remove", async (req, res) => {
     const {functDisableCategory} = require("../db/call-function-article");
     req.body.arg_colaborador_id = req.session.auth_data.auth.colaborador_id;
     req.body.arg_espaco_auth = req.session.auth_data.auth.armazem_atual;
-    let before =  await clusterServer.service.loadLocalCluster();
+    let before = await clusterServer.service.loadLocalCluster();
     const response = await functDisableCategory(req.body);
     let after = await clusterServer.service.loadLocalCluster();
     res.json({result: response.row.result, message: response.row.message.text});
-    if(response.row.result && before.cluster_version < after.cluster_version){
+    if (response.row.result && before.cluster_version < after.cluster_version) {
         clusterServer.notifyLocalChange({
             event: "REMOVE:CATEGORY",
             extras: null,
@@ -150,15 +170,15 @@ app.post("/api/category/remove", async (req, res) =>{
         });
     }
 });
-app.post("/api/artigo/estado", async (req, res) =>{
+app.post("/api/artigo/estado", async (req, res) => {
     const {functDisableArticle} = require("../db/call-function-article");
     req.body.arg_colaborador_id = req.session.auth_data.auth.colaborador_id;
     req.body.arg_espaco_auth = req.session.auth_data.auth.armazem_atual;
-    let before =  await clusterServer.service.loadLocalCluster();
+    let before = await clusterServer.service.loadLocalCluster();
     const response = await functDisableArticle(req.body);
     let after = await clusterServer.service.loadLocalCluster();
     res.json({result: response.row.result, message: response.row.message.text});
-    if(response.row.result && before.cluster_version < after.cluster_version){
+    if (response.row.result && before.cluster_version < after.cluster_version) {
         clusterServer.notifyLocalChange({
             event: "CHANGE_STATUS:ARTICLE",
             extras: null,
@@ -166,14 +186,14 @@ app.post("/api/artigo/estado", async (req, res) =>{
         });
     }
 });
-app.post("/api/provider/remove", async (req, res) =>{
-    let before =  await clusterServer.service.loadLocalCluster();
+app.post("/api/provider/remove", async (req, res) => {
+    let before = await clusterServer.service.loadLocalCluster();
     const {functRemoveFornecedor} = require("../db/call-function-article");
     req.body.arg_colaborador_id = req.session.auth_data.auth.colaborador_id;
-    const  response = await functRemoveFornecedor(req.body);
+    const response = await functRemoveFornecedor(req.body);
     let after = await clusterServer.service.loadLocalCluster();
     res.json({result: response.row.result, message: response.row.message.text});
-    if(response.row.result && before.cluster_version < after.cluster_version){
+    if (response.row.result && before.cluster_version < after.cluster_version) {
         clusterServer.notifyLocalChange({
             event: "REMOVE:PROVIDER",
             extras: null,
@@ -181,15 +201,19 @@ app.post("/api/provider/remove", async (req, res) =>{
         });
     }
 });
-app.post("/api/artigos/entrada", async (req, res) =>{
+app.post("/api/artigos/entrada", async (req, res) => {
     const {functRegEntrada} = require("../db/call-function-article");
-    let before =  await clusterServer.service.loadLocalCluster();
+    let before = await clusterServer.service.loadLocalCluster();
     req.body.arg_colaborador_id = req.session.auth_data.auth.colaborador_id;
     req.body.arg_espaco_auth = req.session.auth_data.auth.armazem_atual;
-    const  response = await functRegEntrada(req.body);
+    const response = await functRegEntrada(req.body);
     let after = await clusterServer.service.loadLocalCluster();
-    res.json({result: response.row.result, message: response.row.message.text, guia_uuid: response.row.message.guia.guia_uid});
-    if(response.row.result && before.cluster_version < after.cluster_version){
+    res.json({
+        result: response.row.result,
+        message: response.row.message.text,
+        guia_uuid: response.row.message.guia.guia_uid
+    });
+    if (response.row.result && before.cluster_version < after.cluster_version) {
         clusterServer.notifyLocalChange({
             event: "ENTRANCE:ARTICLES",
             extras: null,
@@ -197,17 +221,17 @@ app.post("/api/artigos/entrada", async (req, res) =>{
         });
     }
 });
-app.post("/api/artigos/transferir", async (req, res) =>{
+app.post("/api/artigos/transferir", async (req, res) => {
     const {functRegTransferencia} = require("../db/call-function-article");
-    let before =  await clusterServer.service.loadLocalCluster();
+    let before = await clusterServer.service.loadLocalCluster();
     req.body.arg_colaborador_id = req.session.auth_data.auth.colaborador_id;
     req.body.arg_espaco_auth = req.session.auth_data.auth.armazem_atual;
-    const  response = await functRegTransferencia(req.body);
+    const response = await functRegTransferencia(req.body);
     let after = await clusterServer.service.loadLocalCluster();
     res.json({result: response.row.result, message: response.row.message});
 
-    if(response.row.result){
-        if(before.cluster_version < after.cluster_version){
+    if (response.row.result) {
+        if (before.cluster_version < after.cluster_version) {
             req.session.transference_data = req.body;
             req.session.save();
             clusterServer.notifyLocalChange({
@@ -218,15 +242,15 @@ app.post("/api/artigos/transferir", async (req, res) =>{
         }
     }
 });
-app.post("/api/extra/remove", async (req, res) =>{
+app.post("/api/extra/remove", async (req, res) => {
     const {functDisableArticle} = require("../db/call-function-article");
     req.body.arg_colaborador_id = req.session.auth_data.auth.colaborador_id;
     req.body.arg_espaco_auth = req.session.auth_data.auth.armazem_atual;
-    let before =  await clusterServer.service.loadLocalCluster();
+    let before = await clusterServer.service.loadLocalCluster();
     const response = await functDisableArticle(req.body);
     let after = await clusterServer.service.loadLocalCluster();
     res.json({result: response.row.result, message: response.row.message.text});
-    if(response.row.result && before.cluster_version < after.cluster_version){
+    if (response.row.result && before.cluster_version < after.cluster_version) {
         clusterServer.notifyLocalChange({
             event: "REMOVE:ITEM",
             extras: null,
@@ -234,29 +258,29 @@ app.post("/api/extra/remove", async (req, res) =>{
         });
     }
 });
-app.post("/api/artigo/data", async (req, res) =>{
+app.post("/api/artigo/data", async (req, res) => {
     const {functLoadArticleData} = require("../db/call-function-article");
     req.body.arg_espaco_auth = req.session.auth_data.auth.armazem_atual;
     req.body.arg_colaborador_id = req.session.auth_data.auth.colaborador_id;
     const response = await functLoadArticleData(req.body);
     res.json({data: response.rows});
 });
-app.post("/api/base/articles", async (req, res) =>{
+app.post("/api/base/articles", async (req, res) => {
     const {funct_load_base_article} = require("../db/call-function-article");
     req.body.arg_espaco_auth = req.session.auth_data.auth.armazem_atual;
     req.body.arg_colaborador_id = req.session.auth_data.auth.colaborador_id;
     const response = await funct_load_base_article(req.body);
     res.json({articles: response.rows});
 });
-app.post("/api/artigos/acertoStock", async (req, res) =>{
+app.post("/api/artigos/acertoStock", async (req, res) => {
     const {functChangeAmountInStock} = require("../db/call-function-article");
-    let before =  await clusterServer.service.loadLocalCluster();
+    let before = await clusterServer.service.loadLocalCluster();
     req.body.arg_colaborador_id = req.session.auth_data.auth.colaborador_id;
     req.body.arg_espaco_auth = req.session.auth_data.auth.armazem_atual;
-    const  response = await functChangeAmountInStock(req.body);
+    const response = await functChangeAmountInStock(req.body);
     let after = await clusterServer.service.loadLocalCluster();
     res.json({result: response.row.result, message: response.row.message.text});
-    if(response.row.result && before.cluster_version < after.cluster_version){
+    if (response.row.result && before.cluster_version < after.cluster_version) {
         clusterServer.notifyLocalChange({
             event: "ACERT:STOCK",
             extras: null,
@@ -264,14 +288,14 @@ app.post("/api/artigos/acertoStock", async (req, res) =>{
         });
     }
 });
-app.post("/api/artigo/stocks", async (req, res) =>{
+app.post("/api/artigo/stocks", async (req, res) => {
     const {functLoadArticleStock} = require("../db/call-function-article");
     req.body.arg_espaco_auth = req.session.auth_data.auth.armazem_atual;
     req.body.arg_colaborador_id = req.session.auth_data.auth.colaborador_id;
     const response = await functLoadArticleStock(req.body);
     res.json({stocks: response.rows});
 });
-app.get("/api/exportar/modelo/artigos/:dados", async (req, res) =>{
+app.get("/api/exportar/modelo/artigos/:dados", async (req, res) => {
     const excel = require("exceljs");
     let file_name = "Luma - modelo de importação de artigos.xlsx";
 
@@ -281,7 +305,7 @@ app.get("/api/exportar/modelo/artigos/:dados", async (req, res) =>{
     let dados = JSON.parse(fileData.toString());
     let workBook = new excel.Workbook();
     let workSheet = workBook.addWorksheet("Modelo de artigos");
-    let workSheetSpaces = workBook.addWorksheet("Armazéns");
+    let workSheetSpaces = workBook.addWorksheet("Armazens");
 
     workBook.views = [
         {
@@ -290,89 +314,97 @@ app.get("/api/exportar/modelo/artigos/:dados", async (req, res) =>{
         }
     ]
     workSheet.columns = [
-        {header: "EAN", key: "ean", width: 30, alignment: "center" },
-        {header: "Código", key: "codigo", width: 30, alignment: "center" },
-        {header: "Unidade", key: "unit", width: 30, alignment: "center" },
-        {header: "Nome", key: "nome", width: 70, alignment: "center" },
+        {header: "EAN", key: "ean", width: 30, alignment: "center"},
+        {header: "Código", key: "codigo", width: 30, alignment: "center"},
+        {header: "Unidade", key: "unit", width: 30, alignment: "center"},
+        {header: "Nome", key: "nome", width: 70, alignment: "center"},
         {header: "Categoria", key: "cat", width: 45},
         {header: "Imposto", key: "imp", width: 45},
         {header: "Aplicação de imposto", key: "aplic_imp", width: 45},
         {header: "Código Imposto", key: "impcode", width: 45},
         {header: "Stock negativo (S/N)", key: "stock", width: 25},
         {header: "Quantidade", key: "quant", width: 20},
-        ...(()=>{
-            return dados.spaces.map((sp) =>{
-                return  {header: "Preço no(a) "+sp.espaco_nome, width: 45, key: sp.espaco_nome};
+        ...(() => {
+            return dados.spaces.map((sp) => {
+                return {header: "Preço no(a) " + sp.espaco_nome, width: 45, key: sp.espaco_nome};
             });
         })()
     ];
     workSheetSpaces.columns = [
-        ...(()=>{
-            return dados.spaces.map((sp) =>{
-                return  {header: sp.espaco_id, width: 45, key: sp.espaco_nome, alignment: "center"};
+        ...(() => {
+            return dados.spaces.map((sp) => {
+                return {header: sp.espaco_id, width: 45, key: sp.espaco_nome, alignment: "center"};
             });
         })()
     ]
+
+
     workSheetSpaces.state = 'hidden';
-    workSheet.getRow(1).font = {family: 2, size: 13, bold: true };
-    workSheet.getRow(1).alignment = { vertical: 'middle', horizontal: 'center' };
-    let categorias = dados.categs.filter((_v, index) => index < 15).map((cat) =>{
+    workSheet.getRow(1).font = {family: 2, size: 13, bold: true};
+    workSheet.getRow(1).alignment = {vertical: 'middle', horizontal: 'center'};
+
+    workSheetSpaces.getColumn('B').values = dados.categs.map((cat) => {
         return cat.classe_nome;
-    }).join(",");
-    let impostos = dados.taxs.map((imp) =>{
+    });
+
+    workSheetSpaces.getColumn('C').values = dados.taxs.map((imp) => {
         return imp.data.tipoimposto_nome;
-    }).join(",");
-    let aplicacaoImposto = dados.aplicImposto.map((ap) =>{
+    });
+
+    workSheetSpaces.getColumn('D').values = dados.aplicImposto.map((ap) => {
         return ap.taplicar_descricao;
-    }).join(",");
-    let unidades = dados.units.map(({main: {unit_code}}) => {
+    });
+
+    workSheetSpaces.getColumn('E').values = dados.units.map(({main: {unit_code}}) => {
         return unit_code;
-    }).join(",");
-    let codigosImpoosto = dados.taxCodes.map((ap) =>{
+    });
+
+    workSheetSpaces.getColumn('F').values = dados.taxCodes.map((ap) => {
         return ap.codigoimposto_codigo;
-    }).join(",");
-    for(let i=2;i<=900;i++){
+    });
+
+    for (let i = 2; i <= 900; i++) {
         workSheet.getCell(`E${i}`).dataValidation = {
             type: 'list',
             allowBlank: false,
-            formulae: ['"'+categorias+ '"'],
+            formula: [`Armazens!$B$2:$B$${(dados.categs.length || 1)+1}`],
             tooltip: "Clique para selecionar a categoria"
         };
         workSheet.getCell(`F${i}`).dataValidation = {
             type: 'list',
             allowBlank: false,
-            formulae: ['"'+impostos+ '"'],
+            formulae: [`Armazens!$C$2:$C$${(dados.taxs.length || 1)+1}`],
             tooltip: "Clique para selecionar o imposto"
         };
         workSheet.getCell(`G${i}`).dataValidation = {
             type: 'list',
             allowBlank: false,
-            formulae: ['"'+aplicacaoImposto+ '"'],
+            formulae: [`Armazens!$D$2:$D$${(dados.aplicImposto.length || 1)+1}`],
             tooltip: "Clique para selecionar a forma de aplicar o imposto"
         };
         workSheet.getCell(`C${i}`).dataValidation = {
             type: 'list',
             allowBlank: false,
-            formulae: ['"'+unidades+ '"'],
+            formulae: [`Armazens!$E$2:$E$${(dados.units.length || 1)+1}`],
             tooltip: "Clique para selecionar a unidade"
         };
         workSheet.getCell(`H${i}`).dataValidation = {
             type: 'list',
             allowBlank: false,
-            formulae: ['"'+codigosImpoosto+ '"'],
+            formulae: [`Armazens!$F$2:$F$${(dados.taxCodes.length || 1)+1}`],
             tooltip: "Clique para selecionar o código imposto"
         };
     }
 
     fs.mkdirSync(path.join(folders.temp, 'multer'), {recursive: true});
-    await workBook.xlsx.writeFile(path.join(folders.temp, 'multer/'+file_name)).then(() =>{
-        res.download(path.join(folders.temp, 'multer')+"/"+file_name, file_name, function () {
-            fs.unlinkSync(path.join(folders.temp, 'multer')+"/"+file_name);
+    await workBook.xlsx.writeFile(path.join(folders.temp, 'multer/' + file_name)).then(() => {
+        res.download(path.join(folders.temp, 'multer') + "/" + file_name, file_name, function () {
+            fs.unlinkSync(path.join(folders.temp, 'multer') + "/" + file_name);
         });
     });
 });
 
-app.post("/api/importacao/artigo/data", async (req, res) =>{
+app.post("/api/importacao/artigo/data", async (req, res) => {
     let random = (Math.random() + 1).toString(36).substring(7);
     let data = new Date();
     let file = `${random}-${data.getSeconds()}.json`
@@ -382,14 +414,14 @@ app.post("/api/importacao/artigo/data", async (req, res) =>{
     });
 });
 
-app.post("/api/search/provider", async (req, res) =>{
+app.post("/api/search/provider", async (req, res) => {
     const {functSearchProvider} = require("../db/call-function-article");
     req.body.arg_espaco_auth = req.session.auth_data.auth.armazem_atual;
     req.body.arg_colaborador_id = req.session.auth_data.auth.colaborador_id;
     const response = await functSearchProvider(req.body);
     res.json({data: response.rows});
 });
-app.post("/api/search/article/code", async (req, res) =>{
+app.post("/api/search/article/code", async (req, res) => {
     const {functSearchArticleByCode} = require("../db/call-function-article");
     req.body.arg_espaco_auth = req.session.auth_data.auth.armazem_atual;
     req.body.arg_colaborador_id = req.session.auth_data.auth.colaborador_id;

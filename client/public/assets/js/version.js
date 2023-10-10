@@ -23,6 +23,6 @@ if (_version) {
     let {dataDesejadaFormatada, cluster_class, diasRestantes} = window.vStatus;
     window.document.getElementById("diasRestantes").className = cluster_class;
     let textRestante = `dia${diasRestantes === 1 ? "" : "s"} restante${diasRestantes === 1 ? "" : "s"}`
-    window.document.getElementById("dataDesejadaFormatada").textContent = `${dataDesejadaFormatada}.`;
-    window.document.getElementById("diasRestantes").textContent = `${diasRestantes} ${textRestante}`;
+    window.document.getElementById("dataDesejadaFormatada").textContent = `${dataDesejadaFormatada || ".."}.`;
+    window.document.getElementById("diasRestantes").textContent = `${diasRestantes || "..."} ${textRestante || "..."}`;
 }
