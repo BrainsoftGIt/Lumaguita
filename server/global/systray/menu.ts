@@ -124,14 +124,14 @@ export const menuItemsMap:GenericMenuMaps = {
 
     [ Math.random() ]: GENERIC_SEPARATOR,
     // restart:{ title: "Reiniciar", tooltip: "Restart app", click() { sys.restart( exit )}},
-    shutdown:{ title: "Encerrar", tooltip: "Parar todos os serviços e encerrar o sistema", click( tray) {
-            sys.shutdown( () => {
-                return tray.close();
-            })
-        }},
-    // exit: { title: "Sair", tooltip: "Encerrar o sistema", click( tray) { sys.exit( () => {
-    //         return tray.close()
-    //     })}}
+    // shutdown:{ title: "Encerrar", tooltip: "Parar todos os serviços e encerrar o sistema", click( tray) {
+    //         sys.shutdown( () => {
+    //             return tray.close();
+    //         })
+    //     }},
+    exit: { title: "Sair", tooltip: "Encerrar o sistema", click( tray) { sys.exit( () => {
+            return tray.close()
+        })}}
 };
 
 prepare( menuItemsMap );
