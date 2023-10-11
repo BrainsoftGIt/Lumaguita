@@ -330,14 +330,10 @@ app.get("/api/exportar/modelo/artigos/:dados", async (req, res) => {
             });
         })()
     ];
-    workSheetSpaces.columns = [
-        ...(() => {
-            return dados.spaces.map((sp) => {
-                return {header: sp.espaco_id, width: 45, key: sp.espaco_nome, alignment: "center"};
-            });
-        })()
-    ]
 
+    workSheetSpaces.getColumn('A').values = dados.spaces.map((sp) => {
+        return sp.espaco_id;
+    });
 
     workSheetSpaces.state = 'hidden';
     workSheet.getRow(1).font = {family: 2, size: 13, bold: true};

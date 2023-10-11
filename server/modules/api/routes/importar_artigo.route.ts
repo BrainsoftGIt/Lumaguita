@@ -64,7 +64,7 @@ app.post("/api/importar_artigos", async (req, res) =>{
     if(req.file) {
         await workbook.xlsx.readFile(req.file.path);
         worksheetSpace = workbook.getWorksheet("Armazens");
-        spaces = worksheetSpace.getRow(1).values;
+        spaces = worksheetSpace.getColumn("A").values;
         spaces.shift();
 
         workbook.getWorksheet("Modelo de artigos").eachRow({includeEmpty: false},  function (row, rowNumber) {
