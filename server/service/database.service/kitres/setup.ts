@@ -21,7 +21,11 @@ export const pgContext = new PostgresContext({
             dbname: args.dbName,
             owner: args.dbUser,
             //language=file-reference
-            baseFile: Path.join( __dirname, "../../../../database/maguita.base"),
+            base:Path.join( __dirname, "../../../../database/bases/maguita.base"),
+            setups:[{
+                user: args.dbUser,
+                filename: Path.join( __dirname, "../../../../database/bases/clean.sql")
+            }],
             search: [ "tweeks", "public" ],
             extensions: [ "unaccent", "uuid-ossp" ],
             grants:[],

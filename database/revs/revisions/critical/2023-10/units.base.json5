@@ -1,0 +1,52 @@
+[
+  {
+    "unit_base": "518f2d5c-352d-4011-b17a-b349de5d6919",
+    "unit_code": "Unit",
+    "unit_name": "Unidades"
+  },
+  {
+    "unit_base": "a20f0dbb-1ce9-45ee-b885-ec48f4c33632",
+    "unit_code": "KG",
+    "unit_name": "Kilogramas"
+  },
+  {
+    "unit_base": "d169ba13-590d-443c-812c-441af1ee014d",
+    "unit_code": "G",
+    "unit_name": "Gramas"
+  },
+  {
+    "unit_base": "79651d0d-476a-481b-9f6c-366297525691",
+    "unit_code": "T",
+    "unit_name": "Toneladas"
+  },
+  {
+    "unit_base": "3ffba798-fa68-4ece-a15c-264df6453c6c",
+    "unit_code": "PAC",
+    "unit_name": "Pacotes"
+  },
+  {
+    "unit_base": "3ffba798-fa68-4ece-a15c-264df6453c6c",
+    "unit_code": "PEC",
+    "unit_name": "Peças"
+  },
+  {
+    "unit_base": "14d0e806-5006-46e1-b94c-4f9562a5c66f",
+    "unit_code": "CX",
+    "unit_name": "Caixas"
+  },
+  {
+    "unit_base": "79b7ead5-ec55-4a46-82f1-da67e3cc137b",
+    "unit_code": "SC",
+    "unit_name": "Sacos"
+  },
+  {
+    "unit_base": "7e8534e8-515e-4a41-bec4-22242d495c77",
+    "unit_code": "L",
+    "unit_name": "Litros"
+  },
+  {
+    "unit_base": "42d19814-7f1b-4915-bc5a-c4d134dc475a",
+    "unit_code": "EMB",
+    "unit_name": "Embalagem"
+  }
+]

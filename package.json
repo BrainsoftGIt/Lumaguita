@@ -22,9 +22,6 @@
     "compile:build": "node build/compile start --plataform win32 --mode public --user public & tsc.cmd",
     "compile:win_x64:realese": "node build/compile release",
     "exports-menu": "node database/exports/exports-menus.js",
-
-
-
     "compile:win_x64:realese:patches": "node build/compile release:patches",
     "compile:win_x64:realese:deps": "node build/compile release:deps",
     "compile:win_x64:complete": "node build/compile start --plataform win32; node build/compile release",
