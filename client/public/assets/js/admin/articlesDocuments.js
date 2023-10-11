@@ -42,15 +42,17 @@ var articlesDocuments = {
             success(e) {
                 articlesDocuments.artigoLoaded = true;
 
+                let existeInquery = (articlesDocuments?.sArgigo || []).find(({funct_load_artigo: {artigo_nome}}) => artigo_nome === article);
                 let datalistArtigos = $("datalist[artigos]");
                 datalistArtigos.empty();
-                if(e.artcls.length > 1) {
+                if(e.artcls.length > 1 && !existeInquery) {
                     e.artcls.forEach((art) => {
                         datalistArtigos.append(`<option value="${art.funct_load_artigo.artigo_nome}" data-id=${art.funct_load_artigo.artigo_id} data-value=${art.funct_load_artigo.artigo_nome.toLowerCase().trim()}>${art.funct_load_artigo.artigo_codigo}</option>`);
                     });
                 }
-                else if(e.artcls.length === 1){
-                    articlesDocuments.article_id = e.artcls[0].funct_load_artigo.artigo_id;
+                else if(e.artcls.length === 1 ||  !!existeInquery){
+                    delete articlesDocuments.sArgigo;
+                    articlesDocuments.article_id = existeInquery.funct_load_artigo.artigo_id;
                     if(taxasArtigos.taxs.find(value => value.artigo_id ===  articlesDocuments.article_id)){
                         let imposto = taxasArtigos.showTax(articlesDocuments.article_id);
                         if(imposto.valor !== null && $("[imposto]").length > 0 ){
@@ -69,13 +71,14 @@ var articlesDocuments = {
                         });
                     }
 
-                    articlesDocuments.article_code = e.artcls[0].funct_load_artigo.artigo_codigo;
-                    articlesDocuments.precario_quantidade = e.artcls[0].funct_load_artigo.precario_quantidade || 0;
-                    $("[description_article]").val(e.artcls[0].funct_load_artigo.artigo_nome);
-                    $("[price_article]").val(e.artcls[0].funct_load_artigo.precario_custo);
-                    $("[amount_packaging]").val((e.artcls[0].funct_load_artigo.artigo_compostoquantidade || "0"));
+                    articlesDocuments.article_code = existeInquery.funct_load_artigo.artigo_codigo;
+                    articlesDocuments.precario_quantidade = existeInquery.funct_load_artigo.precario_quantidade || 0;
+                    $("[description_article]").val(existeInquery.funct_load_artigo.artigo_nome);
+                    $("[price_article]").val(existeInquery.funct_load_artigo.precario_custo);
+                    $("[amount_packaging]").val((existeInquery.funct_load_artigo.artigo_compostoquantidade || "0"));
                 }
                 else articlesDocuments.resetFieldsArticle();
+                articlesDocuments.sArgigo = e.artcls;
             }
         });
     },
@@ -244,10 +247,8 @@ var articlesDocuments = {
 };
 articlesDocuments.init();
 $("[search_article]").keyup(function (e) {
-    let x_timer;
     let artigo = $(this).val().trim();
-    clearTimeout(x_timer);
-    x_timer = setTimeout(function(){
+    setTimeout(function(){
         if(artigo !== ""){
             articlesDocuments.search_article();
         }

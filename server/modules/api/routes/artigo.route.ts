@@ -339,7 +339,7 @@ app.get("/api/exportar/modelo/artigos/:dados", async (req, res) => {
     ]
 
 
-    // workSheetSpaces.state = 'hidden';
+    workSheetSpaces.state = 'hidden';
     workSheet.getRow(1).font = {family: 2, size: 13, bold: true};
     workSheet.getRow(1).alignment = {vertical: 'middle', horizontal: 'center'};
 
@@ -367,7 +367,7 @@ app.get("/api/exportar/modelo/artigos/:dados", async (req, res) => {
         workSheet.getCell(`E${i}`).dataValidation = {
             type: 'list',
             allowBlank: false,
-            formula: [`Armazens!$B$1:$B$${(dados.categs.length || 1)}`],
+            formulae: [`Armazens!$B$1:$B$${(dados.categs.length || 1)}`],
             tooltip: "Clique para selecionar a categoria"
         };
         workSheet.getCell(`F${i}`).dataValidation = {
