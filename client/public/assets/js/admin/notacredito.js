@@ -134,7 +134,10 @@ $("[pesquisarFatura]").on("keyup", function ({keyCode}){
         loadData();
         return
     }
-    xAlert("Nota de credito", "Priencha o campo fatura!", "error");
+
+    if(keyCode === 13 && !$(this).val()) {
+        xAlert("Nota de credito", "Priencha o campo fatura!", "error");
+    }
 })
 
 $("#finalizarNotaCredito").on("click", function (){
