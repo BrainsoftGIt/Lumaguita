@@ -110,7 +110,22 @@ function installDependency(){
             stdout(chunk) {console.log(`[dependency:install|prod] ${chunk.toString()}`)},
             stderr(chunk) {console.log(`[dependency:install|prod] ${chunk.toString()}`)}
         }),
-        ()=> processListen( spawn( npm, [ "audit", "fix", "--force" ], {
+        ()=> {
+            console.log( "Installing kitres file")
+            let kitres = require("../../package.json" );
+            let parts = kitres.dependencies["kitres"].split(":");
+            let kitResPack = "kitres";
+            if( parts.length === 2 ){
+                kitResPack = Path.join( _res.distRoot, parts[1] )
+            }
+            return processListen( spawn(npm, ["install", kitResPack ], {
+                cwd: _res.distRoot,
+                stdio: "inherit"
+            }), {
+                stdout(chunk) {console.log(`[dependency:install|prod] ${chunk.toString()}`)},
+                stderr(chunk) {console.log(`[dependency:install|prod] ${chunk.toString()}`)}
+            })
+        }, ()=> processListen( spawn( npm, [ "audit", "fix", "--force" ], {
             cwd: _res.distRoot,
             stdio: "inherit"
         }), {
@@ -132,23 +147,6 @@ function installDependency(){
                     //.kconstBulder( path.join( _res.distRoot, "build/kconst" ), "public", "public" );
                 fs.rmSync( path.join( _res.distRoot, "build/kconst" ), { recursive : true } );
                 resolve( true );
-                // let child = fork( path.join( _res.distRoot, "build/kconst" ), [ "--mode", "public" ], {
-                //     cwd: _res.distRoot,
-                //     stdio:"inherit"
-                // }).on( "exit", code1 => {
-                //     if( code1 === 0 ) console.log("building kconst configs...  [OK]" );
-                //     else console.log("building kconst configs...  [FAILED]" );
-                //
-                //     let result = spawnSync( npm, [ "uninstall", "kconst", "terminal-kit" ], { cwd: _res.distRoot });
-                //     console.log( result.stdout.toString( "utf-8" ) );
-                //     console.log( result.stderr.toString( "utf-8" ) );
-                //
-                //
-                // });
-                // return processListen( child, {
-                //     stdout( chunk ) { console.log( `[install:build] ${ chunk.toString() }` ) },
-                //     stderr( chunk ) { console.log( `[install:build] ${ chunk.toString() }` ) }
-                // });
             });
         }
     ]

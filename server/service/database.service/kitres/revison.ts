@@ -119,7 +119,7 @@ function saveBackup( dumps:string[]):Promise<RevisionsChecks>{
 
                 zip.pipe( output );
                 zip.file( dumps.shift(), { name:"dumps.sql" } );
-                zip.directory( folders.pgHome, "cluster" );
+                zip.directory( Path.join(folders.pgHome, "base" ), "cluster" );
 
                 output.on("error", err => {
                     serverNotify.log( `Erro ao criar o backups: ${ err.message }`);
