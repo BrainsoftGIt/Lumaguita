@@ -64,7 +64,7 @@ const  raws:ResourceItem[] = [
     /*language=file-reference*/  { base: "/database/",      dist: "/database/",            filter: "**/*.json" },
     /*language=file-reference*/  { base: "/database/",      dist: "/database/",            filter: "**/*.json5" },
     /*language=file-reference*/  { base: "/database/",      dist: "/database/",            filter: "**/*.sql" },
-    /*language=file-reference*/  { base: "/database/",      dist: "/database/",            filter: "maguita.base" },
+    /*language=file-reference*/  { base: "/database/",      dist: "/database/",            filter: "**/*.base" },
 ];
 
 
