@@ -1,5 +1,5 @@
 import {dbRes} from "../service/database.service/kitres/res";
-import {PgCoreError, Result} from "kitres";
+import {Result} from "kitres";
 import {MaguitaTableOf} from "../../database/cataloger/lumaguita";
 import fs from "fs";
 import Path from "path";
@@ -21,7 +21,7 @@ export function loadNamespaceConfigs( listen:( error: Error, nsp?:Namespace )=> 
         increment:false,
         try:0
     }, {
-        onResult(error: PgCoreError, result?: Result<MaguitaTableOf<"cluster", "cluster">, any>): any {
+        onResult(error, result?: Result<MaguitaTableOf<"cluster", "cluster">, any>): any {
             if( error ) return listen( error );
             let cluster = result.rows[0];
             if( !cluster ) return listen( null);
@@ -51,7 +51,7 @@ export function loadNamespaceConfigs( listen:( error: Error, nsp?:Namespace )=> 
                 if(  !/.*.init.js$/.test( filename ) ) return;
                 if( !fs.statSync( filename ).isFile() ) return;
                 serverNotify.log( `init namespace dependency: ${ new URL( `file://${filename}`) } ...`)
-                let __ini = require( filename );
+                require( filename );
                 serverNotify.log( `init namespace dependency: ${ new URL( `file://${filename}`) } ...OK`);
             });
 
