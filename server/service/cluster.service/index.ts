@@ -1,8 +1,6 @@
 import {io} from "../socket.service";
 
 import {ClusterContext} from "../../lib/cluster";
-import {PostgresClusterService} from "../../lib/cluster/services/psql-service";
-import { replicateFactory, factory } from "../database.service";
 import {registerLine} from "../ioline.service";
 
 import {ClusterEvent} from "../../lib/cluster/enuns";
@@ -14,12 +12,6 @@ import * as fs from "fs";
 import {folders} from "../../global/project";
 import {args} from "../../global/args";
 import {pgClusterService} from "./pg-cluster-service";
-
-
-const { srv } = require("../../global/autogen/config/srv");
-
-
-
 
 
 // const masterDomain = args.appSelfMaster? `http://127.0.0.1:${ args.appPort }`

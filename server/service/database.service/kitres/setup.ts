@@ -52,11 +52,14 @@ pgContext.on("message", (message, action) => {
 pgContext.on(  "setup",(error, result) => {
     if( error ) return serverNotify.log( `Database preparation Error | ${ error.message }` );
     else if( !result.status) return serverNotify.log( "Database preparation failed!" )
-    else return  serverNotify.log( "Database prepared successfully!" )
+    else return  serverNotify.log( "database setup> Database prepared successfully!" )
 });
 
 pgContext.on("flowResolved", (flow, preview) => {
-    serverNotify.log( `Resolved database preparation flow ${ flow.identifier } in steep ${ flow.steep } | ${ flow?.response?.message }`)
+    serverNotify.log( `database setup> Resolved database preparation flow ${ flow.identifier } in steep ${ flow.steep } with action ${ flow.flow } | ${ flow?.response?.message } `);
+    if( flow.error ){
+        console.error( flow.error );
+    }
 });
 
 pgContext.on("flowResolved", (flow, preview) => {

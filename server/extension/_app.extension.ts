@@ -140,11 +140,6 @@ function proceedPlay(){
                     startServer( serverNotify.ready );
                 })
             });
-            // startApplicationDatabase()
-            //     .then( startDatabaseResult => {
-            //
-            //
-            //     });
         } else if( args.dbMode === "system" ){
             serverNotify.loadingBlock( "A iniciar o servidor..." );
             prepareDatabase().then( prepareResult => {

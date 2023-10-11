@@ -47,6 +47,7 @@ const  raws:ResourceItem[] = [
     /*language=file-reference*/  { base: "/server",              dist: "/server",            filter: "**/*.js" },
     /*language=file-reference*/  { base: "/server",              dist: "/server",            filter: "**/*.js.map" },
     /*language=file-reference*/  { base: "/server",              dist: "/server",            filter: "**/*.json" },
+    /*language=file-reference*/  { base: "/server",              dist: "/server",            filter: "**/*.json5" },
     /*language=file-reference*/  { base: "/server/lib/json",     dist: "/server/lib/json",            filter: "**" },
     /*language=file-reference*/  { base: "/server/resources",    dist: "/server/resources",  filter: "**" },
     /*language=file-reference*/  { base: "/libs",                dist: "/libs",  filter: "**" },
@@ -54,13 +55,16 @@ const  raws:ResourceItem[] = [
     // /*language=file-reference*/  { base: "/database/patch",      dist: "/database/patch",            filter: "**/*.js" },
     // /*language=file-reference*/  { base: "/database/patch",      dist: "/database/patch",            filter: "**/*.js.map" },
     // /*language=file-reference*/  { base: "/database/patch",      dist: "/database/patch",            filter: "**/*.json" },
+    // /*language=file-reference*/  { base: "/database/patch",      dist: "/database/patch",            filter: "**/*.json5" },
     // /*language=file-reference*/  { base: "/database/patch",      dist: "/database/patch",            filter: "**/*.sql" },
 
     //Revs folder
-    /*language=file-reference*/  { base: "/database/revs",      dist: "/database/revs",            filter: "**/*.js" },
-    /*language=file-reference*/  { base: "/database/revs",      dist: "/database/revs",            filter: "**/*.js.map" },
-    /*language=file-reference*/  { base: "/database/revs",      dist: "/database/revs",            filter: "**/*.json" },
-    /*language=file-reference*/  { base: "/database/revs",      dist: "/database/revs",            filter: "**/*.sql" },
+    /*language=file-reference*/  { base: "/database/",      dist: "/database/",            filter: "**/*.js" },
+    /*language=file-reference*/  { base: "/database/",      dist: "/database/",            filter: "**/*.js.map" },
+    /*language=file-reference*/  { base: "/database/",      dist: "/database/",            filter: "**/*.json" },
+    /*language=file-reference*/  { base: "/database/",      dist: "/database/",            filter: "**/*.json5" },
+    /*language=file-reference*/  { base: "/database/",      dist: "/database/",            filter: "**/*.sql" },
+    /*language=file-reference*/  { base: "/database/",      dist: "/database/",            filter: "maguita.base" },
 ];
 
 
