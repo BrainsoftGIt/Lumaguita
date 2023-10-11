@@ -74,3 +74,32 @@ $$
 $$`
 }
 ;
+
+
+export const funct_load_units = sql`
+create or replace function tweeks.funct_load_unit(args jsonb) returns SETOF jsonb
+  language plpgsql
+as
+$$
+declare
+    /**doc
+        Carregar os documentos 
+        args := {
+          _espaco_auth
+          _user_id
+        }
+  doc*/
+    _espaco_auth uuid not null default args->>'_espaco_auth';
+    _user_id uuid not null default args->>'_user_id';
+    _branch uuid default tweeks.__branch_uid( _user_id, _espaco_auth );
+begin
+  perform tweeks.__sets_defaults_units( _branch );
+  return query
+    with _unit as (
+      select *
+        from tweeks.unit u
+        where u._branch_uid = _branch
+    ) select to_jsonb( _u ) from _unit _u;
+end;
+$$;
+`;
