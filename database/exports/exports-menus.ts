@@ -1,19 +1,24 @@
-import {dbRes} from "../../../../server/service/database.service/kitres/res";
+import {dbRes} from "../../server/service/database.service/kitres/res";
 import JSON5 from "json5";
 import fs from "fs";
 import Path from "path";
 
-let menu_filename =Path.join( __dirname, "./menu.json5" );
+//language=file-reference
+let menu_filename =Path.join( __dirname, "../revs/revisions/menu/menu.json5" );
 
 export function exportsMenus(){
     return new Promise( resolve => {
-        dbRes.with.auth.menu.select({}, {
+        dbRes.with.auth.menu.select( [{
+            menu_estado: 1
+        }],{
             onResult(error, result) {
                 if( error ){
                     return console.error( error );
                 }
 
-                let content  = JSON5.stringify( result.rows );
+                let content  = JSON5.stringify( result.rows, {
+                    space: 2
+                } );
                 fs.writeFileSync( menu_filename, content );
             }
         })
