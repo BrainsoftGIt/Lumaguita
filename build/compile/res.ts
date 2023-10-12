@@ -4,6 +4,7 @@ import fs from "fs";
 import * as Path from "path";
 import {spawnSync} from "child_process";
 import chalk from "chalk";
+import {System} from "kitres/src/core/system";
 export type ResourceItem =  { base: string,                    dist: string,                  filter: string|RegExp };
 export type CompileRes = {
     entry:string,
@@ -72,14 +73,8 @@ let getNodeJs = ()=>{
 
 //language=file-reference
     if( !fs.existsSync( Path.join(__dirname, "../bin/node.exe")) ){
-        let result = spawnSync("where", [ "node.exe" ], {
-            shell: "cmd"
-        });
-        if( result.status !== 0 ) return;
-        let node_exe = result.stdout.toString("utf-8" ).trim();
-        if( !fs.existsSync( node_exe ) ) throw new Error( "node.exe not found!" );
-        //language=file-reference
-        raws.push({base: Path.relative( Path.join(__dirname, "../"), Path.dirname(node_exe)), dist: "/bin", filter: "node.exe"})
+        let node = System.node();
+        raws.push({base: Path.relative( Path.join(__dirname, "../"), Path.dirname( node )), dist: "/bin", filter: "node.exe"})
     }
 }
 
