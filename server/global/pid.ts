@@ -2,6 +2,7 @@
 // process.stdin.resume();//so the program will not close instantly
 
 import {sys} from "./sys";
+import {args} from "./args";
 
 const exitCallbackList:ExitSignalCallback[] = [];
 let status = {
@@ -53,29 +54,31 @@ export function captureKill() {
 }
 
 export function showUncaughtError(){
+    if( args.appMode === "dev" ) return;
+
     process.on('unhandledRejection', (reason, p) => {
         console.log( "[[================ [Unhandled Rejection at Promise] ================" );
-        console.error( reason, p );
+        console.error( reason?.toString?.() );
         p.catch( reason1 => {
-            console.error( reason1 );
+            console.error( reason1?.toString?.() );
         })
         console.log( "================ Unhandled Rejection at Promise ================]]" );
     });
     process.on('uncaughtException', err => {
         console.log( "[[================ [Uncaught Exception Thrown] ================" );
-        console.error( err );
+        console.error( err?.toString?.() );
         console.log( "================ Uncaught Exception thrown ================]]" );
     });
 
     process.on('uncaughtExceptionMonitor', err => {
         console.log( "[[================ [Uncaught Exception Exception Monitor] ================" );
-        console.error( err );
+        console.error( err?.toString?.() );
         console.log( "================ Uncaught Exception Exception Monitor ================]]" );
     });
 
     process.on('rejectionHandled', err => {
         console.log( "[[================ [Rejection Handled] ================" );
-        console.error( err );
+        console.error( err?.toString?.() );
         console.log( "================ Rejection Handled ================]]" );
     });
 }
