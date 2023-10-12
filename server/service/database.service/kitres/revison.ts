@@ -1,4 +1,4 @@
-import {PgCoreError, Result, RevisionCore, RevisionsChecks, scriptUtil} from "kitres";
+import {RevisionCore, RevisionsChecks, scriptUtil} from "kitres";
 import {pgCore} from "./index";
 import {folders} from "../../../global/project";
 import {VERSION} from "../../../version";
@@ -101,7 +101,7 @@ function saveBackup( dumps:string[]):Promise<RevisionsChecks>{
             try: 0,
             increment: false
         }, {
-            onResult(error: PgCoreError, result?): any {
+            onResult(error, result?): any {
                 if( error ) return resolve({ error: error } );
                 let localCluster = result.rows[0];
                 if( !localCluster ) return resolve({ accept: false, message: "Não pode carregar o cluster local" } );

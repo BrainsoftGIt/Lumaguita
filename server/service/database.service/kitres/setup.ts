@@ -3,6 +3,13 @@ import {args} from "../../../global/args";
 import Path from "path";
 import {folders} from "../../../global/project";
 import {serverNotify} from "../../../snotify";
+import {System} from "kitres/src/core/system";
+
+process.env[ System.pathName()] = [
+    //language=file-reference
+    Path.join(__dirname,"../../../../bin"),
+    ... process.env[ System.pathName() ].split( Path.delimiter )
+].join( Path.delimiter );
 
 export const pgContext = new PostgresContext({
     service: args.dbServiceName,
