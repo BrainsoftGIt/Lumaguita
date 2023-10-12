@@ -1,8 +1,8 @@
 import fs from "fs"
 import * as Path from "path";
-let incremented = false;
-//language=file-reference
+import {execSync, spawnSync} from "child_process";
 export let VERSION = {
+    //language=file-reference
     NUMBER :fs.readFileSync( Path.join( __dirname, "../VERSION")).toString("utf-8")
         .trim()
         .split("\n")
@@ -21,6 +21,20 @@ export let VERSION = {
     },
 
     increment(){
+        let currentBranch = spawnSync( "git", ["branch", "--show-current"], {
+            //language=file-reference
+            cwd: Path.join( __dirname, "../" )
+        })
+
+        if( currentBranch.error ){
+            console.error( currentBranch.error );
+            return  false;
+        }
+        if( currentBranch.status !== 0 ) return false;
+        let branch = currentBranch.stdout.toString().trim();
+
+        console.log( `[maguita] current branch is ${ branch }` );
+        if( currentBranch.stdout.toString().trim() !== "prod" ) return false;
         if(  VERSION.looked() ) return false;
         fs.writeFileSync( VERSION.LOOK, "" );
         let versionsParts = VERSION.NUMBER.split("." ).map( value => Number(value ) );
