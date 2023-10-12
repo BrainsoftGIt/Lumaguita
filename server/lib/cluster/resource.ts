@@ -266,18 +266,25 @@ export class Resource {
     listen(){
         return ( req:Request, res:Response, next:NextFunction )=>{
             let filePath = this.resolve( req.url );
-            if( fs.existsSync( filePath ) ) res.sendFile( filePath );
-            else {
+            if( !filePath ){
+                res.status( 500 );
+                return res.sendFile( this._context.configs.resource_404 );
+            }
+
+            if( !fs.existsSync( filePath ) ){
                 res.status( 404 );
                 res.sendFile( this._context.configs.resource_404 );
+                return;
             }
+
+            res.sendFile( filePath );
+
         }
     }
 
-    resolve( url ){
-        url = url.split( "/" )
-            .filter( value => !!value && value.length > 0 ).join( "/" );
-
+    resolve( url:string ){
+        if( url === null || url === undefined ) return  null;
+        url = url.split( "/" ) .filter( value => !!value && value.length > 0 ).join( "/" );
         let parts = url.split( "/" );
         let fileName = parts.pop();
         let fileId = parts.pop();
