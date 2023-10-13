@@ -2,7 +2,7 @@ import {Catch, CatchAll} from "zoo.pg/lib/result";
 
 export const resolveClinicAllIfNoDatabase = () => {
     return new Promise<CatchAll>(
-        (resolve, reject) => {
+        (resolve) => {
             resolve({
                 status: false,
                 message: null,
@@ -25,7 +25,7 @@ export const resolveClinicAllIfNoDatabase = () => {
 
 export const resolveClinicLastIfNoDatabase = () => {
     return new Promise<Catch>(
-        (resolve, reject) => {
+        (resolve) => {
             resolve({
                 status: false,
                 message: null,
