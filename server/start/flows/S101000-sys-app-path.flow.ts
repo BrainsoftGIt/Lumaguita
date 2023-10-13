@@ -1,10 +1,9 @@
-import {Flow, FlowEnd, FlowResponse, SteepFlow} from "kitres/src/core/util/work-flow";
+import {Flow, FlowResponse, OutFlow, SteepFlow} from "kitres/src/core/util/work-flow";
 import {StarSteeps, StartContext, StartResponse} from "../index";
 import {System} from "kitres/src/core/system";
-import Path from "path";
 import {folders} from "../../global/project";
 
-class S101000SysAppPathFlow extends SteepFlow<StartContext, StartResponse, StarSteeps>{
+class S101000SysAppPathFlow extends Flow<StartContext, StartResponse, StarSteeps>{
 
     readonly identifier = __filename;
     readonly steeps = __filename;
@@ -16,7 +15,7 @@ class S101000SysAppPathFlow extends SteepFlow<StartContext, StartResponse, StarS
     flow(steep: StarSteeps, context: StartContext, steepFlow: SteepFlow<StartContext, StartResponse, StarSteeps>, preview: Flow<StartContext, any, StarSteeps>): FlowResponse<StartContext, StartResponse, StarSteeps> {
         System.toPath( folders.bin )
         return {
-            flow: FlowEnd.CONTINUE,
+            flow: OutFlow.CONTINUE,
             response: {
                 group: "System config",
                 message: `Path do sistema aplicado com sucesso!`
