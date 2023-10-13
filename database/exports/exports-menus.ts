@@ -9,33 +9,29 @@ let menu_filename =Path.join( __dirname, "../revs/revisions/menu/menu.json5" );
 
 export function exportsMenus(){
     return new Promise( resolve => {
-        dbRes.with.auth.menu.select( [{
+        dbRes.with.auth.menu.select( {
             menu_estado: 1
-        }],{
-            onResult(error, result) {
-                if( error ){
-                    return console.error( error );
-                }
-
-                let menus = result.rows.map( value => {
-                    value["date"] = new Date().toISOString();
-                    return value;
-                })
-
-                let content  = JSON5.stringify( menus, {
-                    space: 2
-                } );
-                fs.writeFileSync( menu_filename, content );
-                spawnSync("git", [ "add", menu_filename ], {
-                    cwd: __dirname
-                });
-
-                spawnSync("git", [ "commit", menu_filename, "-m", `"Exports menu file"` ], {
-                    cwd: __dirname
-                });
-
-
+        }, (error, result) => {
+            if( error ){
+                return console.error( error );
             }
+
+            let menus = result.rows.map( value => {
+                value["date"] = new Date().toISOString();
+                return value;
+            })
+
+            let content  = JSON5.stringify( menus, {
+                space: 2
+            } );
+            fs.writeFileSync( menu_filename, content );
+            spawnSync("git", [ "add", menu_filename ], {
+                cwd: __dirname
+            });
+
+            spawnSync("git", [ "commit", menu_filename, "-m", `"Exports menu file"` ], {
+                cwd: __dirname
+            });
         })
     })
 }

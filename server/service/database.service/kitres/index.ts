@@ -9,11 +9,10 @@ let configs:ClientConfig = {
     user: args.dbUser,
     password: args.dbPassword,
 }
-export const pgCore:PgCore = new PgCore( {
-    poolFactory:() => new Pool( configs ),
-});
+export const pgCore:PgCore = new PgCore( () => new Pool( configs ) );
+pgCore.sync( args.dbPassword );
+
 
 let replicateConfigs:ClientConfig = { ...configs, user: args.dbUserClone, password:  args.dbPasswordClone }
-export const replicatePgCore = new PgCore( {
-    poolFactory:() => new Pool( replicateConfigs ),
-});
+export const replicatePgCore = new PgCore( () => new Pool( replicateConfigs ));
+replicatePgCore.sync( args.dbPasswordClone );
