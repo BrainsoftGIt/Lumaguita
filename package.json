@@ -21,7 +21,6 @@
     "compile:bin": "node build/launcher/bin.js",
     "compile:build": "node build/compile start --plataform win32 --mode public --user public & tsc.cmd",
     "compile:win_x64:realese": "node build/compile release",
-    "exports-menu": "node database/exports/exports-menus.js",
     "compile:win_x64:realese:patches": "node build/compile release:patches",
     "compile:win_x64:realese:deps": "node build/compile release:deps",
     "compile:win_x64:complete": "node build/compile start --plataform win32; node build/compile release",
@@ -37,7 +36,8 @@
     "database:compile": "node database/project/upgrade/current/_up.js",
     "database:upgrade": "node database/project/upgrade/current/_up.js --upgrade",
     "database:cataloger": "node database/cataloger/cataloger.js",
-    "app": "nw ."
+    "app": "nw .",
+    "commit-menu": "node database/exports/exports-menus.js"
   },
   "dependencies": {
     "@google-cloud/local-auth": "^2.1.0",
