@@ -1,6 +1,6 @@
 import {args} from "../../../global/args";
 import {PgCore} from "kitres";
-import {Client, ClientConfig, Pool} from "pg"
+import {ClientConfig, Pool} from "pg"
 
 let configs:ClientConfig = {
     host: args.dbHost,
@@ -11,11 +11,9 @@ let configs:ClientConfig = {
 }
 export const pgCore:PgCore = new PgCore( {
     poolFactory:() => new Pool( configs ),
-    clientFactory:() => new Client( configs )
 });
 
 let replicateConfigs:ClientConfig = { ...configs, user: args.dbUserClone, password:  args.dbPasswordClone }
 export const replicatePgCore = new PgCore( {
     poolFactory:() => new Pool( replicateConfigs ),
-    clientFactory: () => new Client( replicateConfigs)
 });
