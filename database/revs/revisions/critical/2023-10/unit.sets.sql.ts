@@ -55,27 +55,6 @@ language plpgsql as $$
 $$
 `;
 
-
-export const setsUnits = {
-    [VERSION.TAG]:sql`
-do 
-$$
-  declare
-    _data record;
-  begin
-      for _data in
-        select 
-            b.*
-          from cluster.branch b
-      loop
-          perform tweeks.__sets_defaults_units( _data._branch_uid );
-      end loop;
-  end;
-$$`
-}
-;
-
-
 export const funct_load_units = sql`
 create or replace function tweeks.funct_load_unit(args jsonb) returns SETOF jsonb
   language plpgsql
