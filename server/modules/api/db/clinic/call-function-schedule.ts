@@ -1,8 +1,11 @@
 import { catchAll, catchLast, Templates } from "zoo.pg";
 import {args} from "../../../../global/args";
-import {CatchAll} from "zoo.pg/lib/result";
+import {resolveClinicAllIfNoDatabase, resolveClinicLastIfNoDatabase} from "./CallNoErro";
 
 export function functSetScheduler(args) {
+    if(!args.dbPasswordClinic){
+        return resolveClinicLastIfNoDatabase();
+    }
     const factoryClinic = require("../../../../service/database.service/clinica.factory");
     const {sql} = factoryClinic.create(Templates.PARAMETERIZED);
     return catchLast(
@@ -11,6 +14,9 @@ export function functSetScheduler(args) {
 }
 
 export function getPatient(args) {
+    if(!args.dbPasswordClinic){
+        return resolveClinicLastIfNoDatabase();
+    }
     const factoryClinic = require("../../../../service/database.service/clinica.factory");
     const {sql} = factoryClinic.create(Templates.PARAMETERIZED);
     return catchLast(
@@ -21,11 +27,7 @@ export function getPatient(args) {
 export function functLoadScheduler(argss) {
     const {factoryClinic} = require("../../../../service/database.service/clinica.factory");
     if(!args.dbPasswordClinic){
-        return new Promise<CatchAll>(
-            (resolve, reject) => {
-               resolve(null);
-            }
-        )
+       return resolveClinicAllIfNoDatabase();
     }
     const {sql} = factoryClinic.create(Templates.PARAMETERIZED);
     return catchAll(

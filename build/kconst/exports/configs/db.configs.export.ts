@@ -120,6 +120,7 @@ kconst.declares( (exports, override, SELF_NAME, props) => {
 kconst.declares( (exports, override, SELF_NAME, props) => {
     override( () => {
         K.dbConfig = {
+            dbMode: "system",
             database: "maguita_dev", // database name,
             user: "maguita_dev", //user name database connection
             userClone: "maguita_dev_clone", //user name database connection
@@ -139,7 +140,7 @@ kconst.declares( (exports, override, SELF_NAME, props) => {
             dbServiceName: "lumaguita-database-service"
         }; exports( targets.dbConnection );
     })
-}, { user: "ahmedjorge" } );
+}, { user: ["ahmedjorge", "ahmed"] } );
 
 
 //Configuração de banco de dados em modo produção

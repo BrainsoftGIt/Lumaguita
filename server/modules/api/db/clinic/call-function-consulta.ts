@@ -1,6 +1,10 @@
 import { catchAll, catchLast, Templates } from "zoo.pg";
+import {resolveClinicAllIfNoDatabase, resolveClinicLastIfNoDatabase} from "./CallNoErro";
 
 export function functSetConsulta(args) {
+    if(!args.dbPasswordClinic){
+        return resolveClinicLastIfNoDatabase();
+    }
     const factoryClinic = require("../../../../service/database.service/clinica.factory");
     const {sql} = factoryClinic.create(Templates.PARAMETERIZED);
     return catchLast(
@@ -9,6 +13,9 @@ export function functSetConsulta(args) {
 }
 
 export function functLoadConsulta(args) {
+    if(!args.dbPasswordClinic){
+        return resolveClinicAllIfNoDatabase();
+    }
     const factoryClinic = require("../../../../service/database.service/clinica.factory");
     const {sql} = factoryClinic.create(Templates.PARAMETERIZED);
     return catchAll(
@@ -17,6 +24,9 @@ export function functLoadConsulta(args) {
 }
 
 export function functLoadConsultaData(args) {
+    if(!args.dbPasswordClinic){
+        return resolveClinicAllIfNoDatabase();
+    }
     const factoryClinic = require("../../../../service/database.service/clinica.factory");
     const {sql} = factoryClinic.create(Templates.PARAMETERIZED);
     return catchAll(

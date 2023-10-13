@@ -90,7 +90,15 @@ function compareDates(dateI, dateF, mightBeEqual = true) {
 function formattedString(nStr) {
     var num = nStr.replace(/(\s)/g, '');
     num = num.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1 ");
-    return num.$$(".") ? num : num+",00";
+    if(num.$$(".")){
+        let sub = num.split(".");
+        return sub[0]+","+sub[1].add0ToTimer()
+    }
+    if(num.$$(",")){
+        let sub = num.split(",");
+        return sub[0]+","+sub[1].add0ToTimer()
+    }
+    return num+",00";
 }
 
 $('*').on("keypress", ".integer", function (event) {
