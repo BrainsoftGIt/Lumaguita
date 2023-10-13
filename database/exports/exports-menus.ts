@@ -2,6 +2,7 @@ import {dbRes} from "../../server/service/database.service/kitres/res";
 import JSON5 from "json5";
 import fs from "fs";
 import Path from "path";
+import {spawnSync} from "child_process";
 
 //language=file-reference
 let menu_filename =Path.join( __dirname, "../revs/revisions/menu/menu.json5" );
@@ -16,10 +17,24 @@ export function exportsMenus(){
                     return console.error( error );
                 }
 
-                let content  = JSON5.stringify( result.rows, {
+                let menus = result.rows.map( value => {
+                    value["date"] = new Date().toISOString();
+                    return value;
+                })
+
+                let content  = JSON5.stringify( menus, {
                     space: 2
                 } );
                 fs.writeFileSync( menu_filename, content );
+                spawnSync("git", [ "add", menu_filename ], {
+                    cwd: __dirname
+                });
+
+                spawnSync("git", [ "commit", menu_filename, "-m", `"Exports menu file"` ], {
+                    cwd: __dirname
+                });
+
+
             }
         })
     })
