@@ -39,11 +39,9 @@ export function functLoadArmazens(args) {
 export async function functAtualizarDadosEmpresa(args) {
     const {sql} = factory.create(Templates.PARAMETERIZED);
 
-    console.log(args)
     let {configuracao_impressoras, impressoras_cozinha, ...empresa_data} = args?.configPrinter || args?.dados_empresa;
 
     if(empresa_data) {
-        console.log({empresa_data})
         args = {...args};
         args.parametrizacao_uid = empresa_data["empresa_data_id"] || null;
         args.parametrizacao_props = empresa_data;

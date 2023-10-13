@@ -50,7 +50,7 @@ pgRevision.on( "register", block => {
     let filename = scriptUtil.typescriptOf( block.filename ) || block.filename;
     let lineNumber = block.line?.line as any;
     if( lineNumber ) lineNumber = `:${ lineNumber }`;
-    serverNotify.log( `collecting database path ${ new URL(`file:\\\\${ filename }${lineNumber}`).href } identifier = "${ block.identifier }"` );
+    serverNotify.log( `collecting database patch ${ new URL(`file:\\\\${ filename }${lineNumber}`).href } identifier = "${ block.identifier }"` );
 });
 
 pgRevision.on( "applierNotice", notice => {
@@ -136,16 +136,16 @@ function saveBackup( dumps:string[]):Promise<RevisionsChecks>{
 
                 let backupCluster = ()=>{
                     let  { pgContext } = require("../kitres/setup" );
-                    // if( pgContext.workFlow.steepsPass.includes( PostgresContextSteep.CTL_INIT ) ){
-                    //     go();
-                    //     return;
-                    // }
+                    if( pgContext.workFlow.steepsPass.includes( PostgresContextSteep.CTL_INIT ) ){
+                        go();
+                        return;
+                    }
                     serverNotify.log( `add base dir  to backup ${ new URL(`file://${Path.join(folders.pgHome, "base")}`).href }` );
                     zip.directory( Path.join(folders.pgHome, "base" ), "cluster" );
                     pgContext.elevator.connected( () => {
                         serverNotify.log( "stopping database service to backup cluster safe..." );
                         pgContext.elevator.child.once( "stopService", (service, stopService) => {
-                        serverNotify.log( "stopping database service to backup cluster safe... finished!" );
+                            serverNotify.log( "stopping database service to backup cluster safe... finished!" );
                             let _resolve = resolve;
                             resolve =( ...args)=>{
                                 serverNotify.log( "starting database service for continue..." );
