@@ -15,6 +15,7 @@ export const supportedOs:NodeJS.Platform[] = [ "win32", "linux", "darwin" ];
 
 export function patchesInstall(){
     //Apply global paths
+    /*language=file-reference*/
     FileUtil.scanFiles( path.join( __dirname, "global" ), /.*.js$/, _patches => {
         require( _patches.path );
     }, { recursive: true });

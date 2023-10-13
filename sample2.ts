@@ -1,13 +1,15 @@
-import {spawnSync} from "child_process";
+import Path from "path";
+import {execSync, spawnSync} from "child_process";
 
-const tsc = ( cwd ) => {
-    console.log( "[TSC] start...", cwd)
-    const _tsc = spawnSync("tsc", { cwd: cwd , shell: "cmd" });
-    if( _tsc.error ) console.log( _tsc.error );
-    if( _tsc.stdout?.toString?.( "utf-8" ) ) console.log( _tsc.stdout.toString("utf-8" ));
-    if( _tsc.stderr?.toString?.( "utf-8") ) console.log( _tsc.stderr.toString("utf-8" ));
-    console.log( "[TSC] start... [END]")
-}
+let pg14  = "C:\\Program Files\\PostgreSQL\\14\\bin";
+process.env["PATH"] = [
+    ... process.env["PATH"].split( Path.delimiter ),
+    pg14,
+].join( Path.delimiter );
 
+let where = spawnSync( "where", [ "psql" ] );
+console.log( where.stdout.toString() );
 
-tsc( "C:\\var\\workspace\\maguita\\maguita-cluster" )
+let version  = spawnSync( "psql", [ "--version"] );
+console.log( version.stdout.toString() );
+

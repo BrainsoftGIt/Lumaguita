@@ -13,6 +13,7 @@ import {PostgresOptions} from "../../lib/postgres/tools";
 import {DEFAULTS} from "../../global/defaults";
 import {serverNotify} from "../../snotify";
 import Path from "path";
+import chalk from "chalk";
 
 const acceptsInterval:(typeof interval[ number ])[] = [ "week-day", "week" ];
 
@@ -43,7 +44,10 @@ export function dumpNow( instant?: moment.Moment, opts?:Options ):Promise<string
         let files:string[] = [];
 
         out.on("exit", ( code, signal) => {
-            serverNotify.log( `database dumps end with code = "${code}"`);
+            let result:string;
+            if( code === 0 ) result = chalk.greenBright.bold( "success" );
+            else result = chalk.greenBright.bold( "failed" )
+            serverNotify.log( `database dumps end with result = "${result}"`);
                 if( code !== 0 ){
                     // serverNotify.log( `database dumps end with stdout = "${data}"`);
                     // serverNotify.log( `database dumps end with stderr = "${err}"`);

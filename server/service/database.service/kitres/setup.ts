@@ -54,30 +54,25 @@ export const pgContext = new PostgresContext({
 });
 
 pgContext.on( "log", (level, message) => {
-    serverNotify.log( `log ${level} > ${ message }`);
+    serverNotify.log( `database setup log ${level} > ${ message.trim() }`);
 });
 pgContext.on("message", (message, action) => {
-    serverNotify.log( message );
+    serverNotify.log( `database setup message > ${ message.trim() }` );
 });
 
 pgContext.on(  "setup",(error, result) => {
     if( error ) return serverNotify.log( `Database preparation Error | ${ error.message }` );
     else if( !result.status) return serverNotify.log( "Database preparation failed!" )
-    else return  serverNotify.log( "database setup> Database prepared successfully!" )
+    else return  serverNotify.log( "database setup > Database prepared successfully!" )
 });
 
 pgContext.on("flowResolved", (flow, preview) => {
-    serverNotify.log( `database setup> Resolved database preparation flow ${ flow.identifier } in steep ${ flow.steep } with action ${ flow.flow } | ${ flow?.response?.message } `);
+    serverNotify.log( `database setup flow resolved > Resolved database preparation flow ${ flow.identifier } in steep ${ flow.steep } with action ${ flow.flow } | ${ flow?.response?.message } `);
     if( flow.error ){
         console.error( flow.error );
     }
 });
 
-pgContext.on("flowResolved", (flow, preview) => {
-    if( flow.steep === "PostgresContextSteep.FLOW_CHECK_PRE" ){
-        console.log( flow.response )
-    }});
-
 pgContext.on( "flowSkip", (steep, flow) => {
-    serverNotify.log( `Skipped database preparation flow ${ flow.identifier } in steep ${ steep }`)
+    serverNotify.log( `database setup flow skipped> Skipped database preparation flow ${ flow.identifier } in steep ${ steep }`)
 });
