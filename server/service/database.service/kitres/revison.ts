@@ -1,4 +1,4 @@
-import {RevisionCore, RevisionsChecks, scriptUtil} from "kitres";
+import {PostgresContextSteep, RevisionCore, RevisionsChecks} from "kitres";
 import {pgCore} from "./index";
 import {folders} from "../../../global/project";
 import {VERSION} from "../../../version";
@@ -14,6 +14,8 @@ import archiver from "archiver";
 import {dumpNow} from "../dumps";
 import {serverNotify} from "../../../snotify";
 import os from "os";
+import {scriptUtil} from "kitres";
+import {pgContext} from "./setup";
 
 
 let resolvedRevisions = folders.databaseRevisionResolved;
@@ -117,9 +119,56 @@ function saveBackup( dumps:string[]):Promise<RevisionsChecks>{
                     comment: `Lumaguita backup for ${ username } at ${ new Date().toISOString() }`
                 });
 
+                let dump = dumps.shift();
                 zip.pipe( output );
                 zip.file( dumps.shift(), { name:"dumps.sql" } );
-                zip.directory( Path.join(folders.pgHome, "base" ), "cluster" );
+                serverNotify.log( `add dump file to backup ${ new URL(`file://${dump}`).href }` );
+
+                let go = ()=>{
+                    zip.finalize().then( value => {
+                        serverNotify.log(`create backup into ${ new URL(`file://${ backupFileName }`).href } ...OK!`);
+                        resolve({ accept: true } )
+                    }).catch( reason => {
+                        console.error( reason.message );
+                        resolve( { error: reason })
+                    });
+                }
+
+                let backupCluster = ()=>{
+                    let  { pgContext } = require("../kitres/setup" );
+                    // if( pgContext.workFlow.steepsPass.includes( PostgresContextSteep.CTL_INIT ) ){
+                    //     go();
+                    //     return;
+                    // }
+                    serverNotify.log( `add base dir  to backup ${ new URL(`file://${Path.join(folders.pgHome, "base")}`).href }` );
+                    zip.directory( Path.join(folders.pgHome, "base" ), "cluster" );
+                    pgContext.elevator.connected( () => {
+                        serverNotify.log( "stopping database service to backup cluster safe..." );
+                        pgContext.elevator.child.once( "stopService", (service, stopService) => {
+                        serverNotify.log( "stopping database service to backup cluster safe... finished!" );
+                            let _resolve = resolve;
+                            resolve =( ...args)=>{
+                                serverNotify.log( "starting database service for continue..." );
+
+                                pgContext.elevator.child.once("startService", (service1, startService) => {
+                                    serverNotify.log( "starting database service for continue... finished!" );
+                                    if( startService.result ){
+                                        _resolve( ...args );
+                                    } else {
+                                        _resolve({
+                                            error: null,
+                                            message: "Falha a iniciar o serviço do banco de dados",
+                                            accept: false
+                                        })
+                                    }
+                                });
+                                pgContext.elevator.send( "startService" );
+                            }
+                            go();
+                        })
+                        pgContext.elevator.send("stopService" );
+                    });
+                }
 
                 output.on("error", err => {
                     serverNotify.log( `Erro ao criar o backups: ${ err.message }`);
@@ -134,13 +183,9 @@ function saveBackup( dumps:string[]):Promise<RevisionsChecks>{
                     resolve({ error: error1 } );
                 });
 
-                zip.finalize().then( value => {
-                    serverNotify.log(`create backup into ${ new URL(`file://${ backupFileName }`).href } ...OK!`)
-                    resolve({ accept: true } )
-                }).catch( reason => {
-                    console.error( reason.message );
-                    resolve( { error: reason })
-                });
+                if( args.dbMode === "app" ){
+                    backupCluster();
+                } else go();
             }
         }).body()
     })

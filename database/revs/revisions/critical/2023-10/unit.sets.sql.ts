@@ -62,11 +62,11 @@ as
 $$
 declare
     /**doc
-        Carregar os documentos 
-        args := {
-          _espaco_auth
-          _user_id
-        }
+    Carregar os documentos 
+    args := {
+      _espaco_auth
+      _user_id
+    }
   doc*/
     _espaco_auth uuid not null default args->>'_espaco_auth';
     _user_id uuid not null default args->>'_user_id';

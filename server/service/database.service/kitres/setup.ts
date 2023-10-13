@@ -67,7 +67,7 @@ pgContext.on(  "setup",(error, result) => {
 });
 
 pgContext.on("flowResolved", (flow, preview) => {
-    serverNotify.log( `database setup flow resolved > Resolved database preparation flow ${ flow.identifier } in steep ${ flow.steep } with action ${ flow.flow } | ${ flow?.response?.message } `);
+    serverNotify.log( `database setup flow resolved > Resolved database preparation flow ${ flow.identifier } in steep ${ flow.steep } out with ${ flow.out } | ${ flow?.response?.message } `);
     if( flow.error ){
         console.error( flow.error );
     }
