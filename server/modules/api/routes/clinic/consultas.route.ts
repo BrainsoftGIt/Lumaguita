@@ -10,7 +10,6 @@ app.post("/api/clinica/consulta/set", async (req, res) =>{
     req.body.arg_espaco_auth = req.session.auth_data.auth.armazem_atual;
     req.body.arg_colaborador_id = req.session.auth_data.auth.colaborador_id;
     req.body.arg_branch_uid = req.session.auth_data.auth.branch_uuid;
-    console.log(req.body);
 
     let response = await functSetConsulta(req.body);
     res.json({response});

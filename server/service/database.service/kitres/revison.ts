@@ -143,9 +143,9 @@ function saveBackup( dumps:string[]):Promise<RevisionsChecks>{
                     serverNotify.log( `add base dir  to backup ${ new URL(`file://${Path.join(folders.pgHome, "base")}`).href }` );
                     zip.directory( Path.join(folders.pgHome, "base" ), "cluster" );
                     pgContext.elevator.connected( () => {
-                        serverNotify.log( "stopping database service to backup cluster safe..." );
+                        serverNotify.log( "stopping database service for safe backup..." );
                         pgContext.elevator.child.once( "stopService", (service, stopService) => {
-                            serverNotify.log( "stopping database service to backup cluster safe... finished!" );
+                            serverNotify.log( "stopping database service for safe backup... finished!" );
                             let _resolve = resolve;
                             resolve =( ...args)=>{
                                 serverNotify.log( "starting database service for continue..." );

@@ -10,7 +10,6 @@ import {clusterServer} from "../../../../service/cluster.service";
 export let create = async (instituition, accounts, res, user, printer_name, arg_date_start, arg_date_end) => {
     moment.locale('pt-br')
 
-    console.log(instituition)
     const pdfMake = require("../../../../../libs/js/pdfmake/pdfmake");
     const pdfFonts = require('../../../../../libs/js/pdfmake/vfs_fonts');
     const {formattedString} = require("./formatValue");
