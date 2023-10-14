@@ -2,6 +2,7 @@ import * as os from "os";
 import fs  from "fs";
 import {args} from "./args";
 import {DEFAULTS} from "./defaults";
+import Path from "path";
 const path = require( 'path' );
 
 
@@ -133,6 +134,10 @@ export const folders = {
 
     //Destined for postgres mount point [PostgresCluster|PG_HOME's]
     get pgHome () { return folder( this.database,  '/postgres' ); },
+
+    get base_dump(){
+        return Path.join( this.database, "lumaguita.base.db" );
+    },
     //Destined for postgres mount point [PostgresCluster|PG_HOME's]
     get dumps () { return folder( this.database,  '/dumps' ); },
     get backups () { return folder( this.database,  '/backups' ); },

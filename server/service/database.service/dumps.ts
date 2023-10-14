@@ -67,9 +67,8 @@ export function dumpNow( instant?: moment.Moment, opts?:Options ):Promise<string
                     fs.writeFileSync( copyFile, content );
                 });
 
-                let dumpBase = Path.join( folders.pgHome, "base.db" );
-                console.log( `[maguita] copy dump base database backup into = "${new URL(`file://${ dumpBase }`).href}"` );
-                fs.writeFileSync( dumpBase, content );
+                console.log( `[maguita] copy dump base database backup into = "${new URL(`file://${ folders.base_dump }`).href}"` );
+                fs.writeFileSync( folders.base_dump, content );
                 fs.unlinkSync( lastFile );
             resolve( files );
         });

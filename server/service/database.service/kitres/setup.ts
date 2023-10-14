@@ -12,7 +12,7 @@ process.env[ System.pathName()] = [
     ... process.env[ System.pathName() ].split( Path.delimiter )
 ].join( Path.delimiter );
 
-let isNewCluster = !fs.existsSync( Path.join( folders.pgHome, "base.db" ));
+let isNewCluster = !fs.existsSync( folders.base_dump );
 
 let baseDump:string;
 let setups:({user:string,filename:string})[]=[];
@@ -25,7 +25,7 @@ if( isNewCluster ){
         filename: Path.join( __dirname, "../../../../database/bases/clean.sql")
     })
 } else {
-    baseDump = Path.join( folders.pgHome, "base.db" )
+    baseDump = folders.base_dump
 }
 
 export const pgContext = new PostgresContext({
