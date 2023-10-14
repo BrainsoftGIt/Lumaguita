@@ -1,15 +1,7 @@
-import Path from "path";
-import {execSync, spawnSync} from "child_process";
+import { object_util } from "kitres";
 
-let pg14  = "C:\\Program Files\\PostgreSQL\\14\\bin";
-process.env["PATH"] = [
-    ... process.env["PATH"].split( Path.delimiter ),
-    pg14,
-].join( Path.delimiter );
+let ss = {
+    name:"Maria",
+};
 
-let where = spawnSync( "where", [ "psql" ] );
-console.log( where.stdout.toString() );
-
-let version  = spawnSync( "psql", [ "--version"] );
-console.log( version.stdout.toString() );
-
+console.log( object_util.describe(ss))

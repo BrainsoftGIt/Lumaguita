@@ -10,6 +10,7 @@ function asOptions( opts ):{notifier?:boolean, nw?:boolean}{
     if( !keys.includes( "nw" )  ) opts.nw = true;
     return opts;
 }
+
 export const serverNotify = {
     log( message:string ){
       this.loadingBlockItem( message )
