@@ -48,6 +48,9 @@ $(document).keypress(function(evt){
     if($('.credentialPIN').hasClass("show") && !$("#iptTable").is(':focus')){
         let key = String.fromCharCode(evt.keyCode).toUpperCase();
         $(`.credentialPIN .pinkey li:contains(${key})`).click();
+        if(evt.keyCode === 13){
+            $(".goForward").click();
+        }
     }
 });
 $(document).keyup(function(evt){
