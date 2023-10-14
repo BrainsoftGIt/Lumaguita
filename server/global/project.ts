@@ -133,7 +133,6 @@ export const folders = {
 
     //Destined for postgres mount point [PostgresCluster|PG_HOME's]
     get pgHome () { return folder( this.database,  '/postgres' ); },
-
     //Destined for postgres mount point [PostgresCluster|PG_HOME's]
     get dumps () { return folder( this.database,  '/dumps' ); },
     get backups () { return folder( this.database,  '/backups' ); },
