@@ -183,7 +183,6 @@ export function ctrlConnect( opts?:CTRLConnectOpts):Promise<Socket>{
                 if( next ) connect();
             });
             connection.on( "connect", () => {
-                console.log( connection );
                 resolve( connection );
             })
             return connection;

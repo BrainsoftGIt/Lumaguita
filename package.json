@@ -106,7 +106,7 @@
     "@types/node-notifier": "^8.0.1",
     "@types/nw.gui": "0.0.21",
     "@types/open": "^6.2.1",
-    "@types/pg": "^7.14.4",
+    "@types/pg": "^8.10.2",
     "@types/pg-escape": "^0.2.1",
     "@types/socket.io": "^3.0.2",
     "@types/socket.io-client": "^3.0.0",
