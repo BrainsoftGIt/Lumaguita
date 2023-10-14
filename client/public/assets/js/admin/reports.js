@@ -196,10 +196,14 @@ var report = {
             report.listFormats.push({format: group.format, name: group.rename});
             headers.push({name: group.name, format: group.format, rename: group.rename});
             object.groups.push({
+                weight: group.weight,
                 column: group.column,
                 key: group.key,
                 func: group.func,
-                rename: group.rename
+                rename: group.rename,
+                format: group.format,
+                name: group.name,
+                main_column: group.column
             });
         });
         $("#grupos_colunas_relatorio").find("li.active").each(function () {
@@ -237,7 +241,7 @@ var report = {
         let headerTable = $("[ header-report-list]");
         headerTable.empty();
         let growValue;
-        let alignmentFormats = ["money", "date", "int", "timestamp", "code:right", "double", "numeric"]
+        let alignmentFormats = ["money", "date", "int", "timestamp", "code:right", "double", "numeric"];
         $("#colunas_relatorio").find("li.active").each(function () {
             growValue = (Number($(this).attr("weight")) * 10) / report.totalColumnsWeight;
             if(alignmentFormats.includes($(this).attr("format")))
@@ -414,7 +418,7 @@ var report = {
             method: "POST",
             contentType: "application/json",
             data: JSON.stringify({
-                arg_datainicio: new Date(year, month-1, 1).getDateEn(),
+                arg_datainicio: new Date(yfiltrarear, month-1, 1).getDateEn(),
                 arg_datafim: new Date(year, month, 0).getDateEn()
             }),
             success(ordenList) {

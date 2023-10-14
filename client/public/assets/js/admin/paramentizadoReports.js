@@ -278,6 +278,9 @@ $("#loadReport").on("click", function (){
         return
     }
 
+
+
+
     report.listFormats = listFormats;
     report.totalColumnsWeight = totalColumnsWeight;
     paramentizadoReports.objectView = {
@@ -332,7 +335,21 @@ $("#loadReport").on("click", function (){
         listas: $("#grupos_colunas_relatorio")
     });
 
+    report.groups = [];
     setTimeout(() => {
+        groups.forEach(group =>{
+            report.groups.push({
+                weight: group.weight,
+                column: group.column,
+                key: group.key,
+                func: group.func,
+                rename: group.rename,
+                main_column: report.column,
+                format: group.format,
+                name: group.name
+            });
+        });
+
         report.listFormats = listFormats;
         report.totalColumnsWeight = totalColumnsWeight;
         paramentizadoReports.objectView = {
@@ -344,7 +361,6 @@ $("#loadReport").on("click", function (){
             orders
         }
         paramentizadoReports.headers = headers;
-
         pagination.get_amount_item_page["body-report-list"] = {
             value_por_lado: 4,
             load: report.filtrar
