@@ -4,7 +4,6 @@ import {dbRes} from "../../../service/database.service/kitres/res";
 import {Result} from "kitres";
 
 app.post( "/api/load/fatura/to/credito/nota", (req, res, next) => {
-    console.log( { etag: req.headers.etag } );
     let _session = getUserSession( req );
 
     let args = req.body;
@@ -31,7 +30,6 @@ app.post( "/api/load/fatura/to/credito/nota", (req, res, next) => {
 });
 
 app.post( "/api/reg/credito/nota", (req, res, next) => {
-    console.log( { etag: req.headers.etag } );
     let _session = getUserSession( req );
 
     let args = req.body;

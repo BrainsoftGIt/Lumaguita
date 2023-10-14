@@ -54,6 +54,5 @@ app.post("/api/send/crashdump",  async (req, res) =>{
                 }
             ]
         });
-        console.log(mails);
     });
 });
