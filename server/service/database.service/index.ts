@@ -22,14 +22,6 @@ export function debugResponse( response ){
     else if( response?.rows?.[ 0 ]?.error?.context ) console.error( response );
     else if( response?.message?.context ) console.error( response );
 }
-
-console.log( {
-    host: args.dbHost,
-    port: args.dbPort,
-    database: args.dbName,
-    user: args.dbUser,
-    password: args.dbPassword,
-})
 export const factory = new PostgresFactory( {
     host: args.dbHost,
     port: args.dbPort,

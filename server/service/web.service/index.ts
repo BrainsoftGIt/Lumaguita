@@ -19,6 +19,7 @@ import '../../modules/api/routes/check-static';
 import {E_TAG_VERSION} from "./etag";
 import {VERSION} from "../../version";
 import {nanoid} from "nanoid";
+import {scriptUtil} from "kitres";
 //Static declarations
 
 let localStaticResource = express.static( folders.public, {

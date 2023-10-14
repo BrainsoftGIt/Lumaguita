@@ -26,3 +26,4 @@ if( require.main.filename === __filename ){
     //language=file-reference
     cleanJs( path.join(__dirname, "../"))
 }
+
