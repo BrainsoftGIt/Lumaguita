@@ -54,20 +54,20 @@ export function dumpNow( instant?: moment.Moment, opts?:Options ):Promise<string
                     return resolve( null );
                 }
                 let content = fs.readFileSync( lastFile );
-            serverNotify.log( `[maguita] copy dump database backup from = "${new URL(`file://${ lastFile }`).href}"`);
+            serverNotify.log( `copy dump database backup from = "${new URL(`file://${ lastFile }`).href}"`);
             dumps.forEach( (next, index) => {
                     // setTimeout(()=>{
                     let dumpFile = instant.format( next.format ).toLowerCase();
                     let copyFile = path.join( folders.dumps, dumpFile );
                     files.push( copyFile );
-                    console.log( `[maguita] copy dump database backup into = "${new URL(`file://${ copyFile }`).href}"` );
+                serverNotify.log( `copy dump database backup into = "${new URL(`file://${ copyFile }`).href}"` );
                     if( !fs.existsSync( Path.dirname( copyFile ) ) ) {
                         fs.mkdirSync( Path.dirname( copyFile ), { recursive: true });
                     }
                     fs.writeFileSync( copyFile, content );
                 });
 
-                console.log( `[maguita] copy dump base database backup into = "${new URL(`file://${ folders.base_dump }`).href}"` );
+                serverNotify.log( `copy dump base database backup into = "${new URL(`file://${ folders.base_dump }`).href}"` );
                 fs.writeFileSync( folders.base_dump, content );
                 fs.unlinkSync( lastFile );
             resolve( files );
