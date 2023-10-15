@@ -102,13 +102,15 @@ export const folders = {
     //Dynamics resources [resource,temps,volatiles,files,persistent]
 
     //Destined only for resources available on the current server [LocalServer]
+    get storage () { return folder( path.join( this.home , '/storage' ) ); },
     get cloud () { return folder( path.join( this.home , '/storage/cloud' ) ); },
+    get share () { return folder( path.join( this.home, '/storage/share' ) ); },
+    get files () { return  folder( this.home,  '/storage/files' ); },
 
     //Destined for resource of user sessions
     get sessions () { return folder( path.join( this.home, '/sessions' ) ); },
 
     //Destined for resources shared between servers
-    get share () { return folder( path.join( this.home, '/storage/share' ) ); },
 
     //Destined for private local resources
     get private () { return folder( path.join( this.home, '/storage/private' ) ); },
@@ -120,7 +122,6 @@ export const folders = {
     get mnt () { return folder( path.join( this.home, '/storage/mnt' ) ); },
 
     //...(avaliando se vai prevalecer)
-    get files () { return  folder( this.home,  '/storage/files' ); },
 
     get logs () { return  folder( this.home,  '/logs' ) ; },
 

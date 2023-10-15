@@ -14,6 +14,12 @@ import {DEFAULTS} from "../../global/defaults";
 import {serverNotify} from "../../snotify";
 import Path from "path";
 import chalk from "chalk";
+import {PostgresContextSteep, RevisionsChecks} from "kitres";
+import {dbRes} from "./kitres/res";
+import {MaguitaTableOf} from "../../../database/cataloger/lumaguita";
+import os from "os";
+import {VERSION} from "../../version";
+import archiver from "archiver";
 
 const acceptsInterval:(typeof interval[ number ])[] = [ "week-day", "week" ];
 
@@ -130,4 +136,133 @@ export function autoDumpService( opts?:Options ){
     });
 }
 
+export function preventiveBackup():Promise<string[]>{
+    return new Promise( resolve => {
+        serverNotify.log(`gerando dumps preventivos...` );
+        dumpNow(null, { suffix: "before-upgrade" }).then( value => {
+            serverNotify.log(`gerando dumps preventivos... ok!` );
+            resolve( value );
+        }).catch( reason => {
+            console.error( "preventiveBackup:catch", reason );
+            serverNotify.loading( "FAILED!" );
+            serverNotify.loadingBlock( "Database upgrade patches... [FAILED|preventiveBackup]" );
+            serverNotify.loadingBlockItem( "Falha ao aplicar atualização criticas de banco de dados. [FAILED|preventiveBackup]" );
+            resolve( null );
+        })
+    })
+}
 
+
+export type BackupSave = {
+    error?:Error
+    accept?:boolean,
+    backup?: string,
+    message?:string
+}
+
+export type AppendBackup = {
+    folder:string,dest:string
+};
+export function saveBackup( dumps:string[], withCluster:boolean, ...appends:AppendBackup[]):Promise<BackupSave>{
+    return new Promise( (resolve ) => {
+        dbRes.call.cluster._get_cluster_local<MaguitaTableOf<"cluster", "cluster">,any>({
+            try: 0,
+            increment: false
+        }, {
+            onResult(error, result?): any {
+                if( error ) return resolve({ error: error } );
+                let localCluster = result.rows[0];
+                if( !localCluster ) return resolve({ accept: false, message: "Não pode carregar o cluster local" } );
+                let username = localCluster.cluster_name||os.userInfo().username;
+                let time = moment().format("yyyyMMDD-HHmmss");
+
+                let backupName = `backup-lumaguita-${VERSION.TAG}-${ username }-${ time }-upgrade.zip`;
+                let backupFileName = Path.join( folders.backups, backupName);
+
+                let output = fs.createWriteStream( backupFileName  );
+                let zip = archiver('zip', {
+                    zlib:{ level: 9 },
+                    comment: `Lumaguita backup for ${ username } at ${ new Date().toISOString() }`
+                });
+
+                let dump = dumps.shift();
+                zip.pipe( output );
+                zip.file( dumps.shift(), { name:"dumps.sql" } );
+                serverNotify.log( `add dump file to backup ${ new URL(`file://${dump}`).href }` );
+
+                appends.forEach( value => {
+                    if( value.folder && value.dest ){
+                        zip.directory( value.folder, value.dest );
+                        serverNotify.log( `add folder backup ${ new URL(`file://${value.folder}`).href }` );
+                    }
+                })
+
+                let go = ()=>{
+                    zip.finalize().then( value => {
+                        serverNotify.log(`create backup into ${ new URL(`file://${ backupFileName }`).href } ...OK!`);
+                        resolve({
+                            accept: true,
+                            backup: backupFileName
+                        } )
+                    }).catch( reason => {
+                        console.error( reason.message );
+                        resolve( { error: reason })
+                    });
+                }
+
+                let backupCluster = ()=>{
+                    let  { pgContext } = require("./kitres/setup" );
+                    if( pgContext.workFlow.steepsPass.includes( PostgresContextSteep.CTL_INIT ) ){
+                        go();
+                        return;
+                    }
+                    serverNotify.log( `add base dir  to backup ${ new URL(`file://${Path.join(folders.pgHome, "base")}`).href }` );
+                    zip.directory( Path.join(folders.pgHome, "base" ), "cluster" );
+                    pgContext.elevator.connected( () => {
+                        serverNotify.log( "stopping database service for safe backup..." );
+                        pgContext.elevator.child.once( "stopService", (service, stopService) => {
+                            serverNotify.log( "stopping database service for safe backup... finished!" );
+                            let _resolve = resolve;
+                            resolve =( ...args)=>{
+                                serverNotify.log( "starting database service for continue..." );
+
+                                pgContext.elevator.child.once("startService", (service1, startService) => {
+                                    serverNotify.log( "starting database service for continue... finished!" );
+                                    if( startService.result ){
+                                        _resolve( ...args );
+                                    } else {
+                                        _resolve({
+                                            error: null,
+                                            message: "Falha a iniciar o serviço do banco de dados",
+                                            accept: false
+                                        })
+                                    }
+                                });
+                                pgContext.elevator.send( "startService" );
+                            }
+                            go();
+                        })
+                        pgContext.elevator.send("stopService" );
+                    });
+                }
+
+                output.on("error", err => {
+                    serverNotify.log( `Erro ao criar o backups: ${ err.message }`);
+                    console.error( err );
+                    resolve({ error: err })
+                });
+
+                serverNotify.log(`create backup into ${ new URL(`file://${ backupFileName }`).href } ...`);
+                zip.on( "error", error1 => {
+                    serverNotify.log( `Erro ao criar o backups: ${ error1.message }`);
+                    console.error( error1 );
+                    resolve({ error: error1 } );
+                });
+
+                if( args.dbMode === "app" && withCluster ){
+                    backupCluster();
+                } else go();
+            }
+        }).body()
+    })
+}

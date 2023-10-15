@@ -1,10 +1,11 @@
-import {PostgresContext} from "kitres";
+import {PostgresContext, ServerLocation} from "kitres";
 import {args} from "../../../global/args";
 import Path from "path";
 import {folders} from "../../../global/project";
 import {serverNotify} from "../../../snotify";
 import {System} from "kitres/src/core/system";
 import fs from "fs";
+import os from "os";
 
 process.env[ System.pathName()] = [
     //language=file-reference
@@ -28,18 +29,26 @@ if( isNewCluster ){
     baseDump = folders.base_dump
 }
 
+let locale:ServerLocation = ServerLocation.REMOTE;
+if( os.platform() === "win32" && args.dbMode === "app" && args.appMode === "public" ){
+    locale = ServerLocation.LOCAL;
+}
+
+
 export const pgContext = new PostgresContext({
+    serverLocation: locale,
+    serverHost: args.dbHost,
     service: args.dbServiceName,
     configs:{
         port: args.dbPort,
         listenAddress: "*",
         users: [
             { username: args.dbUser, superuser: false, search: ["tweeks", "public"], password: args.dbPassword,
-                tests: [{ database: args.dbName, host: "127.0.0.1" }]
+                tests: [{ database: args.dbName, host: args.dbHost }]
             },
             {
                 username: args.dbUserClone, password: args.dbPasswordClone, search: [ "tweeks", "public" ], superuser: true, replication: true,
-                tests: [{ database: args.dbName, host: "127.0.0.1" }]
+                tests: [{ database: args.dbName, host: args.dbHost }]
             }
         ], database: [{
             dbname: args.dbName,
