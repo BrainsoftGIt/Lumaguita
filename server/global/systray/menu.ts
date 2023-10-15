@@ -15,7 +15,7 @@ const nets: NodeJS.Dict<os.NetworkInterfaceInfo[]> = os.networkInterfaces();
 
 const results: GenericMenuItem<GenericMenuMaps>[] = [];
 
-const adapters = [ "Wi-Fi", "Ethernet", "Wi Fi" ];
+const adapters = [ "Wi-Fi", "Ethernet" ];
 Object.entries(nets).forEach((next) => {
     const [name, value] = next;
     console.log(`[maguita] Detected interface ${name}`);
