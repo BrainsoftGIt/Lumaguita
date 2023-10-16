@@ -152,7 +152,8 @@ var paramentizadoReports = {
             method: "POST",
             contentType: "application/json",
             data: JSON.stringify({
-                _parametrized_uid: id
+                _parametrized_uid: id,
+                _grants: paramentizadoReports?.posto_id || undefined
             }),
             success({data: list}) {
                 let { loadFilterSelectData, types: { DatadoProcessamento, RelativoaDataAtual, ValorAtual, PedirSempre}} = paramentizadoReports;
