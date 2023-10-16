@@ -92,6 +92,7 @@ begin
   for _data in
     with __unit as (
       select
+        
           (d.doc->>'unit_base')::uuid as unit_base,
           d.doc->>'unit_code' as unit_code,
           d.doc->>'unit_name' as unit_name
