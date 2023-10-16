@@ -1,4 +1,4 @@
-import {sql} from "kitres";
+import {patchSQL, sql} from "kitres";
 import {SQL} from "kitres/src/core/pg-core/scape";
 import fs from "fs";
 import JSON5 from "json5";
@@ -83,16 +83,16 @@ $$;
 `;
 
 
-export const resolve_units = sql`
+export const resolve_units = patchSQL({ unique: true, force: "1.0.0" }).sql`
 do $$
 declare
   document jsonb default ${ SQL.jsonb( document ) };
   _data record;
 begin
+  update tweeks.unit set unit_base = null where true;
   for _data in
     with __unit as (
       select
-        
           (d.doc->>'unit_base')::uuid as unit_base,
           d.doc->>'unit_code' as unit_code,
           d.doc->>'unit_name' as unit_name
