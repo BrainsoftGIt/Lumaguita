@@ -164,9 +164,10 @@ var paramentizadoReports = {
                     if (format === "select") {
                         listFiterData.append(` <div valuemode="${filter_valuemode}" class="xselect w100" dataType="${filter_type}" name="${filter_name.replaceAll(" ", "")}"
                        column="${filter_column}" opr="${filter_opr}" key="${key}"  mode="${filter_mode}">
-                       <input ${PedirSempre !== filter_valuemode.toString() ? " _noObrigatory='true' class='_noObrigatory' " : ""} ${disabledText} type="text" readOnly>
+                       <input placeholder="_"  ${PedirSempre !== filter_valuemode.toString() ? " _noObrigatory='true' class='_noObrigatory' " : ""} ${disabledText} type="text" readOnly>
                            <label>${filter_name}</label>
                            <ul id="v2filtro_${filter_name.replaceAll(" ", "")}"></ul>
+                           <div class="fakearrow flex"><span></span><span></span></div>
                       </div>`);
                         if (src === "db") {
                             loadFilterSelectData($(`[id="v2filtro_${filter_name.replaceAll(" ", "")}"]`), source, filter_value);

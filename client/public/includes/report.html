@@ -183,22 +183,24 @@
                     </ul>
                 </div>
                 <div class="xselect flutuate w100">
-                    <input type="text" readonly>
+                    <input type="text" readonly placeholder="_">
                     <label>Escolha a ordem da coluna</label>
                     <ul id="coluna_ordem">
                         <li class="tgl" ordem="asc">Ordem crescente</li>
                         <li class="tgl" ordem="desc">Ordem decrescente</li>
                     </ul>
+                    <div class="fakearrow flex"><span></span><span></span></div>
                 </div>
                 <div class="xinput grow-1 w100">
                     <input type="text" class="integer" id="coluna_prioridade">
                     <label>Prioridade</label>
                 </div>
                 <div class="xselect flutuate w100">
-                    <input type="text" readonly>
+                    <input type="text" readonly placeholder="_">
                     <label>Escolha o modo de apresentação de data</label>
                     <ul id="date_repres">
                     </ul>
+                    <div class="fakearrow flex"><span></span><span></span></div>
                 </div>
                 <div class="xcheck multiple">
                     <p></p>
@@ -250,7 +252,7 @@
             <div class="xform">
                 <div class="flex h-ct v-ct w100">
                     <div class="xselect flutuate w25">
-                        <input type="text" readonly>
+                        <input type="text" readonly placeholder="_">
                         <label>Escolha a ordem da coluna</label>
                         <ul id="financa_report_month">
                             <li class="tgl" data-value="01" data-text="Janeiro">Janeiro</li>
@@ -266,12 +268,14 @@
                             <li class="tgl" data-value="11" data-text="Novembro">Novembro</li>
                             <li class="tgl" data-value="12" data-text="Dezembro">Dezembro</li>
                         </ul>
+                        <div class="fakearrow flex"><span></span><span></span></div>
                     </div>
                     <div class="xselect flutuate w25">
-                        <input type="text" readonly>
+                        <input type="text" readonly placeholder="_">
                         <label>Escolha a ordem da coluna</label>
                         <ul id="financa_report_yaer">
                         </ul>
+                        <div class="fakearrow flex"><span></span><span></span></div>
                     </div>
                     <button class="xbtn" style="margin-left: 0.9em; margin-top: -0.5em" load-report-imposto>Carregar</button>
                 </div>
@@ -348,9 +352,10 @@
             <h3>Relatório Paramentizado</h3>
             <div class="xform">
                 <div class="xselect flutuate w100">
-                    <input type="text" readonly id="loadparamentrwport">
+                    <input type="text" readonly id="loadparamentrwport" placeholder="_">
                     <label for="loadparamentrwport">Escolha o relatório</label>
                     <ul list="report-paramentidado"></ul>
+                    <div class="fakearrow flex"><span></span><span></span></div>
                 </div>
                 <div list-load="filter" class="w100">
 
