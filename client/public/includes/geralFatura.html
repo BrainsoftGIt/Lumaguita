@@ -539,9 +539,9 @@
 <div class="__included__">
     <div class="_head flex h-sb v-ct">
         <div class="inLeft">
-            <h1 found="" id="totalEntriesReport">Relatórios</h1>
+            <h1>Documentos</h1>
         </div>
-        <div class="inRight flex h-sb">
+        <div bt-documentos class="inRight flex h-sb">
             <button class="xbtn showTarget" target="xModalGuiaEntrada">Guia Entrada</button>
             <button class="xbtn showTarget" target="xModalGuiaSaida">Guia Saida</button>
             <button class="xbtn showTarget" target="xModalFatura">Fatura</button>
@@ -572,3 +572,8 @@
 <script src="../assets/js/admin/fatura.js"></script>
 <script src="../assets/js/admin/proforma.js"></script>
 <script src="../assets/js/admin/articlesDocuments.js"></script>
+<script>
+    $("[bt-documentos]").on("click", "button", function (){
+        window.xModalGeral = `#${$(this).attr("target")}`;
+    })
+</script>

@@ -16,7 +16,7 @@ var articlesDocuments = {
             method: "POST",
             contentType: "application/json",
             success(e) {
-                let datalist_customers = $("datalist[fatura]").length > 0 ? $("datalist[fatura]") : $("#guiaSaidaClientes");
+                let datalist_customers = $("#guiaSaidaClientes, datalist[fatura]");
                 articlesDocuments.customers = [];
                 articlesDocuments.customers = e.customers;
                 datalist_customers.empty();
@@ -29,7 +29,8 @@ var articlesDocuments = {
     },
     search_article(){
         articlesDocuments.article_id = null;
-        const article =  $("[search_article]").val().trim();
+        let modal = window.xModalGeral || ""
+        const article =  $(`${modal} [search_article]`).val().trim();
         $.ajax({
             url: "/api/articles/load",
             method: "POST",
@@ -43,7 +44,7 @@ var articlesDocuments = {
                 articlesDocuments.artigoLoaded = true;
 
                 let existeInquery = (articlesDocuments?.sArgigo || []).find(({funct_load_artigo: {artigo_nome}}) => artigo_nome === article);
-                let datalistArtigos = $("datalist[artigos]");
+                let datalistArtigos = $(`${modal} datalist[artigos]`);
                 datalistArtigos.empty();
                 if(e.artcls.length > 1 && !existeInquery) {
                     e.artcls.forEach((art) => {
@@ -55,27 +56,27 @@ var articlesDocuments = {
                     articlesDocuments.article_id = existeInquery.funct_load_artigo.artigo_id;
                     if(taxasArtigos.taxs.find(value => value.artigo_id ===  articlesDocuments.article_id)){
                         let imposto = taxasArtigos.showTax(articlesDocuments.article_id);
-                        if(imposto.valor !== null && $("[imposto]").length > 0 ){
-                            if(imposto.tipo === "remove") $("[imposto]").val(imposto.valor).css("color", "rgb(255, 0, 0)");
-                            else $("[imposto]").val(imposto.valor).css("color", "rgb(17, 17, 17)");
+                        if(imposto.valor !== null && $(`${modal} [imposto] `).length > 0 ){
+                            if(imposto.tipo === "remove") $(`${modal} [imposto]`).val(imposto.valor).css("color", "rgb(255, 0, 0)");
+                            else $(`${modal} [imposto]`).val(imposto.valor).css("color", "rgb(17, 17, 17)");
                         }
                     }
                     else{
                         taxasArtigos.loadArticleTax({article_id: [articlesDocuments.article_id]}).then(value => {
                             taxasArtigos.addTax(value.tax[0].main, articlesDocuments.article_id);
                             let imposto = taxasArtigos.showTax(articlesDocuments.article_id);
-                            if(imposto.valor !== null  && $("[imposto]").length > 0){
-                                if(imposto.tipo === "remove") $("[imposto]").val(imposto.valor).css("color", "rgb(255, 0, 0)");
-                                else $("[imposto]").val(imposto.valor).css("color", "rgb(17, 17, 17)");
+                            if(imposto.valor !== null  && $(`${modal}  [imposto]`).length > 0){
+                                if(imposto.tipo === "remove") $(`${modal} [imposto] `).val(imposto.valor).css("color", "rgb(255, 0, 0)");
+                                else $(`${modal} [imposto]`).val(imposto.valor).css("color", "rgb(17, 17, 17)");
                             }
                         });
                     }
 
                     articlesDocuments.article_code = existeInquery.funct_load_artigo.artigo_codigo;
                     articlesDocuments.precario_quantidade = existeInquery.funct_load_artigo.precario_quantidade || 0;
-                    $("[description_article]").val(existeInquery.funct_load_artigo.artigo_nome);
-                    $("[price_article]").val(existeInquery.funct_load_artigo.precario_custo);
-                    $("[amount_packaging]").val((existeInquery.funct_load_artigo.artigo_compostoquantidade || "0"));
+                    $(`${modal} [description_article]`).val(existeInquery.funct_load_artigo.artigo_nome);
+                    $(`${modal} [price_article]`).val(existeInquery.funct_load_artigo.precario_custo);
+                    $(`${modal} [amount_packaging]`).val((existeInquery.funct_load_artigo.artigo_compostoquantidade || "0"));
                 }
                 else articlesDocuments.resetFieldsArticle();
                 articlesDocuments.sArgigo = e.artcls;
@@ -241,7 +242,8 @@ var articlesDocuments = {
 
         $("[tableDocumentArticles]").removeClass("empty");
         articlesDocuments.resetFieldsArticle();
-        $("[search_article]").val("");
+        let modal = window.xModalGeral || ""
+        $(`${modal} [search_article]`).val("");
         xTableGenerate();
     }
 };
@@ -260,7 +262,7 @@ $("[search_article]").keyup(function (e) {
 });
 $("[search_customer]").on("keyup", function(){
     let cliente_uuid = null;
-    let datalist_customers = $("datalist[fatura]").length > 0 ? $("datalist[fatura]") : $("#guiaSaidaClientes");
+    let datalist_customers = $("datalist[fatura], #guiaSaidaClientes");
     if($(this).val().trim() === "") return;
     cliente_uuid = datalist_customers.find(`option[data-value="${$(this).val()}"]`).attr("data-id") || null;
     let cliente  = articlesDocuments.customers.filter(cust => cust.data.cliente_id === cliente_uuid)
