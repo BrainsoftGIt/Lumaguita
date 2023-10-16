@@ -1,10 +1,15 @@
 <link rel="stylesheet" href="../assets/css/admin/inpage.css">
+<link rel="stylesheet" href="../assets/css/admin/fatura.css">
 <link rel="stylesheet" href="../assets/css/admin/tableAdmin.css">
-<div class="__included__ inpage">
-</div>
+<style>
+    .__included__ .inRight .xbtn{
+        margin-right: 5px;
+        margin-left: 5px;
+    }
+</style>
 
 <div id="xModalGuiaEntrada" class="x-mobdal flex v-ct h-ct" target="xModalGuiaEntrada">
-    <div class="modal-frame j-stp">
+    <div class="modal-frame j-stp" style="width: 102em">
         <h3>Guia de Entrada</h3>
         <datalist id="guiaEntradaFornecedores">
         </datalist>
@@ -104,14 +109,20 @@
 
                 </div>
             </div>
-            <div class="flex h-sb v-ct" style="float: right;">
-                <button class="xbtn" id="finalizar_guia_entrada">Finalizar guia de entrada</button>
+            <div class="master-btn-right flex">
+                <span class="hideTarget" target="xModalGuiaEntrada">NÃO</span>
+                <span class="flex v-ct" id="finalizar_guia_entrada">
+                    Finalizar
+                    <svg class="spinner" viewBox="0 0 50 50">
+                        <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
+                    </svg>
+                </span>
             </div>
         </div>
     </div>
 </div>
 <div id="xModalGuiaSaida" class="x-mobdal flex v-ct h-ct" target="xModalGuiaSaida">
-    <div class="modal-frame j-stp">
+    <div class="modal-frame j-stp" style="width: 102em">
         <h3>Guia de Saída</h3>
         <datalist id="guiaSaidaClientes">
         </datalist>
@@ -184,14 +195,20 @@
                 <div class="xbody" tableDocumentArticles>
                 </div>
             </div>
-            <div class="flex h-sb v-ct" style="float: right;">
-                <button class="xbtn" id="finalizar_guia_saida">Finalizar guia de saída</button>
+            <div class="master-btn-right flex">
+                <span class="hideTarget" target="xModalGuiaSaida">NÃO</span>
+                <span class="flex v-ct" id="finalizar_guia_saida">
+                    Finalizar
+                    <svg class="spinner" viewBox="0 0 50 50">
+                        <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
+                    </svg>
+                </span>
             </div>
         </div>
     </div>
 </div>
 <div id="xModalFatura" class="x-mobdal flex v-ct h-ct" target="xModalFatura">
-    <div class="modal-frame j-stp">
+    <div class="modal-frame j-stp" style="width: 102em">
         <h3>Fatura</h3>
         <datalist id="faturaClientes" fatura>
         </datalist>
@@ -286,9 +303,14 @@
                 <div class="xbody" tableDocumentArticles>
                 </div>
             </div>
-            <div class="flex h-sb v-ct" style="float: right;">
-                <button class="xbtn" id="finalizar_fatura">Finalizar fatura</button>
-                <button class="xbtn  hideTarget" target="xModalOpenFatura" hideModal style="display: none">Cancelar</button>
+            <div class="master-btn-right flex">
+                <span class="hideTarget" target="xModalFatura">NÃO</span>
+                <span class="flex v-ct" id="finalizar_fatura">
+                    Finalizar
+                    <svg class="spinner" viewBox="0 0 50 50">
+                        <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
+                    </svg>
+                </span>
             </div>
         </div>
         <div id="xModalAnularProforma" class="x-mobdal XM-resetColabPass flex v-ct h-ct" target="xModalAnularProforma">
@@ -351,7 +373,7 @@
     </div>
 </div>
 <div id="xModalFaturaProForma" class="x-mobdal flex v-ct h-ct" target="xModalFaturaProForma">
-    <div class="modal-frame j-stp">
+    <div class="modal-frame j-stp" style="width: 102em">
         <h3>Fatura Proforma</h3>
         <datalist id="faturaProformaClientes" fatura>
         </datalist>
@@ -446,18 +468,23 @@
                 <div class="xbody" tableDocumentArticles>
                 </div>
             </div>
-            <div class="flex h-sb v-ct" style="float: right;">
-                <button class="xbtn" id="finalizar_proforma">Finalizar fatura proforma</button>
+            <div class="master-btn-right flex">
+                <span class="hideTarget" target="xModalFaturaProForma">NÃO</span>
+                <span class="flex v-ct" id="finalizar_proforma">
+                    Finalizar
+                    <svg class="spinner" viewBox="0 0 50 50">
+                        <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
+                    </svg>
+                </span>
             </div>
         </div>
     </div>
 </div>
 <div id="xModalNotaCredito" class="x-mobdal flex v-ct h-ct" target="xModalNotaCredito">
-    <div class="modal-frame j-stp">
+    <div class="modal-frame j-stp" style="width: 102em">
         <h3>Nota de Crédito</h3>
         <div class="_body" id="Admin">
-            <div class="inputs flex">
-
+            <div class="inputs xform flex h-sb">
                 <div class="flex w100 h-sb">
                     <div class="w8"></div>
                     <div class="xinput w25">
@@ -474,7 +501,6 @@
                     </div>
                     <div class="w8"></div>
                 </div>
-
                 <div class="flex w100 h-ct">
                     <div class="xinput w80">
                         <textarea placeholder="Observação" _noObrigatory="true" notacredito_observacao></textarea>
@@ -497,12 +523,48 @@
                 <div class="xbody empty" tableDocumentArticles>
                 </div>
             </div>
-            <div class="flex h-sb v-ct" style="float: right;">
-                <button class="xbtn" id="finalizarNotaCredito">Finalizar nota de crédito</button>
+            <div class="master-btn-right flex">
+                <span class="hideTarget" target="xModalNotaCredito">NÃO</span>
+                <span class="flex v-ct" id="finalizarNotaCredito">
+                    Finalizar
+                    <svg class="spinner" viewBox="0 0 50 50">
+                        <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
+                    </svg>
+                </span>
             </div>
         </div>
     </div>
 </div>
+
+<div class="__included__">
+    <div class="_head flex h-sb v-ct">
+        <div class="inLeft">
+            <h1 found="" id="totalEntriesReport">Relatórios</h1>
+        </div>
+        <div class="inRight flex h-sb">
+            <button class="xbtn showTarget" target="xModalGuiaEntrada">Guia Entrada</button>
+            <button class="xbtn showTarget" target="xModalGuiaSaida">Guia Saida</button>
+            <button class="xbtn showTarget" target="xModalFatura">Fatura</button>
+            <button class="xbtn showTarget" target="xModalFaturaProForma">Pro Forma</button>
+            <button class="xbtn showTarget" target="xModalNotaCredito">Nota Credito</button>
+        </div>
+    </div>
+    <div class="_body">
+        <div class="x-table grow-1">
+            <div class="xheader">
+            </div>
+            <div body-report-list-faturas class="xbody">
+            </div>
+        </div>
+        <div class="x-pagination">
+            <ul ref="body-report-list" class="active pagination_master">
+                <li class="ctrl backward page-item"></li>
+                <li class="ctrl page-item forward pagination-add"></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
 <script src="../assets/js/admin/articleTax.js"></script>
 <script src="../assets/js/admin/guiaEntrada.js"></script>
 <script src="../assets/js/admin/guiaSaida.js"></script>
