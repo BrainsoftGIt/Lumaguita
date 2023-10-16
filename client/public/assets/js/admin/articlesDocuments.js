@@ -30,7 +30,8 @@ var articlesDocuments = {
     search_article(){
         articlesDocuments.article_id = null;
         let modal = window.xModalGeral || ""
-        const article =  $(`${modal} [search_article]`).val().trim();
+        console.log({modal})
+        const article =  $(` ${modal} [search_article]`).val().trim();
         $.ajax({
             url: "/api/articles/load",
             method: "POST",

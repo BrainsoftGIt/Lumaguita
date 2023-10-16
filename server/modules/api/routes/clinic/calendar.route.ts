@@ -34,7 +34,7 @@ app.get("/api/clinica/calendar", async (req, res) =>{
         let response:CatchAll<any,any> = await functLoadScheduler(req.body);
         if( !response.status ) return res.json([])
 
-        res.json(response.rows.map(({data}) => {
+        res.json((response?.rows || []).map(({data}) => {
                 data.id = data.schedule_schedule_uuid || data.schedule_uuid;
                 data.title = data.schedule_name;
                 data.start  = data.schedule_startdate;
