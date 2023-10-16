@@ -92,11 +92,11 @@ function formattedString(nStr) {
     num = num.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1 ");
     if(num.$$(".")){
         let sub = num.split(".");
-        return sub[0]+","+sub[1].add0ToTimer()
+        return sub[0]+","+sub[1].add0Number()
     }
     if(num.$$(",")){
         let sub = num.split(",");
-        return sub[0]+","+sub[1].add0ToTimer()
+        return sub[0]+","+sub[1].add0Number()
     }
     return num+",00";
 }
@@ -323,11 +323,24 @@ if(!String.prototype.rp){
     }
 }
 
+if(!String.prototype.add0Number) {
+    String.prototype.add0Number = function () {
+        return ((this.length === 1) ? this+"0" : this);
+    };
+}
+
+if(!Number.prototype.add0Number) {
+    Number.prototype.add0Number = function () {
+        return ((this.toString().length === 1) ?  this+"0" : this);
+    };
+}
+
 if(!String.prototype.add0ToTimer) {
     String.prototype.add0ToTimer = function () {
         return ((this.length === 1) ? "0"+this : this);
     };
 }
+
 
 if(!Number.prototype.add0ToTimer) {
     Number.prototype.add0ToTimer = function () {

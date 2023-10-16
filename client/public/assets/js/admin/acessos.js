@@ -41,6 +41,7 @@ var acesso = {
                           &&  value.menu_codigo !== "maguita.fatura"
                           && value.menu_codigo !== "maguita.entrada.artigos"
                           && value.menu_codigo !== "maguita.saida.artigos"
+                          && value.menu_codigo !== "maguita.geralfaturas"
                           && value.menu_codigo !== "maguita.notacredito"
                           && value.menu_menu_id === null
                           && !value.menu_codigo.includes("pos");
@@ -50,6 +51,7 @@ var acesso = {
                   return value.menu_codigo  === "maguita.proforma"
                       || value.menu_codigo === "maguita.fatura"
                       || value.menu_codigo === "maguita.entrada.artigos"
+                      || value.menu_codigo === "maguita.geralfaturas"
                       || value.menu_codigo === "maguita.notacredito"
                       || value.menu_codigo === "maguita.saida.artigos";
               });
@@ -62,7 +64,7 @@ var acesso = {
               });
                 acesso.menusFaturasGuias.forEach((meFQ) =>{
                     meFQ = acesso.showConfig ? meFQ : meFQ.data;
-                    if((meFQ.menu_codigo === "maguita.fatura" || meFQ.menu_codigo === "maguita.proforma" || meFQ.menu_codigo === "maguita.notacredito")){
+                    if((meFQ.menu_codigo === "maguita.fatura" || meFQ.menu_codigo === "maguita.proforma" || meFQ.menu_codigo === "maguita.notacredito" || meFQ.menu_codigo === "maguita.geralfaturas")){
                         menuAcessos.append(`<li class="tgl flex v-ct" link="${meFQ.menu_link}" title="Faturas" tipo="fatura" code="${meFQ.menu_codigo}">
                                           <?xml version="1.0" encoding="iso-8859-1"?>
                                             <!-- Generator: Adobe Illustrator 22.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
