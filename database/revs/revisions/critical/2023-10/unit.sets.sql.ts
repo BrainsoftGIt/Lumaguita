@@ -1,4 +1,3 @@
-import {VERSION} from "../../../../../server/version";
 import {sql} from "kitres";
 import {SQL} from "kitres/src/core/pg-core/scape";
 import fs from "fs";
@@ -81,4 +80,35 @@ begin
     ) select to_jsonb( _u ) from _unit _u;
 end;
 $$;
+`;
+
+
+export const resolve_units = sql`
+do $$
+declare
+  document jsonb default ${ SQL.jsonb( document ) };
+  _data record;
+begin
+  for _data in
+    with __unit as (
+      select
+          (d.doc->>'unit_base')::uuid as unit_base,
+          d.doc->>'unit_code' as unit_code,
+          d.doc->>'unit_name' as unit_name
+        from jsonb_array_elements( document ) d ( doc )
+    ) select
+          u.unit_id,
+          u._branch_uid,
+          _u.unit_base
+        from tweeks.unit u
+          inner join __unit _u on u.unit_code = _u.unit_code
+            and u.unit_base is null
+  loop
+    update tweeks.unit u
+      set unit_base = _data.unit_base
+      where u.unit_id = _data.unit_id
+    ;
+  end loop;
+end;
+$$
 `;
