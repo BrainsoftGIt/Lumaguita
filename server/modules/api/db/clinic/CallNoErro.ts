@@ -1,7 +1,9 @@
-import {Catch, CatchAll} from "zoo.pg/lib/result";
+// import {Catch, CatchAll} from "zoo.pg/lib/result";
+
+import { CatchAll, Catch } from "kitres";
 
 export const resolveClinicAllIfNoDatabase = () => {
-    return new Promise<CatchAll>(
+    return new Promise<CatchAll<any,any>>(
         (resolve) => {
             resolve({
                 status: false,
@@ -10,13 +12,13 @@ export const resolveClinicAllIfNoDatabase = () => {
                 notices: null,
                 dataInfo: null,
                 error: null,
-                result: {
-                    result: false,
-                    message: "",
-                    err: "",
-                    data: ""
-                },
-                lastNotice: null
+                // result: {
+                //     result: false,
+                //     message: "",
+                //     err: "",
+                //     data: ""
+                // },
+                // lastNotice: null
             });
         }
     )
@@ -24,19 +26,19 @@ export const resolveClinicAllIfNoDatabase = () => {
 
 
 export const resolveClinicLastIfNoDatabase = () => {
-    return new Promise<Catch>(
+    return new Promise<Catch<any,any>>(
         (resolve) => {
             resolve({
                 status: false,
                 message: null,
-                dataInfo: null,
+                // dataInfo: null,
                 error: null,
-                result: {
-                    result: false,
-                    message: "",
-                    err: "",
-                    data: ""
-                },
+                // result: {
+                //     result: false,
+                //     message: "",
+                //     err: "",
+                //     data: ""
+                // },
                 lastNotice: null,
                 row: {},
             });

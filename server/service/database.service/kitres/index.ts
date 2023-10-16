@@ -1,6 +1,7 @@
 import {args} from "../../../global/args";
-import {PgCore} from "kitres";
+import {PgCore, scriptUtil} from "kitres";
 import {ClientConfig, Pool} from "pg"
+import {clinicCore} from "../clinica.factory";
 
 let configs:ClientConfig = {
     host: args.dbHost,
@@ -10,6 +11,12 @@ let configs:ClientConfig = {
     password: args.dbPassword,
 }
 export const pgCore:PgCore = new PgCore( () => new Pool( configs ) );
+pgCore.on("error", (error, line) => {
+    console.log( `Error ao executar a query Line: ${ scriptUtil.urlOf( line ) }`);
+    console.error( error );
+})
+
+
 pgCore.sync( args.dbPassword );
 
 

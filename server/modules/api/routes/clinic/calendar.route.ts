@@ -1,9 +1,10 @@
 import {app, storage} from '../../../../service/storage.service';
-import {functLoadScheduler, functSetScheduler} from "../../db/clinic/call-function-schedule";
 import cron from "node-cron";
 import moment from "moment";
 import {Schedule} from "./functions/calendar";
 import {args} from "../../../../global/args";
+import {functLoadScheduler} from "../../db/clinic/call-function-schedule";
+import {CatchAll} from "kitres";
 let noLoadAlerts = true;
 let forceReloadAlerts = false;
 let typeEvent = "920eb08f-5f59-47bb-9d48-32da83bf83eb";
@@ -19,37 +20,44 @@ let consultaColor = {
 }
 
 app.get("/api/clinica/calendar", async (req, res) =>{
-    const {functLoadScheduler} = require("../../db/clinic/call-function-schedule");
-    req.body.schedule_estado = [1];
 
-    let {start, end} = req.query;
-    req.body.operation = "RANGE";
-    req.body.range_start = start.toString().substring(0, 10)
-    req.body.range_end = end.toString().substring(0, 10)
+        const {functLoadScheduler} = require("../../db/clinic/call-function-schedule");
+        req.body.schedule_estado = [1];
+
+        let {start, end} = req.query;
+        req.body.operation = "RANGE";
+        req.body.range_start = start.toString().substring(0, 10)
+        req.body.range_end = end.toString().substring(0, 10)
 
 
-    let response = await functLoadScheduler(req.body);
-    res.json(response.rows.map(({data}) => {
-            data.id = data.schedule_schedule_uuid || data.schedule_uuid;
-            data.title = data.schedule_name;
-            data.start  = data.schedule_startdate;
-            data.end = data.schedule_enddate;
-            data.color = consultaColor?.[data.schedule_type] || "Black";
-            return data//{id : data.id, title : data.title, start: data.start, end : data.end}
-        })
-    );
+
+        let response:CatchAll<any,any> = await functLoadScheduler(req.body);
+        if( !response.status ) return res.json([])
+
+        res.json(response.rows.map(({data}) => {
+                data.id = data.schedule_schedule_uuid || data.schedule_uuid;
+                data.title = data.schedule_name;
+                data.start  = data.schedule_startdate;
+                data.end = data.schedule_enddate;
+                data.color = consultaColor?.[data.schedule_type] || "Black";
+                return data//{id : data.id, title : data.title, start: data.start, end : data.end}
+            })
+        );
+
 });
 
 
 app.post("/api/clinica/calendar/set", async (req, res) =>{
-    const {functSetScheduler} = require("../../db/clinic/call-function-schedule");
-    req.body.schedule_espaco_auth = req.session.auth_data.auth.armazem_atual;
-    req.body.schedule_colaborador_uid = req.session.auth_data.auth.colaborador_id;
-    req.body._branch_uid = req.session.auth_data.auth.branch_uuid;
+    try{
+        const {functSetScheduler} = require("../../db/clinic/call-function-schedule");
+        req.body.schedule_espaco_auth = req.session.auth_data.auth.armazem_atual;
+        req.body.schedule_colaborador_uid = req.session.auth_data.auth.colaborador_id;
+        req.body._branch_uid = req.session.auth_data.auth.branch_uuid;
 
-    forceReloadAlerts = true
-    let response = await functSetScheduler(req.body);
-    res.json({response});
+        forceReloadAlerts = true
+        let response = await functSetScheduler(req.body);
+        res.json({response});
+    }catch (e) { console.error( e )}
 });
 
 let funLoadSchedules = () => {

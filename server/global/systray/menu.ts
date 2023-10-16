@@ -137,7 +137,7 @@ function createBackup() {
 
 export const menuItemsMap: GenericMenuMaps = {
     home: {
-        title: "Abrir", tooltip: "Abrir página inicial", click() {
+        title: "Abrir Luma", tooltip: "Abrir página inicial", click() {
             sys.openApp({ /*language=file-reference*/ app: "/client/app/page/index.html"})
         }
     },

@@ -53,6 +53,10 @@ app.use( (req, res, next) => {
     next();
 });
 
+app.on( "error", parent => {
+
+})
+
 //http://zootakuxy6.luma.brainsoftstp.com/
 //http://v207.pirata.luma.brainsoftstp.com/
 

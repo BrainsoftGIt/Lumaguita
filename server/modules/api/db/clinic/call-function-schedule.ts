@@ -1,15 +1,17 @@
-import { catchAll, catchLast, Templates } from "zoo.pg";
+// import { catchAll, catchLast, Templates } from "zoo.pg";
 import {args} from "../../../../global/args";
 import {resolveClinicAllIfNoDatabase, resolveClinicLastIfNoDatabase} from "./CallNoErro";
+import {catchAll, catchLast, sql,CatchAll} from "kitres";
+// import {CatchAll} from "zoo.pg/lib/result";
 
 export function functSetScheduler(args) {
     if(!args.dbPasswordClinic){
         return resolveClinicLastIfNoDatabase();
     }
-    const factoryClinic = require("../../../../service/database.service/clinica.factory");
-    const {sql} = factoryClinic.create(Templates.PARAMETERIZED);
+    const {clinicCore} = require("../../../../service/database.service/clinica.factory");
+    // const {sql} = factoryClinic.create(Templates.PARAMETERIZED);
     return catchLast(
-        sql `select * from clinic.sets_scheduler( ${ args }) data`
+        clinicCore.query( sql `select * from clinic.sets_scheduler( ${ args }) data` )
     );
 }
 
@@ -17,20 +19,20 @@ export function getPatient(args) {
     if(!args.dbPasswordClinic){
         return resolveClinicLastIfNoDatabase();
     }
-    const factoryClinic = require("../../../../service/database.service/clinica.factory");
-    const {sql} = factoryClinic.create(Templates.PARAMETERIZED);
+    const {clinicCore} = require("../../../../service/database.service/clinica.factory");
+    // const {sql} = factoryClinic.create(Templates.PARAMETERIZED);
     return catchLast(
-        sql `select * from clinic.get_patient( ${ args }) data`
+        clinicCore.query(sql`select * from clinic.get_patient( ${ args }) data`)
     );
 }
 
-export function functLoadScheduler(argss) {
-    const {factoryClinic} = require("../../../../service/database.service/clinica.factory");
+export function functLoadScheduler(argss:any):Promise<CatchAll<any,any>> {
+    const {clinicCore} = require("../../../../service/database.service/clinica.factory");
     if(!args.dbPasswordClinic){
        return resolveClinicAllIfNoDatabase();
     }
-    const {sql} = factoryClinic.create(Templates.PARAMETERIZED);
-    return catchAll(
-        sql `select * from clinic.funct_load_scheduler( ${ argss }) data`
-    );
+    // const {sql} = factoryClinic.create(Templates.PARAMETERIZED);
+    return catchAll<any,any>(
+        clinicCore.query(sql `select * from clinic.funct_load_scheduler( ${ argss }) data` )
+    )
 }
