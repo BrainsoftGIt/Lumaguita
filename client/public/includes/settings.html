@@ -325,12 +325,14 @@
 					<label>Código</label>
 					<ul codigos_posto>
 					</ul>
+					<div class="fakearrow flex"><span></span><span></span></div>
 				</div>
 				<div class="xselect w100">
 					<input type="text" readonly _noObrigatory="true" id="postoAssociarDesc" placeholder="_">
 					<label>Associar posto</label>
 					<ul postos_criados>
 					</ul>
+					<div class="fakearrow flex"><span></span><span></span></div>
 				</div>
 				<div class="xinput grow-1 w100">
 					<input type="text" id="posto_designacao" placeholder="_">
@@ -343,6 +345,7 @@
 						<li id="1">Pedido</li>
 						<li id="2">Pedido e cobrança</li>
 					</ul>
+					<div class="fakearrow flex"><span></span><span></span></div>
 				</div>
 				<div class="xselect w100">
 					<input type="text" readonly id="tipoCaixaDesc" placeholder="_">
@@ -352,6 +355,7 @@
 						<li class="tgl" tipo="2">Por armazém</li>
 						<li class="tgl" tipo="3">Por posto</li>
 					</ul>
+					<div class="fakearrow flex"><span></span><span></span></div>
 				</div>
 				<div class="xselect w100">
 					<input type="text" readonly id="tipoAuthPOS" placeholder="_">
@@ -409,6 +413,7 @@
 						<li tipo_id="1">Venda</li>
 						<li tipo_id="2">Cobrança</li>
 					</ul>
+					<div class="fakearrow flex"><span></span><span></span></div>
 				</div>
 				<div class="xselect w100">
 					<input type="text" readonly id="tipoCaixaDescEdit" placeholder="_">
@@ -418,6 +423,7 @@
 						<li class="tgl" tipo="2">Por armazém</li>
 						<li class="tgl" tipo="3">Por posto</li>
 					</ul>
+					<div class="fakearrow flex"><span></span><span></span></div>
 				</div>
 				<div class="xselect w100">
 					<input type="text" readonly id="pinAuthDescEdit" placeholder="_">
@@ -426,6 +432,7 @@
 						<li class="tgl" tipo="1">Pedir sempre</li>
 						<li class="tgl" tipo="2">Pedir uma única vez</li>
 					</ul>
+					<div class="fakearrow flex"><span></span><span></span></div>
 				</div>
 				<div class="xcheck multiple w100">
 					<ul>
@@ -473,6 +480,7 @@
 					<ul id="cluster_armazem">
 						<li class="tgl"></li>
 					</ul>
+					<div class="fakearrow flex"><span></span><span></span></div>
 				</div>
 				<div class="xselect w100">
 					<input type="text" readonly _noObrigatory="true" placeholder="_">
@@ -515,6 +523,7 @@
 							<li operation="caixa">Fecho de caixa</li>
 							<li operation="report_venda">Relatorio de Venda</li>
 						</ul>
+						<div class="fakearrow flex"><span></span><span></span></div>
 					</div>
 					<div class="xinput grow-1 w100">
 						<input type="text" id="impressora_designacao" placeholder="_" _noObrigatory="true">
@@ -610,19 +619,21 @@
 			<h3 targetTitle></h3>
 			<div class="xform">
 				<div class="xselect w100">
-					<input type="text" readonly>
+					<input type="text" readonly placeholder="_">
 					<label>Tipos de série</label>
 					<ul id="tipo_serie_efatura">
 						<li class="tgl" tipo_id="1" tipo_sigla="FT-">Fatura</li>
 						<li class="tgl" tipo_id="2" tipo_sigla="FR-">Fatura Recibo</li>
 						<li class="tgl" tipo_id="3" tipo_sigla="RE-">Recibo</li>
 					</ul>
+					<div class="fakearrow flex"><span></span><span></span></div>
 				</div>
 				<div class="xselect w100">
-					<input type="text" readonly>
+					<input type="text" readonly placeholder="_">
 					<label>Armazém</label>
 					<ul id="armazem_efatura">
 					</ul>
+					<div class="fakearrow flex"><span></span><span></span></div>
 				</div>
 				<div class="xinput grow-1 w100">
 					<input type="text" id="designacao_serie_efatura">
@@ -660,7 +671,7 @@
 				<div class="xform">
 					<div class="xform">
 						<div class="xselect w100">
-							<input inp="tipo_serie_efaturav2" type="text" readonly>
+							<input inp="tipo_serie_efaturav2" type="text" readonly placeholder="_">
 							<label>Tipos de série</label>
 							<ul id="tipo_serie_efaturav2">
 								<li class="tgl" tipo_id="1" tipo_sigla="FT-">Fatura</li>
@@ -669,6 +680,7 @@
 								<li class="tgl" tipo_id="4" tipo_sigla="NC-">Nota de Crédito</li>
 								<li class="tgl" tipo_id="5" tipo_sigla="GS-">Guia de Saída</li>
 							</ul>
+							<div class="fakearrow flex"><span></span><span></span></div>
 						</div>
 						<div class="xinput grow-1 w100">
 							<input type="text" id="numero_serie_efaturav2" class="integer" maxlength="10" disabled>
@@ -695,10 +707,11 @@
 			<div class="kuchen" >
 				<div class="kuchenPrint xform flex v-ct">
 					<div class="xselect mr1 w50">
-						<input inp="armazem_efaturav2" type="text" readonly>
+						<input inp="armazem_efaturav2" type="text" readonly placeholder="_">
 						<label>Armazém</label>
 						<ul id="armazem_efaturav2">
 						</ul>
+						<div class="fakearrow flex"><span></span><span></span></div>
 					</div>
 				</div>
 			</div>
@@ -761,10 +774,11 @@
 			<h3 targetTitle></h3>
 			<div class="xform">
 				<div class="xselect w100">
-					<input type="text" readonly>
+					<input type="text" readonly placeholder="_">
 					<label>Armazém de migração</label>
 					<ul armazem_migracao>
 					</ul>
+					<div class="fakearrow flex"><span></span><span></span></div>
 				</div>
 			</div>
 			<div class="master-btn-right flex">
@@ -791,12 +805,13 @@
 					<label for="imposto_nome">Nome</label>
 				</div>
 				<div class="xselect flutuate w100">
-					<input type="text" readonly id="imposto_tipo_acrescimo_desc">
+					<input type="text" readonly id="imposto_tipo_acrescimo_desc" placeholder="_">
 					<label>Tipo de acréscimo</label>
 					<ul id="imposto_tipo_acrescimo">
 						<li class="tgl" tipo="value">Por valor</li>
 						<li class="tgl" tipo="percentage">Por percentagem</li>
 					</ul>
+					<div class="fakearrow flex"><span></span><span></span></div>
 				</div>
 				<div class="xinput grow-1 w100">
 					<input type="text" id="imposto_acrescimo" class="double formatNumber" disabled>

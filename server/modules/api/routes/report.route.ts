@@ -1,7 +1,6 @@
 import {app} from '../../../service/web.service';
 import {factory} from "../../../service/database.service";
 import { Templates, Types} from "zoo.pg";
-import {functFilterReport} from "../db/call-function-report";
 import fs from "fs";
 import path from "path";
 import {folders} from "../../../global/project";
@@ -215,7 +214,7 @@ app.post( "/api/report/parametrized/load", (req, res, next) => {
 })
 
 app.post( "/api/report/parametrized/load/filter", (req, res, next) => {
-    let _session = getUserSession( req );
+    let _session = (!req.body._grants) ? getUserSession( req ) : getUserSessionPOS( req );
     dbRes.call.report.funct_load_report_parametrized_filter( {
         args :{
             _branch: _session.branch_uid,

@@ -11,7 +11,7 @@ export function getUserSession( req: Request<{}, any, any, any, Record<string, a
 export function getUserSessionPOS( req: Request<{}, any, any, any, Record<string, any>>){
     return {
         user_id: req?.session?.user_pos?.auth?.colaborador_id,
-        branch_uid: req?.session?.user_pos?.auth?.branch_uuid,
+        branch_uid: req?.session?.user_pos?.espaco_trabalha?.[0]?._branch_uid,
         workspace: req.session?.user_pos?.auth?.armazem_atual
     }
 }

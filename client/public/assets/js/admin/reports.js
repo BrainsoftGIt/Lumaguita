@@ -71,10 +71,11 @@ var report = {
         if(filter.attr("format") === "select"){
             listFiterData.append(` <div class="xselect w100" dataType="${filter.attr("datatype")}" name="${filter.text().replaceAll(" ", "")}" 
                 column="${filter.attr("column")}" opr="${filter.attr("opr")}" key="${filter.attr("key")}"  mode="${filter.attr("mode")}">
-                <input type="text" readOnly>
+                <input type="text" readOnly placeholder="_">
                     <label>${filter.text()}</label>
                     <ul id="filtro_${filter.text().replaceAll(" ", "")}">      
                     </ul>
+                 <div class="fakearrow flex"><span></span><span></span></div>
             </div>`);
             if(filter.attr("src") === "db"){
                 report.loadFilterSelectData(filter.text().replaceAll(" ", ""), filter.attr("source"));
@@ -138,6 +139,7 @@ var report = {
             <div class="xselect flutuate w100" ${ Object.keys(atrs).map(( key ) => { return `data-${key}='${atrs[key]}'` }).join(" ") } >
                 <input type="text" readonly  placeholder="_">
                 <label>${filter.text()}</label>
+                <div class="fakearrow flex"><span></span><span></span></div>
                 <ul id="${atrs.key}-key">
                     ${ listOption.map(({value, label}) => { return ![ "date", "timestamp", "timestamptz" ].includes( filter.attr( "format" )) && (value === "3" || value === "2")  ? "" : `<li data-id="${value}">${label}</li>` }).join(" ") } 
                 </ul>

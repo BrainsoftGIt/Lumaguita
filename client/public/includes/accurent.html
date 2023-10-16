@@ -134,7 +134,7 @@
             <h3>Efetuar pagamento</h3>
             <div class="inn xform">
                 <div class="xselect flutuate w100">
-                    <input type="text" readonly>
+                    <input type="text" readonly placeholder="_">
                     <label>Tipo de pagamento</label>
                     <ul id="contacorrente_tipo_pagamento">
                         <li tipo_id="1" tipo_desc="cash">Cash</li>
@@ -142,12 +142,14 @@
                         <li tipo_id="2" tipo_desc="depósito">Depósito</li>
                         <li tipo_id="3" tipo_desc="transferência">Transferência</li>
                     </ul>
+                    <div class="fakearrow flex"><span></span><span></span></div>
                 </div>
                 <div class="xselect flutuate w100">
-                    <input type="text" readonly>
+                    <input type="text" readonly placeholder="_">
                     <label>Moeda</label>
                     <ul id="contacorrente_moeda">
                     </ul>
+                    <div class="fakearrow flex"><span></span><span></span></div>
                 </div>
                 <div class="xinput w100">
                     <input type="text" placeholder="_" class="double formatNumber" id="contacorrente_montante">
@@ -270,7 +272,7 @@
         <div class="modal-frame">
             <h3>Efetuar lançamento</h3>
             <div class="inn xform">
-                <div class="xselect flutuate w100">
+                <div class="xselect flutuate w100" placeholder="_">
                     <input type="text" readonly>
                     <label>Tipo de lançamento</label>
                     <ul id="lancamento_tipo">
@@ -278,14 +280,16 @@
                         <li class="tgl" tipo="2" operacao="-1">Fatura</li>
                         <li class="tgl" tipo="3" operacao="0">Outros lançamentos</li>
                     </ul>
+                    <div class="fakearrow flex"><span></span><span></span></div>
                 </div>
                 <div class="xselect flutuate w100">
-                    <input type="text" readonly id="lancamento_operacao_descricao">
+                    <input type="text" readonly id="lancamento_operacao_descricao" placeholder="_">
                     <label>Tipo de operação</label>
                     <ul id="lancamento_operacao">
                         <li class="tgl" tipo="1">Credito</li>
                         <li class="tgl" tipo="-1">Debito</li>
                     </ul>
+                    <div class="fakearrow flex"><span></span><span></span></div>
                 </div>
                 <div class="xinput w100">
                     <input type="text" placeholder="_" class="double formatNumber" id="lancamento_valor">
