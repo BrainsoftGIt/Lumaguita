@@ -674,11 +674,11 @@
 							<input inp="tipo_serie_efaturav2" type="text" readonly placeholder="_">
 							<label>Tipos de série</label>
 							<ul id="tipo_serie_efaturav2">
-								<li class="tgl" tipo_id="1" tipo_sigla="FT-">Fatura</li>
-								<li class="tgl" tipo_id="2" tipo_sigla="FR-">Fatura Recibo</li>
-								<li class="tgl" tipo_id="3" tipo_sigla="RE-">Recibo</li>
-								<li class="tgl" tipo_id="4" tipo_sigla="NC-">Nota de Crédito</li>
-								<li class="tgl" tipo_id="5" tipo_sigla="GS-">Guia de Saída</li>
+								<li noremove="true" class="tgl" tipo_id="1" tipo_sigla="FT-">Fatura</li>
+								<li noremove="false" class="tgl" tipo_id="2" tipo_sigla="FR-">Fatura Recibo</li>
+								<li noremove="false" class="tgl" tipo_id="3" tipo_sigla="RE-">Recibo</li>
+								<li noremove="false" class="tgl" tipo_id="4" tipo_sigla="NC-">Nota de Crédito</li>
+								<li noremove="false" class="tgl" tipo_id="5" tipo_sigla="GS-">Guia de Saída</li>
 							</ul>
 							<div class="fakearrow flex"><span></span><span></span></div>
 						</div>
@@ -699,7 +699,7 @@
 				</div>
 				<div class="listSettings">
 					<h4>Configurações</h4>
-					<ul id="ConfiguredSerie">
+					<ul id="ConfiguredSerie" class="ConfiguredSerie">
 
 					</ul>
 				</div>

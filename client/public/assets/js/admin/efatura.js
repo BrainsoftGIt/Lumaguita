@@ -129,7 +129,7 @@ var efatura = {
             })
 
             $('[inp="tipo_serie_efaturav2"]').val("")
-            tipo_serie_efaturav2.find("li.active").removeClass("active").hide();
+            tipo_serie_efaturav2.find('li[noremove="false"].active').removeClass("active").hide();
             numero_serie_efaturav2.val("");
             quantidade_serie_efaturav2.val("");
             numero_autorizacao_seriev2.val("");
@@ -242,7 +242,7 @@ var efatura = {
                let {authorization : { loadAllSerieaAdded }} = efatura;
 
                $('[inp="tipo_serie_efaturav2"]').val("")
-               $("#tipo_serie_efaturav2").find("li.active").removeClass("active").hide();
+               $("#tipo_serie_efaturav2").find('li[noremove="false"].active').removeClass("active").hide();
                $("#numero_serie_efaturav2").val("");
                $("#quantidade_serie_efaturav2").val("");
                $("#numero_autorizacao_seriev2").val("");
@@ -258,14 +258,13 @@ var efatura = {
                     success: ({ series }) => {
                         $("body").removeClass("loading");
                         $(`#tipo_serie_efaturav2 li`).show();
-                        let ss = series.map(({ data : { serie_numero, serie_tserie_id, ...serie } }) => {
-                            let sigla = $(`#tipo_serie_efaturav2 [tipo_id='${serie_tserie_id}']`).hide().attr("tipo_sigla")
+                        efatura.authorization.series = series.map(({ data : { serie_numero, serie_tserie_id, ...serie } }) => {
+                            let sigla = $(`#tipo_serie_efaturav2 [tipo_id='${serie_tserie_id}'][noremove="false"]`).hide().attr("tipo_sigla")
                             return {
                                 ...serie,
                                 serie_numerotext: sigla+serie_numero
                             }
-                        })
-                        efatura.authorization.series = ss;
+                        });
                         loadAllSerieaAdded();
                         showTarget("xModalEfaturaV2", "Definições de Autorização / Serie");
                     },
