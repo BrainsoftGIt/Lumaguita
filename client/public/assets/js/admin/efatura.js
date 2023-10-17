@@ -259,7 +259,8 @@ var efatura = {
                         $("body").removeClass("loading");
                         $(`#tipo_serie_efaturav2 li`).show();
                         efatura.authorization.series = series.map(({ data : { serie_numero, serie_tserie_id, ...serie } }) => {
-                            let sigla = $(`#tipo_serie_efaturav2 [tipo_id='${serie_tserie_id}'][noremove="false"]`).hide().attr("tipo_sigla")
+                            $(`#tipo_serie_efaturav2 [tipo_id='${serie_tserie_id}'][noremove="false"]`).hide()
+                            let sigla = $(`#tipo_serie_efaturav2 [tipo_id='${serie_tserie_id}']`).attr("tipo_sigla")
                             return {
                                 ...serie,
                                 serie_numerotext: sigla+serie_numero
