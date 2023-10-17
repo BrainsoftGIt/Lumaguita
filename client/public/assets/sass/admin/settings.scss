@@ -153,9 +153,6 @@
     display: flex !important;
   }
   .listSettings {
-    display: grid;
-    grid-gap: 10px;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     padding: 1rem 1.5rem;
     margin-left: 2.5rem;
     background: $background;
@@ -169,7 +166,7 @@
         padding: 14px 1rem;
         position: relative;
         background: #fff;
-        min-width: 280px;
+        min-width: 320px;
         border: 1px solid darken($background, 4%);
         border-radius: 5px;
         box-shadow: 0 15px 45px -20px darken($background, 7%);
