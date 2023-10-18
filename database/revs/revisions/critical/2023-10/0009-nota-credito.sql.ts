@@ -38,7 +38,7 @@ declare
   itens uuid[] default array(
     select (e.doc->>'venda_id')::uuid 
       from jsonb_array_elements( args->'itens' ) e ( doc ) 
-      where e.doc->>'venda_id' is not null and e.doc->'venda_id' != null
+--       where e.doc->>'venda_id' is not null and e.doc->'venda_id' != null
   );
   _serie_id uuid default args->>'_serie_id';
 begin
@@ -77,7 +77,7 @@ begin
         ve.venda_id
   ), notacareito_usar as (
     select
-        count( * ) filter (
+        count( ct.venda_id ) filter (
           where not ct.venda_ncexists
             and ct.venda_id = any ( itens )
             and ct.venda_venda_id is null
@@ -383,5 +383,74 @@ exception  when others then
         return lib.res_exception( _ex.e, _ex.m, _ex.h, _ex.d, _ex.c );
     end;
 end
+$$;
+`;
+
+
+export const sss = sql`
+create or replace function tweeks.funct_load_conta_notacredito(args jsonb)
+  returns setof jsonb
+  language plpgsql
+as
+$$
+declare
+  /**
+    args := {
+      arg_colaborador_id: UID
+      arg_espaco_auth: UID
+      conta_fatura
+    }
+   */
+  arg_colaborador_id uuid default args->>'arg_colaborador_id';
+  arg_espaco_auth uuid default args->>'arg_espaco_auth';
+  arg_branch uuid default tweeks.__branch_uid( arg_colaborador_id, arg_espaco_auth );
+  _conta_fatura character varying := args->>'conta_fatura';
+  _const map.constant;
+begin
+  _const := map.constant();
+  return query
+    with __venda as (
+      select
+          ve.*,
+          art.*,
+          sum( tx.taxa_taxa ) as taxa_taxa,
+          sum( tx.taxa_percentagem ) as taxa_percentagem
+        from tweeks.venda ve
+          inner join tweeks.artigo art on ve.venda_artigo_id = art.artigo_id
+          left join tweeks.taxa tx on tx.taxa_id = any( venda_taxas )
+        where ve._branch_uid  = arg_branch
+          and ve.venda_venda_id is null
+          and ve.venda_estado = _const.maguita_venda_estado_fechado
+        group by ve.venda_id,
+          art.artigo_id
+    ), __venda_group as (
+      select
+          _ve.venda_id,
+          _ve.venda_conta_id,
+          coalesce( jsonb_agg( to_jsonb( _vei ) ) filter ( where _vei.venda_id is not null), jsonb_build_array() ) as venda_itens
+        from __venda _ve
+          left join __venda _vei on _ve.venda_id = _vei.venda_venda_id
+        where _ve.venda_venda_id is null
+        group by _ve.venda_id,
+          _ve.venda_conta_id
+
+    ), __conta as (
+      select
+        ct.*,
+        array_agg( to_jsonb( _veg ) || to_jsonb( _ved ) ) as conta_vendas
+        from tweeks.conta ct
+          inner join __venda_group _veg on ct.conta_id = _veg.venda_conta_id
+          inner join __venda _ved on _veg.venda_id = _ved.venda_id
+          left join tweeks.venda venda_ncred on _veg.venda_id = venda_ncred.venda_venda_docorign
+            and venda_ncred.venda_estado = _const.maguita_venda_estado_fechado
+        where ct._branch_uid = arg_branch
+          and ct.conta_estado = _const.maguita_conta_estado_fechado
+          and venda_ncred.venda_id is null
+          and ct.conta_numerofatura = _conta_fatura
+        group by ct.conta_id
+    ) select to_jsonb( _ct )
+        from __conta _ct
+  ;
+end;
 $$;
 `;
