@@ -120,8 +120,8 @@ var efatura = {
                 serie_id: serie_id || null,
                 serie_tserie_id: tipo_serie_efaturav2.find("li.active").attr("tipo_id"),
                 serie_espaco_id: serie_espaco_id || null,
-                serie_designacao:  tipo_serie_efaturav2.find("li.active").text(),
-                serie_numerotext:  numero_serie_efaturav2.val(),
+                serie_designacao: $("#name_seire_efaturav2").val(),
+                serie_numerotext: numero_serie_efaturav2.val(),
                 serie_numero: numero_serie_efaturav2.val().split("-")[1],
                 serie_quantidade: quantidade_serie_efaturav2.val(),
                 serie_numcertificacao: null,
@@ -263,6 +263,8 @@ var efatura = {
                             let sigla = $(`#tipo_serie_efaturav2 [tipo_id='${serie_tserie_id}']`).attr("tipo_sigla")
                             return {
                                 ...serie,
+                                serie_numero,
+                                serie_tserie_id,
                                 serie_numerotext: sigla+serie_numero
                             }
                         });
@@ -313,12 +315,14 @@ $("#ConfiguredSerie")
         let { authorization: { series, loadAllSerieaAdded } } = efatura;
         efatura.authorization.serie.selected = series.splice(index, 1)[0];
         let { serie_tserie_id, serie_numerotext, serie_designacao, serie_quantidade, serie_numatorizacao } = efatura.authorization.serie.selected;
-        $(`#tipo_serie_efaturav2 [tipo_id='${serie_tserie_id}']`).show().addClass("active").siblings().removeClass("active");
-        $('[inp="tipo_serie_efaturav2"]').val(serie_designacao);
+        let tipo_serie_efaturav2 = $(`#tipo_serie_efaturav2 [tipo_id='${serie_tserie_id}']`);
+        console.log(tipo_serie_efaturav2, serie_tserie_id)
+        tipo_serie_efaturav2.show().addClass("active").siblings().removeClass("active");
+        $('[inp="tipo_serie_efaturav2"]').val(tipo_serie_efaturav2.text());
         $('#quantidade_serie_efaturav2').val(serie_quantidade);
         $('#numero_autorizacao_seriev2').val(serie_numatorizacao);
         $('#numero_serie_efaturav2').val(serie_numerotext);
-        $("#name_seire_efaturav2").val($(this).text());
+        $("#name_seire_efaturav2").val(serie_designacao);
         loadAllSerieaAdded()
     })
     .on("click", ".delete", function (){
