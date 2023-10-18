@@ -40,7 +40,8 @@ var transference = {
             url: "/api/artigos/transferir",
             method: "POST",
             contentType: "application/json",
-            data: JSON.stringify({arg_espaco_origem: armazem_saida.find("li.active").attr("armazem_id"),
+            data: JSON.stringify({
+                arg_espaco_origem: armazem_saida.find("li.active").attr("armazem_id"),
                 arg_espaco_origem_nome: armazem_saida.find("li.active").text(),
                 arg_espaco_destino: armazem_entrada.find("li.active").attr("armazem_id"),
                 arg_espaco_destino_nome: armazem_entrada.find("li.active").text(),
