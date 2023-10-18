@@ -13,8 +13,9 @@ as
 $$
 declare
   arg_espaco_auth uuid default args->>'arg_espaco_auth';
+  arg_colaborador_id uuid default args->>'arg_colaborador_id';
   arg_tserie_id int2 default args->>'tserie_id';
-  ___branch uuid default tweeks.__branch_uid( null, arg_espaco_auth );
+  ___branch uuid default tweeks.__branch_uid( arg_colaborador_id, arg_espaco_auth );
   _const map.constant;
   _espaco tweeks.espaco;
   _tserie tweeks.tserie;
