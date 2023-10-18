@@ -163,7 +163,19 @@ export type BackupSave = {
 export type AppendBackup = {
     folder:string,dest:string
 };
-export function saveBackup( dumps:string[], withCluster:boolean, ...appends:AppendBackup[]):Promise<BackupSave>{
+
+export type SaveBackupOptions = {
+    dumps?:string[],
+    cluster?:boolean,
+    clusterSafe?:boolean,
+    appends?:AppendBackup[]
+}
+export function saveBackup( opts:SaveBackupOptions ):Promise<BackupSave>{
+    let dumps = opts?.dumps || [];
+    let appends = opts?.appends || [];
+    let withCluster = opts?.cluster;
+    let withClusterSafe = opts?.clusterSafe;
+
     return new Promise( (resolve ) => {
         dbRes.call.cluster._get_cluster_local<MaguitaTableOf<"cluster", "cluster">,any>({
             try: 0,
@@ -216,9 +228,19 @@ export function saveBackup( dumps:string[], withCluster:boolean, ...appends:Appe
                         go();
                         return;
                     }
+
+                    if( !withClusterSafe ) {
+                        go();
+                        return;
+                    }
                     serverNotify.log( `add base dir  to backup ${ new URL(`file://${Path.join(folders.pgHome, "base")}`).href }` );
                     zip.directory( Path.join(folders.pgHome, "base" ), "cluster" );
-                    pgContext.elevator.connected( () => {
+                    pgContext.elevator.connected( ( error ) => {
+                        if( error ){
+                            console.log( error );
+                            return go();
+                        }
+
                         serverNotify.log( "stopping database service for safe backup..." );
                         pgContext.elevator.child.once( "stopService", (service, stopService) => {
                             serverNotify.log( "stopping database service for safe backup... finished!" );

@@ -44,11 +44,11 @@ export const pgContext = new PostgresContext({
         listenAddress: "*",
         users: [
             { username: args.dbUser, superuser: false, search: ["tweeks", "public"], password: args.dbPassword,
-                tests: [{ database: args.dbName, host: args.dbHost }]
+                tests: [{ database: args.dbName }]
             },
             {
                 username: args.dbUserClone, password: args.dbPasswordClone, search: [ "tweeks", "public" ], superuser: true, replication: true,
-                tests: [{ database: args.dbName, host: args.dbHost }]
+                tests: [{ database: args.dbName }]
             }
         ], database: [{
             dbname: args.dbName,

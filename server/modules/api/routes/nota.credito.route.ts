@@ -48,6 +48,7 @@ app.post( "/api/reg/credito/nota", (req, res, next) => {
                 return;
             }
 
+            console.log( result.rows )
             return res.json({
                 result: !!result?.rows?.[0]?.["result"],
                 message: result?.rows?.[0]?.["message"] || "",

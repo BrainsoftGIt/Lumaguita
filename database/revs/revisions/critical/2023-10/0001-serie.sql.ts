@@ -1,10 +1,15 @@
 import {sql} from "kitres";
 
-export const generateDocumentSerie = sql`
+export const __sets_generate_documento = sql`
 drop function if exists tweeks.__sets_generate_documento(arg_espaco_auth uuid, arg_tserie integer);
-create or replace function tweeks.__sets_generate_documento(arg_espaco_auth uuid, arg_tserie integer)
+drop function if exists tweeks.__sets_generate_documento(arg_espaco_auth uuid, arg_tserie integer, arg_serie_id int );
+drop function if exists tweeks.__sets_generate_documento(arg_espaco_auth uuid, arg_tserie integer, arg_serie_id uuid );
+create or replace function tweeks.__sets_generate_documento(
+  arg_espaco_auth uuid,
+  arg_tserie integer,
+  arg_serie_id uuid default null
+)
   returns TABLE(document character varying, serie_id uuid, serie_numero character varying, serie_numatorizacao character varying, serie_numcertificacao character varying, serie_sequencia bigint, serie_quantidade bigint, autorizacao_uid uuid, autorizacao_ano integer, autorizacao_numero character varying)
-  strict
   language plpgsql
 as
 $$
@@ -17,9 +22,10 @@ declare
   _tserie tweeks.tserie;
   _iterate int default 0;
   _autorizacao tweeks.autorizacao;
+  _data record;
 begin
     _const := map.constant();
-
+    
     select * into _tserie
       from tweeks.tserie ts
       where ts.tserie_id = arg_tserie
@@ -38,6 +44,26 @@ begin
     ) select * into _espaco from __espaco __e
       where __e.__generate_serie
     ;
+    
+    select
+        count( * ) as total_serie
+      from tweeks.serie s
+        inner join tweeks.autorizacao a on s.serie_autorizacao_uid = a.autorizacao_uid
+      where s.serie_autorizacao_uid = a.autorizacao_uid
+        and s._branch_uid = ___branch
+        and a._branch_uid = ___branch
+        and s.serie_espaco_id = _espaco.espaco_id
+        and s.serie_tserie_id = arg_tserie
+        and s.serie_estado = _const.maguita_serie_estado_ativo
+        and a.autorizacao_estado = _const.maguita_autorizacao_estado_ativo
+        and a.autorizacao_ano = extract( years from now() )::int
+        and s.serie_id = coalesce( arg_serie_id, s.serie_id )
+      into _data
+    ;
+    
+    if _data.total_serie > 1 then
+      raise exception '%', format( 'Existe varias series do tipo %I! É necessario especificar qual delas devem ser utilizadas!' );
+    end if;
 
     while _numero_documento is null loop
       update tweeks.serie s
@@ -51,8 +77,8 @@ begin
           and s.serie_estado = _const.maguita_serie_estado_ativo
           and a.autorizacao_estado = _const.maguita_autorizacao_estado_ativo
           and a.autorizacao_ano = extract( years from now() )::int
-        returning * into _serie
-      ;
+          and s.serie_id = coalesce( arg_serie_id, s.serie_id )
+      returning * into _serie;
 
       if _serie.serie_id is null then
         raise exception '%', format( 'Nenhuma serie disponivel para gerar a sequencia para %I!', _tserie.tserie_desc );
@@ -61,8 +87,8 @@ begin
       if length( _serie.serie_sequencia::text ) > _tserie.tserie_seqlimit::int then
         raise exception '%', format( 'O numero de sequencia excede o tamanho maximo definido para e seire' );
       end if;
-      
-      if _serie.serie_sequencia > _serie.serie_quantidade then 
+
+      if _serie.serie_sequencia > _serie.serie_quantidade then
         raise exception '%', format( 'Esgotaram todas as series emetidas para a %I! Total de series é de %I.', _tserie.tserie_desc, _serie.serie_quantidade );
       end if;
 
@@ -117,10 +143,9 @@ begin
     __sets_generate_documento.autorizacao_numero := _autorizacao.autorizacao_numero;
 
     return next;
-end;
-$$;
+end
+$$
 `;
-
 
 export const setSeries = sql`
 create or replace function tweeks.funct_sets_serie(args jsonb) returns lib.res
@@ -168,16 +193,16 @@ begin
     _serie.serie_colaborador_id := arg_colaborador_id;
     _serie.serie_espaco_auth := arg_espaco_auth;
 
-    -- Desativar as serie ativa para o espaçoa
-    update tweeks.serie
-      set serie_estado = _const.maguita_serie_estado_fechado,
-          serie_colaborador_atualizacao = arg_colaborador_id,
-          serie_dataatualizacao = current_timestamp
-      where serie_tserie_id = _serie.serie_tserie_id
-        and serie_espaco_id = _serie.serie_espaco_id
-        and _branch_uid = ___branch
-        and serie_estado = _const.maguita_serie_estado_ativo
-    ;
+--     -- Desativar as serie ativa para o espaçoa
+--     update tweeks.serie
+--       set serie_estado = _const.maguita_serie_estado_fechado,
+--           serie_colaborador_atualizacao = arg_colaborador_id,
+--           serie_dataatualizacao = current_timestamp
+--       where serie_tserie_id = _serie.serie_tserie_id
+--         and serie_espaco_id = _serie.serie_espaco_id
+--         and _branch_uid = ___branch
+--         and serie_estado = _const.maguita_serie_estado_ativo
+--     ;
   else
     _serie.serie_colaborador_atualizacao := arg_colaborador_id;
     _serie.serie_dataatualizacao := current_timestamp;
@@ -233,10 +258,12 @@ declare
   _res_serie jsonb default jsonb_build_array();
   _next record;
   _data record;
-
+  _const map.constant;
+  __serie_aturizacao uuid[] default array(select (e.doc->>'serie_id' )::uuid from jsonb_array_elements( args->'series') e ( doc ));
 begin
   _autorizacao := jsonb_populate_record( _autorizacao, args );
   _autorizacao_continue := jsonb_populate_record( _autorizacao_continue, args->'_autorizacao_continue' );
+  _const := map.constant();
   
   if _autorizacao.autorizacao_uid is null then
     _autorizacao.autorizacao_colaborador_uid := arg_colaborador_id;
@@ -268,6 +295,14 @@ begin
   
   select ( "returning" ).* into _autorizacao
     from lib.sets( _autorizacao )
+  ;
+  
+  -- Desativar todas as series que não fazem mais parte de autorizacao
+  update tweeks.serie
+    set serie_estado = _const.maguita_serie_estado_fechado
+    where serie_id !all( __serie_aturizacao )
+      and serie_autorizacao_uid = _autorizacao.autorizacao_uid
+      and serie_estado = _const.maguita_serie_estado_ativo
   ;
   
   for _data in (

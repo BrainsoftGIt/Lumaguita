@@ -85,7 +85,11 @@ pgRevision.on("news", blocks => {
     return new Promise( (resolve) => {
         preventiveBackup().then( dumps => {
             if( !dumps ) return  resolve({ accept: false, message: "Falha ao criar dumps preventivo!" } );
-            saveBackup( dumps, true ).then( value1 => {
+            saveBackup( {
+                dumps: dumps,
+                clusterSafe: false,
+                cluster: true
+            } ).then( value1 => {
                 resolve( value1 )
             }).catch( reason => resolve({ error: reason } ))
         }).catch( reason => resolve({ error: reason } ));
