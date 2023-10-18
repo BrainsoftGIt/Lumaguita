@@ -23,6 +23,7 @@ var faturaAdmin = {
         });
     },
     loadArticlesAccount(){
+        let modal = window.xModalGeral || ""
         $.ajax({
             url: "/api/pos/account/data",
             method: "POST",
@@ -37,7 +38,7 @@ var faturaAdmin = {
                         taxasArtigos.addTax(value.tax[0].main, art.artigo_id);
                     });
 
-                    $("[tableDocumentArticles]").append(`<ul article_id="${art.artigo_id}" custoquantidade="${art.venda_custoquantidade}">
+                    $(`${modal} [tableDocumentArticles]`).append(`<ul article_id="${art.artigo_id}" custoquantidade="${art.venda_custoquantidade}">
                                             <li>${art.artigo_codigo}</li>
                                             <li>${art.artigo_nome}</li>
                                             <li>${art.venda_quantidade}</li>
@@ -148,10 +149,11 @@ var faturaAdmin = {
         });
     },
     articles_added(){
+        let modal = window.xModalGeral || ""
         let articles_table = [];
         let montanteQuantidade = 0;
-        let semImposto = $("[isencaoImposto]").hasClass("active");
-        $("[tableDocumentArticles]").find("ul").each(function () {
+        let semImposto = $(`${modal} [isencaoImposto]`).hasClass("active");
+        $(`${modal} [tableDocumentArticles]`).find("ul").each(function () {
             montanteQuantidade = Number($(this).find("li").eq(2).text()) * $(this).find("li").eq(6).attr("price").unFormatter();
             let result = taxasArtigos.calculateValues({montanteQuantidade: montanteQuantidade, artigo_id: $(this).attr("article_id")});
             articles_table.push({
@@ -180,10 +182,11 @@ var faturaAdmin = {
     },
     add_account: function (){
 
+        let modal = window.xModalGeral || ""
         let conta = {};
         conta.conta_mesa = {numero: null, descricao: null, lotacao: null};
         conta.conta_extension = {};
-        conta.conta_data = $("#fatura_data_emissao").val() === "" ? new Date().getDateEn() : alterFormatDate($("#fatura_data_emissao").val());
+        conta.conta_data = $(`${modal} #fatura_data_emissao `).val() === "" ? new Date().getDateEn() : alterFormatDate($(`${modal} #fatura_data_emissao`).val());
         conta.arg_vendas = this.articles_added();
         conta.admin = true;
         conta.conta_tserie_id = FATURA;
@@ -205,15 +208,17 @@ var faturaAdmin = {
         });
     },
     register_invoice({conta_id}){
+        let modal = window.xModalGeral || ""
+
         let observacao_fatura = $("#observacao_fatura");
         let dados = {};
         dados.conta_id = conta_id;
         dados.conta_extension = {};
         dados.conta_mesa =  { numero: null, descricao:null, lotacao:null };
         dados.conta_desconto = null;
-        dados.conta_titular = $("[cliente_titular]").val().trim();
-        dados.conta_titularnif = $("[cliente_nif]").val().trim() || null;
-        dados.conta_data = $("#fatura_data_emissao").val() === "" ? null : alterFormatDate($("#fatura_data_emissao").val());
+        dados.conta_titular = $(` ${modal} [cliente_titular]`).val().trim();
+        dados.conta_titularnif = $(` ${modal} [cliente_nif]`).val().trim() || null;
+        dados.conta_data = $(` ${modal}  #fatura_data_emissao`).val() === "" ? null : alterFormatDate($(` ${modal} #fatura_data_emissao`).val());
         dados.conta_cliente_id = articlesDocuments.customer_id;
         dados.coin = null;
         dados.documento_referencia = null;
@@ -237,17 +242,16 @@ var faturaAdmin = {
             success(e) {
                 $("#finalizar_fatura").prop("disabled", false).removeClass("loading");
                 if(e.result){
-                    $("[isencaoImposto]").removeClass("active");
-                    $("#faturaAdmin").find("input").val("");
-                    $("[tableDocumentArticles]").empty();
-                    $("[tableDocumentArticles]").addClass("empty");
+                    $(`${modal} [isencaoImposto]`).removeClass("active");
+                    $(`${modal} #faturaAdmin`).find("input").val("");
+                    $(`${modal} [tableDocumentArticles]`).empty().addClass("empty");
                     xAlert("Fatura", "Fatura emitida com sucesso!");
                     articlesDocuments.customer_id = null;
                     open("/api/print/fatura/"+JSON.stringify({type: "pdf", conta_id: dados.conta_id, date: new Date().getTimeStampPt(), admin: true}));
-                    if($("[imprimirGuiaSaida]").hasClass("active")){
+                    if($(`${modal} [imprimirGuiaSaida]`).hasClass("active")){
                         open("/api/print/guia_saida/"+JSON.stringify({date: new Date().getTimeStampPt(), guia_uuid: e.data, conta_id: dados.conta_id }));
                     }
-                    $("[imprimirGuiaSaida]").removeClass("active");
+                    $(` ${modal} [imprimirGuiaSaida]`).removeClass("active");
                     observacao_fatura.val("");
                 }
                 else xAlert("Fatura", e.data, "error");
@@ -282,6 +286,7 @@ $("#ver_proformas").on("click", function () {
     faturaAdmin.loadProformas();
 });
 $("#finalizar_fatura").on("click", function () {
+    let modal = window.xModalGeral || ""
     spaceConfig.loadConfig().then(value => {
         if(spaceConfig.isConfigured({object: value.config[0]})){
             if(serieOperation.missing.length > 0){
@@ -294,10 +299,10 @@ $("#finalizar_fatura").on("click", function () {
             }
             if(articlesDocuments.customer_id === null){
                 xAlert("Fatura ", "Pesquise um cliente!", "info");
-                $("[search_customer]").focus();
+                $(`${modal} [search_customer]`).focus();
                 return;
             }
-            if($("[tableDocumentArticles]").find(`ul`).length === 0){
+            if($(`${modal} [tableDocumentArticles]`).find(`ul`).length === 0){
                 xAlert("Fatura", "Adicione artigos na tabela!", "info");
                 return;
             }
@@ -312,8 +317,9 @@ $("#finalizar_fatura").on("click", function () {
     });
 });
 $("#listProformAccounts").on("click", ".editar", function () {
-    $("[search_customer]").val($(this).parents("ul").find("li").eq(2).text()).keyup();
-    $("[tableDocumentArticles]").empty().removeClass("empty");
+    let modal = window.xModalGeral || ""
+    $(`${modal} [search_customer]`).val($(this).parents("ul").find("li").eq(2).text()).keyup();
+    $(`${modal} [tableDocumentArticles]`).empty().removeClass("empty");
     faturaAdmin.conta_id = $(this).parents("ul").attr("conta_id");
     faturaAdmin.loadArticlesAccount();
 }).on("click", ".delete", function () {

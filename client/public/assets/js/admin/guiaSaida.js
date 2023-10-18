@@ -19,9 +19,10 @@ var guiaSaida = {
         });
     },
     get articles_added(){
+        let modal = window.xModalGeral || ""
         let articles_table = [];
         let montanteQuantidade = 0;
-        $("[tableDocumentArticles]").find("ul").each(function () {
+        $(`${modal} [tableDocumentArticles]`).find("ul").each(function () {
             montanteQuantidade = Number($(this).find("li").eq(2).text()) * $(this).find("li").eq(5).attr("price").unFormatter();
             let result = taxasArtigos.calculateValues({montanteQuantidade: montanteQuantidade, artigo_id: $(this).attr("article_id")});
             articles_table.push({
@@ -74,6 +75,7 @@ var guiaSaida = {
         });
     },
     registar_saida(montante, conta_id){
+        let modal = window.xModalGeral || ""
         let GIADEDAIDA = 5;
         let dados = {};
         dados.conta_id = conta_id;
@@ -81,8 +83,8 @@ var guiaSaida = {
         dados.conta_extension = {};
         dados.conta_mesa =  { numero: null, descricao:null, lotacao:null };
         dados.conta_desconto = null;
-        dados.conta_titular =   $("[cliente_titular]").val().trim();
-        dados.conta_titularnif = $("[cliente_nif]").val().trim() || null;
+        dados.conta_titular =   $(`${modal} [cliente_titular]`).val().trim();
+        dados.conta_titularnif = $(`${modal} [cliente_nif]`).val().trim() || null;
         dados.conta_data = null;
         dados.conta_cliente_id = articlesDocuments.customer_id;
         dados.coin = "STN";
@@ -112,9 +114,8 @@ var guiaSaida = {
             success(e) {
                 $("#finalizar_guia_saida").prop("disabled", false).removeClass("loading");
                 if(e.result){
-                    $("#GuiaSaida").find("input").val("");
-                    $("[tableDocumentArticles]").empty();
-                    $("[tableDocumentArticles]").addClass("empty");
+                    $(`${modal} #GuiaSaida`).find("input").val("");
+                    $(`${modal} [tableDocumentArticles]`).empty().addClass("empty");
                     xAlert("Guia de Saída", "Guia de Saída emitido com sucesso!");
                     articlesDocuments.customer_id = null;
                     open("/api/print/guia_saida/"+JSON.stringify({date: new Date().getTimeStampPt(), guia_uuid: e.data, conta_id: conta_id }));
@@ -125,6 +126,7 @@ var guiaSaida = {
     },
 };
 $("#finalizar_guia_saida").on("click", function () {
+    let modal = window.xModalGeral || ""
     spaceConfig.loadConfig().then(value => {
         if(spaceConfig.isConfigured({object: value.config[0]})){
             if($("#colaborador_logado_armazens").find("li.active").attr("posto_admin") === "null"){
@@ -133,10 +135,10 @@ $("#finalizar_guia_saida").on("click", function () {
             }
             if(articlesDocuments.customer_id === null){
                 xAlert("Guia de Saída", "Pesquise um cliente!", "info");
-                $("[search_customer]").focus();
+                $(`${modal} [search_customer]`).focus();
                 return;
             }
-            if($("[tableDocumentArticles]").find(`ul`).length === 0){
+            if($(`${modal} [tableDocumentArticles]`).find(`ul`).length === 0){
                 xAlert("Guia de Saída", "Adicione artigos na tabela!", "info");
                 return;
             }

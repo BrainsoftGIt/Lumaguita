@@ -17,10 +17,11 @@ var proformaAdmin = {
         });
     },
     get articles_added(){
+        let modal = window.xModalGeral || ""
         let articles_table = [];
         let montanteQuantidade = 0;
-        let semImposto = $("[isencaoImposto]").hasClass("active");
-        $("[tableDocumentArticles]").find("ul").each(function () {
+        let semImposto = $(`${modal} [isencaoImposto]`).hasClass("active");
+        $(`${modal} [tableDocumentArticles]`).find("ul").each(function () {
             montanteQuantidade = Number($(this).find("li").eq(2).text()) * $(this).find("li").eq(6).attr("price").unFormatter();
             let result = taxasArtigos.calculateValues({montanteQuantidade: montanteQuantidade, artigo_id: $(this).attr("article_id")});
             articles_table.push({
@@ -74,7 +75,8 @@ var proformaAdmin = {
         });
     },
     registar_proforma({conta_id}){
-        let conta_data = ($("#proforma_admin_data_emissao").val() !== "" ? alterFormatDate($("#proforma_admin_data_emissao").val()) : null);
+        let modal = window.xModalGeral || ""
+        let conta_data = ($(`${modal} #proforma_admin_data_emissao `).val() !== "" ? alterFormatDate($(`${modal} #proforma_admin_data_emissao`).val()) : null);
         $.ajax({
             url: "/api/pos/conta/proforma",
             method: "POST",
@@ -83,21 +85,20 @@ var proformaAdmin = {
                 conta_data,
                 conta_id: conta_id,
                 conta_cliente_id: articlesDocuments.customer_id, admin: true,
-                conta_proformavencimento: ($("#proforma_admin_data_vencimento").val() !== "" ? alterFormatDate($("#proforma_admin_data_vencimento").val()) : null),
+                conta_proformavencimento: ($(`${modal} #proforma_admin_data_vencimento`).val() !== "" ? alterFormatDate($(`${modal}  #proforma_admin_data_vencimento`).val()) : null),
                 conta_proformaextras: {
-                    termos: ($("#proforma_admin_termos").val().trim() || null),
+                    termos: ($(`${modal} #proforma_admin_termos`).val().trim() || null),
                     data_emissao: conta_data
                 }
             }),
-            error(){$("#finalizar_proforma").prop("disabled", false).removeClass("loading")},
+            error(){$(`${modal} #finalizar_proforma`).prop("disabled", false).removeClass("loading")},
             success(e) {
-                $("#finalizar_proforma").prop("disabled", false).removeClass("loading");
+                $(`${modal} #finalizar_proforma`).prop("disabled", false).removeClass("loading");
                 if(e.result){
                     xAlert("Fatura Proforma", "Proforma emitida com sucesso!");
-                    $("[isencaoImposto]").removeClass("active");
-                    $("#proformaAdminBody").find("input, textarea").val("");
-                    $("[tableDocumentArticles]").empty();
-                    $("[tableDocumentArticles]").addClass("empty");
+                    $(`${modal} [isencaoImposto]`).removeClass("active");
+                    $(`${modal} #proformaAdminBody`).find("input, textarea").val("");
+                    $(`${modal} [tableDocumentArticles]`).empty().addClass("empty");
                     articlesDocuments.customer_id = null;
                     open("/api/print/proforma/"+JSON.stringify({type: "pdf", conta_id: conta_id, date: new Date().getTimeStampPt() }));
                 }
@@ -108,6 +109,7 @@ var proformaAdmin = {
 };
 
 $("#finalizar_proforma").on("click", function () {
+    let modal = window.xModalGeral || "";
     spaceConfig.loadConfig().then(value => {
         if(spaceConfig.isConfigured({object: value.config[0]})){
             if($("#colaborador_logado_armazens").find("li.active").attr("posto_admin") === "null"){
@@ -116,19 +118,19 @@ $("#finalizar_proforma").on("click", function () {
             }
             if(articlesDocuments.customer_id === null){
                 xAlert("Fatura proforma", "Pesquise um cliente!", "info");
-                $("[search_customer]").focus();
+                $(`${modal} [search_customer]`).focus();
                 return;
             }
-            if($("[tableDocumentArticles]").find(`ul`).length === 0){
+            if($(` ${modal}  [tableDocumentArticles]`).find(`ul`).length === 0){
                 xAlert("Fatura proforma", "Adicione artigos na tabela!", "info");
                 return;
             }
-            $("#finalizar_proforma").attr("disabled", true).addClass("loading");
+            $(`${modal}  #finalizar_proforma`).attr("disabled", true).addClass("loading");
             proformaAdmin.loadAccountKey().then(value1 => {
                 proformaAdmin.key = value1.accountKey;
                 proformaAdmin.add_account();
             }).catch(err =>{
-                $("#finalizar_proforma").attr("disabled", false).removeClass("loading");
+                $(`${modal} #finalizar_proforma`).attr("disabled", false).removeClass("loading");
             });
         }
     });

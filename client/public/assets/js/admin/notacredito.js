@@ -4,33 +4,35 @@ var notacredito = {
             url: "/api/load/fatura/to/credito/nota",
             method: "POST",
             contentType: "application/json",
-            error() { $("#finalizar_guia_entrada").attr("disabled", false).removeClass("loading") },
-            complete() { $("#finalizar_guia_entrada").attr("disabled", false).removeClass("loading") },
+            error() { $("#finalizarNotaCredito").attr("disabled", false).removeClass("loading") },
+            complete() { $("#finalizarNotaCredito").attr("disabled", false).removeClass("loading") },
             data: JSON.stringify({
                 conta_fatura: $("[pesquisarFatura]").val()
             }),
             success: ({fatura}) => {
+                let modal = window.xModalGeral || ""
+
                 let { conta_titularnif, conta_titular, conta_vendas } = fatura;
                 notacredito.fatura = fatura;
-                $("[cliente_titular]").val(conta_titular || "");
-                $("[cliente_nif]").val(conta_titularnif || "");
+                $(` ${modal} [cliente_titular]`).val(conta_titular || "");
+                $(` ${modal} [cliente_nif]`).val(conta_titularnif || "");
 
-                $("[tableDocumentArticles]").empty();
+                $(`${modal} [tableDocumentArticles]`).empty();
                 if(!conta_vendas){
-                    $(" [tableDocumentArticles] ").addClass("empty");
+                    $(` ${modal} [tableDocumentArticles] `).addClass("empty");
                     xAlert("Nota de credito", "Não foi encontrado numa fatura com esse número!", "error");
                     return
                 }
 
                 conta_vendas.forEach(({ artigo_nome, venda_custounitario, venda_montantecomimposto, artigo_codigo, venda_quantidade, taxa_percentagem, taxa_taxa, venda_id }) => {
-                    $("[tableDocumentArticles]").append(`
+                    $(`${modal} [tableDocumentArticles]`).append(`
                     <ul data-venda_id="${venda_id}">
                         <li>${artigo_codigo}</li>
                         <li>${artigo_nome}</li>
                         <li>${venda_quantidade}</li>
-                        <li>${ (!taxa_percentagem) ? taxa_taxa || "" : `${taxa_percentagem}%` }</li>          
-                        <li>${venda_custounitario.dc().formatter()+" STN"}</li>                                               
-                        <li>${venda_montantecomimposto.dc().formatter()+" STN"}</li>                              
+                        <li>${ (!taxa_percentagem) ? taxa_taxa || "" : `${taxa_percentagem}%` }</li>
+                        <li>${venda_custounitario.dc().formatter()+" STN"}</li>
+                        <li>${venda_montantecomimposto.dc().formatter()+" STN"}</li>
                         <li class="flex v-ct">
                                 <span del class="flex v-ct">
                                      <a tooltip="Eliminar" flow="top" title="Remover">
@@ -44,22 +46,23 @@ var notacredito = {
                                         <path
                                             d="m173.398438 154.703125c-5.523438 0-10 4.476563-10 10v189c0 5.519531 4.476562 10 10 10 5.523437 0 10-4.480469 10-10v-189c0-5.523437-4.476563-10-10-10zm0 0" />
                                     </svg>
-                                </a>                           
+                                </a>
                              </span>
                         </li>
                     </ul>`);
                 })
                 xTableGenerate()
 
-                $(" [tableDocumentArticles] ").removeClass("empty")
+                $(` ${modal} [tableDocumentArticles]` ).removeClass("empty")
             }
         });
     },
     reg : () => {
+        let modal = window.xModalGeral || ""
         let { fatura : { conta_id }, key: conta_chave } = notacredito;
         let conta_posto_id = $("#colaborador_logado_armazens").find("li.active").attr("posto_admin");
         let conta_observacao = $("[notacredito_observacao]").val();
-        let itens = $("[tableDocumentArticles] ul").map(function (){
+        let itens = $(`${modal} [tableDocumentArticles] ul`).map(function (){
             let { venda_id } = $(this).data();
             return {
                 venda_id
@@ -68,6 +71,11 @@ var notacredito = {
 
         if( !conta_id ){
             xAlert("Nota de credito", "Selecione uma conta!", "error");
+            return;
+        }
+
+        if( conta_posto_id === "null" ){
+            xAlert("Proforma", "Selecione o posto para estar associado ao armazém "+ $("[currentUserSpace]").text()+", em definições!", "error");
             return;
         }
 
@@ -97,10 +105,10 @@ var notacredito = {
             success: ({data : {conta : { conta_id } }, result, message}) => {
                 if(result){
                     xAlert("Nota de credito", "Operação efetuada com sucesso!");
-                    $("[tableDocumentArticles]").empty().addClass("empty");
-                    $("[cliente_titular]").val("");
-                    $("[cliente_nif]").val("");
-                    $("[pesquisarFatura]").val("");
+                    $(`${modal} [tableDocumentArticles]`).empty().addClass("empty");
+                    $(`${modal} [cliente_titular]`).val("");
+                    $(`${modal} [cliente_nif]`).val("");
+                    $(`${modal} [pesquisarFatura]`).val("");
                     open("/api/print/nota-credito/"+JSON.stringify({type: "pdf", conta_id, date: new Date().getTimeStampPt(), admin: true }));
                     delete notacredito.fatura;
                     return
@@ -148,9 +156,10 @@ $("#finalizarNotaCredito").on("click", function (){
 })
 
 $("[tableDocumentArticles]").on("click", "[del]", function (){
+    let modal = window.xModalGeral || ""
     $(this).parents("ul").remove()
-    if(!$("[tableDocumentArticles] ul").length){
-        $("[tableDocumentArticles]").addClass("empty")
+    if(!$(`${modal} [tableDocumentArticles] ul`).length){
+        $(`${modal} [tableDocumentArticles]`).addClass("empty")
     }
 })
 

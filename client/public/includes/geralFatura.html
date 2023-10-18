@@ -2,7 +2,7 @@
 <link rel="stylesheet" href="../assets/css/admin/fatura.css">
 <link rel="stylesheet" href="../assets/css/admin/tableAdmin.css">
 <style>
-    .__included__ .inRight .xbtn{
+    .__included__ .inRight .xbtn {
         margin-right: 5px;
         margin-left: 5px;
     }
@@ -18,7 +18,8 @@
         <div class="_body" id="guiaEntradaBody">
             <div class="inputs flex xform h-sb">
                 <div class="xinput w25">
-                    <input type="text" placeholder="Pesquisar fornecedor" id="entrada_fornecedor" list="guiaEntradaFornecedores">
+                    <input type="text" placeholder="Pesquisar fornecedor" id="entrada_fornecedor"
+                           list="guiaEntradaFornecedores">
                     <label for="entrada_fornecedor">Pesquisar fornecedor</label>
                 </div>
                 <div class="xinput w25">
@@ -26,16 +27,19 @@
                     <label>Nome do fornecedor</label>
                 </div>
                 <div class="xinput w15">
-                    <input type="text" placeholder="NIF" maxlength="9" disabled id="guiaEntradaNifFornecedor" _noObrigatory="true">
+                    <input type="text" placeholder="NIF" maxlength="9" disabled id="guiaEntradaNifFornecedor"
+                           _noObrigatory="true">
                     <label>NIF</label>
                 </div>
                 <div class="xinput w15">
-                    <input type="text" placeholder="Telefone" disabled id="guiaEntradaTelefoneFornecedor" _noObrigatory="true">
+                    <input type="text" placeholder="Telefone" disabled id="guiaEntradaTelefoneFornecedor"
+                           _noObrigatory="true">
                     <label>Telefone</label>
                 </div>
                 <div class="xinput w20">
-                    <input type="text" placeholder="Endereço" disabled id="guiaEntradaEnderecoFornecedor" _noObrigatory="true">
-                    <label >Endereço</label>
+                    <input type="text" placeholder="Endereço" disabled id="guiaEntradaEnderecoFornecedor"
+                           _noObrigatory="true">
+                    <label>Endereço</label>
                 </div>
                 <div class="xselect flutuate w25">
                     <input type="text" readonly placeholder="_">
@@ -49,11 +53,13 @@
                     <label for="entrada_codigofatura">Documento do fornecedor</label>
                 </div>
                 <div class="xinput w25">
-                    <input type="text" placeholder="Data de documento" data-inputmask-alias="dd-mm-yyyy" data-val="true" id="entrada_data_compra">
+                    <input type="text" placeholder="Data de documento" data-inputmask-alias="dd-mm-yyyy" data-val="true"
+                           id="entrada_data_compra">
                     <label for="entrada_data_compra">Data de documento</label>
                 </div>
                 <div class="xinput w25">
-                    <input type="text" placeholder="Seguro e tarifas" id="entraSeguroTarifas" class="double formatNumber" _noObrigatory="true">
+                    <input type="text" placeholder="Seguro e tarifas" id="entraSeguroTarifas"
+                           class="double formatNumber" _noObrigatory="true">
                     <label for="entraSeguroTarifas">Valor de seguro e tarifas de transporte</label>
                 </div>
                 <div class="xinput w100">
@@ -61,7 +67,7 @@
                     <label for="entrada_obs">Observação</label>
                 </div>
                 <div class="xinput w25">
-                    <input type="text" placeholder="Pesquisar artigo" search_article  list="artigos_entrada">
+                    <input type="text" placeholder="Pesquisar artigo" search_article list="artigos_entrada">
                     <label>Pesquisar artigo (nome ou código)</label>
                 </div>
                 <div class="xinput w25">
@@ -73,7 +79,7 @@
                     <label>Qtd</label>
                 </div>
                 <div class="xinput w15">
-                    <input type="text" placeholder="Preço de compra" class="double formatNumber" price_article >
+                    <input type="text" placeholder="Preço de compra" class="double formatNumber" price_article>
                     <label>Valor unitário</label>
                 </div>
                 <div class="xinput w15">
@@ -81,7 +87,8 @@
                     <label>Lote</label>
                 </div>
                 <div class="xinput w15">
-                    <input type="text" placeholder="Data de validade" data-inputmask-alias="dd-mm-yyyy" data-val="true" date_expiration_article _noObrigatory="true">
+                    <input type="text" placeholder="Data de validade" data-inputmask-alias="dd-mm-yyyy" data-val="true"
+                           date_expiration_article _noObrigatory="true">
                     <label>Data de validade</label>
                 </div>
                 <div class="xinput w15">
@@ -105,7 +112,7 @@
                         <li grow="1"></li>
                     </ul>
                 </div>
-                <div class="xbody" tableDocumentArticles >
+                <div class="xbody" tableDocumentArticles>
 
                 </div>
             </div>
@@ -170,7 +177,8 @@
                         <label>Lote</label>
                     </div>
                     <div class="xinput w15">
-                        <input type="text" placeholder="Data de validade" data-inputmask-alias="dd-mm-yyyy" data-val="true"
+                        <input type="text" placeholder="Data de validade" data-inputmask-alias="dd-mm-yyyy"
+                               data-val="true"
                                date_expiration_article _noObrigatory="true">
                         <label>Data de validade</label>
                     </div>
@@ -238,7 +246,7 @@
                     <label>Telefone</label>
                 </div>
                 <div class="xinput w100">
-                    <textarea placeholder="_" _noObrigatory="true" id="observacao_fatura" ></textarea>
+                    <textarea placeholder="_" _noObrigatory="true" id="observacao_fatura"></textarea>
                     <label for="observacao_fatura">Termos</label>
                 </div>
                 <div class="xinput w25">
@@ -395,7 +403,8 @@
                     <label for="proforma_admin_data_vencimento">Data de vencimento</label>
                 </div>
                 <div class="xinput w15">
-                    <input type="text" placeholder="Data de emissão" _noObrigatory="true" id="proforma_admin_data_emissao"
+                    <input type="text" placeholder="Data de emissão" _noObrigatory="true"
+                           id="proforma_admin_data_emissao"
                            data-inputmask-alias="dd-mm-yyyy" data-val="true">
                     <label for="proforma_admin_data_emissao">Data de emissão</label>
                 </div>
@@ -428,7 +437,8 @@
                     <label>Valor unitário</label>
                 </div>
                 <div class="xinput w15" style="display: none">
-                    <input type="text" _noObrigatory="true" placeholder="Data de validade" data-inputmask-alias="dd-mm-yyyy"
+                    <input type="text" _noObrigatory="true" placeholder="Data de validade"
+                           data-inputmask-alias="dd-mm-yyyy"
                            data-val="true" date_expiration_article>
                     <label>Data de validade</label>
                 </div>
@@ -535,45 +545,134 @@
         </div>
     </div>
 </div>
-
-<div class="__included__">
-    <div class="_head flex h-sb v-ct">
-        <div class="inLeft">
-            <h1>Documentos</h1>
-        </div>
-        <div bt-documentos class="inRight flex h-sb">
-            <button class="xbtn showTarget" target="xModalGuiaEntrada">Guia Entrada</button>
-            <button class="xbtn showTarget" target="xModalGuiaSaida">Guia Saida</button>
-            <button class="xbtn showTarget" target="xModalFatura">Fatura</button>
-            <button class="xbtn showTarget" target="xModalFaturaProForma">Pro Forma</button>
-            <button class="xbtn showTarget" target="xModalNotaCredito">Nota Credito</button>
-        </div>
-    </div>
-    <div class="_body">
-        <div class="x-table grow-1">
-            <div class="xheader">
+<div id="xModaltransferArticles" class="x-mobdal flex v-ct h-ct" target="xModaltransferArticles">
+    <div class="modal-frame j-stp" style="width: 102em">
+        <h3>Transferência de artigos</h3>
+        <datalist id="transfArtigos" artigos></datalist>
+        <div class="_body" id="transferArticlesBody">
+            <div class="flex">
+                <div class="inputs flex xform">
+                    <div class="xinput w15">
+                        <input type="text" placeholder="Código de armazém de saída" _noObrigatory="true"
+                               codigo_armazens id="codigo_armazem_saida">
+                        <label>Cód. de armazém de saída</label>
+                    </div>
+                    <div class="xselect flutuate w15">
+                        <input type="text" readonly placeholder="_">
+                        <label>Escolha o armazém de saída</label>
+                        <ul armazens_transferencia id="armazem_saida">
+                        </ul>
+                        <div class="fakearrow flex"><span></span><span></span></div>
+                    </div>
+                    <div class="xinput w15">
+                        <input type="text" placeholder="Código de armazém de entrada" _noObrigatory="true"
+                               codigo_armazens id="codigo_armazem_entrada">
+                        <label>Cód. de armazém de entrada</label>
+                    </div>
+                    <div class="xselect flutuate w15">
+                        <input type="text" readonly placeholder="_">
+                        <label>Escolha o armazém de entrada</label>
+                        <ul armazens_transferencia id="armazem_entrada">
+                        </ul>
+                        <div class="fakearrow flex"><span></span><span></span></div>
+                    </div>
+                    <div class="xinput w15">
+                        <input type="text" placeholder="Data da transferência" id="transferencia_data"
+                               data-inputmask-alias="dd-mm-yyyy" data-val="true" _noObrigatory="true">
+                        <label>Data da transferência</label>
+                    </div>
+                    <div class="xinput w15">
+                        <input type="text" placeholder="Número de documento" id="transferencia_documento"
+                               _noObrigatory="true">
+                        <label for="transferencia_documento">Número de documento</label>
+                    </div>
+                    <div class="xinput w100">
+                            <textarea placeholder="_" _noObrigatory="true" id="transferencia_obs"
+                                      _noObrigatory="true"></textarea>
+                        <label for="transferencia_obs">Observação</label>
+                    </div>
+                    <div class="xinput w50">
+                        <input type="text" placeholder="Pesquisar artigo" search_article list="transfArtigos">
+                        <label>Pesquisar artigo</label>
+                    </div>
+                    <div class="xinput w33">
+                        <input type="text" placeholder="Descrição" description_article>
+                        <label>Descrição</label>
+                    </div>
+                    <div class="xinput" style="width: 6rem">
+                        <input type="text" placeholder="Quantidade" class="double" amount_article>
+                        <label>Qtd</label>
+                    </div>
+                    <div class="flex h-sb v-ct">
+                        <button class="xbtn" addArticleTable>Lançar</button>
+                    </div>
+                    <div class="x-table hovered grow-1">
+                        <div class="xheader">
+                            <ul class="flex">
+                                <li grow="2">Cód. Artigo</li>
+                                <li grow="5">Descrição</li>
+                                <li grow="1">Quantidade</li>
+                                <li grow="1"></li>
+                            </ul>
+                        </div>
+                        <div class="xbody" tableDocumentArticles>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div body-report-list-faturas class="xbody">
+            <div class="master-btn-right flex">
+                <span class="hideTarget" target="xModaltransferArticles">Cancelar</span>
+                <span class="flex v-ct" id="finalizar_transferencia">
+                    Finalizar
+                    <svg class="spinner" viewBox="0 0 50 50">
+                        <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
+                    </svg>
+                </span>
             </div>
-        </div>
-        <div class="x-pagination">
-            <ul ref="body-report-list" class="active pagination_master">
-                <li class="ctrl backward page-item"></li>
-                <li class="ctrl page-item forward pagination-add"></li>
-            </ul>
         </div>
     </div>
 </div>
 
-<script src="../assets/js/admin/articleTax.js"></script>
-<script src="../assets/js/admin/guiaEntrada.js"></script>
-<script src="../assets/js/admin/guiaSaida.js"></script>
-<script src="../assets/js/admin/notacredito.js"></script>
-<script src="../assets/js/admin/fatura.js"></script>
-<script src="../assets/js/admin/proforma.js"></script>
-<script src="../assets/js/admin/articlesDocuments.js"></script>
-<script>
-    $("[bt-documentos]").on("click", "button", function (){
-        window.xModalGeral = `#${$(this).attr("target")}`;
-    })
-</script>
+    <div class="__included__">
+        <div class="_head flex h-sb v-ct">
+            <div class="inLeft">
+                <h1>Documentos</h1>
+            </div>
+            <div bt-documentos class="inRight flex h-sb">
+                <button class="xbtn showTarget" target="xModalGuiaEntrada">Guia Entrada</button>
+                <button class="xbtn showTarget" target="xModalGuiaSaida">Guia Saida</button>
+                <button class="xbtn showTarget" target="xModalFatura">Fatura</button>
+                <button class="xbtn showTarget" target="xModalFaturaProForma">Pro Forma</button>
+                <button class="xbtn showTarget" target="xModalNotaCredito">Nota Credito</button>
+                <button class="xbtn showTarget" target="xModaltransferArticles">Transferência A.</button>
+            </div>
+        </div>
+        <div class="_body">
+            <div class="x-table grow-1">
+                <div class="xheader">
+                </div>
+                <div body-report-list-faturas class="xbody">
+                </div>
+            </div>
+            <div class="x-pagination">
+                <ul ref="body-report-list" class="active pagination_master">
+                    <li class="ctrl backward page-item"></li>
+                    <li class="ctrl page-item forward pagination-add"></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script src="../assets/js/admin/articleTax.js"></script>
+    <script src="../assets/js/admin/guiaEntrada.js"></script>
+    <script src="../assets/js/admin/guiaSaida.js"></script>
+    <script src="../assets/js/admin/transferencia.js"></script>
+    <script src="../assets/js/admin/notacredito.js"></script>
+    <script src="../assets/js/admin/fatura.js"></script>
+    <script src="../assets/js/admin/proforma.js"></script>
+    <script src="../assets/js/admin/articlesDocuments.js"></script>
+    <script>
+        $("[bt-documentos]").on("click", "button", function () {
+            window.xModalGeral = `#${$(this).attr("target")}`;
+        })
+    </script>

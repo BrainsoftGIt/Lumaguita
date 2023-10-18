@@ -86,17 +86,19 @@ var articlesDocuments = {
         });
     },
     resetFieldsArticle(){
-        $("[description_article], [amount_article], [price_article], [lote_article], [date_expiration_article], [amount_packaging], [imposto]").val("");
+        let modal = window.xModalGeral || ""
+        $(`${modal} [description_article], [amount_article], [price_article], [lote_article], [date_expiration_article], [amount_packaging], [imposto]`).val("");
     },
     add_articles_purchase(){
-        let total_value = $("[amount_article]").val().unFormatter() * $("[price_article]").val().unFormatter();
-        $("[tableDocumentArticles]").append(`<ul article_id="${articlesDocuments.article_id}">
-                                            <li>${ $("[description_article]").val()}</li>
-                                            <li>${$("[amount_article]").val()}</li>
-                                            <li price="${$("[price_article]").val().unFormatter()}">${$("[price_article]").val()+" STN"}</li>
-                                            <li>${($("[lote_article]").val().trim() || "")}</li>
-                                            <li>${($("[date_expiration_article]").val() || "")}</li>
-                                            <li>${$("[amount_packaging]").val()}</li>                                                         
+        let modal = window.xModalGeral || ""
+        let total_value = $(`${modal} [amount_article]`).val().unFormatter() * $(`${modal} [price_article]`).val().unFormatter();
+        $(`${modal} [tableDocumentArticles]`).append(`<ul article_id="${articlesDocuments.article_id}">
+                                            <li>${ $(`${modal} [description_article]`).val()}</li>
+                                            <li>${$(`${modal} [amount_article] `).val()}</li>
+                                            <li price="${$(`${modal} [price_article] `).val().unFormatter()}">${$(` ${modal} [price_article]`).val()+" STN"}</li>
+                                            <li>${($(`${modal} [lote_article]`).val().trim() || "")}</li>
+                                            <li>${($(`${modal} [date_expiration_article] `).val() || "")}</li>
+                                            <li>${$(`${modal} [amount_packaging]`).val()}</li>                                                         
                                             <li>${total_value+" STN"}</li>                              
                                             <li class="flex v-ct">
                                                <span class="noLabel"></span>
@@ -118,10 +120,11 @@ var articlesDocuments = {
                                         </ul>`);
     },
     add_articles_transference(){
-        $("[tableDocumentArticles]").append(`<ul article_id="${articlesDocuments.article_id}">
+        let modal = window.xModalGeral || ""
+        $(`${modal} [tableDocumentArticles]`).append(`<ul article_id="${articlesDocuments.article_id}">
                                             <li>${articlesDocuments.article_code}</li>
-                                            <li>${ $("[description_article]").val()}</li>
-                                            <li>${$("[amount_article]").val()}</li>                            
+                                            <li>${ $(`${modal} [description_article]`).val()}</li>
+                                            <li>${$(`${modal} [amount_article]`).val()}</li>                            
                                             <li class="flex v-ct">
                                                <span class="noLabel"></span>
                                                     <span class="flex v-ct">
@@ -142,12 +145,13 @@ var articlesDocuments = {
                                         </ul>`);
     },
     add_articles_exit_guide(){
-        $("[tableDocumentArticles]").append(`<ul article_id="${articlesDocuments.article_id}" custoquantidade="${(articlesDocuments.precario_quantidade)}">
+        let modal = window.xModalGeral || ""
+        $(`${modal} [tableDocumentArticles]`).append(`<ul article_id="${articlesDocuments.article_id}" custoquantidade="${(articlesDocuments.precario_quantidade)}">
                                             <li>${articlesDocuments.article_code}</li>
-                                            <li>${ $("[description_article]").val()}</li>
-                                            <li>${$("[amount_article]").val()}</li>
-                                            <li>${($("[lote_article]").val().trim() || "")}</li>
-                                            <li>${($("[date_expiration_article]").val() || "")}</li>
+                                            <li>${$(`${modal} [description_article]`).val()}</li>
+                                            <li>${$(`${modal} [amount_article]`).val()}</li>
+                                            <li>${($(`${modal} [lote_article]`).val().trim() || "")}</li>
+                                            <li>${($(`${modal} [date_expiration_article]`).val() || "")}</li>
                                             <li class="flex v-ct">
                                                <span class="noLabel"></span>
                                                     <span class="flex v-ct">
@@ -162,22 +166,23 @@ var articlesDocuments = {
                                                             <path
                                                                 d="m173.398438 154.703125c-5.523438 0-10 4.476563-10 10v189c0 5.519531 4.476562 10 10 10 5.523437 0 10-4.480469 10-10v-189c0-5.523437-4.476563-10-10-10zm0 0" />
                                                         </svg>
-                                                    </a>                           
+                                                    </a>
                                                  </span>
                                             </li>
                                         </ul>`);
     },
     add_articles_invoice(){
-        let montanteQuantidade = $("[amount_article]").val().unFormatter() * $("[price_article]").val().unFormatter();
+        let modal = window.xModalGeral || "";
+        let montanteQuantidade = $(`${modal} [amount_article]`).val().unFormatter() * $(`${modal} [price_article]`).val().unFormatter();
         let result = taxasArtigos.calculateValues({montanteQuantidade: montanteQuantidade, artigo_id: articlesDocuments.article_id});
-        $("[tableDocumentArticles]").append(`<ul article_id="${articlesDocuments.article_id}" custoquantidade="${articlesDocuments.precario_quantidade}">
+        $(`${modal} [tableDocumentArticles]`).append(`<ul article_id="${articlesDocuments.article_id}" custoquantidade="${articlesDocuments.precario_quantidade}">
                                             <li>${articlesDocuments.article_code}</li>
-                                            <li>${ $("[description_article]").val()}</li>
-                                            <li>${$("[amount_article]").val()}</li>
-                                            <li>${($("[lote_article]").val().trim() || "")}</li>
-                                            <li>${($("[date_expiration_article]").val() || "")}</li>
-                                            <li>${$("[imposto]").val()}</li>
-                                            <li price="${$("[price_article]").val().unFormatter()}">${$("[price_article]").val()+" STN"}</li>
+                                            <li>${ $(`${modal} [description_article]`).val()}</li>
+                                            <li>${$(` ${modal} [amount_article]`).val()}</li>
+                                            <li>${($(`${modal} [lote_article]`).val().trim() || "")}</li>
+                                            <li>${($(`${modal} [date_expiration_article]`).val() || "")}</li>
+                                            <li>${$(`${modal} [imposto]`).val()}</li>
+                                            <li price="${$(`${modal} [price_article] `).val().unFormatter()}">${$(` ${modal} [price_article] `).val()+" STN"}</li>
                                             <li>${result.total.dc().formatter()+" STN"}</li>
                                             <li class="flex v-ct">
                                                <span class="noLabel"></span>
@@ -193,22 +198,23 @@ var articlesDocuments = {
                                                             <path
                                                                 d="m173.398438 154.703125c-5.523438 0-10 4.476563-10 10v189c0 5.519531 4.476562 10 10 10 5.523437 0 10-4.480469 10-10v-189c0-5.523437-4.476563-10-10-10zm0 0" />
                                                         </svg>
-                                                    </a>                           
+                                                    </a>
                                                  </span>
                                             </li>
                                         </ul>`);
 
     },
     adicionarArtigosGuiaSaida(){
-        let total_value = $("[amount_article]").val().unFormatter() * $("[price_article]").val().unFormatter();
-        $("[tableDocumentArticles]").append(`<ul article_id="${articlesDocuments.article_id}" custoquantidade="${articlesDocuments.precario_quantidade}">
+        let modal = window.xModalGeral || "";
+        let total_value = $(`${modal} [amount_article]`).val().unFormatter() * $(`${modal} [price_article]`).val().unFormatter();
+        $(`${modal} [tableDocumentArticles]`).append(`<ul article_id="${articlesDocuments.article_id}" custoquantidade="${articlesDocuments.precario_quantidade}">
                                             <li>${articlesDocuments.article_code}</li>
-                                            <li>${ $("[description_article]").val()}</li>
-                                            <li>${$("[amount_article]").val()}</li>
-                                            <li>${($("[lote_article]").val().trim() || "")}</li>
-                                            <li>${($("[date_expiration_article]").val() || "")}</li>
-                                            <li price="${$("[price_article]").val().unFormatter()}">${$("[price_article]").val()+" STN"}</li>                                                       
-                                            <li>${total_value+" STN"}</li>                              
+                                            <li>${$(`${modal} [description_article]`).val()}</li>
+                                            <li>${$(` ${modal} [amount_article] `).val()}</li>
+                                            <li>${($(`${modal} [lote_article]`).val().trim() || "")}</li>
+                                            <li>${($(`${modal} [date_expiration_article]`).val() || "")}</li>
+                                            <li price="${$(` ${modal} [price_article]`).val().unFormatter()}">${$(` ${modal} [price_article] `).val()+" STN"}</li>
+                                            <li>${total_value+" STN"}</li>
                                             <li class="flex v-ct">
                                                <span class="noLabel"></span>
                                                     <span class="flex v-ct">
@@ -223,28 +229,28 @@ var articlesDocuments = {
                                                             <path
                                                                 d="m173.398438 154.703125c-5.523438 0-10 4.476563-10 10v189c0 5.519531 4.476562 10 10 10 5.523437 0 10-4.480469 10-10v-189c0-5.523437-4.476563-10-10-10zm0 0" />
                                                         </svg>
-                                                    </a>                           
+                                                    </a>
                                                  </span>
                                             </li>
                                         </ul>`);
     },
     addArticleTable(){
+        let modal = window.xModalGeral || ""
         if(articlesDocuments.article_id === null){
             xAlert("Artigo", "Pesquise um artigo pelo código para ser adicionado!", "info");
             return;
         }
-        if(!validation1($("[description_article], [amount_article], [price_article]"))){
+        if(!validation1($(`${modal} [description_article], ${modal} [amount_article], ${modal} [price_article]`))){
             xAlert("Artigo", "Preencha todos os campos obrigatórios!", "error");
             return;
         }
-        if($("[fatura]").length !== 0) this.add_articles_invoice();
-        if($("#artigos_entrada").length !== 0) this.add_articles_purchase();
-        if($("#transfArtigos").length !== 0) this.add_articles_transference();
-        if($("#guiaSaidaArtigos").length !== 0) this.adicionarArtigosGuiaSaida();
+        if($(`${modal} [fatura]`).length !== 0) this.add_articles_invoice();
+        if($(`${modal} #artigos_entrada`).length !== 0) this.add_articles_purchase();
+        if($(`${modal} #transfArtigos`).length !== 0) this.add_articles_transference();
+        if($(`${modal} #guiaSaidaArtigos`).length !== 0) this.adicionarArtigosGuiaSaida();
 
-        $("[tableDocumentArticles]").removeClass("empty");
+        $(`${modal} [tableDocumentArticles]`).removeClass("empty");
         articlesDocuments.resetFieldsArticle();
-        let modal = window.xModalGeral || ""
         $(`${modal} [search_article]`).val("");
         xTableGenerate();
     }
@@ -263,27 +269,29 @@ $("[search_article]").keyup(function (e) {
     }, 1000);
 });
 $("[search_customer]").on("keyup", function(){
+    let modal = window.xModalGeral || ""
     let cliente_uuid = null;
-    let datalist_customers = $("datalist[fatura], #guiaSaidaClientes");
+    let datalist_customers = $(`${modal} datalist[fatura], ${modal} #guiaSaidaClientes`);
     if($(this).val().trim() === "") return;
     cliente_uuid = datalist_customers.find(`option[data-value="${$(this).val()}"]`).attr("data-id") || null;
     let cliente  = articlesDocuments.customers.filter(cust => cust.data.cliente_id === cliente_uuid)
     if(cliente.length > 0){
         articlesDocuments.customer_id = cliente[0].data.cliente_id;
-        $("[cliente_titular]").val(cliente[0].data.cliente_titular);
-        $("[cliente_nif]").val((cliente[0].data.cliente_nif || ""));
-        $("[cliente_contacto]").val((cliente[0].data.cliente_contactos.length > 0 ? cliente[0].data.cliente_contactos[0] : ""));
+        $(` ${modal} [cliente_titular]`).val(cliente[0].data.cliente_titular);
+        $(` ${modal} [cliente_nif]`).val((cliente[0].data.cliente_nif || ""));
+        $(` ${modal} [cliente_contacto]`).val((cliente[0].data.cliente_contactos.length > 0 ? cliente[0].data.cliente_contactos[0] : ""));
     }
     else {
         articlesDocuments.customer_id = null;
-        $("[cliente_titular], [cliente_nif], [cliente_contacto]").val("");
+        $(` ${modal} [cliente_titular], ${modal} [cliente_nif], ${modal} [cliente_contacto]`).val("");
     }
 });
 $("[addArticleTable]").on("click",function (e) {
     articlesDocuments.addArticleTable();
 });
 $("[tableDocumentArticles]").on("click", ".delete", function () {
+    let modal = window.xModalGeral || ""
     $(this).closest("ul").remove();
-    if($("[tableDocumentArticles]").find(`ul`).length === 0) $("[tableDocumentArticles]").addClass("empty");
-    else $("[tableDocumentArticles]").removeClass("empty");
+    if($(` ${modal} [tableDocumentArticles]`).find(`ul`).length === 0) $(`${modal} [tableDocumentArticles]`).addClass("empty");
+    else $(`${modal} [tableDocumentArticles] `).removeClass("empty");
 });
