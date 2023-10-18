@@ -31,7 +31,7 @@ Object.entries(nets).forEach((next) => {
             tooltip: `Abrir com endereço de ${name} | ${address.address}`,
             enabled: true,
             click(): any {
-                sys.openApp({address: address.address})
+                sys.openApp({ address: address.address })
             }
         })
     })
@@ -89,8 +89,13 @@ async function  __createBackup( withCluster:boolean, complete:boolean ) {
             appends.push({folder:  folders.storage, dest: "/storage"})
         }
 
-        let result = await saveBackup( dumps, withCluster, ...appends
-        );
+        let result = await saveBackup( {
+            appends: appends,
+            dumps: dumps,
+            cluster: true,
+            clusterSafe: true
+        });
+
         if( result.error || !result.accept ){
             return toastMessage(`Falha ao criar backups! Message = "${result.message||result?.error.message}"` );
         }
@@ -99,10 +104,12 @@ async function  __createBackup( withCluster:boolean, complete:boolean ) {
         let username = custer.cluster_name || custer.cluster_path || os.userInfo().username;
         username = username.split("/").join(".");
 
+        username = username.replace(/[^a-zA-Z0-9]/g, "_");
+        let _nanoid = nanoid(16).replace(/[^a-zA-Z0-9]/g, "_");
 
-        let time = moment().format("yyyyMMDD-HHmmss");
-        let filename = `lumaguita-backup-${username}-${time}.zip`;
-        let url = `backup/${nanoid(16)}/${filename}`;
+        let time = moment().format("yyyyMMDD-HHmmss").replace(/[^a-zA-Z0-9]/g, "_");
+        let filename = `lumaguita-backup-${ username }-${ time }.zip`;
+        let url = `backup/${ _nanoid }/${ filename }`;
         let backup = result.backup;
 
         let onComplete = ()=>{
