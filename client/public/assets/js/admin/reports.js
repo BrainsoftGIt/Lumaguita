@@ -420,7 +420,7 @@ var report = {
             method: "POST",
             contentType: "application/json",
             data: JSON.stringify({
-                arg_datainicio: new Date(yfiltrarear, month-1, 1).getDateEn(),
+                arg_datainicio: new Date(year, month-1, 1).getDateEn(),
                 arg_datafim: new Date(year, month, 0).getDateEn()
             }),
             success(ordenList) {
