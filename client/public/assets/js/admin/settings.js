@@ -735,11 +735,11 @@ $("#empresa_cabecalho").on("change", function (){
         image.onload = function () {
             let height = this.height;
             let width = this.width;
-            if(width === 796 && height === 111){
+            if(width === 892 && height === 196){
                 $("#empresa_cabecalho_nome").text(file.name);
             }
             else{
-                xAlert("Cabeçalho da instituição", "Tamanho de ficheiro negado. Permitido (796 x 111)!", "error");
+                xAlert("Cabeçalho da instituição", "Tamanho de ficheiro negado. Permitido (892 x 196)!", "error");
                 $("#empresa_cabecalho").val("");
                 $("#empresa_cabecalho_nome").text("");
             }
