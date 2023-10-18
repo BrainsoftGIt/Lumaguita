@@ -614,55 +614,6 @@
 			</div>
 		</div>
 	</div>
-	<div id="xModalEfatura" class="x-mobdal XM-Efatura flex v-ct h-ct hideTarget" target="xModalEfatura">
-		<div class="modal-frame j-stp">
-			<h3 targetTitle></h3>
-			<div class="xform">
-				<div class="xselect w100">
-					<input type="text" readonly placeholder="_">
-					<label>Tipos de série</label>
-					<ul id="tipo_serie_efatura">
-						<li class="tgl" tipo_id="1" tipo_sigla="FT-">Fatura</li>
-						<li class="tgl" tipo_id="2" tipo_sigla="FR-">Fatura Recibo</li>
-						<li class="tgl" tipo_id="3" tipo_sigla="RE-">Recibo</li>
-					</ul>
-					<div class="fakearrow flex"><span></span><span></span></div>
-				</div>
-				<div class="xselect w100">
-					<input type="text" readonly placeholder="_">
-					<label>Armazém</label>
-					<ul id="armazem_efatura">
-					</ul>
-					<div class="fakearrow flex"><span></span><span></span></div>
-				</div>
-				<div class="xinput grow-1 w100">
-					<input type="text" id="designacao_serie_efatura">
-					<label for="designacao_serie_efatura">Designação</label>
-				</div>
-				<div class="xinput grow-1 w100">
-					<input type="text" id="numero_serie_efatura" class="integer" maxlength="10" disabled>
-					<label for="numero_serie_efatura">Número de série</label>
-				</div>
-				<div class="xinput grow-1 w100">
-					<input type="text" id="quantidade_serie_efatura" class="integer">
-					<label for="quantidade_serie_efatura">Quantidade</label>
-				</div>
-				<div class="xinput grow-1 w100">
-					<input type="text" id="numero_autorizacao_serie" class="integer">
-					<label for="numero_autorizacao_serie">Número de autorização</label>
-				</div>
-			</div>
-			<div class="master-btn-right flex">
-				<span class="hideTarget" target="xModalEfatura">CANCELAR</span>
-				<span class="flex v-ct" bt_efatura>
-					CONCLUIR
-					<svg class="spinner" viewBox="0 0 50 50">
-						<circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
-					</svg>
-				</span>
-			</div>
-		</div>
-	</div>
 	<div id="xModalEfaturaV2" class="x-mobdal XM-printSett flex v-ct h-ct hideTarget haveKuchen" target="xModalEfaturaV2">
 		<div class="modal-frame j-stp">
 			<h3>Definições de Autorização / Serie</h3>
@@ -675,12 +626,17 @@
 							<label>Tipos de série</label>
 							<ul id="tipo_serie_efaturav2">
 								<li noremove="true" class="tgl" tipo_id="1" tipo_sigla="FT-">Fatura</li>
-								<li noremove="false" class="tgl" tipo_id="2" tipo_sigla="FR-">Fatura Recibo</li>
-								<li noremove="false" class="tgl" tipo_id="3" tipo_sigla="RE-">Recibo</li>
-								<li noremove="false" class="tgl" tipo_id="4" tipo_sigla="NC-">Nota de Crédito</li>
-								<li noremove="false" class="tgl" tipo_id="5" tipo_sigla="GS-">Guia de Saída</li>
+								<li noremove="true" class="tgl" tipo_id="2" tipo_sigla="FR-">Fatura Recibo</li>
+								<li noremove="true" class="tgl" tipo_id="3" tipo_sigla="RE-">Recibo</li>
+								<li noremove="true" class="tgl" tipo_id="4" tipo_sigla="NC-">Nota de Crédito</li>
+								<li noremove="true" class="tgl" tipo_id="8" tipo_sigla="NC-">Nota de Debito</li>
+								<li noremove="true" class="tgl" tipo_id="5" tipo_sigla="GS-">Guia de Saída</li>
 							</ul>
 							<div class="fakearrow flex"><span></span><span></span></div>
+						</div>
+						<div class="xinput grow-1 w50">
+							<input type="text" id="name_seire_efaturav2" class="integer">
+							<label for="name_seire_efaturav2">Nome</label>
 						</div>
 						<div class="xinput grow-1 w100">
 							<input type="text" id="numero_serie_efaturav2" class="integer" maxlength="10" disabled>

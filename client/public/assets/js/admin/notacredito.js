@@ -102,7 +102,8 @@ var notacredito = {
                 conta_chave,
                 itens
             }),
-            success: ({data : {conta : { conta_id } }, result, message}) => {
+            success: ({data, result, message}) => {
+                let {conta : { conta_id } } = data || {};
                 if(result){
                     xAlert("Nota de credito", "Operação efetuada com sucesso!");
                     $(`${modal} [tableDocumentArticles]`).empty().addClass("empty");

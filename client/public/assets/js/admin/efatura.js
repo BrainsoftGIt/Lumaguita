@@ -293,9 +293,10 @@ $("[novaSerieEfatura]").on("click", function () {
 $("#tipo_serie_efatura, #tipo_serie_efaturav2").on("mousedown", "li", function () {
     efatura.current_type_serie = $(this).attr("tipo_sigla");
     $("#numero_serie_efatura, #numero_serie_efaturav2").val($(this).attr("tipo_sigla")).attr("disabled", false);
+    $("#name_seire_efaturav2").val($(this).text());
 });
 
-$('#numero_serie_efatura, #numero_serie_efaturav2').keyup(function() {
+$('#numero_serie_efatura, #numero_serie_efaturav2').on("keyup", function() {
     if($(this).val().includes(efatura.current_type_serie)) $(this).val($(this).val());
     else $(this).val( efatura.current_type_serie);
 });
@@ -317,6 +318,7 @@ $("#ConfiguredSerie")
         $('#quantidade_serie_efaturav2').val(serie_quantidade);
         $('#numero_autorizacao_seriev2').val(serie_numatorizacao);
         $('#numero_serie_efaturav2').val(serie_numerotext);
+        $("#name_seire_efaturav2").val($(this).text());
         loadAllSerieaAdded()
     })
     .on("click", ".delete", function (){
