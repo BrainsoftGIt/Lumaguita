@@ -115,6 +115,11 @@ var efatura = {
                 return
             }
 
+            if(!numero_serie_efaturav2.val().split("-")[1]){
+                xAlert("Série", "Configuração de série atualizada com sucesso!");
+                return;
+            }
+
             let serie_designacao = $("#name_seire_efaturav2").val().trim();
             if (serie_designacao[serie_designacao.length - 1] === "-") {
                 serie_designacao = serie_designacao.substring(0, serie_designacao.length - 1).trim();
