@@ -1,6 +1,8 @@
 import { catchAll, catchLast, Templates } from "zoo.pg";
 import {  factory } from "../../../service/database.service";
 import {args} from "../../../global/args";
+import {dbRes} from "../../../service/database.service/kitres/res";
+import {Result} from "kitres";
 
 
 export function functLoadCategories(args) {
@@ -123,6 +125,29 @@ export function funct_load_imposto_simple(paramn) {
     return catchAll(
         sql `select * from tweeks.main( 'tweeks.funct_load_tipoimposto_simple', ${paramn}, ${  args.appMode}) data`
     );
+}
+
+export function functLoadSerieDistribuicao(args) {
+    return new Promise((resolve) => {
+        dbRes.call.tweeks.funct_load_serie_distribuicao({ args }, {
+            onResult(error: Error, result?: Result<any, any>): any {
+                if( error ){
+                    resolve({
+                        result:false,
+                        message: error.message,
+                        hint: error
+                    })
+                    return;
+                }
+
+                resolve({
+                    result: !!result?.rows?.[0]?.["result"],
+                    message: result?.rows?.[0]?.["message"] || "",
+                    data:result?.rows
+                })
+            }
+        })
+    })
 }
 
 

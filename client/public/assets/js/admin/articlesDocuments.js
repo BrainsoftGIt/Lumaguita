@@ -27,6 +27,23 @@ var articlesDocuments = {
             }
         });
     },
+    loadSerieDistribuicao(tserie_id){
+        $.ajax({
+            url: "/api/load/futura/article",
+            method: "POST",
+            contentType: "application/json",
+            data: JSON.stringify({
+                tserie_id
+            }),
+            success({data}) {
+                let datalist_customers = $(`[listFatura][f${tserie_id}]`);
+                datalist_customers.empty();
+                (data || []).forEach((cust, idx) =>{
+                    datalist_customers.append(`<option  data-id=${cust.serie_id} data-imposto="${cust.tserie_financa}">${cust.autorizacao_designacao}</option>`);
+                });
+            }
+        });
+    },
     search_article(){
         articlesDocuments.article_id = null;
         let modal = window.xModalGeral || ""

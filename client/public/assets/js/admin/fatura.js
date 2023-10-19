@@ -318,6 +318,9 @@ $("#finalizar_fatura").on("click", function () {
         }
     });
 });
+
+articlesDocuments.loadSerieDistribuicao(serieOperation.tipo.fatura)
+
 $("#listProformAccounts").on("click", ".editar", function () {
     let modal = window.xModalGeral || ""
     $(`${modal} [search_customer]`).val($(this).parents("ul").find("li").eq(2).text()).keyup();

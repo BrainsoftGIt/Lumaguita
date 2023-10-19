@@ -115,12 +115,17 @@ var efatura = {
                 return
             }
 
+            let serie_designacao = $("#name_seire_efaturav2").val().trim();
+            if (serie_designacao[serie_designacao.length - 1] === "-") {
+                serie_designacao = serie_designacao.substring(0, serie_designacao.length - 1).trim();
+            }
+
             let { serie_id, serie_espaco_id } = efatura?.authorization?.serie?.selected || {};
             series.push({
                 serie_id: serie_id || null,
                 serie_tserie_id: tipo_serie_efaturav2.find("li.active").attr("tipo_id"),
                 serie_espaco_id: serie_espaco_id || null,
-                serie_designacao: $("#name_seire_efaturav2").val(),
+                serie_designacao,
                 serie_numerotext: numero_serie_efaturav2.val(),
                 serie_numero: numero_serie_efaturav2.val().split("-")[1],
                 serie_quantidade: quantidade_serie_efaturav2.val(),
@@ -296,13 +301,18 @@ $("[novaSerieEfatura]").on("click", function () {
 
 $("#tipo_serie_efatura, #tipo_serie_efaturav2").on("mousedown", "li", function () {
     efatura.current_type_serie = $(this).attr("tipo_sigla");
+    efatura.current_name_serie = `${$(this).text()} - `;
     $("#numero_serie_efatura, #numero_serie_efaturav2").val($(this).attr("tipo_sigla")).attr("disabled", false);
-    $("#name_seire_efaturav2").val($(this).text());
+    $("#name_seire_efaturav2").val(efatura.current_name_serie);
 });
 
 $('#numero_serie_efatura, #numero_serie_efaturav2').on("keyup", function() {
     if($(this).val().includes(efatura.current_type_serie)) $(this).val($(this).val());
     else $(this).val( efatura.current_type_serie);
+});
+$('#name_seire_efaturav2').on("keyup", function() {
+    if($(this).val().includes(efatura.current_name_serie)) $(this).val($(this).val());
+    else $(this).val(efatura.current_name_serie);
 });
 
 

@@ -425,3 +425,11 @@ app.post("/api/search/article/code", async (req, res) => {
     res.json({data: response.rows});
 });
 
+app.post("/api/load/futura/article", async (req, res) => {
+    const {functLoadSerieDistribuicao} = require("../db/call-function-article");
+    req.body.arg_espaco_auth = req.session.auth_data.auth.armazem_atual;
+    req.body.arg_colaborador_id = req.session.auth_data.auth.colaborador_id;
+    const response = await functLoadSerieDistribuicao(req.body);
+    res.json(response);
+});
+

@@ -138,6 +138,7 @@ var notacredito = {
 }
 
 serieOperation.loadSerieOperation([serieOperation.tipo.notaCredito]);
+articlesDocuments.loadSerieDistribuicao(serieOperation.tipo.notaCredito)
 
 $("[pesquisarFatura]").on("keyup", function ({keyCode}){
     let { loadData } = notacredito;
