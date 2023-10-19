@@ -7,7 +7,7 @@
     }
     [tableDocumentArticles] {
         height: 32vh;
-        overflow-y: scroll;
+        overflow-y: auto;
         margin-bottom: 10px;
     }
     .empty:after{
@@ -67,11 +67,11 @@
                 <textarea placeholder="_" _noObrigatory="true" id="observacao_fatura" ></textarea>
                 <label for="observacao_fatura">Termos</label>
             </div>
-            <div class="xinput w25">
+            <div class="xinput w20">
                 <input type="text" search_article list="faturaArtigos" placeholder="_">
                 <label>Pesquisar artigo (nome ou código)</label>
             </div>
-            <div class="xinput w25">
+            <div class="xinput w15">
                 <input type="text" placeholder="Descrição" description_article>
                 <label>Descrição</label>
             </div>
@@ -82,6 +82,10 @@
             <div class="xinput w15">
                 <input type="text" placeholder="Valor unitário" class="double formatNumber" price_article>
                 <label>Valor unitário</label>
+            </div>
+            <div class="xinput w12">
+                <input type="text" placeholder="Codigo Imposto" class="integer" codigo_imposto_article>
+                <label>Codigo Imposto</label>
             </div>
             <div class="xinput w15" style="display: none">
                 <input type="text" placeholder="Lote" lote_article _noObrigatory="true">

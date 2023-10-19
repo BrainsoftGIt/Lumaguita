@@ -1159,6 +1159,9 @@ input[type=number] {
 .xform .w8 {
   width: 7%;
 }
+.xform .w12 {
+  width: 11%;
+}
 .xform .ml1 {
   margin-left: 1rem;
 }
