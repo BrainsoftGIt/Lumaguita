@@ -8,6 +8,12 @@
     overflow-y: scroll;
     margin-bottom: 10px;
   }
+  .empty:after{
+    position: absolute;
+    top: 50%; /* Centraliza verticalmente */
+    left: 50%; /* Centraliza horizontalmente */
+    transform: translate(-50%, -50%); /* Isso corrige o deslocamento para o centro */
+  }
 </style>
 <div class="__included__ colabs">
   <div class="_head flex h-sb v-ct">
