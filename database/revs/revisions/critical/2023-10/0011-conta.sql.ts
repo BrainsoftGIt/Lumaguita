@@ -8,9 +8,14 @@ alter table tweeks.conta add column conta_docorigin character varying default nu
 `;
 
 
-export const aleter_tweeks_artigo_add_codigoimposto = patchSQL({ unique: true }).sql`
-alter table tweeks.artigo add column artigo_codigoimposto_notacredito character varying default null;
-alter table tweeks.artigo add column artigo_codigoimposto_notadebito character varying default null;
+export const aleter_tweeks_artigo_alter_codigoimposto = patchSQL({ unique: true }).sql`
+alter table tweeks.artigo drop column if exists artigo_codigoimposto_notacredito;
+alter table tweeks.artigo drop column if exists artigo_codigoimposto_notadebito;
+alter table tweeks.artigo alter column artigo_codigoimposto type jsonb using jsonb_build_object(
+  'FATURACAO', artigo_codigoimposto,
+  'NOTACREDITO', NULL,
+  'NOTADEBITO', NULL
+);
 `;
 
 
