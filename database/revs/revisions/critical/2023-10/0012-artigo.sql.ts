@@ -107,22 +107,6 @@ begin
               format( '%s %s %s', f.artigo_codigo, f.artigo_nome, f.artigo_descricao ) as _search_term
             from __filter f
             where arg_classe_id is not null or f.artigo_classe_id != _const.classe_itemextra
-            order by
-              case
-                when f.artigo_estado = _const.artigo_estado_ativo then 1
-                else 2
-              end,
-              case
-                when f.artigo_espaco_auth = arg_espaco_auth then 1
-                when f.artigo_espaco_auth = any( arg_espaco_childs ) then 2
-                else 3
-              end,
-              case
-                when stock_quantidade < f.stock_minimo then 1
-                when stock_quantidade = f.stock_minimo then 2
-                else 3
-               end,
-               f.artigo_nome
            ), __query as (
              select *
                 from __filter_query _f
@@ -135,7 +119,20 @@ begin
                     or lower( _f.artigo_nome) like lower( format( '%%%s%%', coalesce( _query_any, _f.artigo_nome ) ) )
                     or lower( coalesce( _f.artigo_descricao, '' ) ) like lower( format( '%%%s%%', coalesce( _query_any, _f.artigo_descricao, '' ) ))
                   )
+             order by
+                 case
+                     when _f.artigo_estado = _const.artigo_estado_ativo then 1
+                     else 2
+                     end,
+                 case
+                     when _f.artigo_espaco_auth = arg_espaco_auth then 1
+                     when _f.artigo_espaco_auth = any( arg_espaco_childs ) then 2
+                     else 3
+                     end,
+                 _f.artigo_nome desc
+                
           ) select to_jsonb( _q ) - 'links'
+            
               from __query _q
     ;
 end
@@ -213,7 +210,11 @@ declare
 begin
   
     if jsonb_typeof(args->'artigo_codigoimposto' ) != 'object' then
-        args := args || jsonb_build_object( 'artigo_codigoimposto', args->'artigo_codigoimposto' );
+        args := args || jsonb_build_object( 'artigo_codigoimposto', jsonb_build_object(
+          'FATURACAO', args->'artigo_codigoimposto',
+          'NOTACREDITO', null,
+          'NOTADEBITO', null
+        ));
     end if;
 
     _const := map.constant();
