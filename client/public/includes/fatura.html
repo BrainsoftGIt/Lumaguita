@@ -1,6 +1,16 @@
 <link rel="stylesheet" href="../assets/css/admin/inpage.css">
 <link rel="stylesheet" href="../assets/css/admin/fatura.css">
 <link rel="stylesheet" href="../assets/css/admin/tableAdmin.css">
+<style>
+    .noborder {
+        overflow-y: hidden!important;
+    }
+    [tableDocumentArticles] {
+        height: 32vh;
+        overflow-y: scroll;
+        margin-bottom: 10px;
+    }
+</style>
 <div class="__included__ fatura inpage">
     <div class="_head flex h-sb v-ct">
         <div class="inLeft">
@@ -18,7 +28,7 @@
     </datalist>
     <datalist id="faturaArtigos" artigos>
     </datalist>
-    <div class="_body" id="faturaAdmin">
+    <div class="_body noborder" id="faturaAdmin">
         <div class="inputs flex xform">
             <div class="xselect flutuate w15">
                 <input type="text" readonly placeholder="_">
@@ -114,7 +124,7 @@
             </div>
         </div>
         <div class="flex h-sb v-ct" style="float: right;">
-            <button class="xbtn" id="finalizar_fatura">Finalizar fatura</button>
+            <button class="xbtn" id="finalizar_fatura">Finalizar</button>
             <button class="xbtn  hideTarget" target="xModalOpenFatura" hideModal style="display: none">Cancelar</button>
         </div>
     </div>

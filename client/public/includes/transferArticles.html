@@ -1,4 +1,14 @@
 <link rel="stylesheet" href="../assets/css/admin/tableAdmin.css">
+<style>
+  .noborder {
+    overflow-y: hidden!important;
+  }
+  [tableDocumentArticles] {
+    height: 38vh;
+    overflow-y: scroll;
+    margin-bottom: 10px;
+  }
+</style>
 <div class="__included__ colabs">
   <div class="_head flex h-sb v-ct">
     <div class="inLeft">
@@ -7,7 +17,7 @@
   </div>
   <datalist id="transfArtigos" artigos>
   </datalist>
-  <div class="_body" id="transferArticlesBody">
+  <div class="_body noborder" id="transferArticlesBody">
       <h3></h3>
       <div class="flex">
         <div class="inputs flex xform">
@@ -75,7 +85,7 @@
         </div>
       </div>
       <div class="flex h-sb v-ct" style="float: right;">
-        <button class="xbtn" id="finalizar_transferencia">Finalizar transferência</button>
+        <button class="xbtn" id="finalizar_transferencia">Finalizar</button>
       </div>
   </div>
 </div>

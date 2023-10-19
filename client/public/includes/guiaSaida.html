@@ -1,5 +1,15 @@
 <link rel="stylesheet" href="../assets/css/admin/inpage.css">
 <link rel="stylesheet" href="../assets/css/admin/tableAdmin.css">
+<style>
+    .noborder {
+        overflow-y: hidden!important;
+    }
+    [tableDocumentArticles] {
+        height: 50vh;
+        margin-bottom: 10px;
+        overflow-y: scroll;
+    }
+</style>
 <div class="__included__ inpage ">
     <div class="_head flex h-sb v-ct">
         <div class="inLeft">
@@ -14,7 +24,7 @@
     </datalist>
     <datalist id="guiaSaidaArtigos" artigos>
     </datalist>
-    <div class="_body" id="GuiaSaida">
+    <div class="_body noborder" id="GuiaSaida">
         <div class="inputs flex xform">
             <div class="w100">
                 <div class="xinput w25">
@@ -82,7 +92,7 @@
             </div>
         </div>
         <div class="flex h-sb v-ct" style="float: right;">
-            <button class="xbtn" id="finalizar_guia_saida">Finalizar guia de saída</button>
+            <button class="xbtn" id="finalizar_guia_saida">Finalizar</button>
         </div>
     </div>
 </div>
