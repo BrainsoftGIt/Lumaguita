@@ -221,6 +221,10 @@ end;
 $$;
 `;
 
+export const const_serie_estado_anulado = sql`
+select map.constant('maguita_serie_estado_anulado', 'int2', -1 );
+`;
+
 export const setsAutorizacao = sql `
 create or replace function tweeks.funct_sets_autorizacao(args jsonb) returns lib.res
   language plpgsql
@@ -300,7 +304,7 @@ begin
   
   -- Desativar todas as series que não fazem mais parte de autorizacao
   update tweeks.serie
-    set serie_estado = _const.maguita_serie_estado_fechado
+    set serie_estado = _const.maguita_serie_estado_anulado
     where serie_id != all( __serie_aturizacao )
       and serie_autorizacao_uid = _autorizacao.autorizacao_uid
       and serie_estado = _const.maguita_serie_estado_ativo
