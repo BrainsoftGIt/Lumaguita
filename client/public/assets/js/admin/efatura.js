@@ -143,6 +143,7 @@ var efatura = {
             numero_serie_efaturav2.val("");
             quantidade_serie_efaturav2.val("");
             numero_autorizacao_seriev2.val("");
+            serie_designacao.val("");
 
             loadAllSerieaAdded();
         },
@@ -332,8 +333,7 @@ $("#ConfiguredSerie")
         let { authorization: { series, loadAllSerieaAdded } } = efatura;
         efatura.authorization.serie.selected = series.splice(index, 1)[0];
         let { serie_tserie_id, serie_numerotext, serie_designacao, serie_quantidade, serie_numatorizacao } = efatura.authorization.serie.selected;
-        let tipo_serie_efaturav2 = $(`#tipo_serie_efaturav2 [tipo_id='${serie_tserie_id}']`);
-        console.log(tipo_serie_efaturav2, serie_tserie_id)
+        let tipo_serie_efaturav2 = $(`#tipo_serie_efaturav2 [tipo_id='${serie_tserie_id}']`).mousedown();
         tipo_serie_efaturav2.show().addClass("active").siblings().removeClass("active");
         $('[inp="tipo_serie_efaturav2"]').val(tipo_serie_efaturav2.text());
         $('#quantidade_serie_efaturav2').val(serie_quantidade);
