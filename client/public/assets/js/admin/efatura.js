@@ -139,10 +139,12 @@ var efatura = {
         loadAllSerieaAdded : () => {
             let { authorization: { series } } = efatura;
             $("#ConfiguredSerie").empty();
-            return series.forEach(({ serie_designacao, serie_numerotext, serie_quantidade, serie_numatorizacao }) =>  {
+            return series.forEach(({ serie_designacao, serie_numerotext, serie_quantidade, serie_numatorizacao, serie_tserie_id }) =>  {
+                let tipo_serie_efaturav2 = $(`#tipo_serie_efaturav2 [tipo_id='${serie_tserie_id}']`);
                  $("#ConfiguredSerie").append(`
                         <li>
-                            <span class="flex h-sb"><small>Tipo</small><small class="nome_impressora">${serie_designacao}</small></span>
+                            <span class="flex h-sb"><small>Tipo</small><small class="nome_impressora">${tipo_serie_efaturav2.text()}</small></span>
+                            <span class="flex h-sb"><small>Nome</small><small class="nome_impressora">${serie_designacao}</small></span>
                             <span class="flex h-sb"><small>Qta.</small><small class="nome_impressora">${serie_quantidade}</small></span>
                             <span class="flex h-sb"><small>Número</small><small class="nome_impressora">${serie_numerotext}</small></span>
                             <span class="flex h-sb"><small>Nº Certificação</small><small class="nome_impressora">${serie_numatorizacao}</small></span>
