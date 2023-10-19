@@ -6,6 +6,20 @@ alter table tweeks.conta add column conta_docorigin character varying default nu
   add column conta_datedocorigin date default null
 ;
 `;
+
+
+export const aleter_tweeks_artigo_add_codigoimposto = patchSQL({ unique: true }).sql`
+alter table tweeks.artigo add column artigo_codigoimposto_notacredito character varying default null;
+alter table tweeks.artigo add column artigo_codigoimposto_notadebito character varying default null;
+`;
+
+
+
+export const alter_venda_add_venda_codigo_imposto = patchSQL({ unique: true }).sql`
+alter table tweeks.venda add column venda_codigoimposto character varying default null;
+`;
+
+
 export const funct_pos_change_conta_fechar = sql`
 create or replace function tweeks.funct_pos_change_conta_fechar(args jsonb) returns lib.res
   language plpgsql
