@@ -1,5 +1,11 @@
-import {sql} from "kitres";
+import {patchSQL, sql} from "kitres";
 
+
+export const alter_conta_add_origem = patchSQL({ unique: true }).sql`
+alter table tweeks.conta add column conta_docorigin character varying default null,
+  add column conta_datedocorigin date default null
+;
+`;
 export const funct_pos_change_conta_fechar = sql`
 create or replace function tweeks.funct_pos_change_conta_fechar(args jsonb) returns lib.res
   language plpgsql

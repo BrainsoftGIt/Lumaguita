@@ -1,4 +1,5 @@
 import {sql} from "kitres";
+import {SQL} from "kitres/src/core/pg-core/scape";
 
 export const __sets_generate_documento = sql`
 drop function if exists tweeks.__sets_generate_documento(arg_espaco_auth uuid, arg_tserie integer);
@@ -300,7 +301,7 @@ begin
   -- Desativar todas as series que não fazem mais parte de autorizacao
   update tweeks.serie
     set serie_estado = _const.maguita_serie_estado_fechado
-    where serie_id !all( __serie_aturizacao )
+    where serie_id != all( __serie_aturizacao )
       and serie_autorizacao_uid = _autorizacao.autorizacao_uid
       and serie_estado = _const.maguita_serie_estado_ativo
   ;
