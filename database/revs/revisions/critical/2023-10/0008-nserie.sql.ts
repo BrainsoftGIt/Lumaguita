@@ -88,6 +88,48 @@ end;
 $$;
 `;
 
+export const funct_load_serie = sql`
+create or replace function tweeks.funct_load_serie(args jsonb)
+  returns setof jsonb
+  language plpgsql
+as
+$$
+declare
+  /**
+    arg_espaco_auth
+    arg_colaborador_id
+    arg_autorizacao_id
+   */
+  _const map.constant;
+  arg_espaco_auth uuid default args->>'arg_espaco_auth';
+  arg_autorizacao_id uuid default args->>'arg_autorizacao_id';
+  arg_colaborador_id uuid default args->>'arg_colaborador_id';
+  ___branch_uid uuid;
+  _espaco_child uuid[] default rule.espaco_get_childrens_static( arg_espaco_auth );
+begin
+  _const := map.constant();
+  ___branch_uid := tweeks.__branch_uid( null, arg_espaco_auth );
+  return query
+    with
+      __serie as (
+        select _vs.*,
+            e.espaco_id,
+            e.espaco_nome
+          from tweeks.serie _vs
+            inner join tweeks.espaco e on _vs.serie_espaco_id = e.espaco_id
+          where _vs._branch_uid = ___branch_uid
+            and coalesce( _vs.serie_autorizacao_uid ) = coalesce( arg_autorizacao_id, _vs.serie_autorizacao_uid )
+            and true in (
+              _vs.serie_espaco_auth = any( _espaco_child ),
+              _vs.serie_espaco_id = any( _espaco_child )
+            ) and _vs.serie_estado != _const.maguita_serie_estado_anulado
+      )
+    select to_jsonb( _s )
+      from __serie _s;
+end;
+$$;
+`;
+
 
 
 
