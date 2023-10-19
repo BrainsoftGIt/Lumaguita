@@ -36,10 +36,10 @@ var articlesDocuments = {
                 tserie_id
             }),
             success({data}) {
-                let datalist_customers = $(`[listFatura][f${tserie_id}]`);
+                let datalist_customers = $(`[listFatura]#f${tserie_id}`);
                 datalist_customers.empty();
                 (data || []).forEach((cust, idx) =>{
-                    datalist_customers.append(`<option  data-id=${cust.serie_id} data-imposto="${cust.tserie_financa}">${cust.serie_designacao}</option>`);
+                    datalist_customers.append(`<li data-id=${cust.serie_id} data-imposto="${cust.tserie_financa}">${cust.serie_designacao}</li>`);
                 });
             }
         });

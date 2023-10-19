@@ -116,7 +116,7 @@ var efatura = {
             }
 
             if(!numero_serie_efaturav2.val().split("-")[1]){
-                xAlert("Série", "Configuração de série atualizada com sucesso!");
+                xAlert("Série", "Insira o número de serie!", "error");
                 return;
             }
 
