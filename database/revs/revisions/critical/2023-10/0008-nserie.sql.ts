@@ -70,7 +70,20 @@ begin
 
   return query
     with __autorizacao as (
-      select *
+      select
+          s.serie_id,
+          s.serie_numero,
+          s.serie_designacao,
+          s.serie_sequencia,
+          s.serie_numcertificacao,
+          s.serie_quantidade,
+          a.autorizacao_uid,
+          a.autorizacao_ano,
+          ts.tserie_id,
+          ts.tserie_financa,
+          ts.tserie_desc,
+          ts.tserie_numlimit,
+          ts.tserie_seqlimit
         from tweeks.serie s
           inner join tweeks.autorizacao a on s.serie_autorizacao_uid = a.autorizacao_uid
           inner join tserie ts on s.serie_tserie_id = ts.tserie_id
