@@ -6,7 +6,7 @@
     }
     [tableDocumentArticles] {
         height: 32vh;
-        overflow-y: scroll;
+        overflow-y: auto;
         margin-bottom: 10px;
     }
     .empty:after{
@@ -62,17 +62,21 @@
                 <textarea placeholder="_" _noObrigatory="true" id="proforma_admin_termos"></textarea>
                 <label for="proforma_admin_termos">Termos</label>
             </div>
-            <div class="xinput w30">
+            <div class="xinput w25">
                 <input type="text" placeholder="Pesquisar artigo" search_article list="faturaProformaArtigos">
                 <label>Pesquisar artigo (nome ou código)</label>
             </div>
-            <div class="xinput w30">
+            <div class="xinput w15">
                 <input type="text" placeholder="Descrição" description_article>
                 <label>Descrição</label>
             </div>
             <div class="xinput w8">
                 <input type="text" placeholder="Quantidade" class="double" amount_article>
                 <label>Qtd</label>
+            </div>
+            <div class="xinput w12">
+                <input type="text" placeholder="Codigo Imposto" class="integer" codigo_imposto_article>
+                <label>Codigo Imposto</label>
             </div>
             <div class="xinput w15">
                 <input type="text" placeholder="Valor unitário" price_article class="double formatNumber">
@@ -87,8 +91,8 @@
                 <input type="text" placeholder="Lote" lote_article _noObrigatory="true">
                 <label>Lote</label>
             </div>
-            <div class="flex v-ct h-sa w20">
-                <div class="xinput w50">
+            <div class="flex v-ct h-sa w12">
+                <div class="xinput w100">
                     <input type="text" placeholder="Imposto" imposto _noObrigatory="true" disabled>
                     <label>Imposto</label>
                 </div>

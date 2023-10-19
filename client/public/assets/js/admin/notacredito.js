@@ -137,6 +137,8 @@ var notacredito = {
     }
 }
 
+serieOperation.loadSerieOperation([serieOperation.tipo.notaCredito]);
+
 $("[pesquisarFatura]").on("keyup", function ({keyCode}){
     let { loadData } = notacredito;
     if(keyCode === 13 && $(this).val()){

@@ -7,7 +7,7 @@
     }
     [tableDocumentArticles] {
         height: 23vh;
-        overflow-y: scroll;
+        overflow-y: auto;
         margin-bottom: 10px;
     }
     .empty:after{
@@ -79,13 +79,17 @@
                 <input type="text" search_article list="faturaArtigos" placeholder="_">
                 <label>Pesquisar artigo (nome ou código)</label>
             </div>
-            <div class="xinput w25">
+            <div class="xinput w20">
                 <input type="text" placeholder="Descrição" description_article>
                 <label>Descrição</label>
             </div>
             <div class="xinput w8">
                 <input type="text" placeholder="Quantidade" class="double" amount_article>
                 <label>Qtd</label>
+            </div>
+            <div class="xinput w15">
+                <input type="text" placeholder="Codigo Imposto" class="integer" codigo_imposto_article>
+                <label>Codigo Imposto</label>
             </div>
             <div class="xinput w15">
                 <input type="text" placeholder="Valor unitário" class="double formatNumber" price_article>
@@ -100,12 +104,12 @@
                        date_expiration_article _noObrigatory="true">
                 <label>Data de validade</label>
             </div>
-            <div class="flex v-ct h-sa w30">
-                <div class="xinput w50">
+            <div class="flex v-ct h-sa w15">
+                <div class="xinput w100">
                     <input type="text" placeholder="Imposto" imposto _noObrigatory="true" disabled>
                     <label>Imposto</label>
                 </div>
-                <div class="xcheck w100" style="padding-left: 0.7rem; display: none">
+                <!--<div class="xcheck w100" style="padding-left: 0.7rem; display: none">
                     <ul>
                         <li class="stgl" isencaoImposto>Isenção de imposto</li>
                     </ul>
@@ -114,7 +118,7 @@
                     <ul>
                         <li class="stgl" imprimirGuiaSaida>Imprimir guia de saída</li>
                     </ul>
-                </div>
+                </div>-->
             </div>
             <div class="flex h-sb v-ct" style="float: right;">
                 <button class="xbtn" addArticleTable>Lançar</button>
@@ -203,3 +207,6 @@
 <script src="../assets/js/admin/fatura.js"></script>
 <script src="../assets/js/admin/articleTax.js"></script>
 <script src="../assets/js/admin/articlesDocuments.js"></script>
+<script>
+    serieOperation.loadSerieOperation([serieOperation.tipo.notaDebito]);
+</script>
