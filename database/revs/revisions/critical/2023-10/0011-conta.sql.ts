@@ -21,7 +21,7 @@ alter table tweeks.artigo alter column artigo_codigoimposto type jsonb using jso
 
 
 export const alter_venda_add_venda_codigo_imposto = patchSQL({ unique: true }).sql`
-alter table tweeks.venda add column venda_codigoimposto character varying default null;
+alter table tweeks.venda add column if not exists venda_codigoimposto character varying default null;
 `;
 
 
