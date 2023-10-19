@@ -33,7 +33,7 @@ begin
          coalesce( ct.conta_titularnif, cli.cliente_nif ) as nif_consumidor,
          abs( ve.venda_montantesemimposto::numeric(100,6) ) as total_valor_itens,
          tx.taxa_percentagem as taxa_aplicavel_itens,
-         coalesce( ve.venda_codigoimposto, ar.artigo_codigoimposto) as codigo_isento,
+         coalesce( ve.venda_codigoimposto, ar.artigo_codigoimposto->>ts.tserie_financa ) as codigo_isento,
          abs( ve.venda_quantidade ) quant_itens,
          coalesce( ve.venda_descricao, ar.artigo_nome ) desc_itens,
          ctorigin.conta_numerofatura numero_documento_origem,
@@ -70,12 +70,7 @@ begin
         and ve.venda_estado = _const.maguita_venda_estado_fechado
         and ct.conta_data >= coalesce( arg_datainicio, ct.conta_data )
         and ct.conta_data <= coalesce( arg_datafim, ct.conta_data )
-        and ts.tserie_id in (
-          _const.maguita_tserie_fatura,  
-          _const.maguita_tserie_faturarecibo,  
-          _const.maguita_tserie_notacredito,
-          _const.maguita_tserie_faturasimplificada
-        )
+        and ts.tserie_financa is not null
     ) select to_jsonb( _de ) from __declaracao _de
   ;
 end;
