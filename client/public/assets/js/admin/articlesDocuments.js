@@ -45,8 +45,14 @@ var articlesDocuments = {
         });
     },
     search_article(){
-        articlesDocuments.article_id = null;
         let modal = window.xModalGeral || ""
+        let listfatura = $(`${modal} [listfatura]`);
+        console.log(listfatura.length, listfatura.find("li.active").length)
+        if(!!listfatura.length && !listfatura.find("li.active").length){
+            xAlert("", "Por favor selecione o tipo de fatura", "error");
+            return
+        }
+        articlesDocuments.article_id = null;
         console.log({modal})
         const article =  $(` ${modal} [search_article]`).val().trim();
         $.ajax({
