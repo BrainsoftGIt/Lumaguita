@@ -1,8 +1,27 @@
 import {patchSQL, sql} from "kitres";
+import {SQL} from "kitres/src/core/pg-core/scape";
 
 export const createTserieNotaDebito =  patchSQL({ unique: true }).sql`
     insert into tweeks.tserie( tserie_id, tserie_desc, tserie_code, tserie_seqlimit, tserie_numlimit ) values ( 8, 'Nota de debito', 'ND', 6, 7 );
     select map.constant( 'maguita_tserie_notadebito', 'int2', 8, 'Nota de debito' );
+`;
+
+export const alter_tserie_add_finalidade = patchSQL({ unique: true }).sql`
+alter table tweeks.tserie add if not exists tserie_finaca boolean default false;
+update tweeks.tserie set tserie_finaca = true 
+  where tserie_id in (
+    1, 2, 4, 6, 7, 8
+  );
+
+alter table tweeks.tserie add column tserie_tags character varying[ ] not null default array []::character varying[];
+update tweeks.tserie set tserie_tags = array ['FINANCA', 'FATURACAO']::text[] where tserie_id = 1;
+update tweeks.tserie set tserie_tags = array ['FINANCA', 'FATURACAO']::text[] where tserie_id = 2;
+update tweeks.tserie set tserie_tags = array [ 'INTERNAL', 'PAGAMENTO' ]::text[] where tserie_id = 3;
+update tweeks.tserie set tserie_tags = array [ 'FINANCAO', 'CORRECAO' ]::text[] where tserie_id = 4;
+update tweeks.tserie set tserie_tags = array [ 'INTERNAL', 'STOCK', 'VENDA' ]::text[] where tserie_id = 5;
+update tweeks.tserie set tserie_tags = array [ 'INTERNAL', 'VENDA' ]::text[] where tserie_id = 6;
+update tweeks.tserie set tserie_tags = array [ 'FINANCA', 'FATURACAO']::text[] where tserie_id = 7;
+update tweeks.tserie set tserie_tags = array [ 'FINANCA', 'CORRECAO' ]::text[] where tserie_id = 8;
 `;
 
 export const funct_load_serie_distribuicao = sql`

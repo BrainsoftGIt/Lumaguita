@@ -50,7 +50,9 @@ app.post("/api/efatura/authorization/reg", async (req, res) =>{
     let before =  await clusterServer.service.loadLocalCluster();
     req.body.arg_colaborador_id = req.session.auth_data.auth.colaborador_id;
     req.body.arg_espaco_auth = req.session.auth_data.auth.armazem_atual;
-    const { row : { main : { result, message } } } = await functRegEfacturaAuthorization(req.body);
+    let response = await functRegEfacturaAuthorization(req.body);
+    console.log( response.row );
+    const { row : { main : { result, message } } } = response;
     let after = await clusterServer.service.loadLocalCluster();
     res.json({result: result, data: message});
     if(result && before.cluster_version < after.cluster_version){
