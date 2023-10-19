@@ -19,7 +19,12 @@
         <div class="inputs flex xform">
 
             <div class="flex w100 h-sb">
-                <div class="w8"></div>
+                <div class="xselect flutuate w25">
+                    <input type="text" readonly placeholder="_">
+                    <label>Serie Fatura</label>
+                    <ul listFatura></ul>
+                    <div class="fakearrow flex"><span></span><span></span></div>
+                </div>
                 <div class="xinput w25">
                     <input type="text" placeholder="Pesquisar fatura" pesquisarFatura>
                     <label>Pesquisar fatura</label>
@@ -32,7 +37,6 @@
                     <input type="text" placeholder="NIF" maxlength="9" disabled cliente_nif _noObrigatory="true">
                     <label>NIF</label>
                 </div>
-                <div class="w8"></div>
             </div>
 
             <div class="flex w100 h-ct">

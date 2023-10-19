@@ -16,13 +16,9 @@
     </datalist>
     <div class="_body" id="proformaAdminBody">
         <div class="inputs flex xform h-sb">
-            <div class="xinput w25">
+            <div class="xinput w15">
                 <input type="text" placeholder="Pesquisar cliente" search_customer list="faturaProformaClientes">
                 <label>Pesquisar cliente</label>
-            </div>
-            <div class="xinput w25">
-                <input type="text" disabled cliente_titular placeholder="_">
-                <label>Nome do cliente</label>
             </div>
             <div class="xinput w15">
                 <input type="text" placeholder="Data de vencimento" _noObrigatory="true"
@@ -33,6 +29,10 @@
                 <input type="text" placeholder="Data de emissão" _noObrigatory="true" id="proforma_admin_data_emissao"
                        data-inputmask-alias="dd-mm-yyyy" data-val="true">
                 <label for="proforma_admin_data_emissao">Data de emissão</label>
+            </div>
+            <div class="xinput w15">
+                <input type="text" disabled cliente_titular placeholder="_">
+                <label>Nome do cliente</label>
             </div>
             <div class="xinput w15">
                 <input type="text" placeholder="NIF" maxlength="9" disabled cliente_nif _noObrigatory="true">
