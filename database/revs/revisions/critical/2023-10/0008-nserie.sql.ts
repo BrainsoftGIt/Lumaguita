@@ -6,22 +6,30 @@ export const createTserieNotaDebito =  patchSQL({ unique: true }).sql`
     select map.constant( 'maguita_tserie_notadebito', 'int2', 8, 'Nota de debito' );
 `;
 
-export const alter_tserie_add_finalidade = patchSQL({ unique: true }).sql`
-alter table tweeks.tserie add if not exists tserie_finaca boolean default false;
-update tweeks.tserie set tserie_finaca = true 
-  where tserie_id in (
-    1, 2, 4, 6, 7, 8
-  );
+export const alter_tserie_add_financa = patchSQL({ unique: true, force: "1.0.1" }).sql`
+-- alter table tweeks.tserie add if not exists tserie_finaca boolean default false;
+-- update tweeks.tserie set tserie_finaca = true 
+--   where tserie_id in (
+--     1, 2, 4, 6, 7, 8
+--   );
+-- 
+-- alter table tweeks.tserie add column tserie_tags character varying[ ] not null default array []::character varying[];
+-- update tweeks.tserie set tserie_tags = array ['FINANCA', 'FATURACAO']::text[] where tserie_id = 1;
+-- update tweeks.tserie set tserie_tags = array ['FINANCA', 'FATURACAO']::text[] where tserie_id = 2;
+-- update tweeks.tserie set tserie_tags = array [ 'INTERNAL', 'PAGAMENTO' ]::text[] where tserie_id = 3;
+-- update tweeks.tserie set tserie_tags = array [ 'FINANCAO', 'CORRECAO' ]::text[] where tserie_id = 4;
+-- update tweeks.tserie set tserie_tags = array [ 'INTERNAL', 'STOCK', 'VENDA' ]::text[] where tserie_id = 5;
+-- update tweeks.tserie set tserie_tags = array [ 'INTERNAL', 'VENDA' ]::text[] where tserie_id = 6;
+-- update tweeks.tserie set tserie_tags = array [ 'FINANCA', 'FATURACAO']::text[] where tserie_id = 7;
+-- update tweeks.tserie set tserie_tags = array [ 'FINANCA', 'CORRECAO' ]::text[] where tserie_id = 8;
+alter table tweeks.tserie drop column if exists tserie_finaca;
+alter table tweeks.tserie drop column if exists tserie_financa;
+alter table tweeks.tserie drop column if exists tserie_tags;
 
-alter table tweeks.tserie add column tserie_tags character varying[ ] not null default array []::character varying[];
-update tweeks.tserie set tserie_tags = array ['FINANCA', 'FATURACAO']::text[] where tserie_id = 1;
-update tweeks.tserie set tserie_tags = array ['FINANCA', 'FATURACAO']::text[] where tserie_id = 2;
-update tweeks.tserie set tserie_tags = array [ 'INTERNAL', 'PAGAMENTO' ]::text[] where tserie_id = 3;
-update tweeks.tserie set tserie_tags = array [ 'FINANCAO', 'CORRECAO' ]::text[] where tserie_id = 4;
-update tweeks.tserie set tserie_tags = array [ 'INTERNAL', 'STOCK', 'VENDA' ]::text[] where tserie_id = 5;
-update tweeks.tserie set tserie_tags = array [ 'INTERNAL', 'VENDA' ]::text[] where tserie_id = 6;
-update tweeks.tserie set tserie_tags = array [ 'FINANCA', 'FATURACAO']::text[] where tserie_id = 7;
-update tweeks.tserie set tserie_tags = array [ 'FINANCA', 'CORRECAO' ]::text[] where tserie_id = 8;
+alter table tweeks.tserie add column tserie_financa character varying default null;
+update tweeks.tserie set tserie_financa = 'FATURACAO' where tserie_id in ( 1, 2, 7 );
+update tweeks.tserie set tserie_financa = 'NOTACREDITO' where tserie_id in ( 4 );
+update tweeks.tserie set tserie_financa = 'NOTADEBITO' where tserie_id in ( 8 );
 `;
 
 export const funct_load_serie_distribuicao = sql`
