@@ -141,3 +141,188 @@ begin
 end
 $$;
 `;
+
+
+export const funct_reg_artigo = sql`
+create or replace function tweeks.funct_reg_artigo(args jsonb)
+  returns lib.result
+  language plpgsql
+as
+$$
+declare
+    /**
+      Essa funçao serve para registar os artigos associado aos seus item extras
+      {
+        ///PARA-QUANDO-FOR-COMPOSTO
+            artigo_artigo_id: ID
+            artigo_compostoquantidade:DOUBLE
+        PARA-QUANDO-FOR-COMPOSTO//
+
+        artigo_classe_id: ID,
+        artigo_codigo: CODIGO,
+        artigo_nome: NOME,
+        artigo_preparacao: TRUE|FALSE,
+        artigo_stocknegativo: TRUE|FALSE,
+        artigo_foto: FOTO,
+        artigo_descricao: DESCRICAO,
+
+        --
+        artigo_id: ID
+
+        arg_colaborador_id: ID,
+        arg_espaco_auth: ID
+
+        arg_items: [
+          @id/item_id,
+          @id/item_id,
+          @id/item_id
+        ],
+
+        arg_links: [
+          { espaco_id: ID, precario_custo: CUSTO, precario_quantidade: QUANT_CUSTO, stock_minimo:QUANT }
+        ],
+
+        arg_imposto: [ {
+            arg_tipoimposto_id: ID,
+            arg_taplicar_id: ID,
+            arg_imposto_valor: VALOR, # Por equanto envie null
+            arg_imposto_percentagem: PERCENTAGEM, # Por enquanto envie null
+        }],
+
+        arg_ean_codes: [ { ean_code:*CODE, ean_dateout:DATE|NULL, ean_datein:DATE|NULL } ]
+        arg_ean_disable: [ CODES ]
+      }
+     */
+
+    arg_artigo_id uuid default args->>'artigo_id';
+    arg_artigo_compostoid uuid default args->>'artigo_artigo_id';
+    arg_artigo_compostoquantidade double precision default args->>'artigo_compostoquantidade';
+    arg_colaborador_id uuid not null default args->>'arg_colaborador_id';
+    arg_classe_id uuid not null default args->>'artigo_classe_id';
+    arg_espaco_auth uuid not null default args->>'arg_espaco_auth';
+    arg_espaco_child uuid[] not null default rule.espaco_get_childrens( arg_espaco_auth );
+
+    arg_artigo_codigo varchar not null  default lib.str_normalize( args->>'artigo_codigo' );
+
+    _artigo tweeks.artigo;
+    _const map.constant;
+    _res_precario lib.result;
+    _result lib.result;
+    _branch uuid := tweeks.__branch_uid( arg_colaborador_id, arg_espaco_auth );
+    _args tweeks.artigo;
+begin
+  
+    if jsonb_typeof(args->'artigo_codigoimposto' ) != 'object' then
+        args := args || jsonb_build_object( 'artigo_codigoimposto', args->'artigo_codigoimposto' );
+    end if;
+
+    _const := map.constant();
+    _args := jsonb_populate_record( _args, args );
+    _artigo := tweeks._get_artigo( _args.artigo_id );
+
+    if _args.artigo_classe_id = _const.classe_itemextra then
+        return false ? 'Não pode registar um item extra!';
+    end if;
+
+    -- Nome não pode ser duplicado
+    if (
+        select count( * ) > 0
+        from tweeks.artigo art
+        where lib.str_normalize( public.unaccent( lower ( art.artigo_nome ) ) ) = lib.str_normalize( public.unaccent( lower ( _args.artigo_nome ) ) )
+          and art._branch_uid = _branch
+          and art.artigo_id::text != coalesce( arg_artigo_id::text, art.artigo_id||'!?' )
+    ) then
+        return false ? 'Nome do artigo já existe!';
+    end if;
+
+    -- Quando o artigo for novo
+    if _artigo.artigo_id is null then
+      -- Avaliar a composição do artigo
+      if arg_artigo_compostoid is not null and ( arg_artigo_compostoquantidade is null or arg_artigo_compostoquantidade = 0 ) then
+        return false ? 'Para artigos composto, é necessario expecificar a quantidade do itens a compor';
+      end if;
+
+      _args.artigo_colaborador_id := arg_colaborador_id;
+      _args.artigo_espaco_auth := arg_espaco_auth;
+      _args.artigo_dataregistro := clock_timestamp();
+    else
+      _args.artigo_colaborador_id := _artigo.artigo_colaborador_id;
+      _args.artigo_espaco_auth := _artigo.artigo_espaco_auth;
+      _args.artigo_dataregistro := _artigo.artigo_dataregistro;
+      _args.artigo_colaborador_atualizacao := arg_colaborador_id;
+      _args.artigo_dataatualizacao := clock_timestamp();
+    end if;
+
+    -- Garantir que o codigo do artigo não seja duplicado
+    if _args.artigo_codigo is not null and (
+      select count( * ) > 0
+      from tweeks.artigo art
+      where lib.str_normalize( lower( art.artigo_codigo ) ) = lib.str_normalize( lower( _args.artigo_codigo ) )
+        and art.artigo_id::text != coalesce( arg_artigo_id::text, art.artigo_id||'!?' )
+        and art.artigo_espaco_auth = any( arg_espaco_child )
+    ) then
+      return false ? 'Código do artigo já existe!';
+    end if;
+
+    if _args.artigo_codigo is null then
+      _args.artigo_codigo := tweeks.__generate_artigo_code( _args.artigo_classe_id );
+    end if;
+
+    select ( "returning" ).* into _artigo
+      from lib.sets( _args, jsonb_build_object(
+        'artigo_artigo_id', _args.artigo_artigo_id,
+        'artigo_compostoquantidade', _args.artigo_compostoquantidade
+      ))
+    ;
+
+    _result := tweeks.funct_reg_dispoe(
+      jsonb_build_object(
+        'arg_atrigo_id', _artigo.artigo_id,
+        'arg_espaco_auth', arg_espaco_auth,
+        'arg_colaborador_id', arg_colaborador_id,
+        'arg_items', args->'arg_items'
+      )
+    );
+
+    _res_precario := tweeks.funct_reg_precario(
+        jsonb_build_object(
+        'arg_espaco_auth', arg_espaco_auth,
+        'arg_colaborador_id', arg_colaborador_id,
+        'arg_forced', true,
+        'arg_precario_referencia', lib.sets_ref( _artigo ),
+        'arg_links', args->'arg_links'
+      )
+    );
+
+    perform tweeks.funct_reg_imposto(
+    jsonb_build_object(
+        'arg_artigo_id', _artigo.artigo_id,
+        'arg_colaborador_id', arg_colaborador_id,
+        'arg_espaco_auth', arg_espaco_auth,
+        'arg_imposto', args->'arg_imposto'
+      )
+    );
+
+    perform tweeks.funct_reg_ean( jsonb_build_object(
+      'arg_artigo_id', _artigo.artigo_id,
+      'arg_espaco_auth', arg_espaco_auth,
+      'arg_colaborador_id', arg_colaborador_id,
+      'arg_ean_codes', coalesce( args->'arg_ean_codes', jsonb_build_array() ),
+      'arg_ean_disable', coalesce( args->'arg_ean_disable', jsonb_build_array() )
+    ));
+
+    _result.message := _result.message || _res_precario.message || jsonb_build_object(
+        'artigo', _artigo
+    );
+
+    return _result;
+
+exception  when others then
+    <<_ex>> declare e text; m text; d text; h text; c text;
+    begin
+        get stacked diagnostics e=returned_sqlstate, m=message_text, d=pg_exception_detail, h=pg_exception_hint, c=pg_exception_context;
+        return lib.result_catch( _ex.e, _ex.m, _ex.h, _ex.d, _ex.c );
+    end;
+end
+$$;
+`;
