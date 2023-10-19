@@ -34,6 +34,7 @@ var proformaAdmin = {
                 venda_validade: ($(this).find("li").eq(4).text() === "" ? null : alterFormatDate($(this).find("li").eq(4).text())),
                 venda_editado: false,
                 venda_isencao: semImposto,
+                venda_codigoimposto: $(this).attr("codigoimposto") || null,
                 venda_montante: montanteQuantidade,
                 venda_montanteagregado: 0,
                 venda_montantetotal: montanteQuantidade,
@@ -49,6 +50,7 @@ var proformaAdmin = {
         return articles_table;
     },
     add_account(){
+        let modal = window.xModalGeral || ""
         let conta_data = ($("#proforma_admin_data_emissao").val() !== "" ? alterFormatDate($("#proforma_admin_data_emissao").val()) : null);
         let PROFORMA = 6;
         let conta = {};
@@ -58,6 +60,7 @@ var proformaAdmin = {
         conta.arg_vendas = this.articles_added;
         conta.conta_data = conta_data;
         conta.conta_tserie_id = PROFORMA;
+        conta._serie_id = ($(`${modal} [listFatura] li.active`).data() || {}).id || null;
         conta.conta_chave = proformaAdmin.key;
         $.ajax({
             url: "/api/pos/conta",

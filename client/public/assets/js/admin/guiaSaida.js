@@ -35,6 +35,7 @@ var guiaSaida = {
                 venda_validade: ($(this).find("li").eq(4).text() === "" ? null : alterFormatDate($(this).find("li").eq(4).text())),
                 arg_itens: [],
                 venda_editado: false,
+                venda_codigoimposto: $(this).attr("codigoimposto") || null,
                 venda_isencao: true,
                 venda_montante: montanteQuantidade,
                 venda_montanteagregado: 0,
@@ -49,12 +50,14 @@ var guiaSaida = {
         return articles_table;
     },
     addAccount(){
+        let modal = window.xModalGeral || ""
         let GUIA = 5;
         let conta = {};
         conta.conta_mesa = {numero: null, descricao: null, lotacao: null};
         conta.conta_extension = {};
         conta.arg_vendas = this.articles_added;
         conta.conta_data = new Date().getDateEn();
+        conta._serie_id = ($(`${modal} [listFatura] li.active`).data() || {}).id || null;
         conta.conta_tserie_id = GUIA;
         conta.conta_chave = guiaSaida.key;
         conta.admin = true;

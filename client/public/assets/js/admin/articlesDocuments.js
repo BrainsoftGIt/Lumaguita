@@ -91,11 +91,13 @@ var articlesDocuments = {
                         });
                     }
 
+                    let { imposto } = $(`${modal} [listfatura] li.active`).data() || {};
                     articlesDocuments.article_code = existeInquery.funct_load_artigo.artigo_codigo;
                     articlesDocuments.precario_quantidade = existeInquery.funct_load_artigo.precario_quantidade || 0;
                     $(`${modal} [description_article]`).val(existeInquery.funct_load_artigo.artigo_nome);
                     $(`${modal} [price_article]`).val(existeInquery.funct_load_artigo.precario_custo);
                     $(`${modal} [amount_packaging]`).val((existeInquery.funct_load_artigo.artigo_compostoquantidade || "0"));
+                    $(`${modal} [codigo_imposto_article]`).val((existeInquery.funct_load_artigo?.artigo_codigoimposto?.[imposto] || ""));
                 }
                 else articlesDocuments.resetFieldsArticle();
                 articlesDocuments.sArgigo = e.artcls;
@@ -109,7 +111,7 @@ var articlesDocuments = {
     add_articles_purchase(){
         let modal = window.xModalGeral || ""
         let total_value = $(`${modal} [amount_article]`).val().unFormatter() * $(`${modal} [price_article]`).val().unFormatter();
-        $(`${modal} [tableDocumentArticles]`).append(`<ul article_id="${articlesDocuments.article_id}">
+        $(`${modal} [tableDocumentArticles]`).append(`<ul article_id="${articlesDocuments.article_id}" codigoimposto="${$(`${modal} [codigo_imposto_article]`).val() || ""}">
                                             <li>${ $(`${modal} [description_article]`).val()}</li>
                                             <li>${$(`${modal} [amount_article] `).val()}</li>
                                             <li price="${$(`${modal} [price_article] `).val().unFormatter()}">${$(` ${modal} [price_article]`).val()+" STN"}</li>
@@ -163,7 +165,7 @@ var articlesDocuments = {
     },
     add_articles_exit_guide(){
         let modal = window.xModalGeral || ""
-        $(`${modal} [tableDocumentArticles]`).append(`<ul article_id="${articlesDocuments.article_id}" custoquantidade="${(articlesDocuments.precario_quantidade)}">
+        $(`${modal} [tableDocumentArticles]`).append(`<ul article_id="${articlesDocuments.article_id}" custoquantidade="${(articlesDocuments.precario_quantidade)}" codigoimposto="${$(`${modal} [codigo_imposto_article]`).val() || ""}">
                                             <li>${articlesDocuments.article_code}</li>
                                             <li>${$(`${modal} [description_article]`).val()}</li>
                                             <li>${$(`${modal} [amount_article]`).val()}</li>
@@ -192,10 +194,10 @@ var articlesDocuments = {
         let modal = window.xModalGeral || "";
         let montanteQuantidade = $(`${modal} [amount_article]`).val().unFormatter() * $(`${modal} [price_article]`).val().unFormatter();
         let result = taxasArtigos.calculateValues({montanteQuantidade: montanteQuantidade, artigo_id: articlesDocuments.article_id});
-        $(`${modal} [tableDocumentArticles]`).append(`<ul article_id="${articlesDocuments.article_id}" custoquantidade="${articlesDocuments.precario_quantidade}">
+        $(`${modal} [tableDocumentArticles]`).append(`<ul article_id="${articlesDocuments.article_id}" custoquantidade="${articlesDocuments.precario_quantidade}" codigoimposto="${$(`${modal} [codigo_imposto_article]`).val() || ""}">
                                             <li>${articlesDocuments.article_code}</li>
-                                            <li>${ $(`${modal} [description_article]`).val()}</li>
-                                            <li>${$(` ${modal} [amount_article]`).val()}</li>
+                                            <li>${$(`${modal} [description_article]`).val()}</li>
+                                            <li>${$(` ${modal} [amount_article] `).val()}</li>
                                             <li>${($(`${modal} [lote_article]`).val().trim() || "")}</li>
                                             <li>${($(`${modal} [date_expiration_article]`).val() || "")}</li>
                                             <li>${$(`${modal} [imposto]`).val()}</li>
@@ -224,7 +226,7 @@ var articlesDocuments = {
     adicionarArtigosGuiaSaida(){
         let modal = window.xModalGeral || "";
         let total_value = $(`${modal} [amount_article]`).val().unFormatter() * $(`${modal} [price_article]`).val().unFormatter();
-        $(`${modal} [tableDocumentArticles]`).append(`<ul article_id="${articlesDocuments.article_id}" custoquantidade="${articlesDocuments.precario_quantidade}">
+        $(`${modal} [tableDocumentArticles]`).append(`<ul article_id="${articlesDocuments.article_id}" custoquantidade="${articlesDocuments.precario_quantidade}" codigoimposto="${$(`${modal} [codigo_imposto_article]`).val() || ""}>
                                             <li>${articlesDocuments.article_code}</li>
                                             <li>${$(`${modal} [description_article]`).val()}</li>
                                             <li>${$(` ${modal} [amount_article] `).val()}</li>

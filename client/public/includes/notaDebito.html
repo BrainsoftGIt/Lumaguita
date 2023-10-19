@@ -88,7 +88,7 @@
                 <label>Qtd</label>
             </div>
             <div class="xinput w15">
-                <input type="text" placeholder="Codigo Imposto" class="integer" codigo_imposto_article>
+                <input type="text" placeholder="Codigo Imposto" class="integer" codigo_imposto_article _noObrigatory="true">
                 <label>Codigo Imposto</label>
             </div>
             <div class="xinput w15">
@@ -204,10 +204,11 @@
         </div>
     </div>
 </div>
+<script src="../assets/js/admin/articlesDocuments.js"></script>
 <script src="../assets/js/admin/fatura.js"></script>
 <script src="../assets/js/admin/articleTax.js"></script>
-<script src="../assets/js/admin/articlesDocuments.js"></script>
 <script>
     serieOperation.loadSerieOperation([serieOperation.tipo.notaDebito]);
-    articlesDocuments.loadSerieDistribuicao(serieOperation.tipo.notaDebito)
+    articlesDocuments.loadSerieDistribuicao(serieOperation.tipo.notaDebito);
+    FATURA = serieOperation.tipo.notaDebito;
 </script>

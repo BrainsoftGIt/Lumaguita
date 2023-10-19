@@ -38,7 +38,7 @@ var faturaAdmin = {
                         taxasArtigos.addTax(value.tax[0].main, art.artigo_id);
                     });
 
-                    $(`${modal} [tableDocumentArticles]`).append(`<ul article_id="${art.artigo_id}" custoquantidade="${art.venda_custoquantidade}">
+                    $(`${modal} [tableDocumentArticles]`).append(`<ul article_id="${art.artigo_id}" custoquantidade="${art.venda_custoquantidade}" codigoimposto="${art.venda_custoquantidade}">
                                             <li>${art.artigo_codigo}</li>
                                             <li>${art.artigo_nome}</li>
                                             <li>${art.venda_quantidade}</li>
@@ -165,6 +165,7 @@ var faturaAdmin = {
                 venda_lote: ($(this).find("li").eq(3).text() || null),
                 venda_validade: ($(this).find("li").eq(4).text() === "" ? null : alterFormatDate($(this).find("li").eq(4).text())),
                 venda_editado: false,
+                venda_codigoimposto: $(this).attr("codigoimposto"),
                 venda_isencao: semImposto,
                 venda_montante: montanteQuantidade,
                 venda_montanteagregado: 0,
@@ -190,6 +191,7 @@ var faturaAdmin = {
         conta.arg_vendas = this.articles_added();
         conta.admin = true;
         conta.conta_tserie_id = FATURA;
+        conta._serie_id = ($(`${modal} [listFatura] li.active`).data() || {}).id || null;
         conta.conta_chave = faturaAdmin.key;
 
         $.ajax({
