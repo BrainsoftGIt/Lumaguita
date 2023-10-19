@@ -217,6 +217,8 @@ var faturaAdmin = {
         dados.conta_mesa =  { numero: null, descricao:null, lotacao:null };
         dados.conta_desconto = null;
         dados.conta_titular = $(` ${modal} [cliente_titular]`).val().trim();
+        dados.conta_datedocorigin = (($(` ${modal} [documento_origem_data]`).val() || "").trim().stringToDate() || "").getDateEn() || null;
+        dados.conta_docorigin = ($(` ${modal} [documento_origem]`).val() || "").trim() || null;
         dados.conta_titularnif = $(` ${modal} [cliente_nif]`).val().trim() || null;
         dados.conta_data = $(` ${modal}  #fatura_data_emissao`).val() === "" ? null : alterFormatDate($(` ${modal} #fatura_data_emissao`).val());
         dados.conta_cliente_id = articlesDocuments.customer_id;
