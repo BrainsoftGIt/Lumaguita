@@ -73,6 +73,7 @@ begin
       select *
         from tweeks.serie s
           inner join tweeks.autorizacao a on s.serie_autorizacao_uid = a.autorizacao_uid
+          inner join tserie ts on s.serie_tserie_id = ts.tserie_id
       where s.serie_autorizacao_uid = a.autorizacao_uid
         and s._branch_uid = ___branch
         and a._branch_uid = ___branch
