@@ -10,22 +10,20 @@ app.post( "/api/load/fatura/to/credito/nota", (req, res, next) => {
     args.arg_colaborador_id = _session.user_id;
     args.arg_espaco_auth = _session.workspace;
 
-    dbRes.call.tweeks.funct_load_conta_notacredito({ args }, {
-        onResult(error: Error, result?: Result<any, any>): any {
-            if( error ){
-                res.json({
-                    result:false,
-                    message: error.message,
-                    hint: error
-                })
-                console.error( error );
-                return;
-            }
-
-            return res.json({
-                fatura: result.rows?.[0] || {},
+    dbRes.call.tweeks.funct_load_conta_notacredito({ args }, (error, result) => {
+        if( error ){
+            res.json({
+                result:false,
+                message: error.message,
+                hint: error
             })
+            console.error( error );
+            return;
         }
+
+        return res.json({
+            fatura: result.rows?.[0] || {},
+        })
     })
 });
 
