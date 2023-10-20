@@ -169,7 +169,16 @@ $("[tableDocumentArticles]").on("click", "[del]", function (){
         $(`${modal} [tableDocumentArticles]`).addClass("empty")
     }
 }).on("keyup", '[contenteditable="true"]',function (){
-    $(this).parents("ul").data("venda_codigo", $(this).text());
+    $(this).parents("ul").attr("data-venda_codigo", $(this).text());
+}).on("keypress", '[contenteditable="true"]', function (e) {
+    if (e.which === 46) {
+        e.which = 44;
+    }
+    if ((e.which !== 44 || $(this).val().indexOf('/') !== -1) &&
+        ((e.which < 48 || e.which > 57) &&
+            (e.which !== 0 && e.which !== 8))) {
+        e.preventDefault();
+    }
 })
 
 xTableGenerate()
