@@ -35,7 +35,7 @@ declare
   _const map.constant;
   _conta_res lib.res;
   _conta_close_res lib.res;
-  itens uuid[] default array(
+  __itens uuid[] default array(
     select (e.doc->>'venda_id')::uuid 
       from jsonb_array_elements( args->'itens' ) e ( doc ) 
 --       where e.doc->>'venda_id' is not null and e.doc->'venda_id' != null
@@ -79,18 +79,18 @@ begin
     select
         count( ct.venda_id ) filter (
           where not ct.venda_ncexists
-            and ct.venda_id = any ( itens )
+            and ct.venda_id = any ( __itens )
             and ct.venda_venda_id is null
         ) as notacredito_aplicartotal,
 
         array_agg( ct.venda_id ) filter (
           where not ct.venda_ncexists
-            and ct.venda_id = any ( itens )
+            and ct.venda_id = any ( __itens )
             and ct.venda_venda_id is null
         ) as notacredito_aplicar,
 
         count( * ) filter (
-          where ct.venda_id = any ( itens )
+          where ct.venda_id = any ( __itens )
             and ct.venda_venda_id is null
         ) as notacredito_usartotal,
        array_agg(
@@ -104,7 +104,7 @@ begin
          )
        ) filter (
          where ct.venda_ncexists
-           and ct.venda_id = any ( itens )
+           and ct.venda_id = any ( __itens )
            and ct.venda_venda_id is null
        ) as notacredito_exists
       from conta_origin ct
@@ -163,7 +163,12 @@ begin
             + venda_montantetotal
           ]
    */
-  with __iten as (
+  with __item_doc as (
+    select 
+        (i.doc->>'venda_id')::uuid as venda_id,
+        (i.doc->>'venda_codigoimposto') as venda_codigoimposto
+      from jsonb_array_elements( args->'itens' ) i( doc )
+  ), __iten as (
     select
         iten.venda_artigo_id,
         iten.venda_quantidade * -1 as venda_quantidade,
@@ -205,13 +210,18 @@ begin
         ve.venda_validade,
         ve.venda_metadata,
         ve.venda_taxas,
+        _itdoc.venda_codigoimposto,
         coalesce( jsonb_agg( to_jsonb( iten ) ) filter ( where iten.venda_venda_docorign is not null ), jsonb_build_array()) as arg_itens
       from tweeks.venda ve
+        inner join __item_doc _itdoc on ve.venda_id = _itdoc.venda_id
         left join __iten iten on ve.venda_id = iten.___iten_venda_super
 
       where ve.venda_id = any( _data.notacredito_aplicar )
         and ve.venda_venda_id is null
-      group by ve.venda_id
+      group by 
+        ve.venda_id,
+        _itdoc.venda_id,
+        _itdoc.venda_codigoimposto
   ) select
         jsonb_agg( to_jsonb( ve ) ) as arg_vendas
         into _vendas
@@ -242,7 +252,6 @@ begin
       -- requerido
       arg_vendas
    */
-
 
 
   if _conta.conta_cliente_id is null or _conta.conta_cliente_id = _const.maguita_cliente_final and not exists(
