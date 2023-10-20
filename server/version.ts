@@ -34,7 +34,7 @@ export let VERSION = {
         let branch = currentBranch.stdout.toString().trim();
 
         console.log( `[maguita] current branch is ${ branch }` );
-        if( currentBranch.stdout.toString().trim() !== "prod" ) return false;
+        // if( currentBranch.stdout.toString().trim() !== "main" ) return false;
         if(  VERSION.looked() ) return false;
         fs.writeFileSync( VERSION.LOOK, "" );
         let versionsParts = VERSION.NUMBER.split("." ).map( value => Number(value ) );

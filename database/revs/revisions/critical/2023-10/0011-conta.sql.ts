@@ -363,6 +363,6 @@ export const correct_serie = patchSQL({ unique: true } ).sql`
 update tweeks.conta
   set conta_serie_id = (conta_serie->>'serie_id')::uuid
   where conta_serie_id is null 
-    and (conta_serie->>'serie_id')::uuid is not null
-    and conta_estado = (map.constant()).maguita_conta_estado_fechado
+    and ( conta_serie->>'serie_id')::uuid is not null
+    and conta_estado = (map.constant() ).maguita_conta_estado_fechado
 `;

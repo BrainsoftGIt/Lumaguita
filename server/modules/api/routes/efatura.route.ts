@@ -133,7 +133,15 @@ app.get("/api/efatura/report/excel/:data", async (req, res) => {
     const filename = `${month} ${year} IVA.xlsx`;
     let workBook = new excel.Workbook();
     let workSheet = workBook.addWorksheet("emitted_document");
+
+    let letras = "A B C D E F G H I J K L".split(" ");
+
     workSheet.columns = [
+        {header: "documento_numero", width: 30},
+        {header: "documento_serie", width: 30},
+        {header: "documento_data", width: 30},
+        {header: "nif_consumidor", width: 30},
+        {header: "total_valor_itens", width: 30},
         {header: "tax_aplicavel_itens", width: 30},
         {header: "codigo_isento", width: 30},
         {header: "quant_itens", width: 30},
@@ -143,9 +151,74 @@ app.get("/api/efatura/report/excel/:data", async (req, res) => {
         {header: "tipo_documento", width: 30}
     ];
 
-    list.forEach(({vreport_imposto_financas: {...artigo}}) => {
-        let { tipo_documento_origem, data_documento_origem, codigo_isento, desc_itens, total_valor_itens, taxa_aplicavel_itens, quant_itens, numero_documento_origem } = artigo;
-        workSheet.addRow([taxa_aplicavel_itens, codigo_isento, quant_itens, desc_itens, numero_documento_origem, data_documento_origem, tipo_documento_origem]);
+    let color = {
+        A: "ffcc99",
+        B: "ffcc99",
+        C: "ffcc99",
+        D: "ccffcc",
+        E: "ffcc99",
+        F: "ffcc99",
+        G: "ffcc99",
+        H: "ccffcc",
+        I: "ccffcc",
+        J: "daeef3",
+        K: "daeef3",
+        L: "daeef3"
+    };
+
+    let colorFont = {
+        A: "333399",
+        B: "333399",
+        C: "333399",
+        D: "008000",
+        E: "333399",
+        F: "333399",
+        G: "333399",
+        H: "008000",
+        I: "008000",
+        J: "000000",
+        K: "000000",
+        L: "000000"
+    }
+
+    let linha = 1;
+    letras.forEach((letra) => {
+        workSheet.getCell(`${letra}${linha}`).font = {
+           color: { argb: colorFont[letra] }
+        };
+        workSheet.getCell(`${letra}${linha}`).border = {
+            top: { style: 'thin' },
+            left: { style: 'thin' },
+            bottom: { style: 'thin' },
+            right: { style: 'thin' }
+        };
+        workSheet.getCell(`${letra}${linha}`).fill = {
+            type: 'pattern',
+            pattern:'solid',
+            fgColor:{argb: color[letra]},
+        };
+    })
+
+    list.forEach(({vreport_imposto_financas: {...artigo}}, index) => {
+        let { documento_numero, documento_serie, documento_data, nif_consumidor, total_valor_itens, tipo_documento_origem, data_documento_origem, codigo_isento, desc_itens, taxa_aplicavel_itens, quant_itens, numero_documento_origem } = artigo;
+        workSheet.addRow([documento_numero, documento_serie, documento_data, nif_consumidor,total_valor_itens, taxa_aplicavel_itens, codigo_isento, quant_itens, desc_itens, numero_documento_origem, data_documento_origem, tipo_documento_origem]);
+        let linha = 1;
+        letras.forEach((letra) => {
+            workSheet.getCell(`${letra}${index+2}`).font = {
+                color: { argb: colorFont[letra] }
+            };
+            workSheet.getCell(`${letra}${index+2}`).border = {
+                top: { style: 'thin' },
+                left: { style: 'thin' },
+                bottom: { style: 'thin' },
+                right: { style: 'thin' }
+            };
+            workSheet.getCell(`${letra}${index+2}`).fill = {
+                type: 'pattern',
+                pattern:'solid',
+                fgColor:{argb: color[letra]},
+            };
+        })
     });
 
     fs.mkdirSync(path.join(folders.temp, 'multer'), {recursive: true});
