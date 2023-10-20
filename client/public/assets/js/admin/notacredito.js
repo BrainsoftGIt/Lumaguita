@@ -66,13 +66,13 @@ var notacredito = {
         let conta_observacao = $("[notacredito_observacao]").val();
         let errorCodeImposto = false;
         let itens = $(`${modal} [tableDocumentArticles] ul`).map(function (){
-            let { venda_id, venda_codigo} = $(this).data();
-            if(!venda_codigo){
+            let { venda_id, venda_codigo: venda_codigoimposto} = $(this).data();
+            if(!venda_codigoimposto){
                 errorCodeImposto = true;
             }
             return {
                 venda_id,
-                venda_codigo
+                venda_codigoimposto
             }
         }).get();
 
