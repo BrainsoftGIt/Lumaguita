@@ -120,7 +120,8 @@ var efatura = {
                 return;
             }
 
-            let serie_designacao = $("#name_seire_efaturav2").val().trim();
+            let _serie_designacao = $("#name_seire_efaturav2");
+            let serie_designacao = _serie_designacao.val().trim();
             if (serie_designacao[serie_designacao.length - 1] === "-") {
                 serie_designacao = serie_designacao.substring(0, serie_designacao.length - 1).trim();
             }
@@ -143,7 +144,7 @@ var efatura = {
             numero_serie_efaturav2.val("");
             quantidade_serie_efaturav2.val("");
             numero_autorizacao_seriev2.val("");
-            serie_designacao.val("");
+            _serie_designacao.val("");
 
             loadAllSerieaAdded();
         },

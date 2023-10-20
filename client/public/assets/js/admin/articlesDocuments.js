@@ -72,12 +72,14 @@ var articlesDocuments = {
                 let existeInquery = (articlesDocuments?.sArgigo || []).find(({funct_load_artigo: {artigo_nome}}) =>  article === artigo_nome);
                 let datalistArtigos = $(`${modal} datalist[artigos]`);
                 datalistArtigos.empty();
-                if(articlesDocuments.sArgigo.length > 1 && !existeInquery) {
+
+                if(!existeInquery) {
                     articlesDocuments.sArgigo.forEach((art) => {
                         datalistArtigos.append(`<option value="${art.funct_load_artigo.artigo_nome}" data-id=${art.funct_load_artigo.artigo_id} data-value=${art.funct_load_artigo.artigo_nome.toLowerCase().trim()}>${art.funct_load_artigo.artigo_codigo}</option>`);
                     });
                 }
-                else if(articlesDocuments.sArgigo.length === 1 || !!existeInquery){
+
+                if(articlesDocuments.sArgigo.length === 1 && !!existeInquery){
                     articlesDocuments.article_id = existeInquery.funct_load_artigo.artigo_id;
                     if(taxasArtigos.taxs.find(value => value.artigo_id ===  articlesDocuments.article_id)){
                         let imposto = taxasArtigos.showTax(articlesDocuments.article_id);
