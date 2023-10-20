@@ -54,7 +54,7 @@ export let create = async (instituition, account_content, res, user, date, num_a
                 margin: [0, 3, 0, 3],
                 fontSize: 6.5,
                 border: [false, false, false, false],
-                text: `${formattedString(cont.venda_imposto.toFixed(2))}`,
+                text: `${cont.taxa_percentagem || cont.taxa_taxa || ""} ${(!cont.taxa_taxa && !cont.taxa_percentagem) ? "" : (cont.taxa_taxa) ? "" : "%"}`,
                 alignment: "center"
             },
             {
@@ -240,7 +240,7 @@ export let create = async (instituition, account_content, res, user, date, num_a
             } : {},
             {
                 lineHeight: 1.3,
-                margin: [0, (!hasPersonalizadoHarder) ? 40 : 10, 0, 0],
+                margin: [0, (!!hasPersonalizadoHarder) ? 40 : 10, 0, 0],
                 layout: {
                     hLineWidth: function (i, node) {
                         return 0.8;
@@ -307,6 +307,7 @@ export let create = async (instituition, account_content, res, user, date, num_a
                                 ]
                             },
                             {
+                                alignment: "right",
                                 fontSize: 8,
                                 border: [true, false, false, false],
                                 borderColor: ['#000000', '#000000', '#000000', '#000000'],
