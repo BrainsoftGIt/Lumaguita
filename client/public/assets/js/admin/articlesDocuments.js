@@ -47,19 +47,20 @@ var articlesDocuments = {
     search_article(){
         let modal = window.xModalGeral || ""
         let listfatura = $(`${modal} [listfatura]`);
-        console.log(listfatura.length, listfatura.find("li.active").length)
+
         if(!!listfatura.length && !listfatura.find("li.active").length){
             xAlert("", "Por favor selecione o tipo de fatura", "error");
             return
         }
         articlesDocuments.article_id = null;
-        console.log({modal})
         const article =  $(` ${modal} [search_article]`).val().trim();
         $.ajax({
             url: "/api/articles/load",
             method: "POST",
             contentType: "application/json",
-            data: JSON.stringify({arg_classe_id: null, arg_artigo_estado: 1,
+            data: JSON.stringify({
+                arg_classe_id: null,
+                arg_artigo_estado: 1,
                 query:{
                     any: article
                 }
@@ -67,17 +68,17 @@ var articlesDocuments = {
             success(e) {
                 articlesDocuments.artigoLoaded = true;
 
+                articlesDocuments.sArgigo = e.artcls;
                 let existeInquery = (articlesDocuments?.sArgigo || []).find(({funct_load_artigo: {artigo_nome}}) =>  article === artigo_nome);
                 let datalistArtigos = $(`${modal} datalist[artigos]`);
                 datalistArtigos.empty();
-                if(e.artcls.length > 1 && !existeInquery) {
-                    e.artcls.forEach((art) => {
+                if(articlesDocuments.sArgigo.length > 1 && !existeInquery) {
+                    articlesDocuments.sArgigo.forEach((art) => {
                         datalistArtigos.append(`<option value="${art.funct_load_artigo.artigo_nome}" data-id=${art.funct_load_artigo.artigo_id} data-value=${art.funct_load_artigo.artigo_nome.toLowerCase().trim()}>${art.funct_load_artigo.artigo_codigo}</option>`);
                     });
                 }
-                else if(e.artcls.length === 1 || !!existeInquery){
-                    delete articlesDocuments.sArgigo;
-                    existeInquery = e?.artcls[0];
+                else if(articlesDocuments.sArgigo.length === 1 || !!existeInquery){
+                    existeInquery = articlesDocuments.sArgigo;
                     articlesDocuments.article_id = existeInquery.funct_load_artigo.artigo_id;
                     if(taxasArtigos.taxs.find(value => value.artigo_id ===  articlesDocuments.article_id)){
                         let imposto = taxasArtigos.showTax(articlesDocuments.article_id);
@@ -106,7 +107,6 @@ var articlesDocuments = {
                     $(`${modal} [codigo_imposto_article]`).val((existeInquery.funct_load_artigo?.artigo_codigoimposto?.[imposto] || ""));
                 }
                 else articlesDocuments.resetFieldsArticle();
-                articlesDocuments.sArgigo = e.artcls;
             }
         });
     },
