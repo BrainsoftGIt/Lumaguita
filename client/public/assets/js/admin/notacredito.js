@@ -64,13 +64,22 @@ var notacredito = {
         let { fatura : { conta_id }, key: conta_chave } = notacredito;
         let conta_posto_id = $("#colaborador_logado_armazens").find("li.active").attr("posto_admin");
         let conta_observacao = $("[notacredito_observacao]").val();
+        let errorCodeImposto = false;
         let itens = $(`${modal} [tableDocumentArticles] ul`).map(function (){
             let { venda_id, venda_codigo} = $(this).data();
+            if(!venda_codigo){
+                errorCodeImposto = true;
+            }
             return {
                 venda_id,
                 venda_codigo
             }
         }).get();
+
+        if(errorCodeImposto){
+            xAlert("Nota de credito", "Define o código de imposto para os todos!", "error");
+            return;
+        }
 
         if( !conta_id ){
             xAlert("Nota de credito", "Selecione uma conta!", "error");
@@ -169,7 +178,7 @@ $("[tableDocumentArticles]").on("click", "[del]", function (){
         $(`${modal} [tableDocumentArticles]`).addClass("empty")
     }
 }).on("keyup", '[contenteditable="true"]',function (){
-    $(this).parents("ul").attr("data-venda_codigo", $(this).text());
+    $(this).parents("ul").data("venda_codigo", $(this).text() || null);
 }).on("keypress", '[contenteditable="true"]', function (e) {
     if (e.which === 46) {
         e.which = 44;
