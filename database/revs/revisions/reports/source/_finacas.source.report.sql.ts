@@ -1,6 +1,7 @@
 import {sql} from "kitres";
 
 
+
 export const vreport_imposto_financas = sql`
 create or replace function report.vreport_imposto_financas(args jsonb) returns SETOF jsonb
   language plpgsql
@@ -30,15 +31,25 @@ begin
          se.serie_sequencia as documento_numero,
          se.serie_numero as documento_serie,
          ct.conta_data as documento_data,
-         coalesce( ct.conta_titularnif, cli.cliente_nif ) as nif_consumidor,
+         coalesce( lib.str_normalize(ct.conta_titularnif), lib.str_normalize( cli.cliente_nif ), '999999999' ) as nif_consumidor,
          abs( ve.venda_montantesemimposto::numeric(100,6) ) as total_valor_itens,
          tx.taxa_percentagem as taxa_aplicavel_itens,
          coalesce( ve.venda_codigoimposto, ar.artigo_codigoimposto->>ts.tserie_financa ) as codigo_isento,
          abs( ve.venda_quantidade ) quant_itens,
          coalesce( ve.venda_descricao, ar.artigo_nome ) desc_itens,
-         ctorigin.conta_numerofatura numero_documento_origem,
-         ctorigin.conta_data data_documento_origem,
-         tsorigin.tserie_code as tipo_documento_origem,
+         coalesce(
+            ctorigin.conta_numerofatura, 
+            ct.conta_docorigin
+         ) numero_documento_origem,
+         coalesce(
+            ctorigin.conta_data,
+            ct.conta_datedocorigin
+         ) data_documento_origem,
+         case 
+           when tsorigin.tserie_code is not null then tsorigin.tserie_code
+           when ct.conta_docorigin is not null then substr( ct.conta_docorigin, 1, 2 )
+           else '' 
+         end as tipo_documento_origem,
          ts.tserie_code,
          ct.conta_id,
          ve.venda_id,
@@ -71,6 +82,9 @@ begin
         and ct.conta_data >= coalesce( arg_datainicio, ct.conta_data )
         and ct.conta_data <= coalesce( arg_datafim, ct.conta_data )
         and ts.tserie_financa is not null
+      order by ct.conta_data,
+        ts.tserie_order,
+        ct.conta_numerofatura
     ) select to_jsonb( _de ) from __declaracao _de
   ;
 end;

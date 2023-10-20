@@ -192,6 +192,7 @@ declare
       when arg_tserie_id = _const.maguita_tserie_fatura then _const.maguita_tgrupo_ccorrente
       when arg_tserie_id = _const.maguita_tserie_guiasaida then _const.maguita_tgrupo_ccorrente
       when arg_tserie_id = _const.maguita_tserie_notacredito then _const.maguita_tgrupo_ccorrente
+      when arg_tserie_id = _const.maguita_tserie_notadebito then _const.maguita_tgrupo_ccorrente
     end;
 
     -- Gerar a serie para a conta dependento do tipo do documento (fatura, faturarecibo, notacredito, guiasaida)

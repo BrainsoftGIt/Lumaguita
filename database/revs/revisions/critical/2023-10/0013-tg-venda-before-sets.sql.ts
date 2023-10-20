@@ -19,6 +19,7 @@ begin
       ;
       _new.venda_proforma := _sets.conta_proforma;
   end if;
+  --
   _new.venda_codigoimposto := lib.str_normalize( _new.venda_codigoimposto );
   return _new;
 end;

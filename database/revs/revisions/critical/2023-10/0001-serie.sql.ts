@@ -63,7 +63,7 @@ begin
     ;
     
     if _data.total_serie > 1 then
-      raise exception '%', format( 'Existe varias series do tipo %I! É necessario especificar qual delas devem ser utilizadas!' );
+      raise exception '%', format( 'Existe varias series do tipo %I! É necessario especificar qual delas devem ser utilizadas!', _tserie.tserie_desc );
     end if;
 
     while _numero_documento is null loop
