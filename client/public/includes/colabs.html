@@ -105,14 +105,15 @@
                         </div>
                         <div class="xinput w100">
                             <input data-inputmask-alias="dd-mm-yyyy" data-val="true" type="text"
-                                placeholder="Data de Nascimento" colaborador_datanascimento>
+                                placeholder="Data de Nascimento" colaborador_datanascimento _noObrigatory="true">
                             <label>Data de nascimento</label>
                         </div>
                         <div class="xselect flutuate w100">
-                            <input type="text" readonly placeholder="Sexo" id="sexoDesc">
+                            <input type="text" readonly placeholder="Sexo" id="sexoDesc" _noObrigatory="true">
                             <label>Sexo</label>
                             <div class="fakearrow flex"><span></span><span></span></div>
                             <ul colaborador_sexo>
+                                <li>(Selecione)</li>
                                 <li id="1">Masculino</li>
                                 <li id="2">Feminino</li>
                             </ul>

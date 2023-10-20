@@ -189,6 +189,8 @@ var faturaAdmin = {
         conta.conta_extension = {};
         conta.conta_data = $(`${modal} #fatura_data_emissao `).val() === "" ? new Date().getDateEn() : alterFormatDate($(`${modal} #fatura_data_emissao`).val());
         conta.arg_vendas = this.articles_added();
+        conta.conta_datedocorigin = (($(` ${modal} [documento_origem_data]`).val() || "").trim().stringToDate() || "").getDateEn() || null;
+        conta.conta_docorigin = ($(` ${modal} [documento_origem]`).val() || "").trim() || null;
         conta.admin = true;
         conta.conta_tserie_id = FATURA;
         conta._serie_id = ($(`${modal} [listFatura] li.active`).data() || {}).id || null;

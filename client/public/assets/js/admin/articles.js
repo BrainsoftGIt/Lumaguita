@@ -357,7 +357,7 @@ var article = {
         return false;
     },
     resetData(){
-        $("#artigo_codigo").val("").prop("disabled", false);
+        $("#artigo_codigo").val("");
         $(".theArtg .xchip").find("ul").empty();
         $("label.artigo[lab=FOTO]").text(".jpg, .png, .jpeg");
         $("#artigo_impostos_desc, #aplicacao_impostos_desc").val("");
@@ -449,7 +449,7 @@ var article = {
             artigo_compostoquantidade: (artigo_composto.hasClass("active") ? $("#artigo_quantidade_composto").val().unFormatter() : null),
             artigo_classe_id: $(".listCats").find("div.active").attr("cat_id"),
             artigo_id: this.selected.artigo_id,
-            artigo_codigo: article.selected.artigo_codigo,
+            artigo_codigo: ($("#artigo_codigo").val().trim() || generateCode()),
             artigo_nome: $("#artigo_nome").val().trim(),
             artigo_preparacao: $("#artigo_confecionado").hasClass("active"),
             artigo_stocknegativo: $("#artigo_stock_negativo").hasClass("active"),
@@ -530,7 +530,7 @@ var article = {
     showDataUpdate(){
          this.loadBaseArticles();
         $("#artigo_foto").val("");
-        $("#artigo_codigo").val(article.selected.artigo_codigo).prop("disabled", true);
+        $("#artigo_codigo").val(article.selected.artigo_codigo);
         if(article.selected.artigo_foto === null) $("label.artigo[lab=FOTO]").text(".jpg, .png, .jpeg");
         else $("label.artigo[lab=FOTO]").text(article.selected.artigo_foto.split(";")[1]);
         $("#artigo_observacao").val(article.selected.artigo_descricao);

@@ -20,6 +20,8 @@ export let create = async (instituition, account_content, res, user, date, num_a
     let baseColor = instituition?.espaco_configuracao?.empresa_basecolor || "#000000";
     let textcolor = instituition?.espaco_configuracao?.empresa_textcolor || "#ffffff";
 
+    console.log({account_content});
+
     (account_content?.main?.conta_vendas || []).forEach((cont) => {
 
         if (!!cont.tipoimposto_id) {

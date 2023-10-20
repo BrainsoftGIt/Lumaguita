@@ -53,6 +53,16 @@ async function createPDFReceita(req, file, res){
     await file.create(espaco, res, user, client, utente, tratamento);
 }
 
+app.post("/api/clinica/consulta/export/receita/data", async (req, res) =>{
+    let random = (Math.random() + 1).toString(36).substring(7);
+    let data = new Date();
+    let file = `${random}-${data.getSeconds()}.json`
+    fs.writeFile(path.join(folders.temp, file), JSON.stringify(req.body), function (err) {
+        if (err) return console.log(err);
+        res.json(file)
+    });
+});
+
 app.get("/api/clinica/consulta/export/receita/a4/:data", async (req, res) =>{
     const file = require("../functions/clinic/export-receita-A4");
     await createPDFReceita(req, file, res);

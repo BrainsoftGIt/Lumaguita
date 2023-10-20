@@ -460,7 +460,7 @@ var report = {
             }
         });
     },
-    doIExport : () => {
+    doIExportJson : () => {
         let {iOrdenList: ordenList} = report;
         if(!ordenList){
             return;
@@ -501,6 +501,27 @@ var report = {
         a.setAttribute('target', "_blank")
         a.setAttribute('download', `${month} ${year} IVA.json`);
         a.click()
+    },
+    doIExportExcel : () => {
+        let {value: year} = $("#financa_report_yaer li.active").data();
+        let {value: month, text: monthText } = $("#financa_report_month li.active").data();
+
+        $("body").addClass("loading");
+        $.ajax({
+            url: "/api/efatura/report/excel/data",
+            method: "POST",
+            contentType: "application/json",
+            data: JSON.stringify({
+                year,
+                month: monthText,
+                arg_datainicio: new Date(year, month-1, 1).getDateEn(),
+                arg_datafim: new Date(year, month, 0).getDateEn()
+            }),
+            success(file) {
+                $("body").removeClass("loading");
+                open("/api/efatura/report/excel/" + JSON.stringify({ file }));
+            }
+        });
     }
 };
 
@@ -693,7 +714,10 @@ $("[export-report-normal]").on("click", function () {
     report.export();
 });
 $("[export-report-imposto]").on("click", function () {
-    report.doIExport();
+    report.doIExportJson();
+});
+$("[export-report-imposto-excel]").on("click", function () {
+    report.doIExportExcel();
 });
 $("[load-report-imposto]").on("click", function () {
     report.iExport();
