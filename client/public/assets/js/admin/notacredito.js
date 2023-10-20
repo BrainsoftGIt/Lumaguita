@@ -77,7 +77,7 @@ var notacredito = {
         }).get();
 
         if(errorCodeImposto){
-            xAlert("Nota de credito", "Define o código de imposto para os todos!", "error");
+            xAlert("Nota de credito", "Define o código de imposto!", "error");
             return;
         }
 
