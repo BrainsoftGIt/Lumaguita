@@ -357,7 +357,7 @@ export let create = async (instituition, account_content, res, user, date, num_a
                                     {
                                         bold: true,
                                         color: '#000000',
-                                        text: "Nº da Fatura"
+                                        text: "Nº da Fatura/recibo"
                                     },
                                     {
                                         margin: [0, 0, 0, 15],
