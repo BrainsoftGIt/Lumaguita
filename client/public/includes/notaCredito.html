@@ -16,6 +16,18 @@
         left: 50%; /* Centraliza horizontalmente */
         transform: translate(-50%, -50%); /* Isso corrige o deslocamento para o centro */
     }
+    [contenteditable="true"]{
+        height: 46px;
+        padding-left: 16px;
+        border: 2px solid #ecedef;
+        border-radius: 4px;
+        font-size: 0.82rem;
+        font-weight: 400;
+        color: #111;
+        -webkit-transition: 0.2s ease-in-out;
+        -o-transition: 0.2s ease-in-out;
+        transition: 0.2s ease-in-out;
+    }
 </style>
 <div class="__included__ fatura inpage">
     <div class="_head flex h-sb v-ct">
@@ -68,9 +80,10 @@
                     <li grow="1">Cód. Artigo</li>
                     <li grow="3">Descrição</li>
                     <li grow="0.5">Qtd</li>
-                    <li grow="1">Imposto</li>
-                    <li grow="2">Valor Unit</li>
-                    <li grow="2">Valor Final</li>
+                    <li grow="0.75">Imposto</li>
+                    <li grow="0.75">C. Imposto</li>
+                    <li grow="1.75">Valor Unit</li>
+                    <li grow="1.75">Valor Final</li>
                     <li grow="0.5"></li>
                 </ul>
             </div>

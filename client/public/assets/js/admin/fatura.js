@@ -293,7 +293,7 @@ $("#finalizar_fatura").on("click", function () {
     let modal = window.xModalGeral || ""
     spaceConfig.loadConfig().then(value => {
         if(spaceConfig.isConfigured({object: value.config[0]})){
-            if(serieOperation.missing.length > 0){
+            if(serieOperation.missing.includes(FATURA)){
                 xAlert("Série de fatura", "Nenhuma série de fatura encontrada para este armazém. Defina-a em definições!","error");
                 return;
             }

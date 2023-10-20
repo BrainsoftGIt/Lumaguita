@@ -112,7 +112,7 @@ var articlesDocuments = {
     },
     resetFieldsArticle(){
         let modal = window.xModalGeral || ""
-        $(`${modal} [description_article], [amount_article], [price_article], [lote_article], [date_expiration_article], [amount_packaging], [imposto]`).val("");
+        $(`${modal}`).find(`[description_article], [amount_article], [price_article], [lote_article], [date_expiration_article], [amount_packaging], [imposto], [codigo_imposto_article]`).val("");
     },
     add_articles_purchase(){
         let modal = window.xModalGeral || ""

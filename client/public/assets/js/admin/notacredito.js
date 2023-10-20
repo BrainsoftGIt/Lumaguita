@@ -24,13 +24,15 @@ var notacredito = {
                     return
                 }
 
-                conta_vendas.forEach(({ artigo_nome, venda_custounitario, venda_montantecomimposto, artigo_codigo, venda_quantidade, taxa_percentagem, taxa_taxa, venda_id }) => {
+                let { imposto } = $(`${modal} [listfatura] li.active`).data() || {};
+                conta_vendas.forEach(({ artigo_nome, venda_custounitario, venda_montantecomimposto, artigo_codigo, venda_quantidade, taxa_percentagem, taxa_taxa, venda_id, artigo_codigoimposto}) => {
                     $(`${modal} [tableDocumentArticles]`).append(`
                     <ul data-venda_id="${venda_id}">
                         <li>${artigo_codigo}</li>
                         <li>${artigo_nome}</li>
                         <li>${venda_quantidade}</li>
-                        <li>${ (!taxa_percentagem) ? taxa_taxa || "" : `${taxa_percentagem}%` }</li>
+                        <li>${(!taxa_percentagem) ? taxa_taxa || "" : `${taxa_percentagem}%` }</li>
+                        <li contenteditable="true">${artigo_codigoimposto?.[imposto] || ""}</li>
                         <li>${venda_custounitario.dc().formatter()+" STN"}</li>
                         <li>${venda_montantecomimposto.dc().formatter()+" STN"}</li>
                         <li class="flex v-ct">
