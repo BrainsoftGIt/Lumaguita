@@ -68,7 +68,7 @@ export let create = async (instituition, account, account_content, res, user, da
                 margin: [0, 3, 0, 3],
                 fontSize: 6.5,
                 border: [false, false, false, false],
-                text: `${formattedString(cont.venda_imposto.toFixed(2))}`,
+                text: `${cont.taxa_percentagem || cont.taxa_taxa || ""} ${(!cont.taxa_taxa && !cont.taxa_percentagem) ? "" : (cont.taxa_taxa) ? "" : "%"}`,
                 alignment: "center"
             },
             {
@@ -243,7 +243,7 @@ export let create = async (instituition, account, account_content, res, user, da
             {
                 // font: "NimbusRomanno9l",
                 lineHeight: 1.3,
-                margin: [0, (!hasPersonalizadoHarder) ? 40 : 10, 0, 0],
+                margin: [0, (!!hasPersonalizadoHarder) ? 40 : 10, 0, 0],
                 table: {
                     widths: ["50%", "50%"],
                     body: [
