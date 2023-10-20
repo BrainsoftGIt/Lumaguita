@@ -224,6 +224,7 @@ var faturaAdmin = {
         dados.conta_titularnif = $(` ${modal} [cliente_nif]`).val().trim() || null;
         dados.conta_data = $(` ${modal}  #fatura_data_emissao`).val() === "" ? null : alterFormatDate($(` ${modal} #fatura_data_emissao`).val());
         dados.conta_cliente_id = articlesDocuments.customer_id;
+        dados._serie_id = ($(`${modal} [listFatura] li.active`).data() || {}).id || null;
         dados.coin = null;
         dados.documento_referencia = null;
         dados.admin = true;

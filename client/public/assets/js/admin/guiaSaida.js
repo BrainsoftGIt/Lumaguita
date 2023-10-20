@@ -90,6 +90,7 @@ var guiaSaida = {
         dados.conta_titularnif = $(`${modal} [cliente_nif]`).val().trim() || null;
         dados.conta_data = null;
         dados.conta_cliente_id = articlesDocuments.customer_id;
+        dados._serie_id = ($(`${modal} [listFatura] li.active`).data() || {}).id || null;
         dados.coin = "STN";
         dados.documento_referencia = null;
         dados.admin = true;
