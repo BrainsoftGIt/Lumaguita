@@ -27,7 +27,7 @@ var notacredito = {
                 let { imposto } = $(`${modal} [listfatura] li.active`).data() || {};
                 conta_vendas.forEach(({ artigo_nome, venda_custounitario, venda_montantecomimposto, artigo_codigo, venda_quantidade, taxa_percentagem, taxa_taxa, venda_id, artigo_codigoimposto}) => {
                     $(`${modal} [tableDocumentArticles]`).append(`
-                    <ul data-venda_id="${venda_id}">
+                    <ul data-venda_id="${venda_id}" data-venda_codigo="${artigo_codigoimposto?.[imposto]}">
                         <li>${artigo_codigo}</li>
                         <li>${artigo_nome}</li>
                         <li>${venda_quantidade}</li>
@@ -65,9 +65,10 @@ var notacredito = {
         let conta_posto_id = $("#colaborador_logado_armazens").find("li.active").attr("posto_admin");
         let conta_observacao = $("[notacredito_observacao]").val();
         let itens = $(`${modal} [tableDocumentArticles] ul`).map(function (){
-            let { venda_id } = $(this).data();
+            let { venda_id, venda_codigo} = $(this).data();
             return {
-                venda_id
+                venda_id,
+                venda_codigo
             }
         }).get();
 
@@ -167,6 +168,8 @@ $("[tableDocumentArticles]").on("click", "[del]", function (){
     if(!$(`${modal} [tableDocumentArticles] ul`).length){
         $(`${modal} [tableDocumentArticles]`).addClass("empty")
     }
+}).on("keyup", '[contenteditable="true"]',function (){
+    $(this).parents("ul").data("venda_codigo", $(this).text());
 })
 
 xTableGenerate()

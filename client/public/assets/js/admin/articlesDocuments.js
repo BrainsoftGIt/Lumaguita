@@ -41,6 +41,7 @@ var articlesDocuments = {
                 (data || []).forEach((cust, idx) =>{
                     datalist_customers.append(`<li data-id=${cust.serie_id} data-imposto="${cust.tserie_financa}">${cust.serie_designacao}</li>`);
                 });
+                datalist_customers.find("li").first().mousedown();
             }
         });
     },
@@ -71,15 +72,18 @@ var articlesDocuments = {
                 articlesDocuments.sArgigo = e.artcls;
                 let existeInquery = (articlesDocuments?.sArgigo || []).find(({funct_load_artigo: {artigo_nome}}) =>  article === artigo_nome);
                 let datalistArtigos = $(`${modal} datalist[artigos]`);
-                datalistArtigos.empty();
 
                 if(!existeInquery) {
+                    datalistArtigos.empty();
                     articlesDocuments.sArgigo.forEach((art) => {
                         datalistArtigos.append(`<option value="${art.funct_load_artigo.artigo_nome}" data-id=${art.funct_load_artigo.artigo_id} data-value=${art.funct_load_artigo.artigo_nome.toLowerCase().trim()}>${art.funct_load_artigo.artigo_codigo}</option>`);
                     });
+
+                    articlesDocuments.resetFieldsArticle();
+                    return
                 }
 
-                if(articlesDocuments.sArgigo.length === 1 && !!existeInquery){
+                if(articlesDocuments.sArgigo.length === 1 || !!existeInquery){
                     articlesDocuments.article_id = existeInquery.funct_load_artigo.artigo_id;
                     if(taxasArtigos.taxs.find(value => value.artigo_id ===  articlesDocuments.article_id)){
                         let imposto = taxasArtigos.showTax(articlesDocuments.article_id);
@@ -113,7 +117,7 @@ var articlesDocuments = {
     },
     resetFieldsArticle(){
         let modal = window.xModalGeral || ""
-        $(`${modal}`).find(`[description_article], [amount_article], [price_article], [lote_article], [date_expiration_article], [amount_packaging], [imposto], [codigo_imposto_article]`).val("");
+        $(`${modal} [description_article], ${modal} [amount_article], ${modal} [price_article], ${modal} [lote_article], ${modal} [date_expiration_article], ${modal} [amount_packaging], ${modal} [imposto], ${modal} [codigo_imposto_article]`).val("");
     },
     add_articles_purchase(){
         let modal = window.xModalGeral || ""
