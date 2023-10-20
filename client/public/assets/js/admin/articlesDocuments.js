@@ -240,7 +240,7 @@ var articlesDocuments = {
     adicionarArtigosGuiaSaida(){
         let modal = window.xModalGeral || "";
         let total_value = $(`${modal} [amount_article]`).val().unFormatter() * $(`${modal} [price_article]`).val().unFormatter();
-        $(`${modal} [tableDocumentArticles]`).append(`<ul article_id="${articlesDocuments.article_id}" custoquantidade="${articlesDocuments.precario_quantidade}" codigoimposto="${$(`${modal} [codigo_imposto_article]`).val() || ""}>
+        $(`${modal} [tableDocumentArticles]`).append(`<ul article_id="${articlesDocuments.article_id}" custoquantidade="${articlesDocuments.precario_quantidade}" codigoimposto="${$(`${modal} [codigo_imposto_article]`).val() || ""}">
                                             <li>${articlesDocuments.article_code}</li>
                                             <li>${$(`${modal} [description_article]`).val()}</li>
                                             <li>${$(` ${modal} [amount_article] `).val()}</li>
