@@ -5,7 +5,6 @@ import {VERSION} from "../../../../server/version";
 
 
 
-
 export const menuPatch = {
     [VERSION.TAG] :sql`
 do $block$
