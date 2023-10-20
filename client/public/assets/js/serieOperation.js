@@ -17,7 +17,7 @@ var serieOperation = {
             contentType: "application/json",
             data: JSON.stringify({place: place, list_type_series: series}),
             success(e) {
-                serieOperation.missing = serieOperation.missing.concat(e.series);
+                serieOperation.missing = serieOperation.missing = e.series;
             }
         });
     },
