@@ -78,7 +78,6 @@ var articlesDocuments = {
                     });
                 }
                 else if(articlesDocuments.sArgigo.length === 1 || !!existeInquery){
-                    existeInquery = articlesDocuments.sArgigo;
                     articlesDocuments.article_id = existeInquery.funct_load_artigo.artigo_id;
                     if(taxasArtigos.taxs.find(value => value.artigo_id ===  articlesDocuments.article_id)){
                         let imposto = taxasArtigos.showTax(articlesDocuments.article_id);
