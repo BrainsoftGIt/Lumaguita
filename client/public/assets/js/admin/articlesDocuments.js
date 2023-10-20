@@ -67,7 +67,7 @@ var articlesDocuments = {
             success(e) {
                 articlesDocuments.artigoLoaded = true;
 
-                let existeInquery = (articlesDocuments?.sArgigo || []).find(({funct_load_artigo: {artigo_nome}}) =>  article.$$(artigo_nome));
+                let existeInquery = (articlesDocuments?.sArgigo || []).find(({funct_load_artigo: {artigo_nome}}) =>  article === artigo_nome);
                 let datalistArtigos = $(`${modal} datalist[artigos]`);
                 datalistArtigos.empty();
                 if(e.artcls.length > 1 && !existeInquery) {
