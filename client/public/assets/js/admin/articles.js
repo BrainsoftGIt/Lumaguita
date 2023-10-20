@@ -449,7 +449,7 @@ var article = {
             artigo_compostoquantidade: (artigo_composto.hasClass("active") ? $("#artigo_quantidade_composto").val().unFormatter() : null),
             artigo_classe_id: $(".listCats").find("div.active").attr("cat_id"),
             artigo_id: this.selected.artigo_id,
-            artigo_codigo: article.selected.artigo_codigo,
+            artigo_codigo: ($("#artigo_codigo").val().trim() || generateCode()),
             artigo_nome: $("#artigo_nome").val().trim(),
             artigo_preparacao: $("#artigo_confecionado").hasClass("active"),
             artigo_stocknegativo: $("#artigo_stock_negativo").hasClass("active"),
