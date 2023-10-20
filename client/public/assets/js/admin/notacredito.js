@@ -126,6 +126,12 @@ var notacredito = {
                     $(`${modal} [cliente_nif]`).val("");
                     $(`${modal} [notacredito_observacao]`).val("");
                     $(`${modal} [pesquisarFatura]`).val("");
+
+                    if (!!listfatura.length && listfatura.find("li").length > 1) {
+                        listfatura.parents(".xselect.flutuate").find("input").val("");
+                        listfatura.find("li").removeClass("active");
+                        return
+                    }
                     open("/api/print/nota-credito/"+JSON.stringify({type: "pdf", conta_id, date: new Date().getTimeStampPt(), admin: true }));
                     delete notacredito.fatura;
                     return
