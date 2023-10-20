@@ -363,6 +363,7 @@ begin
       'arg_colaborador_id', arg_colaborador_id,
       'arg_espaco_auth', _conta.conta_espaco_auth,
       'arg_tserie_id', _const.maguita_tserie_notacredito,
+      '_serie_id', _serie_id,
       'conta_conta_docorigin', _conta.conta_id,
       'conta_id', _conta_res.data->>'conta_id',
       'conta_extension', jsonb_build_object(),
