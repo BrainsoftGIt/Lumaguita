@@ -33,7 +33,6 @@ app.post("/api/pos/conta", async (req, res) =>{
     req.body.arg_colaborador_id = req.body.admin === undefined ? req.session.user_pos.auth.colaborador_id : req.session.auth_data.auth.colaborador_id;
     req.body.arg_espaco_auth = req.body.admin === undefined ? req.session.user_pos.auth.armazem_atual : req.session.auth_data.auth.armazem_atual;
     req.body.conta_posto_id = req.body.admin === undefined ? req.session.posto.posto_id : req.session.posto_admin;
-    console.log( JSON.stringify( req.body, null, 2 ) );
     const response = await functRegConta(req.body );
     let after = await clusterServer.service.loadLocalCluster();
     res.json({result: response.row.result, data: response.row});
@@ -103,7 +102,6 @@ app.post("/api/pos/pay", async (req, res) =>{
     req.body.arg_colaborador_id = req.body.admin === undefined ? req.session.user_pos.auth.colaborador_id : req.session.auth_data.auth.colaborador_id;
     req.body.conta_posto_fecho = req.body.admin === undefined ? req.session.posto.posto_id : req.session.posto_admin;
     const response = await functRegistarPagamento(req.body);
-    console.log( "console.log( response )", response?.row );
     let after = await clusterServer.service.loadLocalCluster();
     res.json({result: response.row.main.result, data: (response.row.main.result ? response.row.main.data.guia.guia_uid : response.row.main.message)});
     if(response.row.main.result && before.cluster_version < after.cluster_version){
@@ -147,7 +145,6 @@ app.post("/api/search/articles", async (req, res) =>{
     const {functSearchArtigoPOS} = require("../db/call-function-pos");
     req.body.arg_espaco_auth = req.session.user_pos.auth.armazem_atual;
     const response = await functSearchArtigoPOS(req.body);
-    console.log( response );
     res.json({artigos: response.rows});
 });
 app.post("/api/change/sale/status", async (req, res) =>{
