@@ -122,7 +122,7 @@ export let create = async (instituition, account_content, res, user, num_autoriz
             } : {},
             {
                 lineHeight: 1.3,
-                margin: [0, (!hasPersonalizadoHarder) ? 40 : 10, 0, 0],
+                margin: [0, (hasPersonalizadoHarder) ? 40 : 10, 0, 0],
                 layout: {
                     hLineWidth: function (i, node) {
                         return 0.8;
@@ -141,6 +141,7 @@ export let create = async (instituition, account_content, res, user, num_autoriz
                                 borderColor: ['#000000', '#000000', '#000000', '#000000'],
                                 stack: [
                                     {
+                                        margin: [0, 0, 0, 10],
                                         color: '#000000',
                                         text: `GUIA DE SAÍDA`,
                                         bold: true,
@@ -178,7 +179,7 @@ export let create = async (instituition, account_content, res, user, num_autoriz
                                 ]
                             },
                             {
-                                fontSize: 8,
+                                alignment: "right",
                                 border: [true, false, false, false],
                                 borderColor: ['#000000', '#000000', '#000000', '#000000'],
                                 stack: [

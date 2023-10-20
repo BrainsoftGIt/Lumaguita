@@ -311,6 +311,7 @@ export let create = async (instituition, account_content, res, user, date, num_a
                                 ]
                             },
                             {
+                                alignment: "right",
                                 fontSize: 8,
                                 border: [true, false, false, false],
                                 borderColor: ['#000000', '#000000', '#000000', '#000000'],

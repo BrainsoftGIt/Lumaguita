@@ -309,7 +309,7 @@ export let create = async (instituition, account_content, res, user, date, num_a
                         [
                             {
                                 fontSize: 8,
-                                border: [false, false, true, false],
+                                border: [false, false, false, false],
                                 borderColor: ['#000000', '#000000', '#000000', '#000000'],
                                 stack: [
                                     {
@@ -351,7 +351,7 @@ export let create = async (instituition, account_content, res, user, date, num_a
                             },
                             {
                                 fontSize: 8,
-                                border: [true, false, false, false],
+                                border: [false, false, false, false],
                                 borderColor: ['#000000', '#000000', '#000000', '#000000'],
                                 stack: [
                                     {

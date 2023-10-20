@@ -37,7 +37,7 @@ export let structure = (user, num_autorization, num_certification, imageCabecalh
                     alignment: "center",
                     lineHeight: 1.3,
                     fontSize: 6.5,
-                    margin: [30, 10, 30, 5],
+                    margin: [35, 10, 35, 5],
                     stack: [
                         {
                             text: `${user} | Processado pelo software Luma`
