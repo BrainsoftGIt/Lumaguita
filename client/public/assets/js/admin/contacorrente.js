@@ -10,7 +10,9 @@ var contacorrente = {
         $("#contacorrente_estrutura_numero_documento").css("display", "none");
         $("#contacorrente_troco").val("").prop("disabled", true);
         $("#contacorrente_tipo_pagamento").find("li").eq(0).mousedown();
-        $('[data-inputmask-alias]').inputmask();
+        setTimeout(() => {
+            $('[data-inputmask-alias]').inputmask();
+        })
         contacorrente.loadClients();
         contacorrente.carregarCambios();
         serieOperation.loadSerieOperation([serieOperation.tipo.recibo]);
