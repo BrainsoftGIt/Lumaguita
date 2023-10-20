@@ -359,7 +359,7 @@ $$;
 
 
 
-export const correct_serie = patchSQL({ unique: true } ).sql`
+export const correct_serie_v2 = patchSQL({ unique: true } ).sql`
 update tweeks.conta
   set conta_serie_id = (conta_serie->>'serie_id')::uuid
   where conta_serie_id is null 
