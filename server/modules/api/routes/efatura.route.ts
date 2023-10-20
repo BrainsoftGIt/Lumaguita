@@ -1,12 +1,11 @@
 import {app, storage} from '../../../service/storage.service';
 import {clusterServer} from "../../../service/cluster.service";
-import {
-    functLoadEfacturaAuthorization,
-    functLoadSeries,
-    functLoadSeriesAvailable,
-    functRegEfacturaAuthorization,
-    functRegSerie
-} from "../db/call-function-efatura";
+import {functLoadSeriesAvailable} from "../db/call-function-efatura";
+import excel from "exceljs";
+import fs from "fs";
+import path from "path";
+import {folders} from "../../../global/project";
+import moment from "moment/moment";
 
 app.post("/api/efatura", async (req, res) =>{
     const {functRegSerie} = require("../db/call-function-efatura");
@@ -90,7 +89,6 @@ app.post("/api/efatura/authorization/closeyear", async (req, res) =>{
     }
 });
 
-
 app.post("/api/efatura/authorization/continue", async (req, res) =>{
     const {functSetsAuthorizatioContinue} = require("../db/call-function-efatura");
     let before =  await clusterServer.service.loadLocalCluster();
@@ -106,4 +104,54 @@ app.post("/api/efatura/authorization/continue", async (req, res) =>{
             message: (req.body.serie_id === null ? "Série definida com sucesso!" : "Série atualizada com sucesso!")
         });
     }
+});
+
+
+app.post("/api/efatura/report/excel/data", async (req, res) =>{
+    let random = (Math.random() + 1).toString(36).substring(7);
+    let data = new Date();
+    let file = `${random}-${data.getSeconds()}.json`
+    fs.writeFile(path.join(folders.temp, file), JSON.stringify(req.body), function (err) {
+        if (err) return console.log(err);
+        res.json(file)
+    });
+});
+
+app.get("/api/efatura/report/excel/:data", async (req, res) => {
+
+    let data = JSON.parse(req.params.data);
+    let fileData = fs.readFileSync(path.join(folders.temp, data.file));
+    let args = JSON.parse(fileData.toString());
+    fs.unlinkSync(path.join(folders.temp, data.file))
+
+    const {functReportFinanca} = require("../db/call-function-report");
+    args.arg_colaborador_id = req.session.auth_data.auth.colaborador_id;
+    let { rows : list } = await functReportFinanca(args);
+
+    let {year, month} = args;
+    const excel = require("exceljs");
+    const filename = `${month} ${year} IVA.xlsx`;
+    let workBook = new excel.Workbook();
+    let workSheet = workBook.addWorksheet("emitted_document");
+    workSheet.columns = [
+        {header: "tax_aplicavel_itens", width: 30},
+        {header: "codigo_isento", width: 30},
+        {header: "quant_itens", width: 30},
+        {header: "desc_itens", width: 30},
+        {header: "numero_documento_origem", width: 30},
+        {header: "data_documento_origem", width: 30},
+        {header: "tipo_documento", width: 30}
+    ];
+
+    list.forEach(({vreport_imposto_financas: {...artigo}}) => {
+        let { tipo_documento_origem, data_documento_origem, codigo_isento, desc_itens, total_valor_itens, taxa_aplicavel_itens, quant_itens, numero_documento_origem } = artigo;
+        workSheet.addRow([taxa_aplicavel_itens, codigo_isento, quant_itens, desc_itens, numero_documento_origem, data_documento_origem, tipo_documento_origem]);
+    });
+
+    fs.mkdirSync(path.join(folders.temp, 'multer'), {recursive: true});
+    await workBook.xlsx.writeFile(path.join(folders.temp, 'multer/' + filename)).then(() => {
+        res.download(path.join(folders.temp, 'multer') + "/" + filename, filename, function () {
+            fs.unlinkSync(path.join(folders.temp, 'multer') + "/" + filename);
+        });
+    });
 });
