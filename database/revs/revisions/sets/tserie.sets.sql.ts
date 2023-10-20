@@ -9,7 +9,7 @@ import {SQL} from "kitres/src/core/pg-core/scape";
 let content = fs.readFileSync( Path.join( __dirname, "tserie.sets.json" ) ).toString();
 let __tserie = JSON5.parse( content );
 
-export const sets_series_update = {
+export const sets_tseries = {
     [VERSION.TAG] : sql`
 do $$ 
 declare
