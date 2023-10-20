@@ -299,7 +299,7 @@ $("#contacorrente_moeda").on("mousedown", "li", function () {
 });
 $("[pagar_contacorrente]").on("click", function () {
     let contacorrente_tipo_pagamento = $("#contacorrente_tipo_pagamento");
-    let listFatura = $("#listFatura");
+    let listFatura = $("[listFatura]");
     let regExp = /[a-zA-Z]/g;
 
     spaceConfig.loadConfig().then(value => {
