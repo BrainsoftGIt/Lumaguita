@@ -254,7 +254,6 @@ var faturaAdmin = {
                     let listfatura = $(`${modal} [listfatura]`);
                     if (!!listfatura.length && listfatura.find("li").length === 1) {
                         listfatura.find("li").mousedown();
-                        return
                     }
 
                     xAlert("Fatura", "Fatura emitida com sucesso!");
