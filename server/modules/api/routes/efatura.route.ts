@@ -4,7 +4,6 @@ import {functLoadSeriesAvailable} from "../db/call-function-efatura";
 import fs from "fs";
 import path from "path";
 import {folders} from "../../../global/project";
-import moment from "moment/moment";
 
 
 app.post("/api/efatura", async (req, res) => {
