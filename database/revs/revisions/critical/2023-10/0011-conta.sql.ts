@@ -359,10 +359,12 @@ $$;
 
 
 
-export const correct_serie = patchSQL({ unique: true } ).sql`
+export const correct_serie_v2 = patchSQL({ unique: true } ).sql`
 update tweeks.conta
   set conta_serie_id = (conta_serie->>'serie_id')::uuid
+  from tweeks.serie _s
   where conta_serie_id is null 
     and ( conta_serie->>'serie_id')::uuid is not null
+    and _s.serie_id = ( conta_serie->>'serie_id')::uuid
     and conta_estado = (map.constant() ).maguita_conta_estado_fechado
 `;
