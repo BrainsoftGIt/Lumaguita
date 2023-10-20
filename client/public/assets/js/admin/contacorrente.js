@@ -13,6 +13,8 @@ var contacorrente = {
         setTimeout(() => {
             $('[data-inputmask-alias]').inputmask();
         })
+
+        articlesDocuments.loadSerieDistribuicao(serieOperation.tipo.recibo);
         contacorrente.loadClients();
         contacorrente.carregarCambios();
         serieOperation.loadSerieOperation([serieOperation.tipo.recibo]);
@@ -186,7 +188,9 @@ var contacorrente = {
             url: "/api/deposito",
             method: "POST",
             contentType: "application/json",
-            data: JSON.stringify({deposito_tpaga_id: contacorrente_tipo_pagamento.find("li.active").attr("tipo_id"),
+            data: JSON.stringify({
+                _serie_id: ($(`[listFatura] li.active`).data() || {}).id || null,
+                deposito_tpaga_id: contacorrente_tipo_pagamento.find("li.active").attr("tipo_id"),
                 deposito_currency_id: $("#contacorrente_moeda").find("li.active").attr("currency_id"),
                 deposito_cliente_id: contacorrente.clienteSelecionado.cliente_id, deposito_referencia: {},
                 deposito_montantemoeda: $("#contacorrente_montante").val().unFormatter(),
@@ -295,6 +299,7 @@ $("#contacorrente_moeda").on("mousedown", "li", function () {
 });
 $("[pagar_contacorrente]").on("click", function () {
     let contacorrente_tipo_pagamento = $("#contacorrente_tipo_pagamento");
+    let listFatura = $("#listFatura");
     let regExp = /[a-zA-Z]/g;
 
     spaceConfig.loadConfig().then(value => {
@@ -305,6 +310,10 @@ $("[pagar_contacorrente]").on("click", function () {
             }
             if(contacorrente_tipo_pagamento.find("li.active").length === 0){
                 xAlert("Efetuar pagamento", "Escolha o tipo de pagamento!", "error");
+                return;
+            }
+            if(listFatura.find("li.active").length === 0){
+                xAlert("Efetuar pagamento", "Escolha uma serie!", "error");
                 return;
             }
             if($("#contacorrente_moeda").find("li.active").length === 0){
