@@ -202,6 +202,9 @@
             });
             return armazensAlocados;
         },
+        hasNotDateBirthday(){
+            return ["d", "m", "y"].find(v => $("[colaborador_datanascimento]").val().includes(v)) !== undefined || $("[colaborador_datanascimento]").val() === "";
+        },
         adicionar() {
             $("[bt_colaborador]").attr("disabled", true).addClass("loading");
             let user = {};
@@ -209,10 +212,10 @@
             user.arg_colaborador_nome = $("[colaborador_nome]").val().trim();
             user.arg_colaborador_apelido = $("[colaborador_apelido]").val().trim();
             user.arg_colaborador_nif = $("[colaborador_nif]").val() || null;
-            user.arg_colaborador_datanascimento = alterFormatDate($("[colaborador_datanascimento]").val());
+            user.arg_colaborador_datanascimento = colaborador.hasNotDateBirthday() ? null : alterFormatDate($("[colaborador_datanascimento]").val());
             user.arg_colaborador_ficha = null;
             user.arg_colaborador_foto = null;
-            user.arg_tsexo_id = $("[colaborador_sexo]").find("li.active").attr("id");
+            user.arg_tsexo_id = $("[colaborador_sexo]").find("li.active").attr("id") || null;
             user.arg_menu_list = this.selectedMenus;
             user.arg_espaco = this.armazensSelecionadosAlocados;
             user.arg_colaborador_pin = 1234;
@@ -253,10 +256,10 @@
             user.arg_colaborador_nome = $("[colaborador_nome]").val().trim();
             user.arg_colaborador_apelido = $("[colaborador_apelido]").val().trim();
             user.arg_colaborador_nif = $("[colaborador_nif]").val() || null;
-            user.arg_colaborador_datanascimento = alterFormatDate($("[colaborador_datanascimento]").val());
+            user.arg_colaborador_datanascimento = colaborador.hasNotDateBirthday() ? null : alterFormatDate($("[colaborador_datanascimento]").val());
             user.arg_colaborador_ficha = null;
             user.arg_colaborador_foto = this.selected.colaborador_foto;
-            user.arg_tsexo_id = $("[colaborador_sexo]").find("li.active").attr("id");
+            user.arg_tsexo_id = $("[colaborador_sexo]").find("li.active").attr("id") || null;
             user.arg_menu_list = this.selectedMenus;
             user.arg_espaco = this.armazensSelecionadosAlocados;
 
@@ -365,20 +368,13 @@
     });
     $("[bt_colaborador]").on("click", function () {
         let regExp = /[a-zA-Z]/g;
-        if (!validation1($("[colaborador_nome], [colaborador_apelido], [colaborador_datanascimento], [colaborador_email]"))) return;
-        if (regExp.test($("[colaborador_datanascimento]").val())) {
-            xAlert("Colaborador", "Digite a data de nascimento!", "info");
-            $("[colaborador_datanascimento]").focus();
-            return;
-        }
-        if (!compareDates(alterFormatDate($("[colaborador_datanascimento]").val()), new Date().getDateEn(), false)) {
-            xAlert("Colaborador", "Data de nascimento inválida!", "error");
-            $("[colaborador_datanascimento]").focus();
-            return;
-        }
-        if ($("[colaborador_sexo]").find("li.active").length === 0) {
-            xAlert("Colaborador", "Selecione o sexo!", "info");
-            return;
+        if (!validation1($("[colaborador_nome], [colaborador_apelido], [colaborador_email]"))) return;
+        if (!colaborador.hasNotDateBirthday()) {
+            if (!compareDates(alterFormatDate($("[colaborador_datanascimento]").val()), new Date().getDateEn(), false)) {
+                xAlert("Colaborador", "Data de nascimento inválida!", "error");
+                $("[colaborador_datanascimento]").focus();
+                return;
+            }
         }
         if (!isMailValid($("[colaborador_email]"))) {
             xAlert("Colaborador", "Email inválido!", "error");
@@ -410,7 +406,7 @@
         $("[colaborador_nif]").val((colaborador.selected.colaborador_nif || ""));
         $("[colaborador_datanascimento]").val((colaborador.selected.colaborador_datanascimento === null ? "" : alterFormatDate(colaborador.selected.colaborador_datanascimento)));
         $("[colaborador_sexo]").find(`li`).removeClass("active");
-        if (colaborador.selected.tsexo_id) {
+        if (colaborador.selected.tsexo_id !== null) {
             $("[colaborador_sexo]").find(`li[id=${colaborador.selected.tsexo_id}]`).addClass("active");
             $("#sexoDesc").val(colaborador.selected.tsexo_nome);
         }
