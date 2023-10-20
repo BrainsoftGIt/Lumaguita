@@ -418,9 +418,11 @@ var article = {
             arg_imposto: article.impostos_selecionados,
             arg_links: this.selectedWarehouses,
             arg_ean_codes: this.addedEAN,
-            FATURACAO: $("#artigo_codigoimpostoFaturacao").find("li.active").attr("codigoimposto_id") || null,
-            NOTADEBITO: $("#artigo_codigoimpostoNotaDebito").find("li.active").attr("codigoimposto_id") || null,
-            NOTACREDITO: $("#artigo_codigoimpostoNotaCredito").find("li.active").attr("codigoimposto_id") || null
+            artigo_codigoimposto: {
+                FATURACAO: $("#artigo_codigoimpostoFaturacao").find("li.active").attr("codigoimposto_id") || null,
+                NOTADEBITO: $("#artigo_codigoimpostoNotaDebito").find("li.active").attr("codigoimposto_id") || null,
+                NOTACREDITO: $("#artigo_codigoimpostoNotaCredito").find("li.active").attr("codigoimposto_id") || null,
+            }
         }));
         formData.append("file",  $("#artigo_foto")[0].files[0]);
 
@@ -466,9 +468,11 @@ var article = {
             arg_imposto: article.impostos_selecionados,
             arg_links: this.selectedWarehouses,
             arg_ean_codes: this.addedEAN,
-            FATURACAO: $("#artigo_codigoimpostoFaturacao").find("li.active").attr("codigoimposto_id") || null,
-            NOTADEBITO: $("#artigo_codigoimpostoNotaDebito").find("li.active").attr("codigoimposto_id") || null,
-            NOTACREDITO: $("#artigo_codigoimpostoNotaCredito").find("li.active").attr("codigoimposto_id") || null
+            artigo_codigoimposto: {
+                FATURACAO: $("#artigo_codigoimpostoFaturacao").find("li.active").attr("codigoimposto_id") || null,
+                NOTADEBITO: $("#artigo_codigoimpostoNotaDebito").find("li.active").attr("codigoimposto_id") || null,
+                NOTACREDITO: $("#artigo_codigoimpostoNotaCredito").find("li.active").attr("codigoimposto_id") || null,
+            }
         }));
         formData.append("file",  $("#artigo_foto")[0].files[0]);
 
@@ -582,12 +586,12 @@ var article = {
         artigo_unidade.find(`li[units_id=${article.selected?.artigo_unit_id}]`).addClass("active");
         artigo_unidade.parents(".xselect").find("input").val(artigo_unidade.find(`li.active`).text());
 
-        let artigo_codigoimposto_faturacao = $("#artigo_codigoimpostoFaturacao").find(`li[codigoimposto_id="${article.selected.artigo_codigoimposto.FATURACAO}"]`).addClass("active")
-        $("#artigo_codigoimpostoFaturacaoDesc").val(artigo_codigoimposto_faturacao.text());
-        let artigo_codigoimposto_notadebito = $("#artigo_codigoimpostoNotaDebito").find(`li[codigoimposto_id="${article.selected.artigo_codigoimposto.NOTADEBITO}"]`).addClass("active")
-        $("#artigo_codigoimpostoNotaDebitoDesc").val(artigo_codigoimposto_notadebito.text());
-        let artigo_codigoimposto_notacredito = $("#artigo_codigoimpostoNotaCredito").find(`li[codigoimposto_id="${article.selected.artigo_codigoimposto.NOTADEBITO}"]`).addClass("active")
-        $("#artigo_codigoimpostoNotaCreditoDesc").val(artigo_codigoimposto_notacredito.text());
+        $("#artigo_codigoimpostoFaturacao").find(`li[codigoimposto_id="${article.selected.artigo_codigoimposto.FATURACAO}"]`).addClass("active");
+        $("#artigo_codigoimpostoFaturacaoDesc").val(($("#artigo_codigoimpostoFaturacao").find(`li[codigoimposto_id="${article.selected.artigo_codigoimposto.FATURACAO}"]`).text() || ""));
+        $("#artigo_codigoimpostoNotaDebito").find(`li[codigoimposto_id="${article.selected.artigo_codigoimposto.NOTADEBITO}"]`).addClass("active");
+        $("#artigo_codigoimpostoNotaDebitoDesc").val(($("#artigo_codigoimpostoNotaDebito").find(`li[codigoimposto_id="${article.selected.artigo_codigoimposto.NOTADEBITO}"]`).text() || ""));
+        $("#artigo_codigoimpostoNotaCredito").find(`li[codigoimposto_id="${article.selected.artigo_codigoimposto.NOTACREDITO}"]`).addClass("active");
+        $("#artigo_codigoimpostoNotaCreditoDesc").val(($("#artigo_codigoimpostoNotaCredito").find(`li[codigoimposto_id="${article.selected.artigo_codigoimposto.NOTACREDITO}"]`).text() || ""));
         showTarget("xModalCtrlArtigo", "Editar artigo");
     },
     loadData(showDetails = false){
@@ -672,7 +676,9 @@ var article = {
                         else{
                             xModalAllAboutArtigo.find(".img-container").addClass("empty-artigo");
                         }
-
+                        $("[detalhes_codigo_inclusao_exclusao_faturacao]").text((article.selected.artigo_codigoimposto.FATURACAO ||  "-----"));
+                        $("[detalhes_codigo_inclusao_exclusao_notadebito]").text((article.selected.artigo_codigoimposto.NOTADEBITO ||  "-----"));
+                        $("[detalhes_codigo_inclusao_exclusao_notacredito]").text((article.selected.artigo_codigoimposto.NOTACREDITO ||  "-----"));
                         xModalAllAboutArtigo.find(".xSwitch input:checkbox").prop("checked", (article.selected.artigo_estado === 1));
                         showTarget("xModalAllAboutArtigo");
                     }
