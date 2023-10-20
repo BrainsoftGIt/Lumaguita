@@ -149,9 +149,14 @@ begin
           de.deposito_tpaga_id,
           coalesce( corigen.conta_numerofatura, c.conta_docorigin ) as conta_documentoorigem,
           coalesce( corigen.conta_data, c.conta_datedocorigin ) as conta_datedocorigin,
-          array_agg( to_jsonb( v )||to_jsonb( vg ) order by v.artigo_nome ) as conta_vendas
+          array_agg( to_jsonb( v )||to_jsonb( vg ) order by v.artigo_nome ) as conta_vendas,
+          ts.tserie_id,
+          ts.tserie_desc,
+          ts.tserie_code,
+          ts.tserie_financa
         from tweeks.conta c
           left join tweeks.serie se on c.conta_serie_id = se.serie_id
+          left join tweeks.tserie ts on se.serie_tserie_id = ts.tserie_id
           left join tweeks.cliente ccl on c.conta_cliente_id = ccl.cliente_id
           left join tweeks.conta corigen on c.conta_conta_docorigin = corigen.conta_id
           left join __venda_group vg on c.conta_id = vg._venda_conta_id
@@ -163,6 +168,7 @@ begin
           de.deposito_id,
           ccl.cliente_id,
           corigen.conta_id,
+          ts.tserie_id,
           se.serie_id
      ) select to_jsonb( c ) || _client from __conta c
   ;
