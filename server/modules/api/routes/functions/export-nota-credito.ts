@@ -260,7 +260,7 @@ export let create = async (instituition, account_content, res, user, date, num_a
                                 stack: [
                                     {
                                         color: '#000000',
-                                        text: `NOTA DE CREDITO`,
+                                        text: account_content.main.serie_designacao.toUpperCase(),
                                         margin: [0, 0, 0, 4],
                                         bold: true,
                                     },
