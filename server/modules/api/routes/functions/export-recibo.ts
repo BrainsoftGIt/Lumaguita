@@ -228,7 +228,7 @@ export let create = async (instituition, deposito, cliente, res, user, date, num
                         [
                             {
                                 fontSize: 8,
-                                border: [false, false, false, false],
+                                border: [false, false, true, false],
                                 borderColor: ['#000000', '#000000', '#000000', '#000000'],
                                 stack: [
                                     {
@@ -289,7 +289,7 @@ export let create = async (instituition, deposito, cliente, res, user, date, num
                             },
                             {
                                 fontSize: 8,
-                                border: [false, false, false, false],
+                                border: [true, false, false, false],
                                 borderColor: ['#000000', '#000000', '#000000', '#000000'],
                                 stack: [
                                     {
