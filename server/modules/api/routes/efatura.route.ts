@@ -1,21 +1,21 @@
 import {app, storage} from '../../../service/storage.service';
 import {clusterServer} from "../../../service/cluster.service";
 import {functLoadSeriesAvailable} from "../db/call-function-efatura";
-import excel from "exceljs";
 import fs from "fs";
 import path from "path";
 import {folders} from "../../../global/project";
 import moment from "moment/moment";
 
-app.post("/api/efatura", async (req, res) =>{
+
+app.post("/api/efatura", async (req, res) => {
     const {functRegSerie} = require("../db/call-function-efatura");
-    let before =  await clusterServer.service.loadLocalCluster();
+    let before = await clusterServer.service.loadLocalCluster();
     req.body.arg_colaborador_id = req.session.auth_data.auth.colaborador_id;
     req.body.arg_espaco_auth = req.session.auth_data.auth.armazem_atual;
     const response = await functRegSerie(req.body);
     let after = await clusterServer.service.loadLocalCluster();
     res.json({result: response.row.main.result, data: response.row.main.message});
-    if(response.row.main.result && before.cluster_version < after.cluster_version){
+    if (response.row.main.result && before.cluster_version < after.cluster_version) {
         clusterServer.notifyLocalChange({
             event: "SERIE:INVOICE",
             extras: null,
@@ -23,20 +23,19 @@ app.post("/api/efatura", async (req, res) =>{
         });
     }
 });
-app.post("/api/efatura/load", async (req, res) =>{
+app.post("/api/efatura/load", async (req, res) => {
     req.body.arg_espaco_auth = req.body.place === "admin" ? req.session.auth_data.auth.armazem_atual : req.session.user_pos.auth.armazem_atual;
     req.body.arg_colaborador_id = req.body.place === "admin" ? req.session.auth_data.auth.colaborador_id : req.session.user_pos.auth.colaborador_id;
 
-    if(req.body.list_type_series === undefined) {
+    if (req.body.list_type_series === undefined) {
         const {functLoadSeries} = require("../db/call-function-efatura");
         let response = await functLoadSeries(req.body);
         res.json({series: response.rows});
-    }
-    else{
+    } else {
         let missing_serie = [];
         let response = await functLoadSeriesAvailable(req.body);
         req.body.list_type_series.forEach(tipo => {
-            if(response.rows.find(value => parseInt(value.data.tserie_id) === tipo) === undefined){
+            if (response.rows.find(value => parseInt(value.data.tserie_id) === tipo) === undefined) {
                 missing_serie.push(tipo);
             }
         });
@@ -44,17 +43,17 @@ app.post("/api/efatura/load", async (req, res) =>{
     }
 });
 
-app.post("/api/efatura/authorization/reg", async (req, res) =>{
+app.post("/api/efatura/authorization/reg", async (req, res) => {
     const {functRegEfacturaAuthorization} = require("../db/call-function-efatura");
-    let before =  await clusterServer.service.loadLocalCluster();
+    let before = await clusterServer.service.loadLocalCluster();
     req.body.arg_colaborador_id = req.session.auth_data.auth.colaborador_id;
     req.body.arg_espaco_auth = req.session.auth_data.auth.armazem_atual;
     let response = await functRegEfacturaAuthorization(req.body);
-    console.log( response.row );
-    const { row : { main : { result, message } } } = response;
+    console.log(response.row);
+    const {row: {main: {result, message}}} = response;
     let after = await clusterServer.service.loadLocalCluster();
     res.json({result: result, data: message});
-    if(result && before.cluster_version < after.cluster_version){
+    if (result && before.cluster_version < after.cluster_version) {
         clusterServer.notifyLocalChange({
             event: "SERIE:INVOICE",
             extras: null,
@@ -63,24 +62,24 @@ app.post("/api/efatura/authorization/reg", async (req, res) =>{
     }
 });
 
-app.post("/api/efatura/authorization/load", async (req, res) =>{
+app.post("/api/efatura/authorization/load", async (req, res) => {
     const {functLoadEfacturaAuthorization} = require("../db/call-function-efatura");
     req.body.arg_colaborador_id = req.session.auth_data.auth.colaborador_id;
     req.body.arg_espaco_auth = req.session.auth_data.auth.armazem_atual;
-    const { rows } = await functLoadEfacturaAuthorization(req.body);
+    const {rows} = await functLoadEfacturaAuthorization(req.body);
     res.json({datas: rows.map(({main}) => main)});
 });
 
 
-app.post("/api/efatura/authorization/closeyear", async (req, res) =>{
+app.post("/api/efatura/authorization/closeyear", async (req, res) => {
     const {functChangeAuthorizationCloseYear} = require("../db/call-function-efatura");
-    let before =  await clusterServer.service.loadLocalCluster();
+    let before = await clusterServer.service.loadLocalCluster();
     req.body.arg_colaborador_id = req.session.auth_data.auth.colaborador_id;
     req.body.arg_espaco_auth = req.session.auth_data.auth.armazem_atual;
-    const { row : { main : { result, message } } } = await functChangeAuthorizationCloseYear(req.body);
+    const {row: {main: {result, message}}} = await functChangeAuthorizationCloseYear(req.body);
     let after = await clusterServer.service.loadLocalCluster();
     res.json({result: result, data: message});
-    if(result && before.cluster_version < after.cluster_version){
+    if (result && before.cluster_version < after.cluster_version) {
         clusterServer.notifyLocalChange({
             event: "SERIE:INVOICE",
             extras: null,
@@ -89,15 +88,15 @@ app.post("/api/efatura/authorization/closeyear", async (req, res) =>{
     }
 });
 
-app.post("/api/efatura/authorization/continue", async (req, res) =>{
+app.post("/api/efatura/authorization/continue", async (req, res) => {
     const {functSetsAuthorizatioContinue} = require("../db/call-function-efatura");
-    let before =  await clusterServer.service.loadLocalCluster();
+    let before = await clusterServer.service.loadLocalCluster();
     req.body.arg_colaborador_id = req.session.auth_data.auth.colaborador_id;
     req.body.arg_espaco_auth = req.session.auth_data.auth.armazem_atual;
-    const { row : { main : { result, message } } } = await functSetsAuthorizatioContinue(req.body);
+    const {row: {main: {result, message}}} = await functSetsAuthorizatioContinue(req.body);
     let after = await clusterServer.service.loadLocalCluster();
     res.json({result: result, data: message});
-    if(result && before.cluster_version < after.cluster_version){
+    if (result && before.cluster_version < after.cluster_version) {
         clusterServer.notifyLocalChange({
             event: "SERIE:INVOICE",
             extras: null,
@@ -107,7 +106,7 @@ app.post("/api/efatura/authorization/continue", async (req, res) =>{
 });
 
 
-app.post("/api/efatura/report/excel/data", async (req, res) =>{
+app.post("/api/efatura/report/excel/data", async (req, res) => {
     let random = (Math.random() + 1).toString(36).substring(7);
     let data = new Date();
     let file = `${random}-${data.getSeconds()}.json`
@@ -119,6 +118,7 @@ app.post("/api/efatura/report/excel/data", async (req, res) =>{
 
 app.get("/api/efatura/report/excel/:data", async (req, res) => {
 
+    const moment = require('moment');
     let data = JSON.parse(req.params.data);
     let fileData = fs.readFileSync(path.join(folders.temp, data.file));
     let args = JSON.parse(fileData.toString());
@@ -126,7 +126,7 @@ app.get("/api/efatura/report/excel/:data", async (req, res) => {
 
     const {functReportFinanca} = require("../db/call-function-report");
     args.arg_colaborador_id = req.session.auth_data.auth.colaborador_id;
-    let { rows : list } = await functReportFinanca(args);
+    let {rows: list} = await functReportFinanca(args);
 
     let {year, month} = args;
     const excel = require("exceljs");
@@ -184,39 +184,46 @@ app.get("/api/efatura/report/excel/:data", async (req, res) => {
     let linha = 1;
     letras.forEach((letra) => {
         workSheet.getCell(`${letra}${linha}`).font = {
-           color: { argb: colorFont[letra] }
+            color: {argb: colorFont[letra]}
         };
         workSheet.getCell(`${letra}${linha}`).border = {
-            top: { style: 'thin' },
-            left: { style: 'thin' },
-            bottom: { style: 'thin' },
-            right: { style: 'thin' }
+            top: {style: 'thin'},
+            left: {style: 'thin'},
+            bottom: {style: 'thin'},
+            right: {style: 'thin'}
         };
         workSheet.getCell(`${letra}${linha}`).fill = {
             type: 'pattern',
-            pattern:'solid',
-            fgColor:{argb: color[letra]},
+            pattern: 'solid',
+            fgColor: {argb: color[letra]},
         };
     })
 
     list.forEach(({vreport_imposto_financas: {...artigo}}, index) => {
-        let { documento_numero, documento_serie, documento_data, nif_consumidor, total_valor_itens, tipo_documento_origem, data_documento_origem, codigo_isento, desc_itens, taxa_aplicavel_itens, quant_itens, numero_documento_origem } = artigo;
-        workSheet.addRow([documento_numero, documento_serie, documento_data, nif_consumidor,total_valor_itens, taxa_aplicavel_itens, codigo_isento, quant_itens, desc_itens, numero_documento_origem, data_documento_origem, tipo_documento_origem]);
+        let {documento_numero, documento_serie, documento_data, nif_consumidor, total_valor_itens, tipo_documento_origem, data_documento_origem, codigo_isento, desc_itens, taxa_aplicavel_itens, quant_itens, numero_documento_origem} = artigo;
+        if(!!documento_data){
+            documento_data = moment(documento_data, 'YYYY-MM-DD').format('DD/MM/YYYY');
+        }
+
+        if(!!data_documento_origem){
+            data_documento_origem = moment(data_documento_origem, 'YYYY-MM-DD').format('DD/MM/YYYY');
+        }
+        workSheet.addRow([documento_numero, documento_serie, documento_data, nif_consumidor, total_valor_itens, taxa_aplicavel_itens, codigo_isento, quant_itens, desc_itens, numero_documento_origem, data_documento_origem, tipo_documento_origem]);
         let linha = 1;
         letras.forEach((letra) => {
-            workSheet.getCell(`${letra}${index+2}`).font = {
-                color: { argb: colorFont[letra] }
+            workSheet.getCell(`${letra}${index + 2}`).font = {
+                color: {argb: colorFont[letra]}
             };
-            workSheet.getCell(`${letra}${index+2}`).border = {
-                top: { style: 'thin' },
-                left: { style: 'thin' },
-                bottom: { style: 'thin' },
-                right: { style: 'thin' }
+            workSheet.getCell(`${letra}${index + 2}`).border = {
+                top: {style: 'thin'},
+                left: {style: 'thin'},
+                bottom: {style: 'thin'},
+                right: {style: 'thin'}
             };
-            workSheet.getCell(`${letra}${index+2}`).fill = {
+            workSheet.getCell(`${letra}${index + 2}`).fill = {
                 type: 'pattern',
-                pattern:'solid',
-                fgColor:{argb: color[letra]},
+                pattern: 'solid',
+                fgColor: {argb: color[letra]},
             };
         })
     });
