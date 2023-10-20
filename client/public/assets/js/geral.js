@@ -1125,3 +1125,8 @@ if(!Date.prototype.difference) {
         return diferenca;
     };
 }
+
+function getCurrentLocation(){
+    console.log( window.location.href )
+    return window.location;
+}

@@ -62,7 +62,7 @@ with _const ( maguita_venda_estado_fechado, maguita_conta_estado_fechado, maguit
       inner join tweeks.posto p on ct.conta_posto_fecho = p.posto_id
       inner join tweeks.espaco e on p.posto_espaco_auth = e.espaco_id
       inner join auth.colaborador aut on ct.conta_colaborador_fecho = aut.colaborador_id
-      inner join tweeks.serie se on ct.conta_serie_id = se.serie_id
+      inner join tweeks.serie se on ct.conta_serie_id =  se.serie_id
       inner join tweeks.tserie ts on se.serie_tserie_id = ts.tserie_id
       left join tweeks.deposito de on ( de.deposito_referencia->>'conta_id' )::uuid = ct.conta_id
         and de.deposito_posto_id = p.posto_id
