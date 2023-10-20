@@ -41,7 +41,10 @@ var articlesDocuments = {
                 (data || []).forEach((cust, idx) =>{
                     datalist_customers.append(`<li data-id=${cust.serie_id} data-imposto="${cust.tserie_financa}">${cust.serie_designacao}</li>`);
                 });
-                datalist_customers.find("li").first().mousedown();
+
+                if(datalist_customers.find("li").length === 1) {
+                    datalist_customers.find("li").first().mousedown();
+                }
             }
         });
     },
