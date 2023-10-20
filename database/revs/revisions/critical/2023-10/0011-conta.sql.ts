@@ -1,4 +1,5 @@
 import {patchSQL, sql} from "kitres";
+import {SQL} from "kitres/src/core/pg-core/scape";
 
 
 export const alter_conta_add_origem = patchSQL({ unique: true }).sql`
@@ -108,7 +109,8 @@ declare
     _message := tweeks.__check_conta_data(
       _tserie_id := arg_tserie_id,
       _conta_data := _conta.conta_data,
-      _raise := false
+      _raise := false,
+      _serie_id := _serie_id
     );
 
     if _message is not null then
@@ -280,5 +282,77 @@ declare
       )
     );
   end;
+$$;
+`;
+
+
+export const __check_conta_data_v2 = sql`
+drop function if exists tweeks.__check_conta_data(
+  _tserie_id integer,
+  _conta_data date,
+  _raise boolean
+);
+
+drop function if exists tweeks.__check_conta_data(
+  _tserie_id integer,
+  _conta_data date,
+  _raise boolean,
+  _serie_id uuid
+);
+
+
+create or replace function tweeks.__check_conta_data(
+  _tserie_id integer,
+  _conta_data date,
+  _raise boolean,
+  _serie_id uuid default null
+) returns text
+  language plpgsql
+as
+$$
+declare 
+  _data record;
+  __serie record;
+  _message text;
+  _uuid_base uuid default lib.to_uuid(1);
+begin
+    select max( ct.conta_data ) as conta_data
+      from tweeks.conta ct 
+      where ct.conta_tserie_id = _tserie_id 
+        and ct.conta_data <= current_date
+        and coalesce( ct.conta_serie_id, _uuid_base ) = coalesce( _serie_id, ct.conta_serie_id,  _uuid_base )
+      into _data
+    ;
+    
+    _data.conta_data := coalesce( _data.conta_data, _conta_data, current_date );
+    
+    select *
+      from tweeks.tserie ts
+        left join tweeks.serie s on ts.tserie_id = s.serie_tserie_id
+          and s.serie_id = _serie_id
+      where ts.tserie_id = _tserie_id
+      into __serie
+    ;
+    
+    if _conta_data > current_date and _message is null then 
+      _message :=  format( 'Data de emissão invalida para a operação! A data para a %I%s não pode ser superior a data atual!', __serie.tserie_desc, case
+        when __serie.serie_designacao is null then ''
+        else format( ' com designação %I', __serie.serie_designacao)
+      end);
+    end if;
+    
+    if _conta_data < _data.conta_data and _message is null then
+      _message := format( 'Data de emissão invalida para a operação! A última data de emissão para %I%s foi de %I!', __serie.tserie_desc, case 
+        when __serie.serie_designacao is null then ''
+        else format( ' com designação %I', __serie.serie_designacao)
+      end, _data.conta_data );
+    end if;
+    
+    if _raise and _message is not null then
+        raise exception '%', _message;
+    end if;
+    
+    return _message;
+end;
 $$;
 `;

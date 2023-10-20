@@ -14,6 +14,7 @@ declare
       arg_espaco_auth: ID,
 
       conta_posto_id: ID,
+      _serie_id: UUID
 
       -- opcional
       conta_mesa: { numero:NUM, descricao:TEXT, lotacao:NUM }
@@ -89,6 +90,7 @@ declare
   _message text;
   _new jsonb;
   _old jsonb;
+  _serie_id uuid default args->>'_serie_id';
 begin
   _const := map.constant();
   _conta := tweeks._get_conta( arg_conta_id );
@@ -127,9 +129,10 @@ begin
   end if;
   
   _message := tweeks.__check_conta_data(
-    _change.conta_tserie_id,
-    _change.conta_data,
-    false
+    _tserie_id := _change.conta_tserie_id,
+    _conta_data := _change.conta_data,
+    _raise := false,
+    _serie_id := _serie_id
   );
   
   if _message is not  null then
