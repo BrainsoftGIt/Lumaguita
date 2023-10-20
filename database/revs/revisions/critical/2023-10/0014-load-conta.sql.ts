@@ -147,7 +147,8 @@ begin
           de.deposito_montantefinal,
           de.deposito_montantemoeda,
           de.deposito_tpaga_id,
-          corigen.conta_numerofatura as conta_documentoorigem,
+          coalesce( corigen.conta_numerofatura, c.conta_docorigin ) as conta_documentoorigem,
+          coalesce( corigen.conta_data, c.conta_datedocorigin ) as conta_datedocorigin,
           array_agg( to_jsonb( v )||to_jsonb( vg ) order by v.artigo_nome ) as conta_vendas
         from tweeks.conta c
           left join tweeks.serie se on c.conta_serie_id = se.serie_id
