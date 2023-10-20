@@ -202,15 +202,20 @@ app.get("/api/efatura/report/excel/:data", async (req, res) => {
     list.forEach(({vreport_imposto_financas: {...artigo}}, index) => {
         let {documento_numero, documento_serie, documento_data, nif_consumidor, total_valor_itens, tipo_documento_origem, data_documento_origem, codigo_isento, desc_itens, taxa_aplicavel_itens, quant_itens, numero_documento_origem} = artigo;
         if(!!documento_data){
-            documento_data = moment(documento_data, 'YYYY-MM-DD').format('DD/MM/YYYY');
+            documento_data = moment(documento_data, 'YYYY-MM-DD').toDate();
         }
 
         if(!!data_documento_origem){
-            data_documento_origem = moment(data_documento_origem, 'YYYY-MM-DD').format('DD/MM/YYYY');
+            data_documento_origem = moment(documento_data, 'YYYY-MM-DD').toDate();
         }
+
         workSheet.addRow([documento_numero, documento_serie, documento_data, nif_consumidor, total_valor_itens, taxa_aplicavel_itens, codigo_isento, quant_itens, desc_itens, numero_documento_origem, data_documento_origem, tipo_documento_origem]);
-        let linha = 1;
+
+        workSheet.getCell(`C${index + 2}`).numFmt = 'dd/mm/yyyy';
+        workSheet.getCell(`K${index + 2}`).numFmt = 'dd/mm/yyyy';
+
         letras.forEach((letra) => {
+            workSheet.getCell(`E${index + 2}`).numFmt = "#,###.######";
             workSheet.getCell(`${letra}${index + 2}`).font = {
                 color: {argb: colorFont[letra]}
             };
