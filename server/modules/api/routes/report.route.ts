@@ -100,9 +100,6 @@ app.post("/api/report/export/imposto", async (req, res) =>{
     req.body.arg_colaborador_id = req.session.auth_data.auth.colaborador_id;
     let { rows : list } = await functReportFinanca(req.body);
 
-    const filename = "Luma - report - financa - "+moment(new Date()).format( "DD-MM-YYYY h_mm_ss" )+".json";
-    fs.mkdirSync(path.join(folders.temp, 'multer'), {recursive: true});
-    let reportPath = path.join( folders.temp, 'multer', filename );
 
     let ordenList = {};
     list.forEach(({vreport_imposto_financas: {...artigo}}) => {
