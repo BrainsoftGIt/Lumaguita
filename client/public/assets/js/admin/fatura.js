@@ -250,6 +250,12 @@ var faturaAdmin = {
                     $(`${modal} [isencaoImposto]`).removeClass("active");
                     $(`${modal} #faturaAdmin`).find("input").val("");
                     $(`${modal} [tableDocumentArticles]`).empty().addClass("empty");
+
+                    let listfatura = $(`${modal} [listfatura]`);
+                    if (!!listfatura.length && listfatura.find("li").length === 1) {
+                        listfatura.find("li").mousedown();
+                    }
+
                     xAlert("Fatura", "Fatura emitida com sucesso!");
                     articlesDocuments.customer_id = null;
                     open("/api/print/fatura/"+JSON.stringify({type: "pdf", conta_id: dados.conta_id, date: new Date().getTimeStampPt(), admin: true}));

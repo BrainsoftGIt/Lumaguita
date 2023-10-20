@@ -86,9 +86,10 @@ var notacredito = {
             return;
         }
 
-        if( conta_posto_id === "null" ){
-            xAlert("Proforma", "Selecione o posto para estar associado ao armazém "+ $("[currentUserSpace]").text()+", em definições!", "error");
-            return;
+        let listfatura = $(`${modal} [listfatura]`);
+        if(!!listfatura.length && !listfatura.find("li.active").length){
+            xAlert("Nota de credito", "Por favor selecione o tipo de fatura", "error");
+            return
         }
 
         if( !itens.length ){
@@ -101,6 +102,7 @@ var notacredito = {
             return
         }
 
+        let _serie_id = ($(`${modal} [listFatura] li.active`).data() || {}).id || null;
         $.ajax({
             url: "/api/reg/credito/nota",
             method: "POST",
@@ -108,6 +110,7 @@ var notacredito = {
             error() { $("#finalizarNotaCredito").attr("disabled", false).removeClass("loading") },
             complete() { $("#finalizarNotaCredito").attr("disabled", false).removeClass("loading") },
             data: JSON.stringify({
+                _serie_id,
                 conta_id,
                 conta_observacao,
                 conta_posto_id,
@@ -121,7 +124,14 @@ var notacredito = {
                     $(`${modal} [tableDocumentArticles]`).empty().addClass("empty");
                     $(`${modal} [cliente_titular]`).val("");
                     $(`${modal} [cliente_nif]`).val("");
+                    $(`${modal} [notacredito_observacao]`).val("");
                     $(`${modal} [pesquisarFatura]`).val("");
+
+                    if (!!listfatura.length && listfatura.find("li").length > 1) {
+                        listfatura.parents(".xselect.flutuate").find("input").val("");
+                        listfatura.find("li").removeClass("active");
+                    }
+
                     open("/api/print/nota-credito/"+JSON.stringify({type: "pdf", conta_id, date: new Date().getTimeStampPt(), admin: true }));
                     delete notacredito.fatura;
                     return
