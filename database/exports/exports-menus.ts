@@ -5,7 +5,7 @@ import Path from "path";
 import {spawnSync} from "child_process";
 
 //language=file-reference
-let menu_filename =Path.join( __dirname, "../revs/revisions/menu/menu.json5" );
+let menu_filename =Path.join( __dirname, "../revs/revisions/sets/menu.sets.json5" );
 
 export function exportsMenus(){
     return new Promise( resolve => {
@@ -24,6 +24,11 @@ export function exportsMenus(){
             let content  = JSON5.stringify( menus, {
                 space: 2
             } );
+
+            if( !fs.existsSync( Path.dirname( menu_filename ) ) ){
+                fs.mkdirSync( Path.dirname( menu_filename ), {  recursive: true } );
+            }
+
             fs.writeFileSync( menu_filename, content );
             spawnSync("git", [ "add", menu_filename ], {
                 cwd: __dirname

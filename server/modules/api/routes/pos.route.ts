@@ -102,6 +102,9 @@ app.post("/api/pos/pay", async (req, res) =>{
     req.body.arg_colaborador_id = req.body.admin === undefined ? req.session.user_pos.auth.colaborador_id : req.session.auth_data.auth.colaborador_id;
     req.body.conta_posto_fecho = req.body.admin === undefined ? req.session.posto.posto_id : req.session.posto_admin;
     const response = await functRegistarPagamento(req.body);
+    if( !response.row?.main?.result ){
+        console.log( response?.row?.main );
+    }
     let after = await clusterServer.service.loadLocalCluster();
     res.json({result: response.row.main.result, data: (response.row.main.result ? response.row.main.data.guia.guia_uid : response.row.main.message)});
     if(response.row.main.result && before.cluster_version < after.cluster_version){
