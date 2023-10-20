@@ -357,7 +357,7 @@ var article = {
         return false;
     },
     resetData(){
-        $("#artigo_codigo").val("").prop("disabled", false);
+        $("#artigo_codigo").val("");
         $(".theArtg .xchip").find("ul").empty();
         $("label.artigo[lab=FOTO]").text(".jpg, .png, .jpeg");
         $("#artigo_impostos_desc, #aplicacao_impostos_desc").val("");
@@ -530,7 +530,7 @@ var article = {
     showDataUpdate(){
          this.loadBaseArticles();
         $("#artigo_foto").val("");
-        $("#artigo_codigo").val(article.selected.artigo_codigo).prop("disabled", true);
+        $("#artigo_codigo").val(article.selected.artigo_codigo);
         if(article.selected.artigo_foto === null) $("label.artigo[lab=FOTO]").text(".jpg, .png, .jpeg");
         else $("label.artigo[lab=FOTO]").text(article.selected.artigo_foto.split(";")[1]);
         $("#artigo_observacao").val(article.selected.artigo_descricao);
