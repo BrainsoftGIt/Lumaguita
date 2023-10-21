@@ -1,5 +1,10 @@
-import {sql} from "kitres";
+import {patchSQL, sql} from "kitres";
 import {SQL} from "kitres/src/core/pg-core/scape";
+
+
+export const alter_serie_add_numlimin_v2 = patchSQL({ unique: true }).sql`
+alter table tweeks.tserie add column if not exists tserie_numlimitmin int default null;
+`
 
 export const __sets_generate_documento = sql`
 drop function if exists tweeks.__sets_generate_documento(arg_espaco_auth uuid, arg_tserie integer);
@@ -186,10 +191,24 @@ begin
     into _tserie
   ;
   
+  _serie.serie_numero := lib.str_normalize( _serie.serie_numero );
+  
+  if _serie.serie_numero is null then 
+      raise exception '%', format( 'Numero de serie invalida!' );
+  end if;
+  
+  if length( _serie.serie_numero ) < _tserie.tserie_numlimitmin and length( _serie.serie_numero ) > _tserie.tserie_numlimit then
+      raise exception '%', format( 'Numero de serie invalido limit ( de: %s, até: %s )!', _tserie.tserie_numlimitmin, _tserie.tserie_numlimit );
+  end if;
+  
   if length(_serie.serie_quantidade::text) > _tserie.tserie_seqlimit then
     raise exception '%', format( 'A quantidade definida para a serie para %I ultrapassa o limite previsto de %I!', _tserie.tserie_desc, lpad(''::text,  _tserie.tserie_seqlimit::int, '9'::text) );
   end if;
-
+  
+  if substring( _serie.serie_numero from length( _serie.serie_numero )-1 ) != to_char( current_date, 'yy' ) then
+    raise exception '%', format( 'O numero de serie introduzido para %I com descrição %I não valido para o ano em curso!', _tserie.tserie_desc, _serie.serie_designacao  );
+  end if;
+  
   if _serie.serie_id is null then
     _serie.serie_colaborador_id := arg_colaborador_id;
     _serie.serie_espaco_auth := arg_espaco_auth;
