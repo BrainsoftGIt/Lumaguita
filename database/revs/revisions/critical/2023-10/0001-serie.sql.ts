@@ -197,8 +197,8 @@ begin
       raise exception '%', format( 'Numero de serie invalida!' );
   end if;
   
-  if length( _serie.serie_numero ) < _tserie.tserie_numlimitmin and length( _serie.serie_numero ) > _tserie.tserie_numlimit then
-      raise exception '%', format( 'Numero de serie invalido limit ( de: %s, até: %s )!', _tserie.tserie_numlimitmin, _tserie.tserie_numlimit );
+  if length( _serie.serie_numero ) < _tserie.tserie_numlimitmin or length( _serie.serie_numero ) > _tserie.tserie_numlimit then
+      raise exception '%', format( 'Numero de serie invalido limit [de: %s, até: %s] degitos!', _tserie.tserie_numlimitmin, _tserie.tserie_numlimit );
   end if;
   
   if length(_serie.serie_quantidade::text) > _tserie.tserie_seqlimit then
