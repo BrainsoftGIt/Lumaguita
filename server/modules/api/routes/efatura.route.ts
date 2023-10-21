@@ -199,7 +199,7 @@ app.get("/api/efatura/report/excel/:data", async (req, res) => {
     })
 
     list.forEach(({vreport_imposto_financas: {...artigo}}, index) => {
-        let {documento_numero, documento_serie, documento_data, nif_consumidor, total_valor_itens, tipo_documento_origem, data_documento_origem, codigo_isento, desc_itens, taxa_aplicavel_itens, quant_itens, numero_documento_origem} = artigo;
+        let {tserie_code, documento_numero, documento_serie, documento_data, nif_consumidor, total_valor_itens, tipo_documento_origem, data_documento_origem, codigo_isento, desc_itens, taxa_aplicavel_itens, quant_itens, numero_documento_origem} = artigo;
         if(!!documento_data){
             documento_data = moment(documento_data, 'YYYY-MM-DD').toDate();
         }
@@ -208,6 +208,7 @@ app.get("/api/efatura/report/excel/:data", async (req, res) => {
             data_documento_origem = moment(documento_data, 'YYYY-MM-DD').toDate();
         }
 
+        documento_serie = `${tserie_code || "N/A"}${documento_serie ?? ""}`
         workSheet.addRow([documento_numero, documento_serie, documento_data, nif_consumidor, total_valor_itens, taxa_aplicavel_itens, codigo_isento, quant_itens, desc_itens, numero_documento_origem, data_documento_origem, tipo_documento_origem]);
 
         workSheet.getCell(`C${index + 2}`).numFmt = 'dd/mm/yyyy';
