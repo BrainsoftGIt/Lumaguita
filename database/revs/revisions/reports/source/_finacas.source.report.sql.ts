@@ -61,9 +61,8 @@ begin
          ct._branch_uid
          
       from tweeks.conta ct
-        inner join json_populate_record( null::tweeks.serie, ct.conta_serie ) se on true
-        inner join tweeks.serie _se on se.serie_id = _se.serie_id
-        inner join tweeks.tserie ts on _se.serie_tserie_id = ts.tserie_id
+        inner join tweeks.serie se on se.serie_id = ct.conta_serie_id
+        inner join tweeks.tserie ts on se.serie_tserie_id = ts.tserie_id
         inner join tweeks.venda ve on ct.conta_id = ve.venda_conta_id
           and ve.venda_estado = _const.maguita_venda_estado_fechado
           and ve.venda_venda_id is null
