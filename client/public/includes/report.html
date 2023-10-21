@@ -78,20 +78,7 @@
                 </span>
                 <span target="xModalExportFileFinanca" tooltip="Exportar relatório Imposto" flow="left"
                       class=" flex v-ct h-ct excel imposto showTarget">
-                    <svg fill="#ffb733" viewBox="0 0 32 32" id="icon" xmlns="http://www.w3.org/2000/svg"><g
-                            stroke-width="0"></g><g
-                                                                           stroke-linecap="round"
-                                                                           stroke-linejoin="round"></g><g
-                            > <defs> <style> .cls-1 {
-                        fill: none;
-                    } </style> </defs> <polygon
-                            points="4 20 4 22 8.586 22 2 28.586 3.414 30 10 23.414 10 28 12 28 12 20 4 20"></polygon> <polygon
-                            points="29 12 27 6 25 6 25 16 27 16 27 10 29 16 31 16 31 6 29 6 29 12"></polygon> <path
-                            d="M21.3335,6h-2.667A1.6683,1.6683,0,0,0,17,7.6665v6.667A1.6684,1.6684,0,0,0,18.6665,16h2.667A1.6683,1.6683,0,0,0,23,14.3335V7.6665A1.6683,1.6683,0,0,0,21.3335,6ZM21,14H19V8h2Z"></path> <path
-                            d="M9,7.6665V10a2.002,2.002,0,0,0,2,2h2v2H9v2h4.3335A1.6683,1.6683,0,0,0,15,14.3335V12a2.002,2.002,0,0,0-2-2H11V8h4V6H10.6665A1.6683,1.6683,0,0,0,9,7.6665Z"></path> <path
-                            d="M5,14H3V12H1v2.3335A1.6684,1.6684,0,0,0,2.6665,16h2.667A1.6683,1.6683,0,0,0,7,14.3335V6H5Z"></path> <rect
-                            id="_Transparent_Rectangle_" data-name="<Transparent Rectangle>" class="cls-1" width="32"
-                            height="32"></rect> </g></svg>
+                    <svg fill="#000000" viewBox="0 0 24 24" id="tax" data-name="Flat Line" xmlns="http://www.w3.org/2000/svg" class="icon flat-line"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path id="secondary" d="M17.5,16.5A7.5,7.5,0,0,1,13,3H4A1,1,0,0,0,3,4V20a1,1,0,0,0,1,1H17a1,1,0,0,0,1-1V16.47A4.19,4.19,0,0,1,17.5,16.5Z" style="fill: #2ca9bc; stroke-width: 2;"></path><path id="primary" d="M14,17H7m4-4H7M21,6l-6,6" style="fill: none; stroke: #000000; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"></path><line id="primary-upstroke" x1="15.45" y1="6.5" x2="15.55" y2="6.5" style="fill: none; stroke: #000000; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2.5;"></line><line id="primary-upstroke-2" data-name="primary-upstroke" x1="20.45" y1="11.5" x2="20.55" y2="11.5" style="fill: none; stroke: #000000; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2.5;"></line><path id="primary-2" data-name="primary" d="M18,16v4a1,1,0,0,1-1,1H4a1,1,0,0,1-1-1V4A1,1,0,0,1,4,3h9" style="fill: none; stroke: #000000; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"></path></g></svg>
                 </span>
             </div>
         </div>
@@ -298,20 +285,69 @@
                     <div listIReport class="xbody">
                     </div>
                 </div>
-                <div class="master-btn-right flex">
+                <div class="master-btn-right flex h-ct">
                     <span class="hideTarget" target="xModalExportFileFinanca">CANCELAR</span>
-                    <span class="flex v-ct" export-report-imposto>
-                        Exportar Json
+                    <span class="flex v-ct" export-report>
+                         Exportar
                         <svg class="spinner" viewBox="0 0 50 50">
                             <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
                         </svg>
 				    </span>
-                    <span class="flex v-ct" export-report-imposto-excel>
-                        Exportar Excel
-                        <svg class="spinner" viewBox="0 0 50 50">
-                            <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
-                        </svg>
-				    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="xModalExportReport" class="x-mobdal XM-ExImportArt flex v-ct h-ct hideTarget" target="xModalExportReport">
+        <div class="modal-frame j-stp">
+            <div class="inn">
+                <div class="flex h-ct v-ct">
+                    <div class="waves-effect account hideTarget" export-report-imposto target="xModalExportReport">
+                        <div class="flex v-ct h-ct">
+                            <svg viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve">
+								<g>
+									<g>
+										<path d="M339.093,246.464c-3.627-7.232-11.008-11.797-19.093-11.797h-42.667V21.333C277.333,9.557,267.797,0,256,0
+											s-21.333,9.557-21.333,21.333v213.333H192c-8.085,0-15.467,4.565-19.093,11.797c-3.584,7.232-2.816,15.872,2.027,22.336l64,85.333
+											c0.277,0.363,0.704,0.491,1.003,0.832c1.408,1.664,3.072,2.944,4.928,4.117c0.768,0.469,1.365,1.088,2.197,1.472
+											c2.731,1.28,5.717,2.112,8.939,2.112s6.208-0.832,8.96-2.112c0.811-0.384,1.429-1.003,2.176-1.472
+											c1.856-1.173,3.52-2.453,4.928-4.117c0.277-0.341,0.725-0.469,1.003-0.832l64-85.333
+											C341.931,262.336,342.699,253.696,339.093,246.464z" />
+									</g>
+								</g>
+                                <g>
+									<g>
+										<path d="M490.667,320c-11.797,0-21.333,9.557-21.333,21.333v64c0,35.285-28.715,64-64,64H106.667c-35.285,0-64-28.715-64-64v-64
+											c0-11.776-9.536-21.333-21.333-21.333C9.536,320,0,329.557,0,341.333v64C0,464.149,47.851,512,106.667,512h298.667
+											C464.149,512,512,464.149,512,405.333v-64C512,329.557,502.464,320,490.667,320z" />
+									</g>
+								</g>
+							</svg>
+                        </div>
+                        <p>exportar JSON</p>
+                    </div>
+                    <label class="waves-effect account hideTarget" export-report-imposto-excel target="xModalExportReport">
+                        <div class="flex v-ct h-ct">
+                            <svg viewBox="0 0 512.056 512.056" style="enable-background:new 0 0 512.056 512.056;"
+                                 xml:space="preserve">
+								<g>
+									<g>
+										<g>
+											<path d="M426.635,188.224C402.969,93.946,307.358,36.704,213.08,60.37C139.404,78.865,85.907,142.542,80.395,218.303
+												C28.082,226.93-7.333,276.331,1.294,328.644c7.669,46.507,47.967,80.566,95.101,80.379h80v-32h-80c-35.346,0-64-28.654-64-64
+												c0-35.346,28.654-64,64-64c8.837,0,16-7.163,16-16c-0.08-79.529,64.327-144.065,143.856-144.144
+												c68.844-0.069,128.107,48.601,141.424,116.144c1.315,6.744,6.788,11.896,13.6,12.8c43.742,6.229,74.151,46.738,67.923,90.479
+												c-5.593,39.278-39.129,68.523-78.803,68.721h-64v32h64c61.856-0.187,111.848-50.483,111.66-112.339
+												C511.899,245.194,476.655,200.443,426.635,188.224z" />
+                                            <path d="M245.035,253.664l-64,64l22.56,22.56l36.8-36.64v153.44h32v-153.44l36.64,36.64l22.56-22.56l-64-64
+												C261.354,247.46,251.276,247.46,245.035,253.664z" />
+										</g>
+									</g>
+								</g>
+
+							</svg>
+                        </div>
+                        <p>exportar XLSX</p>
+                    </label>
                 </div>
             </div>
         </div>
