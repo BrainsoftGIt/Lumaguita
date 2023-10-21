@@ -242,7 +242,7 @@ export let create = async (instituition, account_content, res, user, date, num_a
             } : {},
             {
                 lineHeight: 1.3,
-                margin: [0, (!!hasPersonalizadoHarder) ? 40 : 10, 0, 0],
+                margin: [0, (!!hasPersonalizadoHarder) ? 25 : 10, 0, 0],
                 layout: {
                     hLineWidth: function (i, node) {
                         return 0.8;

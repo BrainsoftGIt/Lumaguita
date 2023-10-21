@@ -243,7 +243,7 @@ export let create = async (instituition, account, account_content, res, user, da
             {
                 // font: "NimbusRomanno9l",
                 lineHeight: 1.3,
-                margin: [0, (!!hasPersonalizadoHarder) ? 40 : 10, 0, 0],
+                margin: [0, (!!hasPersonalizadoHarder) ? 25 : 10, 0, 0],
                 table: {
                     widths: ["50%", "50%"],
                     body: [
