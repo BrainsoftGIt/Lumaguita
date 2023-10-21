@@ -198,11 +198,11 @@ begin
   end if;
   
   if length( _serie.serie_numero ) < _tserie.tserie_numlimitmin or length( _serie.serie_numero ) > _tserie.tserie_numlimit then
-      raise exception '%', format( 'Numero de serie invalido para %I com designação %I limit [de: %s, até: %s] degitos!', _tserie.tserie_numlimitmin, _tserie.tserie_numlimit );
+      raise exception '%', format( 'Numero de serie invalido para %I com designação %I limit [de: %s, até: %s] degitos!', _tserie.tserie_desc, _serie.serie_designacao, _tserie.tserie_numlimitmin, _tserie.tserie_numlimit );
   end if;
   
   if length(_serie.serie_quantidade::text) > _tserie.tserie_seqlimit then
-    raise exception '%', format( 'A quantidade definida para a serie para %I ultrapassa o limite previsto de %I!', _tserie.tserie_desc, _serie.serie_designacao, _tserie.tserie_desc, lpad(''::text,  _tserie.tserie_seqlimit::int, '9'::text) );
+    raise exception '%', format( 'A quantidade definida para a serie para %I ultrapassa o limite previsto de %I!', _tserie.tserie_desc, lpad(''::text,  _tserie.tserie_seqlimit::int, '9'::text) );
   end if;
   
   if substring( _serie.serie_numero from length( _serie.serie_numero )-1 ) != to_char( current_date, 'yy' ) then
