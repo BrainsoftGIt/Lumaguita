@@ -771,3 +771,13 @@ while (financa_report_yaer <= new Date().getFullYear()){
 var month = new Date().getMonth().add0ToTimer()
 $("#financa_report_yaer li:first").mousedown()
 $(`#financa_report_month li[data-value='${month}']`).mousedown()
+
+
+$("[export-report]").on("click", function (){
+    if( !$(" [listIReport] ").length ){
+        xAlert("", "Sem Informação para imprimir!", "error");
+        return;
+    }
+
+    $("#xModalExportReport").addClass("show")
+});
