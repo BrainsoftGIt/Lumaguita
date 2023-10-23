@@ -458,7 +458,7 @@ var report = {
                                 <li></li>
                             </ul>`);
                }
-                xTableGenerate();
+               xTableGenerate();
             }
         });
     },
