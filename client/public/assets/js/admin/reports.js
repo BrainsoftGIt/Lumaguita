@@ -447,7 +447,7 @@ var report = {
 
                if(sumatorio > 0){
                    $("[listIReport]").append(`<ul>
-                                <li>${"Total"}</li>
+                                <li>Total</li>
                                 <li></li>
                                 <li></li>
                                 <li></li>
