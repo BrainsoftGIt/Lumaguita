@@ -445,7 +445,8 @@ var report = {
                     })
                 })
 
-                $("[listIReport]").append(`<ul>
+               if(sumatorio > 0){
+                   $("[listIReport]").append(`<ul>
                                 <li>${"Total"}</li>
                                 <li></li>
                                 <li></li>
@@ -456,6 +457,7 @@ var report = {
                                 <li></li>
                                 <li></li>
                             </ul>`);
+               }
                 xTableGenerate();
             }
         });
