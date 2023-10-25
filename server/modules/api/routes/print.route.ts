@@ -69,7 +69,7 @@ app.post("/api/print/fatura/recibo/talao", async (req, res) =>{
         await fatura_recibo_talaoA6.create(instituition, dadosConta.rows, res, user, req.body.date, printer_name,  dadosConta.rows[0].main.conta_serie.serie_numatorizacao);
         return
     }
-    await fatura_recibo_talao.create(instituition, dadosConta.rows, res, user, req.body.date, printer_name,  dadosConta.rows[0].main.conta_serie.serie_numatorizacao);
+    await fatura_recibo_talao.create(instituition, dadosConta.rows, res, user, req.body.date, printer_name,  dadosConta.rows[0].main.conta_serie.serie_numatorizacao, instituition.espaco_configuracao.impressorasTalao);
 });
 app.get("/api/print/transference/:dados", async (req, res) =>{
     let dados = JSON.parse(req.params.dados);
@@ -150,7 +150,7 @@ app.get("/api/print/fatura/:dados", async (req, res) =>{
             return
         }
 
-        await fatura_talao.create(instituition, dadosConta.rows[0], res, user, conta.date, printer_name, dadosConta.rows[0].main.conta_serie.serie_numatorizacao);
+        await fatura_talao.create(instituition, dadosConta.rows[0], res, user, conta.date, printer_name, dadosConta.rows[0].main.conta_serie.serie_numatorizacao, instituition.espaco_configuracao.impressorasTalao);
     }
 });
 app.get("/api/print/nota-credito/:dados", async (req, res) =>{
@@ -186,7 +186,7 @@ app.post("/api/print/fatura/talao", async (req, res) =>{
         await fatura_talaoA6.create(instituition, dadosConta.rows[0], res, user, req.body.date, printer_name, dadosConta.rows[0].main.conta_serie.serie_numatorizacao);
         return
     }
-    await fatura_talao.create(instituition, dadosConta.rows[0], res, user, req.body.date, printer_name, dadosConta.rows[0].main.conta_serie.serie_numatorizacao);
+    await fatura_talao.create(instituition, dadosConta.rows[0], res, user, req.body.date, printer_name, dadosConta.rows[0].main.conta_serie.serie_numatorizacao, instituition.espaco_configuracao.impressorasTalao);
 });
 app.get("/api/print/recibo/:dados", async (req, res) =>{
     const file = require("./functions/export-recibo");
@@ -238,7 +238,7 @@ app.post("/api/print/conta/talao", async (req, res) =>{
         return
     }
 
-    await file.create(instituition, dadosConta.rows[0], res, user, req.body.date, printer_name);
+    await file.create(instituition, dadosConta.rows[0], res, user, req.body.date, printer_name, instituition.espaco_configuracao.impressorasTalao);
 });
 
 app.post("/api/print/fecho/caixa/", async (req, res) =>{
@@ -259,7 +259,7 @@ app.post("/api/print/fecho/caixa/", async (req, res) =>{
         return
     }
 
-    await file.create(instituition, req.body, res, user, printer_name);
+    await file.create(instituition, req.body, res, user, printer_name, instituition.espaco_configuracao.impressorasTalao);
 });
 
 app.post("/api/print/report/venda", async (req, res) =>{
@@ -288,7 +288,7 @@ app.post("/api/print/report/venda", async (req, res) =>{
         return
     }
 
-    await file.create(instituition, rows, res, user, printer_name, arg_date_start, arg_date_end);
+    await file.create(instituition, rows, res, user, printer_name, arg_date_start, arg_date_end, instituition.espaco_configuracao.impressorasTalao);
 });
 
 app.post("/api/print/kitchen", async (req, res) =>{
