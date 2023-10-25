@@ -4,8 +4,8 @@ import {functReportVendaPOS} from "../db/call-function-report";
 
 export async function load_space_configuration(req, admin) {
     const {functLoadDadosEmpresa} = require("../db/call-function-settings");
-    req.body.arg_espaco_auth = admin ? req?.session?.auth_data?.auth?.armazem_atual || null : req.session.user_pos.auth.armazem_atual;
-    req.body.arg_colaborador_id = admin ? req?.session?.auth_data?.auth?.colaborador_id || null : req.session.user_pos.auth.colaborador_id;
+    req.body.arg_espaco_auth = admin ? req?.session?.auth_data?.auth?.armazem_atual || null : req?.session?.user_pos?.auth?.armazem_atual;
+    req.body.arg_colaborador_id = admin ? req?.session?.auth_data?.auth?.colaborador_id || null : req?.session?.user_pos?.auth?.colaborador_id;
     return  (await functLoadDadosEmpresa(req.body)).rows;
 }
 
@@ -41,8 +41,8 @@ app.get("/api/print/proforma/:dados", async (req, res) =>{
 
 app.get("/api/print/fatura/recibo/:dados", async (req, res) =>{
     let dados = JSON.parse(req.params.dados);
-    const dadosConta = await functLoadContaData({arg_conta_id: dados.conta_id, with_client: true, arg_espaco_auth: req.session.user_pos.auth.armazem_atual,
-        arg_colaborador_id: req.session.user_pos.auth.colaborador_id});
+    const dadosConta = await functLoadContaData({arg_conta_id: dados.conta_id, with_client: true, arg_espaco_auth: req?.session?.user_pos?.auth?.armazem_atual,
+        arg_colaborador_id: req?.session?.user_pos?.auth?.colaborador_id});
     const file = require("./functions/export-faturarecibo");
     let instituition = await load_space_configuration(req, false);
     instituition = instituition[0].funct_load_espaco_configuracao.espaco;
@@ -50,8 +50,8 @@ app.get("/api/print/fatura/recibo/:dados", async (req, res) =>{
     await file.create(instituition, dadosConta.rows, res, user, dados.date, dadosConta.rows[0].main.conta_serie.serie_numatorizacao);
 });
 app.post("/api/print/fatura/recibo/talao", async (req, res) =>{
-    const dadosConta = await functLoadContaData({arg_conta_id: req.body.conta_id, with_client: true, arg_espaco_auth: req.session.user_pos.auth.armazem_atual,
-        arg_colaborador_id: req.session.user_pos.auth.colaborador_id});
+    const dadosConta = await functLoadContaData({arg_conta_id: req.body.conta_id, with_client: true, arg_espaco_auth: req?.session?.user_pos?.auth?.armazem_atual,
+        arg_colaborador_id: req?.session?.user_pos?.auth?.colaborador_id});
     const fatura_recibo_talao = require("./functions/export-faturarecibo-talao");
     const fatura_recibo_talaoA5 = require("./functions/export-faturarecibo-talao-a5");
     const fatura_recibo_talaoA6 = require("./functions/export-faturarecibo-talao-a6");
@@ -132,7 +132,7 @@ app.get("/api/print/fatura/:dados", async (req, res) =>{
     }
     else{
         dadosConta = await functLoadContaData({arg_conta_id: conta.conta_id,
-            with_client: true, arg_espaco_auth: req.session.user_pos.auth.armazem_atual, arg_colaborador_id: req.session.user_pos.auth.colaborador_id});
+            with_client: true, arg_espaco_auth: req?.session?.user_pos?.auth?.armazem_atual, arg_colaborador_id: req?.session?.user_pos?.auth?.colaborador_id});
         user = req.session.user_pos.auth.colaborador_nome+" "+(req.session.user_pos.auth.colaborador_apelido === null ? "" : req.session.user_pos.auth.colaborador_apelido.split(" ").pop());
     }
     if(conta.type === "pdf")
@@ -173,7 +173,7 @@ app.post("/api/print/fatura/talao", async (req, res) =>{
     let user;
     instituition = instituition[0].funct_load_espaco_configuracao.espaco;
     dadosConta = await functLoadContaData({arg_conta_id: req.body.conta_id,
-        with_client: true, arg_espaco_auth: req.session.user_pos.auth.armazem_atual, arg_colaborador_id: req.session.user_pos.auth.colaborador_id});
+        with_client: true, arg_espaco_auth: req?.session?.user_pos?.auth?.armazem_atual, arg_colaborador_id: req?.session?.user_pos?.auth?.colaborador_id});
     user = req.session.user_pos.auth.colaborador_nome+" "+(req.session.user_pos.auth.colaborador_apelido === null ? "" : req.session.user_pos.auth.colaborador_apelido.split(" ").pop());
     const printer_name = get_printer_name(instituition.espaco_configuracao.configuracao_impressoras, "fatura");
 
@@ -206,10 +206,10 @@ app.get("/api/print/conta/:dados", async (req, res) =>{
     let dados = JSON.parse(req.params.dados);
     const conta_pdf = require("./functions/export-conta");
     req.body.arg_posto_id = req.session.posto.posto_id;
-    req.body.arg_colaborador_id = req.session.user_pos.auth.colaborador_id;
-    req.body.arg_espaco_auth = req.session.user_pos.auth.armazem_atual;
-    const dadosConta = await functLoadContaData({arg_conta_id: dados.conta_id, with_client: true, arg_espaco_auth: req.session.user_pos.auth.armazem_atual,
-        arg_colaborador_id: req.session.user_pos.auth.colaborador_id});
+    req.body.arg_colaborador_id = req?.session?.user_pos?.auth?.colaborador_id;
+    req.body.arg_espaco_auth = req?.session?.user_pos?.auth?.armazem_atual;
+    const dadosConta = await functLoadContaData({arg_conta_id: dados.conta_id, with_client: true, arg_espaco_auth: req?.session?.user_pos?.auth?.armazem_atual,
+        arg_colaborador_id: req?.session?.user_pos?.auth?.colaborador_id});
     let user = req.session.user_pos.auth.colaborador_nome+" "+(req.session.user_pos.auth.colaborador_apelido === null ? "" : req.session.user_pos.auth.colaborador_apelido.split(" ").pop());
     let instituition = await load_space_configuration(req, dados.admin);
     instituition = instituition[0].funct_load_espaco_configuracao.espaco;
@@ -220,10 +220,10 @@ app.post("/api/print/conta/talao", async (req, res) =>{
     const fileA5 = require("./functions/export-conta-talao-a5");
     const fileA6 = require("./functions/export-conta-talao-a6");
     req.body.arg_posto_id = req.session.posto.posto_id;
-    req.body.arg_colaborador_id = req.session.user_pos.auth.colaborador_id;
-    req.body.arg_espaco_auth = req.session.user_pos.auth.armazem_atual;
-    const dadosConta = await functLoadContaData({arg_conta_id: req.body.conta_id, with_client: true, arg_espaco_auth: req.session.user_pos.auth.armazem_atual,
-        arg_colaborador_id: req.session.user_pos.auth.colaborador_id});
+    req.body.arg_colaborador_id = req?.session?.user_pos?.auth?.colaborador_id;
+    req.body.arg_espaco_auth = req?.session?.user_pos?.auth?.armazem_atual;
+    const dadosConta = await functLoadContaData({arg_conta_id: req.body.conta_id, with_client: true, arg_espaco_auth: req?.session?.user_pos?.auth?.armazem_atual,
+        arg_colaborador_id: req?.session?.user_pos?.auth?.colaborador_id});
     let user = req.session.user_pos.auth.colaborador_nome+" "+(req.session.user_pos.auth.colaborador_apelido === null ? "" : req.session.user_pos.auth.colaborador_apelido.split(" ").pop());
     let instituition = await load_space_configuration(req, false);
     instituition = instituition[0].funct_load_espaco_configuracao.espaco;
@@ -272,8 +272,8 @@ app.post("/api/print/report/venda", async (req, res) =>{
     let user = req.session.user_pos.auth.colaborador_nome+" "+(req.session.user_pos.auth.colaborador_apelido === null ? "" : req.session.user_pos.auth.colaborador_apelido.split(" ").pop());
     const printer_name = get_printer_name(instituition.espaco_configuracao.configuracao_impressoras, "report_venda");
 
-    req.body.arg_colaborador_id = req.session.user_pos.auth.colaborador_id;
-    req.body.arg_espaco_auth = req.session.user_pos.auth.armazem_atual;
+    req.body.arg_colaborador_id = req?.session?.user_pos?.auth?.colaborador_id;
+    req.body.arg_espaco_auth = req?.session?.user_pos?.auth?.armazem_atual;
     req.body.arg_posto_id = req.session.posto.posto_id;
     let { rows} = await functReportVendaPOS(req.body);
     let { arg_date_end, arg_date_start } = req.body;

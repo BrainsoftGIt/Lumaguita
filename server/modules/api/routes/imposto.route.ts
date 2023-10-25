@@ -48,8 +48,8 @@ app.get("/api/load/units", async (req, res) => {
 
 app.post("/api/imposto/artigo", async (req, res) => {
     const {functGetArticleTax} = require("../db/call-function-settings");
-    req.body.arg_espaco_auth = req.body.is_admin ? req?.session?.auth_data?.auth?.armazem_atual || null : req.session.user_pos.auth.armazem_atual;
-    req.body.arg_colaborador_id = req.body.is_admin ? req?.session?.auth_data?.auth?.colaborador_id || null : req.session.user_pos.auth.colaborador_id;
+    req.body.arg_espaco_auth = req.body.is_admin ? req?.session?.auth_data?.auth?.armazem_atual || null : req?.session?.user_pos?.auth?.armazem_atual;
+    req.body.arg_colaborador_id = req.body.is_admin ? req?.session?.auth_data?.auth?.colaborador_id || null : req?.session?.user_pos?.auth?.colaborador_id;
     const response = await functGetArticleTax(req.body);
     res.json({tax: response.rows});
 });
