@@ -41,7 +41,7 @@ app.post("/api/report/source/filter", async (req, res) => {
 });
 app.post("/api/report/filter", async (req, res) => {
     const {functFilterReport} = require("../db/call-function-report");
-    req.body._branch_uid = req.session.auth_data.auth.branch_uuid;
+    req.body._branch_uid = req?.session?.auth_data?.auth?.branch_uuid || null;
     const response = await functFilterReport(req.body);
     res.json({reportData: response.rows});
 });
@@ -61,7 +61,7 @@ app.get("/api/date/representation", async (req, res) => {
 });
 app.post("/api/report/export", async (req, res) =>{
     const {functFilterReport} = require("../db/call-function-report");
-    req.body.obj._branch_uid = req.session.auth_data.auth.branch_uuid;
+    req.body.obj._branch_uid = req?.session?.auth_data?.auth?.branch_uuid || null;
     let listReport = await functFilterReport(req.body.obj);
 
     const excel = require("exceljs");
@@ -103,7 +103,7 @@ app.post("/api/report/export", async (req, res) =>{
 });
 app.post("/api/report/export/imposto", async (req, res) =>{
     const {functReportFinanca} = require("../db/call-function-report");
-    req.body.arg_colaborador_id = req.session.auth_data.auth.colaborador_id;
+    req.body.arg_colaborador_id = req?.session?.auth_data?.auth?.colaborador_id || null;
     let { rows : list } = await functReportFinanca(req.body);
 
 

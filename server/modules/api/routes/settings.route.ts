@@ -7,9 +7,9 @@ import {functLoadDataCluster} from "../db/call-function-settings";
 app.post("/api/armazem", async (req, res) => {
     const {functRegArmazem} = require("../db/call-function-settings");
     let before =  await clusterServer.service.loadLocalCluster();
-    req.body.arg_espaco_auth = req.session.auth_data.auth.armazem_atual;
-    req.body.arg_colaborador_id = req.session.auth_data.auth.colaborador_id;
-    req.body.arg_branch_uid = req.session.auth_data.auth.branch_uuid;
+    req.body.arg_espaco_auth = req?.session?.auth_data?.auth?.armazem_atual || null;
+    req.body.arg_colaborador_id = req?.session?.auth_data?.auth?.colaborador_id || null;
+    req.body.arg_branch_uid = req?.session?.auth_data?.auth?.branch_uuid || null;
     const response = await functRegArmazem(req.body);
     let after = await clusterServer.service.loadLocalCluster();
     res.json({result: response.row.result, message: response.row.message.text});
@@ -27,8 +27,8 @@ app.post("/api/armazem", async (req, res) => {
 app.post("/api/armazem/edit", async (req, res) => {
     const {functUpdateArmazem} = require("../db/call-function-settings");
     let before =  await clusterServer.service.loadLocalCluster();
-    req.body.arg_espaco_auth = req.session.auth_data.auth.armazem_atual;
-    req.body.arg_colaborador_id = req.session.auth_data.auth.colaborador_id;
+    req.body.arg_espaco_auth = req?.session?.auth_data?.auth?.armazem_atual || null;
+    req.body.arg_colaborador_id = req?.session?.auth_data?.auth?.colaborador_id || null;
     const response = await functUpdateArmazem(req.body);
     let after = await clusterServer.service.loadLocalCluster();
     res.json({result: response.row.result, message: response.row.message.text});
@@ -48,28 +48,28 @@ app.post("/api/cambio", async (req, res) => {
     let before =  await clusterServer.service.loadLocalCluster();
     let cambios = [];
     cambios.push({
-        arg_colaborador_id: req.session.auth_data.auth.colaborador_id,
+        arg_colaborador_id: req?.session?.auth_data?.auth?.colaborador_id || null,
         arg_currency_id: req.body.euro_currency,
-        arg_espaco_auth: req.session.auth_data.auth.armazem_atual,
+        arg_espaco_auth: req?.session?.auth_data?.auth?.armazem_atual || null,
         arg_cambio_taxa: req.body.euro,
         arg_cambio_data: req.body.data,
-        arg_branch_uid: req.session.auth_data.auth.branch_uuid
+        arg_branch_uid: req?.session?.auth_data?.auth?.branch_uuid || null
     });
     cambios.push({
-        arg_colaborador_id: req.session.auth_data.auth.colaborador_id,
+        arg_colaborador_id: req?.session?.auth_data?.auth?.colaborador_id || null,
         arg_currency_id: req.body.usd_currency,
-        arg_espaco_auth: req.session.auth_data.auth.armazem_atual,
+        arg_espaco_auth: req?.session?.auth_data?.auth?.armazem_atual || null,
         arg_cambio_taxa: req.body.usd,
         arg_cambio_data: req.body.data,
-        arg_branch_uid: req.session.auth_data.auth.branch_uuid
+        arg_branch_uid: req?.session?.auth_data?.auth?.branch_uuid || null
     });
     cambios.push({
-        arg_colaborador_id: req.session.auth_data.auth.colaborador_id,
+        arg_colaborador_id: req?.session?.auth_data?.auth?.colaborador_id || null,
         arg_currency_id: req.body.xaf_currency,
-        arg_espaco_auth: req.session.auth_data.auth.armazem_atual,
+        arg_espaco_auth: req?.session?.auth_data?.auth?.armazem_atual || null,
         arg_cambio_taxa: req.body.xaf,
         arg_cambio_data: req.body.data,
-        arg_branch_uid: req.session.auth_data.auth.branch_uuid
+        arg_branch_uid: req?.session?.auth_data?.auth?.branch_uuid || null
     });
     let response = null;
      for (const cam of cambios) {
@@ -91,22 +91,22 @@ app.post("/api/cambio/load", async (req, res) => {
     const fs = require("fs");
     //language=file-reference
     const currency = JSON.parse(fs.readFileSync(path.join(__dirname, "../../../lib/json/currency.json")));
-    req.body.arg_espaco_auth = req.session.auth_data.auth.armazem_atual;
+    req.body.arg_espaco_auth = req?.session?.auth_data?.auth?.armazem_atual || null;
     const response = await functLoadCambio(req.body);
     res.json({cab: response.rows, currency: currency});
 });
 app.post("/api/armazem/load", async (req, res) => {
     const {functLoadArmazens} = require("../db/call-function-settings");
-    req.body.arg_espaco_auth = req.session.auth_data.auth.armazem_atual;
-    req.body.arg_colaborador_id = req.session.auth_data.auth.colaborador_id;
+    req.body.arg_espaco_auth = req?.session?.auth_data?.auth?.armazem_atual || null;
+    req.body.arg_colaborador_id = req?.session?.auth_data?.auth?.colaborador_id || null;
     const response = await functLoadArmazens(req.body);
     res.json({armazens: response.rows});
 });
 
 app.post("/api/space/migrate", async (req, res) => {
     const {functMigrarEspaco} = require("../db/call-function-settings");
-    req.body.arg_espaco_auth = req.session.auth_data.auth.armazem_atual;
-    req.body.arg_colaborador_id = req.session.auth_data.auth.colaborador_id;
+    req.body.arg_espaco_auth = req?.session?.auth_data?.auth?.armazem_atual || null;
+    req.body.arg_colaborador_id = req?.session?.auth_data?.auth?.colaborador_id || null;
 
     let before =  await clusterServer.service.loadLocalCluster();
     const response = await functMigrarEspaco(req.body);
@@ -118,8 +118,8 @@ app.post("/api/space/migrate", async (req, res) => {
 });
 app.post("/api/empresa/load/data", async (req, res) => {
     const {functLoadDadosEmpresa} = require("../db/call-function-settings");
-    req.body.arg_espaco_auth = req.session.auth_data.auth.armazem_atual;
-    req.body.arg_colaborador_id = req.session.auth_data.auth.colaborador_id;
+    req.body.arg_espaco_auth = req?.session?.auth_data?.auth?.armazem_atual || null;
+    req.body.arg_colaborador_id = req?.session?.auth_data?.auth?.colaborador_id || null;
     const response = await functLoadDadosEmpresa(req.body);
     res.json({empresa: response.rows});
 });
@@ -127,13 +127,13 @@ app.post("/api/empresa/change", async (req, res) =>{
     const {functAtualizarDadosEmpresa} = require("../db/call-function-settings");
     let before =  await clusterServer.service.loadLocalCluster();
     let data = JSON.parse(req.body.data)
-    data.arg_espaco_auth = req.session.auth_data.auth.armazem_atual;
-    data.arg_colaborador_id = req.session.auth_data.auth.colaborador_id;
+    data.arg_espaco_auth = req?.session?.auth_data?.auth?.armazem_atual || null;
+    data.arg_colaborador_id = req?.session?.auth_data?.auth?.colaborador_id || null;
     data.arg_espaco_configuracao = null;
 
     if(req.file){
         clusterServer.res.create({resource_subpath: "cloud/data/files", resource_name: req.file.originalname,
-            resource_metadata: {_branch_uid: req.session.auth_data.auth.branch_uuid }
+            resource_metadata: {_branch_uid: req?.session?.auth_data?.auth?.branch_uuid || null }
         }).then(async value => {
             data.dados_empresa.logo_nome = req.file.originalname;
             data.dados_empresa.logo_referencia = value.resource_url;
@@ -173,8 +173,8 @@ app.post("/api/empresa/change", async (req, res) =>{
 app.post("/api/empresa/impressora", async (req, res) =>{
     const {functAtualizarDadosEmpresa} = require("../db/call-function-settings");
     let before =  await clusterServer.service.loadLocalCluster();
-    req.body.arg_espaco_auth = req.session.auth_data.auth.armazem_atual;
-    req.body.arg_colaborador_id = req.session.auth_data.auth.colaborador_id;
+    req.body.arg_espaco_auth = req?.session?.auth_data?.auth?.armazem_atual || null;
+    req.body.arg_colaborador_id = req?.session?.auth_data?.auth?.colaborador_id || null;
     req.body.arg_espaco_configuracao = req.body.configPrinter;
     const response = await functAtualizarDadosEmpresa(req.body);
     let after = await clusterServer.service.loadLocalCluster();
@@ -192,13 +192,13 @@ app.post("/api/empresa/cabecalho", async (req, res) =>{
     const {functAtualizarDadosEmpresa} = require("../db/call-function-settings");
     let before =  await clusterServer.service.loadLocalCluster();
     let data = JSON.parse(req.body.data)
-    data.arg_espaco_auth = req.session.auth_data.auth.armazem_atual;
-    data.arg_colaborador_id = req.session.auth_data.auth.colaborador_id;
+    data.arg_espaco_auth = req?.session?.auth_data?.auth?.armazem_atual || null;
+    data.arg_colaborador_id = req?.session?.auth_data?.auth?.colaborador_id || null;
     data.arg_espaco_configuracao = null;
 
     if(req.file){
         clusterServer.res.create({resource_subpath: "cloud/data/files", resource_name: req.file.originalname,
-            resource_metadata: {_branch_uid: req.session.auth_data.auth.branch_uuid }
+            resource_metadata: {_branch_uid: req?.session?.auth_data?.auth?.branch_uuid || null }
         }).then(async value => {
             data.dados_empresa.cabecalho_nome = req.file.originalname;
             data.dados_empresa.cabecalho_referencia = value.resource_url;
@@ -224,13 +224,13 @@ app.post("/api/empresa/cabecalho", async (req, res) =>{
 });
 app.get("/api/clusters/branch", async (req, res) => {
     const {functLoadClustersBranch} = require("../db/call-function-settings");
-    const response = await functLoadClustersBranch({arg_branch_uid:  req.session.auth_data.auth.branch_uuid});
+    const response = await functLoadClustersBranch({arg_branch_uid:  req?.session?.auth_data?.auth?.branch_uuid || null});
     res.json({clusters: response.rows});
 });
 app.post("/api/spaces/migrate/load", async (req, res) => {
     const {functLoadSpaceMigrate} = require("../db/call-function-settings");
-    req.body.arg_colaborador_id = req.session.auth_data.auth.colaborador_id;
-    req.body.arg_espaco_id = req.session.auth_data.auth.armazem_atual;
+    req.body.arg_colaborador_id = req?.session?.auth_data?.auth?.colaborador_id || null;
+    req.body.arg_espaco_id = req?.session?.auth_data?.auth?.armazem_atual || null;
     const response = await functLoadSpaceMigrate(req.body);
     res.json({spaces: response.rows});
 });

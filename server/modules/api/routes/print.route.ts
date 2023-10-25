@@ -4,8 +4,8 @@ import {functReportVendaPOS} from "../db/call-function-report";
 
 export async function load_space_configuration(req, admin) {
     const {functLoadDadosEmpresa} = require("../db/call-function-settings");
-    req.body.arg_espaco_auth = admin ? req.session.auth_data.auth.armazem_atual : req.session.user_pos.auth.armazem_atual;
-    req.body.arg_colaborador_id = admin ? req.session.auth_data.auth.colaborador_id : req.session.user_pos.auth.colaborador_id;
+    req.body.arg_espaco_auth = admin ? req?.session?.auth_data?.auth?.armazem_atual || null : req.session.user_pos.auth.armazem_atual;
+    req.body.arg_colaborador_id = admin ? req?.session?.auth_data?.auth?.colaborador_id || null : req.session.user_pos.auth.colaborador_id;
     return  (await functLoadDadosEmpresa(req.body)).rows;
 }
 
@@ -21,14 +21,14 @@ app.get("/api/print/proforma/:dados", async (req, res) =>{
     const {functLoadProformas} = require("../db/call-function-conta");
     const file = require("./functions/export-proforma");
     req.body.arg_posto_id = req.session.posto_admin;
-    req.body.arg_colaborador_id = req.session.auth_data.auth.colaborador_id;
-    req.body.arg_espaco_auth = req.session.auth_data.auth.armazem_atual;
+    req.body.arg_colaborador_id = req?.session?.auth_data?.auth?.colaborador_id || null;
+    req.body.arg_espaco_auth = req?.session?.auth_data?.auth?.armazem_atual || null;
 
     let dados = JSON.parse(req.params.dados);
     let proformas = await functLoadProformas(req.body);
     let user = req.session.auth_data.auth.colaborador_nome+" "+(req.session.auth_data.auth.colaborador_apelido === null ? "" : req.session.auth_data.auth.colaborador_apelido.split(" ").pop());
-    const dadosConta = await functLoadContaData({arg_conta_id: dados.conta_id, with_client: true, arg_espaco_auth: req.session.auth_data.auth.armazem_atual,
-        arg_colaborador_id: req.session.auth_data.auth.colaborador_id});
+    const dadosConta = await functLoadContaData({arg_conta_id: dados.conta_id, with_client: true, arg_espaco_auth: req?.session?.auth_data?.auth?.armazem_atual || null,
+        arg_colaborador_id: req?.session?.auth_data?.auth?.colaborador_id || null});
     let proformaCliente = proformas.rows.filter(prof => prof.data.conta_id === dados.conta_id);
     let instituition = await load_space_configuration(req, true);
     instituition = instituition[0].funct_load_espaco_configuracao.espaco;
@@ -90,8 +90,8 @@ app.get("/api/print/guia_entrada/:dados", async (req, res) =>{
     const file = require("./functions/export-guia");
     const {funct_load_guia_data} = require("../db/call-function-article");
     let instituition = await load_space_configuration(req, true);
-    const response = await funct_load_guia_data({arg_colaborador_id: req.session.auth_data.auth.colaborador_id,
-        arg_espaco_id: req.session.auth_data.auth.armazem_atual, guia_uid: dados.guia_uuid });
+    const response = await funct_load_guia_data({arg_colaborador_id: req?.session?.auth_data?.auth?.colaborador_id || null,
+        arg_espaco_id: req?.session?.auth_data?.auth?.armazem_atual || null, guia_uid: dados.guia_uuid });
     instituition = instituition[0].funct_load_espaco_configuracao.espaco;
     const custoguia =  response.rows.filter(ent => ent.data.data?.custoguia_uid !== undefined);
     const fornecedor =  response.rows.filter(ent => ent.data.data?.fornecedor_id !== undefined);
@@ -105,10 +105,10 @@ app.get("/api/print/guia_saida/:dados", async (req, res) =>{
     const file = require("./functions/export-guia-saida");
     const {funct_load_guia_data} = require("../db/call-function-article");
     let instituition = await load_space_configuration(req, true);
-    const response = await funct_load_guia_data({arg_colaborador_id: req.session.auth_data.auth.colaborador_id,
-        arg_espaco_auth: req.session.auth_data.auth.armazem_atual, guia_uid: dados.guia_uuid, arg_conta_id: dados.conta_id });
-    const dadosConta = await functLoadContaData({arg_conta_id: dados.conta_id, with_client: true, arg_espaco_auth: req.session.auth_data.auth.armazem_atual,
-        arg_colaborador_id: req.session.auth_data.auth.colaborador_id});
+    const response = await funct_load_guia_data({arg_colaborador_id: req?.session?.auth_data?.auth?.colaborador_id || null,
+        arg_espaco_auth: req?.session?.auth_data?.auth?.armazem_atual || null, guia_uid: dados.guia_uuid, arg_conta_id: dados.conta_id });
+    const dadosConta = await functLoadContaData({arg_conta_id: dados.conta_id, with_client: true, arg_espaco_auth: req?.session?.auth_data?.auth?.armazem_atual || null,
+        arg_colaborador_id: req?.session?.auth_data?.auth?.colaborador_id || null});
 
     instituition = instituition[0].funct_load_espaco_configuracao.espaco;
     const guia = response.rows[0].data.data
@@ -127,7 +127,7 @@ app.get("/api/print/fatura/:dados", async (req, res) =>{
     instituition = instituition[0].funct_load_espaco_configuracao.espaco;
     if(conta.admin){
         dadosConta = await functLoadContaData({arg_conta_id: conta.conta_id,
-            with_client: true, arg_espaco_auth: req.session.auth_data.auth.armazem_atual, arg_colaborador_id: req.session.auth_data.auth.colaborador_id});
+            with_client: true, arg_espaco_auth: req?.session?.auth_data?.auth?.armazem_atual || null, arg_colaborador_id: req?.session?.auth_data?.auth?.colaborador_id || null});
         user = req.session.auth_data.auth.colaborador_nome+" "+(req.session.auth_data.auth.colaborador_apelido === null ? "" : req.session.auth_data.auth.colaborador_apelido.split(" ").pop());
     }
     else{
@@ -159,7 +159,7 @@ app.get("/api/print/nota-credito/:dados", async (req, res) =>{
     let instituition = await load_space_configuration(req, conta.admin);
     instituition = instituition[0].funct_load_espaco_configuracao.espaco;
 
-    let dadosConta = await functLoadContaData({arg_conta_id: conta.conta_id, with_client: true, arg_espaco_auth: req.session.auth_data.auth.armazem_atual, arg_colaborador_id: req.session.auth_data.auth.colaborador_id});
+    let dadosConta = await functLoadContaData({arg_conta_id: conta.conta_id, with_client: true, arg_espaco_auth: req?.session?.auth_data?.auth?.armazem_atual || null, arg_colaborador_id: req?.session?.auth_data?.auth?.colaborador_id || null});
     let user = req.session.auth_data.auth.colaborador_nome+" "+(req.session.auth_data.auth.colaborador_apelido === null ? "" : req.session.auth_data.auth.colaborador_apelido.split(" ").pop());
 
     await file.create(instituition, dadosConta.rows[0], res, user, conta.date, dadosConta.rows[0].main.conta_serie.serie_numatorizacao);
@@ -195,7 +195,7 @@ app.get("/api/print/recibo/:dados", async (req, res) =>{
     let dados = JSON.parse(req.params.dados);
     let response = await functLoadDepositoData({deposito_id: dados.deposito});
     let instituition = await load_space_configuration(req, dados.admin);
-    let serie = await functLoadSeries({arg_espaco_auth: req.session.auth_data.auth.armazem_atual});
+    let serie = await functLoadSeries({arg_espaco_auth: req?.session?.auth_data?.auth?.armazem_atual || null});
     const tipo_fatura_recibo = 3;
     instituition = instituition[0].funct_load_espaco_configuracao.espaco;
     let user = req.session.auth_data.auth.colaborador_nome+" "+(req.session.auth_data.auth.colaborador_apelido === null ? "" : req.session.auth_data.auth.colaborador_apelido.split(" ").pop());

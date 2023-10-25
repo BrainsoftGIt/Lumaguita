@@ -79,14 +79,14 @@ app.post("/api/open/accounts/load", async (req, res) =>{
 app.post("/api/proformas/load", async (req, res) =>{
     const {functLoadProformas} = require("../db/call-function-conta");
     req.body.arg_posto_id = req.session.posto_admin;
-    req.body.arg_colaborador_id = req.session.auth_data.auth.colaborador_id;
-    req.body.arg_espaco_auth = req.session.auth_data.auth.armazem_atual;
+    req.body.arg_colaborador_id = req?.session?.auth_data?.auth?.colaborador_id || null;
+    req.body.arg_espaco_auth = req?.session?.auth_data?.auth?.armazem_atual || null;
     const response = await functLoadProformas(req.body);
     res.json({proformas: response.rows});
 });
 app.post("/api/account/key", async (req, res) =>{
     const {functLoadAccountkey} = require("../db/call-function-conta");
     const response = await functLoadAccountkey({arg_espaco_auth: (req.body.admin === undefined ? req.session.user_pos.auth.armazem_atual
-            : req.session.auth_data.auth.armazem_atual )});
+            : req?.session?.auth_data?.auth?.armazem_atual || null )});
     res.json({accountKey: (response.rows.length === 1 ? response.rows[0].data : null)});
 });

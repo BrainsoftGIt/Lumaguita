@@ -7,8 +7,8 @@ import path from "path";
 app.post("/api/tax", async (req, res) =>{
     const {functRegistarImposto} = require("../db/call-function-settings");
     let before =  await clusterServer.service.loadLocalCluster();
-    req.body.arg_espaco_auth = req.session.auth_data.auth.armazem_atual;
-    req.body.arg_colaborador_id = req.session.auth_data.auth.colaborador_id;
+    req.body.arg_espaco_auth = req?.session?.auth_data?.auth?.armazem_atual || null;
+    req.body.arg_colaborador_id = req?.session?.auth_data?.auth?.colaborador_id || null;
     const response = await functRegistarImposto(req.body);
     let after = await clusterServer.service.loadLocalCluster();
     res.json({result: response.row.main.result, data: response.row.main.message});
@@ -22,7 +22,7 @@ app.post("/api/tax", async (req, res) =>{
 });
 app.get("/api/impostos", async (req, res) => {
     const {functLoadImpostos} = require("../db/call-function-settings");
-    const response = await functLoadImpostos({arg_espaco_auth: req.session.auth_data.auth.armazem_atual, arg_colaborador_id: req.session.auth_data.auth.colaborador_id });
+    const response = await functLoadImpostos({arg_espaco_auth: req?.session?.auth_data?.auth?.armazem_atual || null, arg_colaborador_id: req?.session?.auth_data?.auth?.colaborador_id || null });
     const fs = require("fs");
     //language=file-reference
     let taplicar = JSON.parse(fs.readFileSync(path.join(__dirname, "../../../lib/json/taplicar.json")));
@@ -39,17 +39,17 @@ app.get("/api/load/units", async (req, res) => {
     const {functUnits} = require("../db/call-function-settings");
     let data = {};
     // @ts-ignore
-    data._espaco_auth = req.session.auth_data.auth.armazem_atual;
+    data._espaco_auth = req?.session?.auth_data?.auth?.armazem_atual || null;
     // @ts-ignore
-    data._user_id = req.session.auth_data.auth.colaborador_id;
+    data._user_id = req?.session?.auth_data?.auth?.colaborador_id || null;
     const {rows: units} = await functUnits(data);
     res.json({ units });
 });
 
 app.post("/api/imposto/artigo", async (req, res) => {
     const {functGetArticleTax} = require("../db/call-function-settings");
-    req.body.arg_espaco_auth = req.body.is_admin ? req.session.auth_data.auth.armazem_atual : req.session.user_pos.auth.armazem_atual;
-    req.body.arg_colaborador_id = req.body.is_admin ? req.session.auth_data.auth.colaborador_id : req.session.user_pos.auth.colaborador_id;
+    req.body.arg_espaco_auth = req.body.is_admin ? req?.session?.auth_data?.auth?.armazem_atual || null : req.session.user_pos.auth.armazem_atual;
+    req.body.arg_colaborador_id = req.body.is_admin ? req?.session?.auth_data?.auth?.colaborador_id || null : req.session.user_pos.auth.colaborador_id;
     const response = await functGetArticleTax(req.body);
     res.json({tax: response.rows});
 });

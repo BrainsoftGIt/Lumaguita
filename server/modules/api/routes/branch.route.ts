@@ -4,12 +4,12 @@ import * as path from "path";
 
 app.post("/api/branch", async (req, res) =>{
     const {functSetBranch} = require("../db/call-function-branch");
-    req.body.arg_colaborador_id = req.session.auth_data.auth.colaborador_id;
-    req.body.branch_user.arg_colaborador_id = req.session.auth_data.auth.colaborador_id;
-    req.body.branch_workspace.arg_colaborador_id = req.session.auth_data.auth.colaborador_id;
-    req.body.branch_user.arg_espaco_auth = req.session.auth_data.auth.armazem_atual;
-    req.body.branch_workspace.arg_espaco_auth = req.session.auth_data.auth.armazem_atual;
-    req.body.arg_espaco_id = req.session.auth_data.auth.armazem_atual;
+    req.body.arg_colaborador_id = req?.session?.auth_data?.auth?.colaborador_id || null;
+    req.body.branch_user.arg_colaborador_id = req?.session?.auth_data?.auth?.colaborador_id || null;
+    req.body.branch_workspace.arg_colaborador_id = req?.session?.auth_data?.auth?.colaborador_id || null;
+    req.body.branch_user.arg_espaco_auth = req?.session?.auth_data?.auth?.armazem_atual || null;
+    req.body.branch_workspace.arg_espaco_auth = req?.session?.auth_data?.auth?.armazem_atual || null;
+    req.body.arg_espaco_id = req?.session?.auth_data?.auth?.armazem_atual || null;
     const response = await functSetBranch(req.body);
     clusterServer.notifyLocalChange( {
         event: "NEW-BRANCH-SETS",

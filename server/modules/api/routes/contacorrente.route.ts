@@ -10,8 +10,8 @@ import {
 app.post("/api/cliente/admin", async (req, res) =>{
     const {functRegCliente} = require("../db/call-function-pos");
     let before =  await clusterServer.service.loadLocalCluster();
-    req.body.arg_espaco_auth = req.session.auth_data.auth.armazem_atual;
-    req.body.arg_colaborador_id = req.session.auth_data.auth.colaborador_id;
+    req.body.arg_espaco_auth = req?.session?.auth_data?.auth?.armazem_atual || null;
+    req.body.arg_colaborador_id = req?.session?.auth_data?.auth?.colaborador_id || null;
     const response = await functRegCliente(req.body);
     let after = await clusterServer.service.loadLocalCluster();
     res.json({result: response.row.main.result, data: response.row.main.message, ...response.row.main});
@@ -25,22 +25,22 @@ app.post("/api/cliente/admin", async (req, res) =>{
 });
 app.post("/api/clientes/admin", async (req, res) =>{
     const {functLoadClients} = require("../db/call-function-contacorrrente");
-    req.body.arg_espaco_auth = req.session.auth_data.auth.armazem_atual;
-    req.body.arg_colaborador_id = req.session.auth_data.auth.colaborador_id;
+    req.body.arg_espaco_auth = req?.session?.auth_data?.auth?.armazem_atual || null;
+    req.body.arg_colaborador_id = req?.session?.auth_data?.auth?.colaborador_id || null;
     const response = await functLoadClients(req.body);
     res.json({customers: response.rows});
 });
 app.get("/api/cambios", async (req, res) =>{
     const {functLoadCambio} = require("../db/call-function-contacorrrente");
-    req.body.arg_colaborador_id = req.session.auth_data.auth.colaborador_id;
-    req.body.arg_espaco_auth = req.session.auth_data.auth.armazem_atual;
+    req.body.arg_colaborador_id = req?.session?.auth_data?.auth?.colaborador_id || null;
+    req.body.arg_espaco_auth = req?.session?.auth_data?.auth?.armazem_atual || null;
     const response = await functLoadCambio(req.body);
     res.json({cambio_ativos: response.rows});
 });
 app.post("/api/launchs/load", async (req, res) =>{
     const {functLoadLaunchs} = require("../db/call-function-contacorrrente");
-    req.body.arg_colaborador_id = req.session.auth_data.auth.colaborador_id;
-    req.body.arg_espaco_auth = req.session.auth_data.auth.armazem_atual;
+    req.body.arg_colaborador_id = req?.session?.auth_data?.auth?.colaborador_id || null;
+    req.body.arg_espaco_auth = req?.session?.auth_data?.auth?.armazem_atual || null;
     const response = await functLoadLaunchs(req.body);
     res.json({launchs: response.rows});
 });
@@ -48,8 +48,8 @@ app.post("/api/launchs/load", async (req, res) =>{
 app.post("/api/deposito", async (req, res) =>{
     const {functRegistarDeposito} = require("../db/call-function-contacorrrente");
     let before =  await clusterServer.service.loadLocalCluster();
-    req.body.arg_colaborador_id = req.session.auth_data.auth.colaborador_id;
-    req.body.arg_espaco_auth = req.session.auth_data.auth.armazem_atual;
+    req.body.arg_colaborador_id = req?.session?.auth_data?.auth?.colaborador_id || null;
+    req.body.arg_espaco_auth = req?.session?.auth_data?.auth?.armazem_atual || null;
     const response = await functRegistarDeposito(req.body);
     let after = await clusterServer.service.loadLocalCluster();
     res.json({result: response.row.main.result, data: (response.row.main.result ? response.row : response.row.main.message)});
@@ -64,8 +64,8 @@ app.post("/api/deposito", async (req, res) =>{
 app.post("/api/lancamento", async (req, res) =>{
     const {functRegistarLancamento} = require("../db/call-function-contacorrrente");
     let before =  await clusterServer.service.loadLocalCluster();
-    req.body.arg_colaborador_id = req.session.auth_data.auth.colaborador_id;
-    req.body.arg_espaco_auth = req.session.auth_data.auth.armazem_atual;
+    req.body.arg_colaborador_id = req?.session?.auth_data?.auth?.colaborador_id || null;
+    req.body.arg_espaco_auth = req?.session?.auth_data?.auth?.armazem_atual || null;
     const response = await functRegistarLancamento(req.body);
     let after = await clusterServer.service.loadLocalCluster();
     res.json({result: response.row.main.result, data: (response.row.main.result ? response.row : response.row.main.message)});

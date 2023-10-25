@@ -9,8 +9,8 @@ import {folders} from "../../../global/project";
 app.post("/api/efatura", async (req, res) => {
     const {functRegSerie} = require("../db/call-function-efatura");
     let before = await clusterServer.service.loadLocalCluster();
-    req.body.arg_colaborador_id = req.session.auth_data.auth.colaborador_id;
-    req.body.arg_espaco_auth = req.session.auth_data.auth.armazem_atual;
+    req.body.arg_colaborador_id = req?.session?.auth_data?.auth?.colaborador_id || null;
+    req.body.arg_espaco_auth = req?.session?.auth_data?.auth?.armazem_atual || null;
     const response = await functRegSerie(req.body);
     let after = await clusterServer.service.loadLocalCluster();
     res.json({result: response.row.main.result, data: response.row.main.message});
@@ -23,8 +23,8 @@ app.post("/api/efatura", async (req, res) => {
     }
 });
 app.post("/api/efatura/load", async (req, res) => {
-    req.body.arg_espaco_auth = req.body.place === "admin" ? req.session.auth_data.auth.armazem_atual : req.session.user_pos.auth.armazem_atual;
-    req.body.arg_colaborador_id = req.body.place === "admin" ? req.session.auth_data.auth.colaborador_id : req.session.user_pos.auth.colaborador_id;
+    req.body.arg_espaco_auth = req.body.place === "admin" ? req?.session?.auth_data?.auth?.armazem_atual || null : req.session.user_pos.auth.armazem_atual;
+    req.body.arg_colaborador_id = req.body.place === "admin" ? req?.session?.auth_data?.auth?.colaborador_id || null : req.session.user_pos.auth.colaborador_id;
 
     if (req.body.list_type_series === undefined) {
         const {functLoadSeries} = require("../db/call-function-efatura");
@@ -45,8 +45,8 @@ app.post("/api/efatura/load", async (req, res) => {
 app.post("/api/efatura/authorization/reg", async (req, res) => {
     const {functRegEfacturaAuthorization} = require("../db/call-function-efatura");
     let before = await clusterServer.service.loadLocalCluster();
-    req.body.arg_colaborador_id = req.session.auth_data.auth.colaborador_id;
-    req.body.arg_espaco_auth = req.session.auth_data.auth.armazem_atual;
+    req.body.arg_colaborador_id = req?.session?.auth_data?.auth?.colaborador_id || null;
+    req.body.arg_espaco_auth = req?.session?.auth_data?.auth?.armazem_atual || null;
     let response = await functRegEfacturaAuthorization(req.body);
     console.log(response.row);
     const {row: {main: {result, message}}} = response;
@@ -63,8 +63,8 @@ app.post("/api/efatura/authorization/reg", async (req, res) => {
 
 app.post("/api/efatura/authorization/load", async (req, res) => {
     const {functLoadEfacturaAuthorization} = require("../db/call-function-efatura");
-    req.body.arg_colaborador_id = req.session.auth_data.auth.colaborador_id;
-    req.body.arg_espaco_auth = req.session.auth_data.auth.armazem_atual;
+    req.body.arg_colaborador_id = req?.session?.auth_data?.auth?.colaborador_id || null;
+    req.body.arg_espaco_auth = req?.session?.auth_data?.auth?.armazem_atual || null;
     const {rows} = await functLoadEfacturaAuthorization(req.body);
     res.json({datas: rows.map(({main}) => main)});
 });
@@ -73,8 +73,8 @@ app.post("/api/efatura/authorization/load", async (req, res) => {
 app.post("/api/efatura/authorization/closeyear", async (req, res) => {
     const {functChangeAuthorizationCloseYear} = require("../db/call-function-efatura");
     let before = await clusterServer.service.loadLocalCluster();
-    req.body.arg_colaborador_id = req.session.auth_data.auth.colaborador_id;
-    req.body.arg_espaco_auth = req.session.auth_data.auth.armazem_atual;
+    req.body.arg_colaborador_id = req?.session?.auth_data?.auth?.colaborador_id || null;
+    req.body.arg_espaco_auth = req?.session?.auth_data?.auth?.armazem_atual || null;
     const {row: {main: {result, message}}} = await functChangeAuthorizationCloseYear(req.body);
     let after = await clusterServer.service.loadLocalCluster();
     res.json({result: result, data: message});
@@ -90,8 +90,8 @@ app.post("/api/efatura/authorization/closeyear", async (req, res) => {
 app.post("/api/efatura/authorization/continue", async (req, res) => {
     const {functSetsAuthorizatioContinue} = require("../db/call-function-efatura");
     let before = await clusterServer.service.loadLocalCluster();
-    req.body.arg_colaborador_id = req.session.auth_data.auth.colaborador_id;
-    req.body.arg_espaco_auth = req.session.auth_data.auth.armazem_atual;
+    req.body.arg_colaborador_id = req?.session?.auth_data?.auth?.colaborador_id || null;
+    req.body.arg_espaco_auth = req?.session?.auth_data?.auth?.armazem_atual || null;
     const {row: {main: {result, message}}} = await functSetsAuthorizatioContinue(req.body);
     let after = await clusterServer.service.loadLocalCluster();
     res.json({result: result, data: message});
@@ -124,7 +124,7 @@ app.get("/api/efatura/report/excel/:data", async (req, res) => {
     fs.unlinkSync(path.join(folders.temp, data.file))
 
     const {functReportFinanca} = require("../db/call-function-report");
-    args.arg_colaborador_id = req.session.auth_data.auth.colaborador_id;
+    args.arg_colaborador_id = req?.session?.auth_data?.auth?.colaborador_id || null;
     let {rows: list} = await functReportFinanca(args);
 
     let {year, month} = args;

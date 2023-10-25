@@ -50,9 +50,9 @@ app.get("/api/clinica/calendar", async (req, res) =>{
 app.post("/api/clinica/calendar/set", async (req, res) =>{
     try{
         const {functSetScheduler} = require("../../db/clinic/call-function-schedule");
-        req.body.schedule_espaco_auth = req.session.auth_data.auth.armazem_atual;
-        req.body.schedule_colaborador_uid = req.session.auth_data.auth.colaborador_id;
-        req.body._branch_uid = req.session.auth_data.auth.branch_uuid;
+        req.body.schedule_espaco_auth = req?.session?.auth_data?.auth?.armazem_atual || null;
+        req.body.schedule_colaborador_uid = req?.session?.auth_data?.auth?.colaborador_id || null;
+        req.body._branch_uid = req?.session?.auth_data?.auth?.branch_uuid || null;
 
         forceReloadAlerts = true
         let response = await functSetScheduler(req.body);
