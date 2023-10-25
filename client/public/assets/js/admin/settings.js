@@ -172,6 +172,8 @@ var settings = {
                             $("#xModalPrintSett").addClass("haveKuchen");
                         }
 
+                        $("#margin-right").val(settings?.empresa?.impressorasTalao?.marginRight || "");
+                        $("#margin-left").val(settings?.empresa?.impressorasTalao?.marginLeft || "");
 
                         $("#printTalaoA5").addClass(settings.empresa.printTalaoA5 ? "active" : "");
                         $("#printTalaoA6").addClass(settings.empresa.printTalaoA6 ? "active" : "");
@@ -419,6 +421,7 @@ var settings = {
         dados.impressoras_cozinha = this.empresa?.impressoras_cozinha || {};
         dados.printTalaoA5 = !!this.empresa?.printTalaoA5;
         dados.printTalaoA6 = !!this.empresa?.printTalaoA6;
+        dados.impressorasTalao = this?.empresa?.impressorasTalao || {};
 
         let formData = new FormData();
         formData.append("data", JSON.stringify({dados_empresa: dados}));
