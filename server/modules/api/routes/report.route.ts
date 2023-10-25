@@ -27,10 +27,16 @@ app.get("/api/report/type/data", async (req, res) => {
 
 app.post("/api/report/source/filter", async (req, res) => {
     const {functLoadReportSource} = require("../db/call-function-report");
-    req.body.branch = req.session.auth_data.auth.branch_uuid;
-    req.body.space = req.session.auth_data.auth.armazem_atual;
-    req.body.user = req.session.auth_data.auth.colaborador_id;
-    const response = await functLoadReportSource(req.body);
+
+    let args = req.body;
+    let _session = (!args._grants) ? getUserSession( req ) : getUserSessionPOS( req );
+
+    args.user = _session.user_id;
+    args.space = _session.workspace;
+    args.branch = _session.branch_uid;
+
+    const response = await functLoadReportSource(args);
+
     res.json({filterData: response.rows});
 });
 app.post("/api/report/filter", async (req, res) => {
