@@ -165,9 +165,15 @@ var settings = {
                             }
                         }
 
+                        $(" #cosinha-margin-right ").val( "");
+                        $(" #cosinha-margin-left ").val("");
                         if(!!settings?.empresa?.impressoras_cozinha?.nome || !!settings?.empresa?.impressoras_cozinha?.ip){
                             $("#nome_impressora_cozinha").val(settings.empresa.impressoras_cozinha.nome || "");
                             $("#ip_impressora_cozinha").val(settings.empresa.impressoras_cozinha.ip || "");
+
+                            $("#cosinha-margin-right").val(settings?.empresa?.impressoras_cozinha?.marginRight || "");
+                            $("#cosinha-margin-left").val(settings?.empresa?.impressoras_cozinha?.marginLeft || "");
+
                             $("#hasKuchen").addClass("active");
                             $("#xModalPrintSett").addClass("haveKuchen");
                         }

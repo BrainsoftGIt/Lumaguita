@@ -157,6 +157,9 @@ $("[bt_impressora]").on("click", function () {
     settings.empresa.impressorasTalao.marginLeft =  $("#margin-left").val();
     settings.empresa.impressorasTalao.marginRight = $("#margin-right").val();
 
+    settings.empresa.impressoras_cozinha.marginLeft =  $("#cosinha-margin-left").val();
+    settings.empresa.impressoras_cozinha.marginRight = $("#cosinha-margin-right").val();
+
 
     printersConfigured.find("li").each(function () {
         indice_configuracao_existente = settings.empresa.configuracao_impressoras.findIndex(imp => imp.operacao.codigo === $(this).attr("operation"));

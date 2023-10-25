@@ -1,4 +1,22 @@
 <link rel="stylesheet" href="../assets/css/admin/settings.css">
+<style>
+	.fixMargin{
+		margin: 5px 5px
+	}
+
+	.titleFix{
+		display: block;
+		margin-bottom: 0.5rem;
+		margin-top: 0.5rem;
+		margin-left: 10px;
+		color: #4300c9;
+		font-size: 13px;
+	}
+
+	.marginSection{
+		width: 59vh;
+	}
+</style>
 <div class="__included__ settings">
 	<div class="_head flex h-sb v-ct">
 		<div class="inLeft">
@@ -602,15 +620,34 @@
 						<label for="ip_impressora_cozinha">Endereço IP da impressora</label>
 					</div>
 				</div>
-				<div class="xform">
-					<div class="flex grow-1 w100 h-sb">
-						<div class="xinput w50">
-							<input type="text" id="margin-left" placeholder="_" _noObrigatory="true">
-							<label for="margin-left">Fix margin left</label>
+			</div>
+			<div>
+				<div class="flex h-sb marginSection">
+					<div class="w50 fixMargin">
+						<b class="titleFix">Impressora POS</b>
+						<div class="flex grow-1 w100 h-sb">
+							<div class="xinput w50 fixMargin">
+								<input type="text" id="margin-left" placeholder="_" _noObrigatory="true">
+								<label for="margin-left">Fix margin left</label>
+							</div>
+							<div class="xinput w50 fixMargin">
+								<input type="text" id="margin-right" placeholder="_" _noObrigatory="true">
+								<label for="margin-right">Fix margin rigth</label>
+							</div>
 						</div>
-						<div class="xinput w50">
-							<input type="text" id="margin-right" placeholder="_" _noObrigatory="true">
-							<label for="margin-right">Fix margin rigth</label>
+					</div>
+
+					<div class="w50 fixMargin">
+						<b class="titleFix">Impressora Cozinha</b>
+						<div class="flex grow-1 w100 h-sb">
+							<div class="xinput w50 fixMargin">
+								<input type="text" id="cosinha-margin-left" placeholder="_" _noObrigatory="true">
+								<label for="cosinha-margin-left">Fix margin left</label>
+							</div>
+							<div class="xinput w50 fixMargin">
+								<input type="text" id="cosinha-margin-right" placeholder="_" _noObrigatory="true">
+								<label for="cosinha-margin-right">Fix margin rigth</label>
+							</div>
 						</div>
 					</div>
 				</div>

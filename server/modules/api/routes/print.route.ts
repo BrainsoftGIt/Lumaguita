@@ -318,7 +318,7 @@ app.post("/api/print/kitchen", async (req, res) =>{
                 return
             }
 
-            await create(instituition, req.body.articles, res, req.body.date, req.body.table, req.body.obs);
+            await create(instituition, req.body.articles, res, req.body.date, req.body.table, req.body.obs, instituition?.espaco_configuracao?.impressoras_cozinha);
         }
         else if(instituition?.espaco_configuracao?.impressoras_cozinha?.ip){
             await printNetwork({articles: req.body.articles, table: req.body.table,
