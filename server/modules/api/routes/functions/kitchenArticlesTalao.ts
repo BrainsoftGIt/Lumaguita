@@ -3,7 +3,7 @@ import fs from "fs";
 import {getFonts, structure} from "./estruture-talao";
 import {folders} from "../../../../global/project";
 import {print} from "./printer";
-export let create = async (instituition, articles, res, date, table, obs) => {
+export let create = async (instituition, articles, res, date, table, obs, margin) => {
     const pdfMake = require("../../../../../libs/js/pdfmake/pdfmake");
     const pdfFonts = require('../../../../../libs/js/pdfmake/vfs_fonts');
     pdfMake.vfs = pdfFonts.pdfMake.vfs;
@@ -155,7 +155,7 @@ export let create = async (instituition, articles, res, date, table, obs) => {
                 ]
             } : {})
         ],
-        ...structure(null)
+        ...structure({margin})
     };
 
     const pdfDocGenerator = pdfMake.createPdf(docDefinition);

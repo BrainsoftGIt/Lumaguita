@@ -5,7 +5,7 @@ import {folders} from "../../../../global/project";
 import {print} from "./printer";
 import {clusterServer} from "../../../../service/cluster.service";
 
-export let create = async (instituition, account_content, res, user, date, printer_name) => {
+export let create = async (instituition, account_content, res, user, date, printer_name, margin) => {
     const pdfMake = require("../../../../../libs/js/pdfmake/pdfmake");
     const pdfFonts = require('../../../../../libs/js/pdfmake/vfs_fonts');
     const {formattedString} = require("./formatValue");
@@ -247,7 +247,7 @@ export let create = async (instituition, account_content, res, user, date, print
                 ]
             }
         ],
-         ...structure(user)
+         ...structure({ margin })
     };
 
     const pdfDocGenerator = pdfMake.createPdf(docDefinition);

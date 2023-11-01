@@ -28,12 +28,12 @@ app.post("/api/post/login", async (req, res) =>{
             else{
                 req.session.user_pos = response.rows[0].data;
                 if(userSpace.spaces.length === 1)  req.session.user_pos.auth.armazem_atual = userSpace.spaces[0].data.espaco_id;
-                else req.session.user_pos.auth.armazem_atual = getDefaultSpace(req, req.session.user_pos.auth.colaborador_id, userSpace.spaces);
+                else req.session.user_pos.auth.armazem_atual = getDefaultSpace(req, req?.session?.user_pos?.auth?.colaborador_id, userSpace.spaces);
 
                 req.session.save(() =>{
                     res.json({result: true, acesso: acesso, armazens: userSpace.spaces,
-                        defaultSpace:  req.session.user_pos.auth.armazem_atual,
-                        user_uuid: req.session.user_pos.auth.colaborador_id});
+                        defaultSpace:  req?.session?.user_pos?.auth?.armazem_atual,
+                        user_uuid: req?.session?.user_pos?.auth?.colaborador_id});
                 });
             }
         }
@@ -47,11 +47,11 @@ app.get("/api/session-status", async (req, res) =>{
 app.post("/api/user/post/armazem", async (req, res) =>{
     req.session.user_pos.auth.armazem_atual = req.body.space_id;
     if(req.session.default_space === undefined){
-        req.session.default_space = [{colaborador_id: req.session.user_pos.auth.colaborador_id, space_id: req.body.space_id}];
+        req.session.default_space = [{colaborador_id: req?.session?.user_pos?.auth?.colaborador_id, space_id: req.body.space_id}];
     }
     else{
-       let index = req.session.default_space.findIndex(sp => sp.colaborador_id === req.session.user_pos.auth.colaborador_id);
-       if(index === -1) req.session.default_space.push({colaborador_id: req.session.user_pos.auth.colaborador_id,  space_id: req.body.space_id});
+       let index = req.session.default_space.findIndex(sp => sp.colaborador_id === req?.session?.user_pos?.auth?.colaborador_id);
+       if(index === -1) req.session.default_space.push({colaborador_id: req?.session?.user_pos?.auth?.colaborador_id,  space_id: req.body.space_id});
        else req.session.default_space[index].space_id = req.body.space_id;
     }
     req.session.save(() => {
@@ -59,7 +59,7 @@ app.post("/api/user/post/armazem", async (req, res) =>{
     });
 });
 app.post("/api/user/post/current/space", async (req, res) =>{
-    res.json({space_id: req.session.user_pos.auth.armazem_atual});
+    res.json({space_id: req?.session?.user_pos?.auth?.armazem_atual});
 });
 
 app.post("/api/post/view/", async (req, res) =>{
@@ -79,14 +79,14 @@ app.post("/api/open/accounts/load", async (req, res) =>{
 app.post("/api/proformas/load", async (req, res) =>{
     const {functLoadProformas} = require("../db/call-function-conta");
     req.body.arg_posto_id = req.session.posto_admin;
-    req.body.arg_colaborador_id = req.session.auth_data.auth.colaborador_id;
-    req.body.arg_espaco_auth = req.session.auth_data.auth.armazem_atual;
+    req.body.arg_colaborador_id = req?.session?.auth_data?.auth?.colaborador_id || null;
+    req.body.arg_espaco_auth = req?.session?.auth_data?.auth?.armazem_atual || null;
     const response = await functLoadProformas(req.body);
     res.json({proformas: response.rows});
 });
 app.post("/api/account/key", async (req, res) =>{
     const {functLoadAccountkey} = require("../db/call-function-conta");
-    const response = await functLoadAccountkey({arg_espaco_auth: (req.body.admin === undefined ? req.session.user_pos.auth.armazem_atual
-            : req.session.auth_data.auth.armazem_atual )});
+    const response = await functLoadAccountkey({arg_espaco_auth: (req.body.admin === undefined ? req?.session?.user_pos?.auth?.armazem_atual
+            : req?.session?.auth_data?.auth?.armazem_atual || null )});
     res.json({accountKey: (response.rows.length === 1 ? response.rows[0].data : null)});
 });

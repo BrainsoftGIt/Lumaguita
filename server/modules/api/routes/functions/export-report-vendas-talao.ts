@@ -7,7 +7,7 @@ import moment from "moment";
 
 import {clusterServer} from "../../../../service/cluster.service";
 
-export let create = async (instituition, accounts, res, user, printer_name, arg_date_start, arg_date_end) => {
+export let create = async (instituition, accounts, res, user, printer_name, arg_date_start, arg_date_end, margin) => {
     moment.locale('pt-br')
 
     const pdfMake = require("../../../../../libs/js/pdfmake/pdfmake");
@@ -171,7 +171,7 @@ export let create = async (instituition, accounts, res, user, printer_name, arg_
                 ]
             }
         ],
-        ...structure(user)
+        ...structure({margin})
     };
 
     const pdfDocGenerator = pdfMake.createPdf(docDefinition);

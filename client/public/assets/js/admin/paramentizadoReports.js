@@ -197,7 +197,7 @@ var paramentizadoReports = {
             url: "/api/report/source/filter",
             method: "POST",
             contentType: "application/json",
-            data: JSON.stringify({source: source}),
+            data: JSON.stringify({source: source, _grants: paramentizadoReports?.posto_id || undefined}),
             success(e) {
                 e.filterData.forEach(({ data : { id, label }}) =>{
                     let active = (value?.toString?.() === id.toString()) ? "active" : "";

@@ -7,9 +7,9 @@ import {folders} from "../../../../global/project";
 
 app.post("/api/clinica/consulta/set", async (req, res) =>{
     const {functSetConsulta} = require("../../db/clinic/call-function-consulta");
-    req.body.arg_espaco_auth = req.session.auth_data.auth.armazem_atual;
-    req.body.arg_colaborador_id = req.session.auth_data.auth.colaborador_id;
-    req.body.arg_branch_uid = req.session.auth_data.auth.branch_uuid;
+    req.body.arg_espaco_auth = req?.session?.auth_data?.auth?.armazem_atual || null;
+    req.body.arg_colaborador_id = req?.session?.auth_data?.auth?.colaborador_id || null;
+    req.body.arg_branch_uid = req?.session?.auth_data?.auth?.branch_uuid || null;
 
     let response = await functSetConsulta(req.body);
     res.json({response});
@@ -17,9 +17,9 @@ app.post("/api/clinica/consulta/set", async (req, res) =>{
 
 app.post("/api/clinica/consulta/load", async (req, res) =>{
     const {functLoadConsulta} = require("../../db/clinic/call-function-consulta");
-    req.body.arg_espaco_auth = req.session.auth_data.auth.armazem_atual;
-    req.body.arg_colaborador_id = req.session.auth_data.auth.colaborador_id;
-    req.body.arg_branch_uid = req.session.auth_data.auth.branch_uuid;
+    req.body.arg_espaco_auth = req?.session?.auth_data?.auth?.armazem_atual || null;
+    req.body.arg_colaborador_id = req?.session?.auth_data?.auth?.colaborador_id || null;
+    req.body.arg_branch_uid = req?.session?.auth_data?.auth?.branch_uuid || null;
 
     let response = await functLoadConsulta(req.body);
     res.json({
@@ -31,9 +31,9 @@ app.post("/api/clinica/consulta/load", async (req, res) =>{
 
 app.post("/api/clinica/consulta/load/data", async (req, res) =>{
     const {functLoadConsultaData} = require("../../db/clinic/call-function-consulta");
-    req.body.arg_espaco_auth = req.session.auth_data.auth.armazem_atual;
-    req.body.arg_colaborador_id = req.session.auth_data.auth.colaborador_id;
-    req.body.arg_branch_uid = req.session.auth_data.auth.branch_uuid;
+    req.body.arg_espaco_auth = req?.session?.auth_data?.auth?.armazem_atual || null;
+    req.body.arg_colaborador_id = req?.session?.auth_data?.auth?.colaborador_id || null;
+    req.body.arg_branch_uid = req?.session?.auth_data?.auth?.branch_uuid || null;
 
     let response = await functLoadConsultaData(req.body);
     res.json({

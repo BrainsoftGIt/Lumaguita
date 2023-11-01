@@ -165,13 +165,21 @@ var settings = {
                             }
                         }
 
+                        $(" #cosinha-margin-right ").val( "");
+                        $(" #cosinha-margin-left ").val("");
                         if(!!settings?.empresa?.impressoras_cozinha?.nome || !!settings?.empresa?.impressoras_cozinha?.ip){
                             $("#nome_impressora_cozinha").val(settings.empresa.impressoras_cozinha.nome || "");
                             $("#ip_impressora_cozinha").val(settings.empresa.impressoras_cozinha.ip || "");
+
+                            $("#cosinha-margin-right").val(settings?.empresa?.impressoras_cozinha?.marginRight || "");
+                            $("#cosinha-margin-left").val(settings?.empresa?.impressoras_cozinha?.marginLeft || "");
+
                             $("#hasKuchen").addClass("active");
                             $("#xModalPrintSett").addClass("haveKuchen");
                         }
 
+                        $("#margin-right").val(settings?.empresa?.impressorasTalao?.marginRight || "");
+                        $("#margin-left").val(settings?.empresa?.impressorasTalao?.marginLeft || "");
 
                         $("#printTalaoA5").addClass(settings.empresa.printTalaoA5 ? "active" : "");
                         $("#printTalaoA6").addClass(settings.empresa.printTalaoA6 ? "active" : "");
@@ -419,6 +427,7 @@ var settings = {
         dados.impressoras_cozinha = this.empresa?.impressoras_cozinha || {};
         dados.printTalaoA5 = !!this.empresa?.printTalaoA5;
         dados.printTalaoA6 = !!this.empresa?.printTalaoA6;
+        dados.impressorasTalao = this?.empresa?.impressorasTalao || {};
 
         let formData = new FormData();
         formData.append("data", JSON.stringify({dados_empresa: dados}));

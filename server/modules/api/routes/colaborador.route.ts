@@ -5,7 +5,7 @@ import {functLoadMenuGrants} from "../db/call-function-colaborador";
 
 app.post("/api/users/load", async (req, res) =>{
     const {functLoadUsers} = require("../db/call-function-colaborador");
-    req.body.arg_espaco_auth = req.session.auth_data.auth.armazem_atual;
+    req.body.arg_espaco_auth = req?.session?.auth_data?.auth?.armazem_atual || null;
     let usersNotShowed = [ "00000000-0000-0000-0000-000000000000", "00000000-0000-0000-0000-000000000001", "00000000-0000-0000-0000-000000000002" ];
     const response = await functLoadUsers(req.body);
     res.json({users: response.rows.filter(value => parseInt(value.data.colaborador_tipo) !== 0 && !usersNotShowed.includes(value.data.colaborador_id))});
@@ -18,13 +18,13 @@ app.post("/api/user", async (req, res) =>{
     let before =  await clusterServer.service.loadLocalCluster();
     let data = JSON.parse(req.body.data);
 
-    data.arg_colaborador_id = req.session.auth_data.auth.colaborador_id;7
-    data.arg_espaco_auth = req.session.auth_data.auth.armazem_atual;
-    data.arg_branch_uid = req.session.auth_data.auth.branch_uuid;
+    data.arg_colaborador_id = req?.session?.auth_data?.auth?.colaborador_id || null;
+    data.arg_espaco_auth = req?.session?.auth_data?.auth?.armazem_atual || null;
+    data.arg_branch_uid = req?.session?.auth_data?.auth?.branch_uuid || null;
 
     if(req.file){
         clusterServer.res.create({resource_subpath: "cloud/data/files", resource_name: req.file.originalname,
-            resource_metadata: {_branch_uid: req.session.auth_data.auth.branch_uuid }
+            resource_metadata: {_branch_uid: req?.session?.auth_data?.auth?.branch_uuid || null }
         }).then(async value => {
             data.arg_colaborador_foto = value.resource_url+";"+req.file.originalname;
             const response = await functRegUser(data);
@@ -56,11 +56,11 @@ app.post("/api/user/change", async (req, res) =>{
     let before =  await clusterServer.service.loadLocalCluster();
     let data = JSON.parse(req.body.data);
 
-    data.arg_colaborador_id = req.session.auth_data.auth.colaborador_id;
-    data.arg_espaco_auth = req.session.auth_data.auth.armazem_atual;
+    data.arg_colaborador_id = req?.session?.auth_data?.auth?.colaborador_id || null;
+    data.arg_espaco_auth = req?.session?.auth_data?.auth?.armazem_atual || null;
     if(req.file){
         clusterServer.res.create({resource_subpath: "cloud/data/files", resource_name: req.file.originalname,
-            resource_metadata: {_branch_uid: req.session.auth_data.auth.branch_uuid }
+            resource_metadata: {_branch_uid: req?.session?.auth_data?.auth?.branch_uuid || null }
         }).then(async value => {
             data.arg_colaborador_foto = value.resource_url+";"+req.file.originalname;
             let response = await functUpdateUser(data);
@@ -88,7 +88,7 @@ app.post("/api/user/change", async (req, res) =>{
              await functRegAccess({arg_colaborador_id: data.arg_colaborador_id,
                  arg_colaborador_propetario: data.arg_colaborador_editar,
                  arg_menu_list: data.arg_menu_list,
-                 _branch_uid: req.session.auth_data.auth.branch_uuid});
+                 _branch_uid: req?.session?.auth_data?.auth?.branch_uuid || null});
             if(before.cluster_version < after.cluster_version)
                 clusterServer.notifyLocalChange({event: "UPDATE:USER", extras: null, message: "Colaborador foi atualizado."});
         }
@@ -98,7 +98,7 @@ app.post("/api/user/change", async (req, res) =>{
 app.post("/api/user/disable", async (req, res) =>{
     const {functDisableUser} = require("../db/call-function-colaborador");
     let before =  await clusterServer.service.loadLocalCluster();
-    req.body.arg_colaborador_id =  req.session.auth_data.auth.colaborador_id;
+    req.body.arg_colaborador_id =  req?.session?.auth_data?.auth?.colaborador_id || null;
     const response = await functDisableUser(req.body);
     let after = await clusterServer.service.loadLocalCluster();
     res.json({result: response.row.result, message: response.row.message.text});
@@ -113,7 +113,7 @@ app.post("/api/user/disable", async (req, res) =>{
 app.post("/api/user/enable", async (req, res) =>{
     const {functEnableUser} = require("../db/call-function-colaborador");
     let before =  await clusterServer.service.loadLocalCluster();
-    req.body.arg_colaborador_id =  req.session.auth_data.auth.colaborador_id;
+    req.body.arg_colaborador_id =  req?.session?.auth_data?.auth?.colaborador_id || null;
     const response = await functEnableUser(req.body);
     let after = await clusterServer.service.loadLocalCluster();
     res.json({result: response.row.result, message: response.row.message.text});
@@ -153,19 +153,19 @@ app.post("/api/menus/load", async (req, res) =>{
     let response;
     let menus;
     if(req.body.arg_colaborador_id !== undefined) {
-        response = await functLoadMenusBranch({arg_branch_uid: req.session.auth_data.auth.branch_uuid,
-            arg_espaco_id:  req.session.auth_data.auth.armazem_atual, arg_colaborador_id: req.body.arg_colaborador_id});
+        response = await functLoadMenusBranch({arg_branch_uid: req?.session?.auth_data?.auth?.branch_uuid || null,
+            arg_espaco_id:  req?.session?.auth_data?.auth?.armazem_atual || null, arg_colaborador_id: req.body.arg_colaborador_id});
         menus = response.rows.filter(value => value.data.acesso_id !== null);
     }
     else{
-        response = await functLoadMenusBranch({arg_branch_uid: req.session.auth_data.auth.branch_uuid, arg_espaco_id: req.session.auth_data.auth.armazem_atual});
+        response = await functLoadMenusBranch({arg_branch_uid: req?.session?.auth_data?.auth?.branch_uuid || null, arg_espaco_id: req?.session?.auth_data?.auth?.armazem_atual || null});
         menus = response.rows;
     }
     res.json({menus: menus});
 });
 app.post("/api/armazens/colaborador/load", async (req, res) =>{
     const {functLoadArmazensColaboradorAlocar} = require("../db/call-function-colaborador");
-    req.body.arg_espaco_auth = req.session.auth_data.auth.armazem_atual;
+    req.body.arg_espaco_auth = req?.session?.auth_data?.auth?.armazem_atual || null;
     const response = await functLoadArmazensColaboradorAlocar(req.body);
     res.json({armazens: response.rows});
 });
@@ -188,7 +188,7 @@ app.post("/api/login/admin", async (req, res) =>{
             if(response.rows[0].data.auth.acesso.filter((ac => ac.menu_link !== null)).length > 0){
                 req.session.auth_data = response.rows[0].data;
                 req.session.auth_data.auth.armazem_atual = response.rows[0].data.espaco_trabalha[0].espaco_id;
-                req.session.auth_data.auth.branch_uuid =  response?.rows[1]?.data?.branch_uid || null;
+                req.session.auth_data.auth.branch_uuid = response?.rows[1]?.data?.branch_uid || null;
                 req.session.posto_admin = response.rows[0].data.espaco_trabalha[0].espaco_posto_admin;
                 req.session.auth_data.auth.branch_main_workspace = response.rows[1]?.data?.branch_main_workspace || null;
                 clusterServer.notifyLocalChange({event: "LOGIN:ADMIN", extras: null, message: "Login admin"});
@@ -232,7 +232,7 @@ app.get("/api/session", async (req, res) =>{
 app.post("/api/colaborador/senha", async (req, res) =>{
     const {functChangePassword} = require("../db/call-function-colaborador");
     let before =  await clusterServer.service.loadLocalCluster();
-    req.body.arg_colaborador_id = req.session.auth_data.auth.colaborador_id;
+    req.body.arg_colaborador_id = req?.session?.auth_data?.auth?.colaborador_id || null;
     const response = await functChangePassword(req.body);
     let after = await clusterServer.service.loadLocalCluster();
     res.json({result: response.row.result, message: response.row.message.text});
@@ -261,8 +261,8 @@ app.post("/api/colaborador/pin", async (req, res) =>{
 });
 app.post("/api/colaborador/menus/grants", async (req, res) =>{
     const {functLoadMenuGrants} = require("../db/call-function-colaborador");
-    req.body.arg_colaborador_id = req.session.auth_data.auth.colaborador_id;
-    req.body.arg_espaco_auth = req.session.auth_data.auth.armazem_atual;
+    req.body.arg_colaborador_id = req?.session?.auth_data?.auth?.colaborador_id || null;
+    req.body.arg_espaco_auth = req?.session?.auth_data?.auth?.armazem_atual || null;
     const response = await functLoadMenuGrants(req.body);
     res.json({grants: response.rows});
 });

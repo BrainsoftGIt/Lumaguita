@@ -133,8 +133,8 @@ app.post("/api/importar_artigos", async (req, res) =>{
                             ean_dateout: null,
                             ean_datein: null
                         }]),
-                        arg_espaco_auth: req.session.auth_data.auth.armazem_atual,
-                        arg_colaborador_id: req.session.auth_data.auth.colaborador_id,
+                        arg_espaco_auth: req?.session?.auth_data?.auth?.armazem_atual || null,
+                        arg_colaborador_id: req?.session?.auth_data?.auth?.colaborador_id || null,
                         acerto_quantidade: (row.values[10] || 0)
                     });
                     if(categorias.findIndex(cat => cat.classe_nome === clearText((row.values[5] || "Sem categoria"))) === -1){
@@ -157,8 +157,8 @@ app.post("/api/importar_artigos", async (req, res) =>{
             for (let i = 0;i<categoriasInexistentes.length;i++) {
                 await clusterServer.service.loadLocalCluster();
                 response = await addCategory({classe_nome: categoriasInexistentes[i].classe_nome,
-                    colaborador_id: req.session.auth_data.auth.colaborador_id,
-                    spaces: spaces, armazem_atual: req.session.auth_data.auth.armazem_atual
+                    colaborador_id: req?.session?.auth_data?.auth?.colaborador_id || null,
+                    spaces: spaces, armazem_atual: req?.session?.auth_data?.auth?.armazem_atual || null
                 });
                 await clusterServer.service.loadLocalCluster();
                 if(response.row.result){
@@ -181,9 +181,9 @@ app.post("/api/importar_artigos", async (req, res) =>{
                         clusterServer.notifyLocalChange({event: "ADD:ARTICLE", extras: null, message: "Registo de artigo"});
                         if(Number(listCorrectData[i].acerto_quantidade) !== 0){
                             await clusterServer.service.loadLocalCluster();
-                            await functChangeAmountInStock({arg_colaborador_id: req.session.auth_data.auth.colaborador_id,
-                                arg_espaco_auth: req.session.auth_data.auth.armazem_atual,
-                                acerto_observacao: null, arg_espaco_id: req.session.auth_data.auth.armazem_atual,
+                            await functChangeAmountInStock({arg_colaborador_id: req?.session?.auth_data?.auth?.colaborador_id || null,
+                                arg_espaco_auth: req?.session?.auth_data?.auth?.armazem_atual || null,
+                                acerto_observacao: null, arg_espaco_id: req?.session?.auth_data?.auth?.armazem_atual || null,
                                 arg_acerto: [{artigo_id: value.row.message.artigo.artigo_id, acerto_quantidade: listCorrectData[i].acerto_quantidade}]
                             });
                             await clusterServer.service.loadLocalCluster();

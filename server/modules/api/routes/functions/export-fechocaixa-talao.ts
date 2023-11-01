@@ -4,7 +4,7 @@ import {getFonts, structure} from "./estruture-talao";
 import {folders} from "../../../../global/project";
 import {print} from "./printer";
 import {clusterServer} from "../../../../service/cluster.service";
-export let create = async (instituition, caixa, res, user, printer_name) => {
+export let create = async (instituition, caixa, res, user, printer_name, margin) => {
     caixa = caixa.box_data;
     const pdfMake = require("../../../../../libs/js/pdfmake/pdfmake");
     const pdfFonts = require('../../../../../libs/js/pdfmake/vfs_fonts');
@@ -118,7 +118,7 @@ export let create = async (instituition, caixa, res, user, printer_name) => {
                 ]
             }
         ],
-        ...structure(user)
+        ...structure({margin})
     };
     const pdfDocGenerator = pdfMake.createPdf(docDefinition);
     pdfDocGenerator.getBuffer((buffer) => {

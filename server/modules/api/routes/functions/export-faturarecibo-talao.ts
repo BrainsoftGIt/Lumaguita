@@ -11,7 +11,7 @@ function getTypePayment(tipo_id){
     else if(tipo_id === 2) return "Depósito";
     else return "Transferência";
 }
-export let create = async (instituition, account_content, res, user, date, printer_name, num_autorization) => {
+export let create = async (instituition, account_content, res, user, date, printer_name, num_autorization, margin) => {
     const pdfMake = require("../../../../../libs/js/pdfmake/pdfmake");
     const pdfFonts = require('../../../../../libs/js/pdfmake/vfs_fonts');
     const {formattedString} = require("./formatValue");
@@ -305,7 +305,7 @@ export let create = async (instituition, account_content, res, user, date, print
                 ]
             }
         ],
-        ...structure(user)
+        ...structure({margin})
     };
     const pdfDocGenerator = pdfMake.createPdf(docDefinition);
     pdfDocGenerator.getBuffer((buffer) => {

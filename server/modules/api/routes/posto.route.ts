@@ -62,7 +62,7 @@ app.post("/api/remove/post/session", async (req, res) =>{
 });
 app.post("/api/chave/load", async (req, res) =>{
     const {functloadKey} = require("../db/call-function-posto");
-    req.body.arg_espaco_auth = req.session.auth_data.auth.armazem_atual;
+    req.body.arg_espaco_auth = req?.session?.auth_data?.auth?.armazem_atual || null;
     const response = await functloadKey(req.body);
     res.json({keys: response.rows});
 });
@@ -79,7 +79,7 @@ app.post("/api/posto/data", async (req, res) =>{
             req.session.save(()=>{
                 res.json({post: response.rows[0].data, modeView: (req.session.dark_mode === undefined ? false : req.session.dark_mode),
                     hasSession: ( req.session.user_pos !== undefined),
-                    pos_user_session_uuid: ( req.session.user_pos !== undefined ? req.session.user_pos.auth.colaborador_id: ""),
+                    pos_user_session_uuid: ( req.session.user_pos !== undefined ? req?.session?.user_pos?.auth?.colaborador_id: ""),
                     pos_user_name: ( req.session.user_pos !== undefined ? req.session.user_pos.auth.colaborador_nome: "")});
             });
         }, 1000);
@@ -95,7 +95,7 @@ app.post("/api/verify/user/space", async (req, res) =>{
         let response = await validate_user_space(req.session.user_pos.espaco_trabalha, req.session.posto.spaces);
         if(response.result){
             const userSpaces = response.spaces;
-            response = await getDefaultSpace(req, req.session.user_pos.auth.colaborador_id, userSpaces);
+            response = await getDefaultSpace(req, req?.session?.user_pos?.auth?.colaborador_id, userSpaces);
             res.json({result: true, space_id: response, user_spaces: userSpaces });
         }
         else res.json({result: false, message: response.message});
@@ -104,18 +104,18 @@ app.post("/api/verify/user/space", async (req, res) =>{
 });
 app.post("/api/posto/load", async (req, res) =>{
     const {functloadPosto} = require("../db/call-function-posto");
-    req.body.arg_espaco_auth = req.session.auth_data.auth.armazem_atual;
-    req.body.arg_colaborador_id = req.session.auth_data.auth.colaborador_id;
+    req.body.arg_espaco_auth = req?.session?.auth_data?.auth?.armazem_atual || null;
+    req.body.arg_colaborador_id = req?.session?.auth_data?.auth?.colaborador_id || null;
     const response = await functloadPosto(req.body);
-    req.body.arg_aloca_espaco = req.session.auth_data.auth.armazem_atual;
+    req.body.arg_aloca_espaco = req?.session?.auth_data?.auth?.armazem_atual || null;
     const postosEspaco = await functloadPosto(req.body);
     res.json({postos: response.rows, postosEspaco: postosEspaco.rows});
 });
 app.post("/api/posto", async (req, res) =>{
     const {functRegPosto} = require("../db/call-function-posto");
     let before =  await clusterServer.service.loadLocalCluster();
-    req.body.arg_colaborador_id = req.session.auth_data.auth.colaborador_id;
-    req.body.arg_espaco_auth = req.session.auth_data.auth.armazem_atual;
+    req.body.arg_colaborador_id = req?.session?.auth_data?.auth?.colaborador_id || null;
+    req.body.arg_espaco_auth = req?.session?.auth_data?.auth?.armazem_atual || null;
     const response = await functRegPosto(req.body);
     let after = await clusterServer.service.loadLocalCluster();
     res.json({result: response.row.result, message: response.row.message.text});
@@ -130,7 +130,7 @@ app.post("/api/posto", async (req, res) =>{
 app.post("/api/posto/status", async (req, res) =>{
     const {functChangeStatusPosto} = require("../db/call-function-posto");
     let before =  await clusterServer.service.loadLocalCluster();
-    req.body.arg_colaborador_id = req.session.auth_data.auth.colaborador_id;
+    req.body.arg_colaborador_id = req?.session?.auth_data?.auth?.colaborador_id || null;
     const response = await functChangeStatusPosto(req.body);
     let after = await clusterServer.service.loadLocalCluster();
     res.json({result: response.row.result, message: response.row.message.text});
@@ -158,8 +158,8 @@ app.post("/api/posto/caixa/load", async (req, res) =>{
 
     let { vermontatefaturado } = req.body;
 
-    req.body.arg_espaco_auth = req.session.user_pos.auth.armazem_atual;
-    req.body.arg_colaborador_id = req.session.user_pos.auth.colaborador_id;
+    req.body.arg_espaco_auth = req?.session?.user_pos?.auth?.armazem_atual;
+    req.body.arg_colaborador_id = req?.session?.user_pos?.auth?.colaborador_id;
     req.body.arg_posto_id = req.session.posto.posto_id;
     const response = await functLoadCaixa(req.body);
 
@@ -180,8 +180,8 @@ app.post("/api/posto/caixa/load", async (req, res) =>{
 app.post("/api/post/box/open", async (req, res) =>{
     const {functAbrirCaixa} = require("../db/call-function-posto");
     let before =  await clusterServer.service.loadLocalCluster();
-    req.body.arg_espaco_auth = req.session.user_pos.auth.armazem_atual;
-    req.body.arg_colaborador_id = req.session.user_pos.auth.colaborador_id;
+    req.body.arg_espaco_auth = req?.session?.user_pos?.auth?.armazem_atual;
+    req.body.arg_colaborador_id = req?.session?.user_pos?.auth?.colaborador_id;
     req.body.arg_posto_id = req.session.posto.posto_id;
     const response = await functAbrirCaixa(req.body);
     let after = await clusterServer.service.loadLocalCluster();
@@ -197,8 +197,8 @@ app.post("/api/post/box/open", async (req, res) =>{
 app.post("/api/post/box/close", async (req, res) =>{
     const {functFecharCaixa} = require("../db/call-function-posto");
     let before =  await clusterServer.service.loadLocalCluster();
-    req.body.arg_espaco_auth = req.session.user_pos.auth.armazem_atual;
-    req.body.arg_colaborador_id = req.session.user_pos.auth.colaborador_id;
+    req.body.arg_espaco_auth = req?.session?.user_pos?.auth?.armazem_atual;
+    req.body.arg_colaborador_id = req?.session?.user_pos?.auth?.colaborador_id;
     const response = await functFecharCaixa(req.body);
     let after = await clusterServer.service.loadLocalCluster();
     res.json({result: response.row.main.result, data: response.row.main.message});
