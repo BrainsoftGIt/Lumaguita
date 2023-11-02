@@ -457,7 +457,8 @@ $$;
 
 
 export const sss = sql`
-create or replace function tweeks.funct_load_conta_notacredito(args jsonb)
+-- create or replace function tweeks.funct_load_conta_notacredito(args jsonb)
+create or replace function tweeks.funct_load_conta_docs_financa(args jsonb)
   returns setof jsonb
   language plpgsql
 as
@@ -478,20 +479,33 @@ declare
 begin
   _const := map.constant();
   return query
-    with __venda as (
+    with __venda_remanescete as (
+      select 
+          ve.venda_id,
+          abs( ve.venda_quantidade ) - abs( ve2.venda_quantidade ) as venda_quantidaderemanescente
+        from tweeks.venda ve
+          left join tweeks.venda ve2 on ve.venda_id  = ve2.venda_venda_docorign
+            and ve2.venda_estado = _const.maguita_venda_estado_fechado
+        where ve.venda_estado = _const.maguita_venda_estado_fechado
+        group by ve.venda_id
+        having count( abs( ve2.venda_quantidade ) ) < abs( ve.venda_quantidade )
+    ), __venda as (
       select
           ve.*,
           art.*,
+          _ver.venda_quantidaderemanescente,
           sum( tx.taxa_taxa ) as taxa_taxa,
           sum( tx.taxa_percentagem ) as taxa_percentagem
         from tweeks.venda ve
+          inner join __venda_remanescete _ver on ve.venda_id = _ver.venda_id
           inner join tweeks.artigo art on ve.venda_artigo_id = art.artigo_id
           left join tweeks.taxa tx on tx.taxa_id = any( venda_taxas )
         where ve._branch_uid  = arg_branch
           and ve.venda_venda_id is null
           and ve.venda_estado = _const.maguita_venda_estado_fechado
         group by ve.venda_id,
-          art.artigo_id
+          art.artigo_id,
+         _ver.venda_quantidaderemanescente
     ), __venda_group as (
       select
           _ve.venda_id,
