@@ -265,7 +265,7 @@ begin
         coalesce( ve.venda_taxas, ed.venda_taxas ) as venda_taxas,
         coalesce( ed.venda_codigoimposto, ed.venda_codigoimposto ) as venda_codigoimposto,
         coalesce( jsonb_agg( to_jsonb( iten ) ) filter ( where iten.venda_venda_docorign is not null ),
-          ed.doc->'arg_itens'
+          ed.doc->'arg_itens',
           jsonb_build_array()
         ) as arg_itens
       from __item_doc ed
@@ -456,7 +456,7 @@ $$;
 `;
 
 
-export const sss = sql`
+export const funct_load_conta_docs_financa = sql`
 -- create or replace function tweeks.funct_load_conta_notacredito(args jsonb)
 create or replace function tweeks.funct_load_conta_docs_financa(args jsonb)
   returns setof jsonb
