@@ -67,20 +67,23 @@ app.post("/api/chave/load", async (req, res) =>{
     res.json({keys: response.rows});
 });
 app.post("/api/posto/data", async (req, res) =>{
-    if(req.session.post_key !== undefined){
+    if(!!req?.session?.post_key){
         const {functLoadPostoEspaco} = require("../db/call-function-posto");
         const response = await functLoadPostoEspaco({arg_chave_temporaria: req.session.post_key});
         req.session.posto = undefined;
-        if(response.rows[0].data.chave_definitiva){
+        if(!!response?.rows?.[0]?.data?.chave_definitiva){
             req.session.posto = response.rows[0].data;
             req.session.posto.spaces = response.rows.filter(value => value?.data?.espaco_id);
         }
         setTimeout(()=>{
             req.session.save(()=>{
-                res.json({post: response.rows[0].data, modeView: (req.session.dark_mode === undefined ? false : req.session.dark_mode),
-                    hasSession: ( req.session.user_pos !== undefined),
-                    pos_user_session_uuid: ( req.session.user_pos !== undefined ? req?.session?.user_pos?.auth?.colaborador_id: ""),
-                    pos_user_name: ( req.session.user_pos !== undefined ? req.session.user_pos.auth.colaborador_nome: "")});
+                res.json({
+                    post: response.rows[0].data,
+                    modeView: (req.session.dark_mode === undefined ? false : req.session.dark_mode),
+                    hasSession: (req.session.user_pos !== undefined),
+                    pos_user_session_uuid: (req.session.user_pos !== undefined ? req?.session?.user_pos?.auth?.colaborador_id : ""),
+                    pos_user_name: (req.session.user_pos !== undefined ? req?.session?.user_pos?.auth?.colaborador_nome : "")
+                });
             });
         }, 1000);
    }
@@ -106,6 +109,10 @@ app.post("/api/posto/load", async (req, res) =>{
     const {functloadPosto} = require("../db/call-function-posto");
     req.body.arg_espaco_auth = req?.session?.auth_data?.auth?.armazem_atual || null;
     req.body.arg_colaborador_id = req?.session?.auth_data?.auth?.colaborador_id || null;
+
+    if(!req.body.arg_colaborador_id){
+        return  res.json({postos: [], postosEspaco: []});
+    }
     const response = await functloadPosto(req.body);
     req.body.arg_aloca_espaco = req?.session?.auth_data?.auth?.armazem_atual || null;
     const postosEspaco = await functloadPosto(req.body);
@@ -160,7 +167,7 @@ app.post("/api/posto/caixa/load", async (req, res) =>{
 
     req.body.arg_espaco_auth = req?.session?.user_pos?.auth?.armazem_atual;
     req.body.arg_colaborador_id = req?.session?.user_pos?.auth?.colaborador_id;
-    req.body.arg_posto_id = req.session.posto.posto_id;
+    req.body.arg_posto_id = req?.session?.posto?.posto_id;
     const response = await functLoadCaixa(req.body);
 
     let caixas = response.rows.map((caixas) => {
@@ -182,7 +189,7 @@ app.post("/api/post/box/open", async (req, res) =>{
     let before =  await clusterServer.service.loadLocalCluster();
     req.body.arg_espaco_auth = req?.session?.user_pos?.auth?.armazem_atual;
     req.body.arg_colaborador_id = req?.session?.user_pos?.auth?.colaborador_id;
-    req.body.arg_posto_id = req.session.posto.posto_id;
+    req.body.arg_posto_id = req?.session?.posto?.posto_id;
     const response = await functAbrirCaixa(req.body);
     let after = await clusterServer.service.loadLocalCluster();
     res.json({result: response.row.main.result, data: response.row.main.message});
@@ -212,7 +219,7 @@ app.post("/api/post/box/close", async (req, res) =>{
 });
 app.post("/api/post/sales", async (req, res) =>{
     const {functLoadSales} = require("../db/call-function-posto");
-    req.body.arg_posto_id = req.session.posto.posto_id;
+    req.body.arg_posto_id = req?.session?.posto?.posto_id;
     const response = await functLoadSales(req.body);
     res.json({vendas: response.rows});
 });

@@ -7,7 +7,7 @@ app.post("/api/users/post/load", async (req, res) =>{
         "00000000-0000-0000-0000-000000000004", "00000000-0000-0000-0000-000000000005", "00000000-0000-0000-0000-000000000006", "00000000-0000-0000-0000-000000000007",
         "00000000-0000-0000-0000-000000000008", "00000000-0000-0000-0000-000000000009", "00000000-0000-0000-0000-000000000010"];
 
-    req.body.posto_id = req.session.posto.posto_id;
+    req.body.posto_id = req?.session?.posto?.posto_id;
     const response = await functLoadUserPOS(req.body);
     res.json({usrs: response.rows.filter(value => !usersNotShowed.includes(value.data.colaborador_id))});
 });
@@ -71,7 +71,7 @@ app.post("/api/post/view/", async (req, res) =>{
 app.post("/api/open/accounts/load", async (req, res) =>{
     const {functLoadContasAbertas} = require("../db/call-function-conta");
     req.body.arg_colaborador_id = null;
-    req.body.arg_posto_id = req.session.posto.posto_id;
+    req.body.arg_posto_id = req?.session?.posto?.posto_id;
     req.body.arg_espaco_auth = null;
     const response = await functLoadContasAbertas(req.body);
     res.json({contas: response.rows});
