@@ -1,0 +1,172 @@
+<link rel="stylesheet" href="../assets/css/admin/inpage.css">
+<link rel="stylesheet" href="../assets/css/admin/fatura.css">
+<link rel="stylesheet" href="../assets/css/admin/tableAdmin.css">
+<style>
+    .noborder {
+        overflow-y: hidden!important;
+    }
+    [tableDocumentArticles] {
+        height: 27vh;
+        overflow-y: auto;
+        margin-bottom: 10px;
+    }
+    .empty:after{
+        position: absolute;
+        top: 50%; /* Centraliza verticalmente */
+        left: 50%; /* Centraliza horizontalmente */
+        transform: translate(-50%, -50%); /* Isso corrige o deslocamento para o centro */
+    }
+</style>
+<div class="__included__ fatura inpage">
+    <div class="_head flex h-sb v-ct">
+        <div class="inLeft">
+            <h1>Nota de Credito</h1>
+        </div>
+        <div class="flex v-ct">
+            <div class="inMenus">
+                <ul class="flex" menus_internos>
+                </ul>
+            </div>
+            <!--<button class="xbtn" id="ver_proformas">Listar Proformas</button>-->
+        </div>
+    </div>
+    <datalist id="faturaClientes" fatura>
+    </datalist>
+    <datalist id="faturaArtigos" artigos>
+    </datalist>
+    <div class="_body noborder" id="faturaAdmin">
+        <div class="inputs flex xform h-sb">
+            <div class="xselect flutuate w25">
+                <input type="text" readonly placeholder="_">
+                <label>Serie Fatura</label>
+                <ul listFatura id="f4"></ul>
+                <div class="fakearrow flex"><span></span><span></span></div>
+            </div>
+            <div class="xinput w25">
+                <input _noObrigatory="true" type="text" documento_origem placeholder="_">
+                <label>Documento de origem</label>
+            </div>
+            <div class="xinput w25">
+                <input _noObrigatory="true" type="text" data-inputmask-alias="dd-mm-yyyy" data-val="true" documento_origem_data placeholder="_">
+                <label>Data Doc. origem</label>
+            </div>
+            <div class="xinput w25">
+                <input type="text" placeholder="Data de emissão" _noObrigatory="true" id="fatura_data_emissao"
+                       data-inputmask-alias="dd-mm-yyyy" data-val="true">
+                <label for="fatura_data_emissao">Data de emissão</label>
+            </div>
+            <div class="xinput w25">
+                <input type="text" placeholder="Pesquisar cliente" search_customer list="faturaClientes">
+                <label>Pesquisar cliente</label>
+            </div>
+            <div class="xinput w25">
+                <input type="text" disabled cliente_titular placeholder="_">
+                <label>Nome do cliente</label>
+            </div>
+            <div class="xinput w25">
+                <input type="text" placeholder="NIF" maxlength="9" disabled cliente_nif _noObrigatory="true">
+                <label>NIF</label>
+            </div>
+            <div class="xinput w25">
+                <input type="text" placeholder="Telefone" disabled cliente_contacto _noObrigatory="true">
+                <label>Telefone</label>
+            </div>
+            <div class="xinput w100">
+                <textarea placeholder="_" _noObrigatory="true" id="observacao_fatura" ></textarea>
+                <label for="observacao_fatura">Termos</label>
+            </div>
+            <div class="xinput w25">
+                <input type="text" search_article list="faturaArtigos" placeholder="_">
+                <label>Pesquisar artigo (nome ou código)</label>
+            </div>
+            <div class="xinput w20">
+                <input type="text" placeholder="Descrição" description_article>
+                <label>Descrição</label>
+            </div>
+            <div class="xinput w8">
+                <input type="text" placeholder="Quantidade" class="double" amount_article>
+                <label>Qtd</label>
+            </div>
+            <div class="xinput w15">
+                <input type="text" placeholder="Codigo Imposto" class="integer" codigo_imposto_article _noObrigatory="true">
+                <label>Codigo Imposto</label>
+            </div>
+            <div class="xinput w15">
+                <input type="text" placeholder="Valor unitário" class="double formatNumber" price_article>
+                <label>Valor unitário</label>
+            </div>
+            <div class="xinput w15" style="display: none">
+                <input type="text" placeholder="Lote" lote_article _noObrigatory="true">
+                <label>Lote</label>
+            </div>
+            <div class="xinput w15" style="display: none">
+                <input type="text" placeholder="Data de validade" data-inputmask-alias="dd-mm-yyyy" data-val="true"
+                       date_expiration_article _noObrigatory="true">
+                <label>Data de validade</label>
+            </div>
+            <div class="flex v-ct h-sa w15">
+                <div class="xinput w100">
+                    <input type="text" placeholder="Imposto" imposto _noObrigatory="true" disabled>
+                    <label>Imposto</label>
+                </div>
+                <!--<div class="xcheck w100" style="padding-left: 0.7rem; display: none">
+                    <ul>
+                        <li class="stgl" isencaoImposto>Isenção de imposto</li>
+                    </ul>
+                </div>
+                <div class="xcheck w100" style="padding-left: 0.7rem;">
+                    <ul>
+                        <li class="stgl" imprimirGuiaSaida>Imprimir guia de saída</li>
+                    </ul>
+                </div>-->
+            </div>
+            <div class="flex h-sb v-ct" style="float: right;">
+                <button class="xbtn" addArticleTable>Lançar</button>
+            </div>
+        </div>
+        <div class="x-table hovered grow-1">
+            <div class="xheader">
+                <ul class="flex">
+                    <li grow="1">Cód. Artigo</li>
+                    <li grow="2">Descrição</li>
+                    <li grow="1">Qtd</li>
+                    <li grow="1">Lote</li>
+                    <li grow="1">Data de validade</li>
+                    <li grow="1">Imposto</li>
+                    <li grow="1">Valor Unit</li>
+                    <li grow="1">Valor Final</li>
+                    <li grow="1"></li>
+                </ul>
+            </div>
+            <div class="xbody" tableDocumentArticles>
+            </div>
+        </div>
+        <div class="flex h-sb v-ct" style="float: right;">
+            <button class="xbtn" id="finalizar_fatura">Finalizar</button>
+            <button class="xbtn  hideTarget" target="xModalOpenFatura" hideModal style="display: none">Cancelar</button>
+        </div>
+    </div>
+    <div id="xModalAnularProforma" class="x-mobdal XM-resetColabPass flex v-ct h-ct" target="xModalAnularProforma">
+        <div class="modal-frame">
+            <h3 targetTitle></h3>
+            <p>Tem certeza de que pretende executar esta operação?</p>
+            <div class="master-btn-right flex">
+                <span class="hideTarget" target="xModalAnularProforma">NÃO</span>
+                <span class="flex v-ct" id="confirmarAnularProforma">
+					SIM
+					<svg class="spinner" viewBox="0 0 50 50">
+						<circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
+					</svg>
+				</span>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/js/admin/articlesDocuments.js"></script>
+<script src="../assets/js/admin/faturaNotas.js"></script>
+<script src="../assets/js/admin/articleTax.js"></script>
+<script>
+    serieOperation.loadSerieOperation([serieOperation.tipo.notaCredito]);
+    articlesDocuments.loadSerieDistribuicao(serieOperation.tipo.notaCredito);
+    FATURA = serieOperation.tipo.notaCredito;
+</script>
