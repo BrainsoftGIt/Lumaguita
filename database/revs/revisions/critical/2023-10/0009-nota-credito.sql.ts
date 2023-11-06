@@ -362,7 +362,7 @@ begin
       'arg_vendas', _vendas.arg_vendas,
       'conta_conta_docorigin', _conta.conta_id,
       'conta_observacao', _conta_args.conta_observacao,
-      'conta_tserie_id', _const.maguita_tserie_notacredito,
+      'conta_tserie_id', _tserie_id,
       'conta_espaco_notacredito', arg_espaco_auth,
       'conta_docorigin', args->>'conta_docorigin',
       'conta_datedocorigin', args->>'conta_datedocorigin'
@@ -421,7 +421,7 @@ begin
     jsonb_build_object(
       'arg_colaborador_id', arg_colaborador_id,
       'arg_espaco_auth', _conta.conta_espaco_auth,
-      'arg_tserie_id', _const.maguita_tserie_notacredito,
+      'arg_tserie_id', _tserie_id,
       '_serie_id', _serie_id,
       'conta_conta_docorigin', _conta.conta_id,
       'conta_id', _conta_res.data->>'conta_id',
@@ -430,7 +430,7 @@ begin
       'conta_posto_fecho',  _conta_args.conta_posto_id,
       'conta_desconto', ( _conta.conta_desconto ),
       'conta_titular', _conta.conta_titular,
-      'conta_tserie_id', _const.maguita_tserie_notacredito,
+      'conta_tserie_id', _tserie_id,
       'conta_titularnif', _conta.conta_titularnif,
       'conta_data', coalesce( _conta_args.conta_data, now()::date),
       'conta_cliente_id', _conta_args.conta_cliente_id,
