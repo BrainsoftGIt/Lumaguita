@@ -1,5 +1,9 @@
 import {patchSQL, sql} from "kitres";
 
+export const maguita_tserie_guiaentrada = patchSQL({ unique: true, force: "v1.0.0"}).sql`
+select map.constant('maguita_tserie_guiaentrada', 'int2', 9 )
+`;
+
 export const sets_conta_tserie_id = patchSQL({ unique: true, force: "v1.0.0" }).sql`
 with __conta as (
     select *

@@ -1,5 +1,55 @@
 [
   {
+    "tserie_id": 1,
+    "tserie_desc": "Fatura",
+    "tserie_financa": "FATURACAO",
+    "tserie_numlimitmin": 7,
+    "tserie_numlimit": 7,
+    "tserie_order": 1,
+    "tserie_code": "FT",
+    "tserie_seqlimit": 6
+  },
+  {
+    "tserie_id": 2,
+    "tserie_desc": "Fatura Recibo",
+    "tserie_financa": "FATURACAO",
+    "tserie_numlimitmin": 7,
+    "tserie_numlimit": 7,
+    "tserie_order": 2,
+    "tserie_code": "FR",
+    "tserie_seqlimit": 6
+  },
+  {
+    "tserie_id": 3,
+    "tserie_desc": "Recibo",
+    "tserie_financa": null,
+    "tserie_numlimitmin": 7,
+    "tserie_numlimit": 7,
+    "tserie_order": 8,
+    "tserie_code": "RE",
+    "tserie_seqlimit": 6
+  },
+  {
+    "tserie_id": 4,
+    "tserie_desc": "Nota de crédito",
+    "tserie_financa": "NOTACREDITO",
+    "tserie_numlimitmin": 7,
+    "tserie_numlimit": 7,
+    "tserie_order": 4,
+    "tserie_code": "NC",
+    "tserie_seqlimit": 6
+  },
+  {
+    "tserie_id": 5,
+    "tserie_desc": "Guia Saida",
+    "tserie_financa": null,
+    "tserie_numlimitmin": 7,
+    "tserie_numlimit": 7,
+    "tserie_order": 9,
+    "tserie_code": "GS",
+    "tserie_seqlimit": 6
+  },
+  {
     "tserie_id": 6,
     "tserie_desc": "Fatura proforma",
     "tserie_financa": null,
@@ -20,46 +70,6 @@
     "tserie_seqlimit": 6
   },
   {
-    "tserie_id": 5,
-    "tserie_desc": "Guia Saida",
-    "tserie_financa": null,
-    "tserie_numlimitmin": 7,
-    "tserie_numlimit": 7,
-    "tserie_order": 9,
-    "tserie_code": "GS",
-    "tserie_seqlimit": 6
-  },
-  {
-    "tserie_id": 2,
-    "tserie_desc": "Fatura Recibo",
-    "tserie_financa": "FATURACAO",
-    "tserie_numlimitmin": 7,
-    "tserie_numlimit": 7,
-    "tserie_order": 2,
-    "tserie_code": "FR",
-    "tserie_seqlimit": 6
-  },
-  {
-    "tserie_id": 1,
-    "tserie_desc": "Fatura",
-    "tserie_financa": "FATURACAO",
-    "tserie_numlimitmin": 7,
-    "tserie_numlimit": 7,
-    "tserie_order": 1,
-    "tserie_code": "FT",
-    "tserie_seqlimit": 6
-  },
-  {
-    "tserie_id": 3,
-    "tserie_desc": "Recibo",
-    "tserie_financa": null,
-    "tserie_numlimitmin": 7,
-    "tserie_numlimit": 7,
-    "tserie_order": 8,
-    "tserie_code": "RE",
-    "tserie_seqlimit": 6
-  },
-  {
     "tserie_id": 8,
     "tserie_desc": "Nota de debito",
     "tserie_financa": "NOTADEBITO",
@@ -70,13 +80,14 @@
     "tserie_seqlimit": 6
   },
   {
-    "tserie_id": 4,
-    "tserie_desc": "Nota de crédito",
-    "tserie_financa": "NOTACREDITO",
+    "tserie_id": 9,
+    "tserie_desc": "Guia de entrada",
+    "tserie_financa":  null,
     "tserie_numlimitmin": 7,
     "tserie_numlimit": 7,
-    "tserie_order": 4,
-    "tserie_code": "NC",
+    "tserie_order": 5,
+    "tserie_code": "GE",
     "tserie_seqlimit": 6
   }
+
 ]
