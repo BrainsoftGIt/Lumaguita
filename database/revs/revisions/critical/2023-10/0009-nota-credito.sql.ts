@@ -475,11 +475,27 @@ declare
   arg_colaborador_id uuid default args->>'arg_colaborador_id';
   arg_espaco_auth uuid default args->>'arg_espaco_auth';
   arg_branch uuid default tweeks.__branch_uid( arg_colaborador_id, arg_espaco_auth );
-  _tserie_id uuid not null default args->>'_tserie_id';
+  _tserie_id int2 not null default args->>'_tserie_id';
   _conta_fatura character varying := args->>'conta_fatura';
   _const map.constant;
+  __docs_of int2[];
 begin
   _const := map.constant();
+  
+  
+  if _tserie_id = _const.maguita_tserie_notacredito then 
+      __docs_of := array[
+        _const.maguita_tserie_fatura,
+        _const.maguita_tserie_faturarecibo,
+        _const.maguita_tserie_faturasimplificada
+      ]::int2[];
+  elsif _tserie_id = _const.maguita_tserie_notadebito then 
+    __docs_of := array[ 
+      _const.maguita_tserie_notacredito
+    ]::int2[];
+  end if;
+  
+  
   return query
     with __venda_remanescete as (
       select 
@@ -529,7 +545,7 @@ begin
           left join tweeks.venda venda_ncred on _veg.venda_id = venda_ncred.venda_venda_docorign
             and venda_ncred.venda_estado = _const.maguita_venda_estado_fechado
         where ct._branch_uid = arg_branch
-          /*and ct.conta_tserie_id = _tserie_id*/
+          and ct.conta_tserie_id = any( __docs_of )
           and ct.conta_estado = _const.maguita_conta_estado_fechado
           and venda_ncred.venda_id is null
           and ct.conta_numerofatura = _conta_fatura
