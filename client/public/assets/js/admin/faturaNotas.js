@@ -151,7 +151,8 @@ var faturaAdmin = {
             error() { },
             complete() { },
             data: JSON.stringify({
-                conta_fatura: $(` ${modal} [documento_origem]`).val()
+                conta_fatura: $(`${modal} [documento_origem]`).val(),
+                _tserie_id:  ($(`${modal} [listFatura] li.active`).data() || {}).id || null
             }),
             success: ({fatura}) => {
 
