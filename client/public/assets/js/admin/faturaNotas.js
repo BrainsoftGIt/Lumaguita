@@ -157,7 +157,7 @@ var faturaAdmin = {
             success: ({fatura}) => {
 
                 let { conta_titularnif, conta_titular, conta_vendas } = fatura;
-                notacredito.fatura = fatura;
+                faturaAdmin.fatura = fatura;
                 $(` ${modal} [cliente_titular]`).val(conta_titular || "");
                 $(` ${modal} [cliente_nif]`).val(conta_titularnif || "");
                 $(` ${modal} [cliente_contacto]`).val(conta_titularnif || "");
