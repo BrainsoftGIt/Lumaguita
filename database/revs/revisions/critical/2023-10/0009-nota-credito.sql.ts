@@ -488,7 +488,7 @@ begin
             and ve2.venda_estado = _const.maguita_venda_estado_fechado
         where ve.venda_estado = _const.maguita_venda_estado_fechado
         group by ve.venda_id
-        having sum( abs( ve2.venda_quantidade ) ) < abs( ve.venda_quantidade )
+        having coalesce( sum( abs( ve2.venda_quantidade ) ), 0.0) < abs( ve.venda_quantidade )
     ), __venda as (
       select
           ve.*,
