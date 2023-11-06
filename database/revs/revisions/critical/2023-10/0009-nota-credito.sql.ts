@@ -464,14 +464,14 @@ create or replace function tweeks.funct_load_conta_docs_financa(args jsonb)
 as
 $$
 declare
-  /**
+  /**doc
     args := {
       arg_colaborador_id: UID
       arg_espaco_auth: UID
       conta_fatura
       _tserie_id: ID
     }
-   */
+   doc*/
   arg_colaborador_id uuid default args->>'arg_colaborador_id';
   arg_espaco_auth uuid default args->>'arg_espaco_auth';
   arg_branch uuid default tweeks.__branch_uid( arg_colaborador_id, arg_espaco_auth );
