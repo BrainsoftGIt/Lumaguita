@@ -33,7 +33,7 @@ app.post( "/api/reg/credito/nota", (req, res, next) => {
     args.arg_colaborador_id = _session.user_id;
     args.arg_espaco_auth = _session.workspace;
 
-    dbRes.call.tweeks.funct_reg_conta_nota_credito({ args }, {
+    dbRes.call.tweeks.funct_reg_conta_docs_financa({ args }, {
         onResult(error: Error, result?: Result<any, any>): any {
             if( error ){
                 res.json({
@@ -52,5 +52,5 @@ app.post( "/api/reg/credito/nota", (req, res, next) => {
                 data:result?.rows?.[0]?.data || {}
             })
         }
-    })
+    }).doc()
 });
