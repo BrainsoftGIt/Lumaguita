@@ -118,8 +118,6 @@ var acesso = {
               if( hash && lastMenuClick && lastMenuClick.length ) lastMenuClick.click();
               else menuAcessos.find("li").eq(0).click();
 
-              console.log( { lastMenuClick })
-
               e.dados.espaco_trabalha.forEach((espT, idx) =>{
                   if(colaborador_logado_armazens.find(`li[armazem_id=${espT.espaco_id}]`).length === 0) {
                       if(espT.espaco_id === e.dados.auth.armazem_atual){
