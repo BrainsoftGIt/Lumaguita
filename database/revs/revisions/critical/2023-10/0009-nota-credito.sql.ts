@@ -482,13 +482,13 @@ begin
     with __venda_remanescete as (
       select 
           ve.venda_id,
-          abs( ve.venda_quantidade ) - abs( ve2.venda_quantidade ) as venda_quantidaderemanescente
+          abs( ve.venda_quantidade ) - coalesce( sum( abs( ve2.venda_quantidade ) ), 0.0 ) as venda_quantidaderemanescente
         from tweeks.venda ve
           left join tweeks.venda ve2 on ve.venda_id  = ve2.venda_venda_docorign
             and ve2.venda_estado = _const.maguita_venda_estado_fechado
         where ve.venda_estado = _const.maguita_venda_estado_fechado
         group by ve.venda_id
-        having count( abs( ve2.venda_quantidade ) ) < abs( ve.venda_quantidade )
+        having sum( abs( ve2.venda_quantidade ) ) < abs( ve.venda_quantidade )
     ), __venda as (
       select
           ve.*,
