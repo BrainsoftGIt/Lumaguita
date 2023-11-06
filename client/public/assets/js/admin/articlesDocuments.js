@@ -177,14 +177,19 @@ var articlesDocuments = {
                                             </li>
                                         </ul>`);
     },
-    add_articles_exit_guide(){
-        let modal = window.xModalGeral || ""
-        $(`${modal} [tableDocumentArticles]`).append(`<ul article_id="${articlesDocuments.article_id}" custoquantidade="${(articlesDocuments.precario_quantidade)}" codigoimposto="${$(`${modal} [codigo_imposto_article]`).val() || ""}">
+    add_articles_invoice(){
+        let modal = window.xModalGeral || "";
+        let montanteQuantidade = $(`${modal} [amount_article]`).val().unFormatter() * $(`${modal} [price_article]`).val().unFormatter();
+        let result = taxasArtigos.calculateValues({montanteQuantidade: montanteQuantidade, artigo_id: articlesDocuments.article_id});
+        $(`${modal} [tableDocumentArticles]`).append(`<ul article_id="${articlesDocuments.article_id}" custoquantidade="${articlesDocuments.precario_quantidade}" codigoimposto="${$(`${modal} [codigo_imposto_article]`).val() || ""}">
                                             <li>${articlesDocuments.article_code}</li>
                                             <li>${$(`${modal} [description_article]`).val()}</li>
-                                            <li>${$(`${modal} [amount_article]`).val()}</li>
+                                            <li>${$(` ${modal} [amount_article] `).val()}</li>
                                             <li>${($(`${modal} [lote_article]`).val().trim() || "")}</li>
                                             <li>${($(`${modal} [date_expiration_article]`).val() || "")}</li>
+                                            <li>${$(`${modal} [imposto]`).val()}</li>
+                                            <li price="${$(`${modal} [price_article] `).val().unFormatter()}">${$(` ${modal} [price_article] `).val()+" STN"}</li>
+                                            <li>${result.total.dc().formatter()+" STN"}</li>
                                             <li class="flex v-ct">
                                                <span class="noLabel"></span>
                                                     <span class="flex v-ct">
@@ -203,22 +208,21 @@ var articlesDocuments = {
                                                  </span>
                                             </li>
                                         </ul>`);
+
     },
-    add_articles_invoice(){
+    add_articles_faturaNota(){
         let modal = window.xModalGeral || "";
         let montanteQuantidade = $(`${modal} [amount_article]`).val().unFormatter() * $(`${modal} [price_article]`).val().unFormatter();
         let result = taxasArtigos.calculateValues({montanteQuantidade: montanteQuantidade, artigo_id: articlesDocuments.article_id});
         $(`${modal} [tableDocumentArticles]`).append(`<ul article_id="${articlesDocuments.article_id}" custoquantidade="${articlesDocuments.precario_quantidade}" codigoimposto="${$(`${modal} [codigo_imposto_article]`).val() || ""}">
                                             <li>${articlesDocuments.article_code}</li>
                                             <li>${$(`${modal} [description_article]`).val()}</li>
-                                            <li>${$(` ${modal} [amount_article] `).val()}</li>
-                                            <li>${($(`${modal} [lote_article]`).val().trim() || "")}</li>
-                                            <li>${($(`${modal} [date_expiration_article]`).val() || "")}</li>
+                                            <li custoquantidade>${$(`${modal} [amount_article] `).val()}</li>
                                             <li>${$(`${modal} [imposto]`).val()}</li>
+                                            <li>${$(`${modal} [codigo_imposto_article]`).val()}</li>
                                             <li price="${$(`${modal} [price_article] `).val().unFormatter()}">${$(` ${modal} [price_article] `).val()+" STN"}</li>
                                             <li>${result.total.dc().formatter()+" STN"}</li>
                                             <li class="flex v-ct">
-                                               <span class="noLabel"></span>
                                                     <span class="flex v-ct">
                                                          <a tooltip="Eliminar" flow="top" title="Remover">
                                                         <svg class="delete" viewBox="-40 0 427 427.00131">
@@ -273,14 +277,15 @@ var articlesDocuments = {
             xAlert("Artigo", "Pesquise um artigo pelo código para ser adicionado!", "info");
             return;
         }
-        if(!validation1($(`${modal} [description_article], ${modal} [amount_article], ${modal} [price_article]`))){
+        if(!validation1($(`${modal} [description_article], ${modal} [amount_article], ${modal} [price_article], ${modal} [codigo_imposto_article]`))){
             xAlert("Artigo", "Preencha todos os campos obrigatórios!", "error");
             return;
         }
-        if($(`${modal} [fatura]`).length !== 0) this.add_articles_invoice();
-        if($(`${modal} #artigos_entrada`).length !== 0) this.add_articles_purchase();
-        if($(`${modal} #transfArtigos`).length !== 0) this.add_articles_transference();
-        if($(`${modal} #guiaSaidaArtigos`).length !== 0) this.adicionarArtigosGuiaSaida();
+        if($(`${modal} [faturaNota]`).length !== 0) this.add_articles_faturaNota();
+        else if($(`${modal} [fatura]`).length !== 0) this.add_articles_invoice();
+        else if($(`${modal} #artigos_entrada`).length !== 0) this.add_articles_purchase();
+        else if($(`${modal} #transfArtigos`).length !== 0) this.add_articles_transference();
+        else if($(`${modal} #guiaSaidaArtigos`).length !== 0) this.adicionarArtigosGuiaSaida();
 
         $(`${modal} [tableDocumentArticles]`).removeClass("empty");
         articlesDocuments.resetFieldsArticle();

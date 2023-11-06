@@ -16,8 +16,11 @@
         left: 50%; /* Centraliza horizontalmente */
         transform: translate(-50%, -50%); /* Isso corrige o deslocamento para o centro */
     }
+    .placeholder{
+        color: #888; /* Placeholder text color */
+    }
 </style>
-<div class="__included__ fatura inpage">
+<div class="__included__ faturaNota inpage">
     <div class="_head flex h-sb v-ct">
         <div class="inLeft">
             <h1>Nota de Credito</h1>
@@ -30,7 +33,7 @@
             <!--<button class="xbtn" id="ver_proformas">Listar Proformas</button>-->
         </div>
     </div>
-    <datalist id="faturaClientes" fatura>
+    <datalist id="faturaClientes" fatura faturaNota>
     </datalist>
     <datalist id="faturaArtigos" artigos>
     </datalist>
@@ -88,8 +91,8 @@
                 <label>Qtd</label>
             </div>
             <div class="xinput w15">
-                <input type="text" placeholder="Codigo Imposto" class="integer" codigo_imposto_article _noObrigatory="true">
-                <label>Codigo Imposto</label>
+                <input type="text" placeholder="Código Imposto" class="integer" codigo_imposto_article>
+                <label>Código Imposto</label>
             </div>
             <div class="xinput w15">
                 <input type="text" placeholder="Valor unitário" class="double formatNumber" price_article>
@@ -127,15 +130,14 @@
         <div class="x-table hovered grow-1">
             <div class="xheader">
                 <ul class="flex">
-                    <li grow="1">Cód. Artigo</li>
-                    <li grow="2">Descrição</li>
+                    <li grow="1.5">Cód. Artigo</li>
+                    <li grow="2.5">Descrição</li>
                     <li grow="1">Qtd</li>
-                    <li grow="1">Lote</li>
-                    <li grow="1">Data de validade</li>
-                    <li grow="1">Imposto</li>
-                    <li grow="1">Valor Unit</li>
-                    <li grow="1">Valor Final</li>
-                    <li grow="1"></li>
+                    <li grow="1">Valor Imposto</li>
+                    <li grow="1">Código Imposto</li>
+                    <li grow="1.25">Valor Unit</li>
+                    <li grow="1.25">Valor Final</li>
+                    <li grow="0.5"></li>
                 </ul>
             </div>
             <div class="xbody" tableDocumentArticles>
