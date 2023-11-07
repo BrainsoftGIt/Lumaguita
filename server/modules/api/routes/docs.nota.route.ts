@@ -54,3 +54,32 @@ app.post( "/api/reg/credito/nota", (req, res, next) => {
         }
     }).doc()
 });
+
+app.post( "/api/load/documents", (req, res, next) => {
+    let _session = getUserSession( req );
+
+    let args = req.body;
+    args.arg_colaborador_id = _session.user_id;
+    args.arg_espaco_auth = _session.workspace;
+
+    dbRes.call.tweeks.funct_load_conta_documento({ args }, {
+        onResult(error: Error, result?: Result<any, any>): any {
+            if( error ){
+                res.json({
+                    result:false,
+                    message: error.message,
+                    hint: error
+                })
+                console.error( error );
+                return;
+            }
+
+            console.log( result.rows )
+            return res.json({
+                result: !!result?.rows?.[0]?.["result"],
+                message: result?.rows?.[0]?.["message"] || "",
+                data:result?.rows?.[0]?.data || {}
+            })
+        }
+    }).doc()
+});

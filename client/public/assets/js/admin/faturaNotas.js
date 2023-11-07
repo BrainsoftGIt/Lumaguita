@@ -138,7 +138,7 @@ var faturaAdmin = {
                     xAlert("Fatura", "Fatura emitida com sucesso!");
                     articlesDocuments.customer_id = null;
                     observacao_fatura.val("");
-                    if(FATURA === serieOperation.tipo.notaCredito){
+                    if(FATURA === serieOperation.tipo.notaDebito){
                         open("/api/print/fatura/"+JSON.stringify({type: "pdf", conta_id, date: new Date().getTimeStampPt(), admin: true}));
                         return
                     }
