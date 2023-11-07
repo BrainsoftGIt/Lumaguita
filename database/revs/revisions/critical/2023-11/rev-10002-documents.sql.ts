@@ -92,6 +92,7 @@ begin
             having count( * ) filter ( where entr.entrada_artigo_id = coalesce( _artigo_id, entr.entrada_artigo_id ) ) > 0
         ) select to_jsonb( _gs )
             from __guia_saida _gs
+            order by _gs.guia_date desc
     ;
     return;
   end if;
@@ -153,7 +154,9 @@ begin
             e.espaco_id
           having count( * ) filter ( where ve.venda_artigo_id = coalesce( _artigo_id, ve.venda_artigo_id ) ) > 0
       ) select  to_jsonb( _cd )
-          from __conta_documentos _cd;
+          from __conta_documentos _cd
+          order by _cd.conta_dataregistro desc
+    ;
     
     return;
   end if;
@@ -212,7 +215,9 @@ begin
             e.espaco_id
           having count( * ) filter ( where ve.venda_artigo_id = coalesce( _artigo_id, ve.venda_artigo_id ) ) > 0
       ) select  to_jsonb( _cd )
-          from __conta_documentos _cd;
+          from __conta_documentos _cd
+        order by _cd.conta_dataregistro desc
+    ;
     
     return;
   end if;
@@ -254,7 +259,8 @@ begin
             left join tweeks.espaco e on ct.conta_espaco_auth = e.espaco_id
             left join tweeks.cliente c on ct.conta_cliente_id = c.cliente_id
             left join tweeks.conta ctorg on ct.conta_conta_docorigin = ctorg.conta_id
-          where ct._branch_uid = ___branch
+          where
+            ct._branch_uid = ___branch
             and ct.conta_tserie_id = _tserie_id
             and ct.conta_data >= coalesce( _date_start, ct.conta_data )
             and ct.conta_data <= coalesce( _date_end, ct.conta_data )
@@ -273,9 +279,68 @@ begin
             e.espaco_id
           having count( * ) filter ( where ve.venda_artigo_id = coalesce( _artigo_id, ve.venda_artigo_id ) ) > 0
       ) select  to_jsonb( _cd )
-          from __conta_documentos _cd;
-    
+          from __conta_documentos _cd
+          order by _cd.conta_dataregistro desc
+        ;
     return;
+  end if;
+  
+  if _tserie_id = _const.maguita_tserie_recibo then 
+      return query 
+        with __recibo as (
+          select
+              de.deposito_id,
+              de.deposito_montante,
+              de.deposito_data,
+              de.deposito_montantefinal,
+              de.deposito_montantetroco,
+              de.deposito_montantemoeda,
+              de.deposito_documento,
+              de.deposito_docref,
+              de.deposito_observacao,
+              de.deposito_taxacambio,
+              de.deposito_dataregistro,
+              cu.currency_id,
+              cu.currency_code,
+              cu.currency_name,
+              cli.cliente_id,
+              cli.cliente_titular,
+              cli.cliente_nif,
+              col.colaborador_id,
+              col.colaborador_nome,
+              col.colaborador_apelido,
+              cx.caixa_id,
+              cx.caixa_code,
+              po.posto_id,
+              po.posto_designacao,
+              tp.tpaga_id,
+              tp.tpaga_designacao
+            from tweeks.deposito de
+              inner join geoinfo.currency cu on de.deposito_currency_id = cu.currency_id
+              inner join tweeks.cliente cli on cli.cliente_id = de.deposito_cliente_id
+              inner join auth.colaborador col on col.colaborador_id = de.deposito_colaborador_id
+              inner join tweeks.tpaga tp on de.deposito_tpaga_id = tp.tpaga_id
+              left join tweeks.caixa cx on de.deposito_caixa_id = cx.caixa_id
+              left join tweeks.posto po on de.deposito_posto_id = po.posto_id
+
+            where de._branch_uid = ___branch
+              and de.deposito_data >= coalesce( _date_start, de.deposito_data )
+              and de.deposito_data <= coalesce( _date_end, de.deposito_data )
+              and de.deposito_colaborador_id = coalesce( _colaborator_id, de.deposito_colaborador_id )
+              and coalesce( de.deposito_posto_id, '00000000-0000-0000-0000-000000000001') = coalesce( _posto_id, de.deposito_posto_id, '00000000-0000-0000-0000-000000000001' )
+              and de.deposito_estado in ( _const.maguita_deposito_estado_ativo )
+              and de.deposito_cliente_id = coalesce( _client_id, de.deposito_cliente_id )
+              and (
+                upper( de.deposito_documento ) like coalesce( _docfilter, de.deposito_documento )
+                or upper( de.deposito_docref ) like coalesce( _docfilter, de.deposito_docref )
+              )
+              and lower( coalesce( cli.cliente_nif, '999999999' ) ) like coalesce( _client_nif_filter, lower( coalesce( cli.cliente_nif, '999999999' )) )
+        ) select 
+              to_jsonb( _rc )
+            from __recibo _rc
+            order by _rc.deposito_dataregistro desc
+      ;
+      return;
   end if;
 end;
 $$
