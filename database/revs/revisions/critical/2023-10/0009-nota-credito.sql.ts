@@ -181,33 +181,6 @@ begin
     select *
       from jsonb_array_elements( __iten_venda ) ed( doc )
       inner join jsonb_populate_record( null::tweeks.venda, ed.doc ) on true
-  ), __iten as (
-    select
-        iten.venda_artigo_id,
-        iten.venda_quantidade * -1 as venda_quantidade,
-        iten.venda_custounitario,
-        iten.venda_custoquantidade,
-        iten.venda_descricao,
-        iten.venda_lote,
-        iten.venda_validade,
-        iten.venda_metadata,
-        iten.venda_taxas,
-        iten.venda_montantetotal * -1 as venda_montantetotal,
-        iten.venda_id as venda_venda_docorign,
-        iten.venda_venda_id as ___iten_venda_super
-      from tweeks.venda iten
-        inner join tweeks.artigo at on iten.venda_artigo_id = at.artigo_id
-          and at._branch_uid = arg_branch_uid
-      where iten.venda_venda_id = any( _data.notacredito_aplicar )
-        and iten.venda_estado = _const.maguita_venda_estado_fechado
-        and iten._branch_uid = arg_branch_uid
-
-  ), __vendas_item_groups as (
-    select
-        ___iten_venda_super,
-        coalesce( jsonb_agg( to_jsonb( iten ) ) filter ( where iten.venda_venda_docorign is not null ),jsonb_build_array()) as itens
-        from __iten iten
-      group by iten.___iten_venda_super
   ), __vendas_existis as (
     select 
         ve.*,
@@ -308,13 +281,9 @@ begin
           when arg_conta_id is null then ed.venda_codigoimposto
           else coalesce( ed.venda_codigoimposto, ve.venda_codigoimposto )
         end as venda_codigoimposto,
-        case
-          when arg_conta_id is null then coalesce( ed.doc->'arg_itens', jsonb_build_array() )
-          when ve.venda_id is not null then coalesce( iten.itens, jsonb_build_array() )
-        end as arg_itens
+        jsonb_build_array() as arg_itens
       from __item_doc ed
         left join __vendas_existis ve on ed.venda_id = ve.venda_id
-        left join __vendas_item_groups iten on ve.venda_id = iten.___iten_venda_super
 
       where ( ve.venda_id is null and arg_conta_id is null ) 
         or ( ve.venda_id = any( _data.notacredito_aplicar ) and ve.venda_venda_id is null )
@@ -324,7 +293,7 @@ begin
         into _vendas
       from __vendas ve
   ;
-
+  
   /*
    -- obrigatorios
       arg_colaborador_id: ID,
@@ -596,3 +565,5 @@ begin
 end;
 $$;
 `;
+
+
