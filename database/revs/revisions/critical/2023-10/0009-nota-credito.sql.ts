@@ -540,7 +540,6 @@ begin
     ]::int2[];
   end if;
   
-  
   return query
     with __venda_remanescete as (
       select 
