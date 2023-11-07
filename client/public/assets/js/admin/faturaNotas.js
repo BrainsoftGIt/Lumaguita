@@ -238,6 +238,12 @@ $("#finalizar_fatura").on("click", function () {
                 return;
             }
 
+            let listfatura = $(`${modal} [listfatura]`);
+            if(!!listfatura.length && !listfatura.find("li.active").length){
+                xAlert("", "Por favor, selecione uma serie de fatura!", "error");
+                return
+            }
+
             faturaAdmin.loadAccountKey().then(value =>{
                 faturaAdmin.key = value.accountKey;
                 faturaAdmin.register_invoice();

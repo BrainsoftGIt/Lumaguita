@@ -319,6 +319,13 @@ $("#finalizar_fatura").on("click", function () {
                 xAlert("Fatura", "Adicione artigos na tabela!", "info");
                 return;
             }
+
+            let listfatura = $(`${modal} [listfatura]`);
+            if(!!listfatura.length && !listfatura.find("li.active").length){
+                xAlert("", "Por favor, selecione uma serie de fatura!", "error");
+                return
+            }
+
             $("#finalizar_fatura").attr("disabled", true).addClass("loading");
             faturaAdmin.loadAccountKey().then(value =>{
                 faturaAdmin.key = value.accountKey;
