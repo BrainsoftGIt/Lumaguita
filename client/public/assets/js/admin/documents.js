@@ -1,5 +1,6 @@
 var documents = {
     init : () => {
+        xTableGenerate();
         documents.loadPostos();
         documents.loadColaborador();
     },
@@ -40,8 +41,8 @@ var documents = {
     },
     load : () => {
         let {_tserie_id} = $("[list='_tserie_id'] li.active").data() || {};
-        let _date_start = $("#_date_start").val() || null;
-        let _date_end = $("#_date_end").val() || null;
+        let _date_start = ($("#_date_start").val().stringToDate() || "").getDateEn() || null;
+        let _date_end = ($("#_date_end").val().stringToDate() || "").getDateEn() || null;
         let {_colaborator_id} = $("[list='_colaborator_id'] li.active").data() || {};
         let {_posto_id} = $("[list='_posto_id'] li.active").data() || {};
         let _artigo_id = documents.article_id || null;
@@ -61,8 +62,26 @@ var documents = {
                 _documento
             }),
             error() {},
-            success(e) {
-                console.log(e)
+            success(lista) {
+
+                $(`[body-report-list-faturas]`).addClass("empty").empty();
+
+                lista.forEach(({colaborador_nome, conta_montante, posto_designacao, conta_titular, conta_titularnif, conta_numerofatura, conta_data}) => {
+                    $(`[body-report-list-faturas]`).append(`<ul>
+                                            <li>${conta_numerofatura}</li>
+                                            <li>${conta_titular}</li>
+                                            <li>${conta_titularnif || "---------"}</li>
+                                            <li>${conta_montante.formatter()} STN</li>
+                                            <li>${colaborador_nome}</li>
+                                            <li>${posto_designacao}</li>
+                                            <li>${conta_data.stringToDateEn().getDatePt()}</li>
+                                            <li>ddd</li>
+                                        </ul>`);
+                })
+
+                $(` [body-report-list-faturas] `).removeClass("empty");
+                $("#xModalFindDocuments").removeClass("show")
+                xTableGenerate();
             }
         });
     },
