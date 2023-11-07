@@ -244,6 +244,11 @@ $("#finalizar_fatura").on("click", function () {
                 return
             }
 
+            if(!$("#observacao_fatura").val()){
+                xAlert("", "Por favor, adicione uma observação!", "error");
+                return;
+            }
+
             faturaAdmin.loadAccountKey().then(value =>{
                 faturaAdmin.key = value.accountKey;
                 faturaAdmin.register_invoice();
