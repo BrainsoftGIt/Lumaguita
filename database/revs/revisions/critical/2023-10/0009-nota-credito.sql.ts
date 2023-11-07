@@ -221,7 +221,8 @@ begin
     select 
         ve.*,
         abs( ve.venda_quantidade ) as __venda_quantidade,
-        ( abs( ve.venda_montantecomimposto ) - abs( ve.venda_montantesemimposto ) ) / abs( ve.venda_quantidade ) as __venda_montantecomimposto,
+        ( abs( ve.venda_montantecomimposto ) - abs( ve.venda_montantesemimposto ) ) / abs( ve.venda_quantidade ) as __venda_diferencaimposto,
+        abs( ve.venda_montantecomimposto ) / abs( ve.venda_quantidade ) as __venda_montantecomimposto,
         abs( ve.venda_montantesemimposto ) / abs( ve.venda_quantidade ) as __venda_montantesemimposto,
         abs( ve.venda_montanteagregado ) / abs( ve.venda_quantidade ) as __venda_montanteagregado,
         abs( ve.venda_montantetotal ) / abs( ve.venda_quantidade ) as __venda_montantetotal,
@@ -602,5 +603,7 @@ begin
 end;
 $$;
 `;
+
+
 
 
