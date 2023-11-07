@@ -76,7 +76,7 @@ var faturaAdmin = {
         let observacao_fatura = $("#observacao_fatura");
         let conta_posto_id = $("#colaborador_logado_armazens").find("li.active").attr("posto_admin");
         console.log({conta_posto_id});
-        let {conta_id, conta_chave} = faturaAdmin?.fatura || {};
+        let {conta_id} = faturaAdmin?.fatura || {};
 
         let {articles_table, errorCodeImposto} = this.articles_added();
 
@@ -180,12 +180,12 @@ var faturaAdmin = {
                 }, 10)
 
                 let { imposto } = $(`${modal} [listfatura] li.active`).data() || {};
-                conta_vendas.forEach(({ artigo_nome, venda_custounitario, venda_montantecomimposto, artigo_codigo, venda_quantidade, taxa_percentagem, taxa_taxa, venda_id, artigo_codigoimposto}) => {
+                conta_vendas.forEach(({ artigo_nome, venda_custounitario, venda_montantecomimposto, artigo_codigo, venda_quantidaderemanescente, taxa_percentagem, taxa_taxa, venda_id, artigo_codigoimposto}) => {
                     $(`${modal} [tableDocumentArticles]`).append(`
                     <ul data-venda_id="${venda_id}" data-venda_codigo="${artigo_codigoimposto?.[imposto]}">
                         <li>${artigo_codigo}</li>
                         <li>${artigo_nome}</li>
-                        <li custoquantidade contenteditable="true">${Math.abs(venda_quantidade)}</li>
+                        <li custoquantidade="${venda_quantidaderemanescente}" contenteditable="true">${Math.abs(venda_quantidaderemanescente)}</li>
                         <li>${(!taxa_percentagem) ? taxa_taxa || "" : `${taxa_percentagem}%` }</li>
                         <li placeholder="add código" contenteditable="true">${artigo_codigoimposto?.[imposto] || ""}</li>
                         <li>${venda_custounitario.dc().formatter()+" STN"}</li>
@@ -284,6 +284,11 @@ $(`[tableDocumentArticles]`).on('focus', "[placeholder]", function (e) {
     e.stopPropagation()
 }).on("keyup", '[placeholder][contenteditable="true"]',function (){
     $(this).parents("ul").data("venda_codigo", $(this).text() || null);
+}).on("keyup", '[custoquantidade]',function (){
+    if((!!$(this).text() && +$(this).attr("custoquantidade") < +$(this).text()) || (+$(this).text() <= 0 && !!$(this).text())){
+        xAlert("", "Quantidade inválida!", "error");
+        $(this).text($(this).attr("custoquantidade"))
+    }
 }).on("keypress", '[placeholder][contenteditable="true"]', function (e) {
     if (e.which === 46) {
         e.which = 44;
