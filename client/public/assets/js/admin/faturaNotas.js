@@ -307,4 +307,5 @@ $(`[tableDocumentArticles]`).on('focus', "[placeholder]", function (e) {
     }
 });
 
+
 articlesDocuments.loadSerieDistribuicao(serieOperation.tipo.fatura)
