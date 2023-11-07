@@ -244,8 +244,10 @@ $("#finalizar_fatura").on("click", function () {
                 return
             }
 
-            if(!$("#observacao_fatura").val()){
+            let observacao_fatura = $("#observacao_fatura")
+            if(!observacao_fatura.val()){
                 xAlert("", "Por favor, adicione uma observação!", "error");
+                observacao_fatura.focus()
                 return;
             }
 
