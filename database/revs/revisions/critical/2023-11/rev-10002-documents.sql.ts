@@ -144,7 +144,7 @@ begin
             and ct.conta_estado = _const.maguita_conta_estado_fechado
             and ct.conta_cliente_id = coalesce( _client_id, ct.conta_cliente_id )
             and upper( ct.conta_numerofatura ) like coalesce( _docfilter, ct.conta_numerofatura )
-            and lower( coalesce( ct.conta_titularnif, c.cliente_nif, '999999999' ) ) like coalesce( _client_nif_filter, lower( ct.conta_titularnif, c.cliente_nif, '999999999' ) )
+            and lower( coalesce( ct.conta_titularnif, c.cliente_nif, '999999999' ) ) like coalesce( _client_nif_filter, lower( coalesce( ct.conta_titularnif, c.cliente_nif, '999999999' )) )
           group by ct.conta_id,
             col.colaborador_id,
             c.cliente_id,
@@ -203,7 +203,7 @@ begin
             and ct.conta_proforma
             and ct.conta_cliente_id = coalesce( _client_id, ct.conta_cliente_id )
             and upper( ct.conta_numerofatura ) like coalesce( _docfilter, ct.conta_numerofatura )
-            and lower( coalesce( ct.conta_titularnif, c.cliente_nif, '999999999' ) ) like coalesce( _client_nif_filter, lower( ct.conta_titularnif, c.cliente_nif, '999999999' ) )
+            and lower( coalesce( ct.conta_titularnif, c.cliente_nif, '999999999' ) ) like coalesce( _client_nif_filter, lower( coalesce( ct.conta_titularnif, c.cliente_nif, '999999999' )) )
           group by ct.conta_id,
             col.colaborador_id,
             c.cliente_id,
@@ -264,7 +264,7 @@ begin
             and ct.conta_estado in ( _const.maguita_conta_estado_fechado, _const.maguita_conta_estado_aberto )
             and ct.conta_cliente_id = coalesce( _client_id, ct.conta_cliente_id )
             and upper( ct.conta_numerofatura ) like coalesce( _docfilter, ct.conta_numerofatura )
-            and lower( coalesce( ct.conta_titularnif, c.cliente_nif, '999999999' ) ) like coalesce( _client_nif_filter, lower( ct.conta_titularnif, c.cliente_nif, '999999999' ) )
+            and lower( coalesce( ct.conta_titularnif, c.cliente_nif, '999999999' ) ) like coalesce( _client_nif_filter, lower( coalesce( ct.conta_titularnif, c.cliente_nif, '999999999' )) )
           group by ct.conta_id,
             col.colaborador_id,
             c.cliente_id,
