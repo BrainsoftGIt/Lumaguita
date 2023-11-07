@@ -47,7 +47,7 @@ var faturaAdmin = {
                 venda_artigo_id: $(this).attr("article_id"),
                 venda_descricao: $(this).find("li").eq(1).text(),
                 venda_quantidade: $(this).find("li").eq(2).text(),
-                venda_custoquantidade: +$(this).find("[custoquantidade]").text(),
+                venda_custoquantidade: 1,
                 venda_custounitario: $(this).find("li").eq(5).attr("price"),
                 venda_lote: null,
                 venda_validade: null,
@@ -179,16 +179,19 @@ var faturaAdmin = {
                 }, 10)
 
                 let { imposto } = $(`${modal} [listfatura] li.active`).data() || {};
-                conta_vendas.forEach(({ artigo_nome, venda_custounitario, venda_montantecomimposto, artigo_codigo, venda_quantidaderemanescente, taxa_percentagem, taxa_taxa, venda_id, artigo_codigoimposto}) => {
+                conta_vendas.forEach(({ venda_quantidade, artigo_nome, venda_custounitario, venda_montantecomimposto, artigo_codigo, venda_quantidaderemanescente, taxa_percentagem, taxa_taxa, venda_id, artigo_codigoimposto}) => {
+                    let new_venda_montantecomimposto = (venda_montantecomimposto / venda_quantidade) * venda_quantidaderemanescente;
+                    console.log({new_venda_montantecomimposto, venda_montantecomimposto, venda_quantidade, venda_quantidaderemanescente})
+
                     $(`${modal} [tableDocumentArticles]`).append(`
                     <ul data-venda_id="${venda_id}" data-venda_codigo="${artigo_codigoimposto?.[imposto]}">
                         <li>${artigo_codigo}</li>
                         <li>${artigo_nome}</li>
-                        <li custoquantidade="${venda_quantidaderemanescente}" contenteditable="true">${Math.abs(venda_quantidaderemanescente)}</li>
+                        <li venda_quantidade="${venda_quantidade}" venda_quantidaderemanescente="${venda_quantidaderemanescente}" contenteditable="true">${Math.abs(venda_quantidaderemanescente)}</li>
                         <li>${(!taxa_percentagem) ? taxa_taxa || "" : `${taxa_percentagem}%` }</li>
                         <li placeholder="add código" contenteditable="true">${artigo_codigoimposto?.[imposto] || ""}</li>
                         <li>${venda_custounitario.dc().formatter()+" STN"}</li>
-                        <li>${Math.abs(venda_montantecomimposto).dc().formatter()+" STN"}</li>
+                        <li venda_montantecomimposto="${venda_montantecomimposto}">${Math.abs(new_venda_montantecomimposto).dc().formatter()+" STN"}</li>
                         <li class="flex v-ct">
                                 <span del class="flex v-ct">
                                      <a tooltip="Eliminar" flow="top" title="Remover">
@@ -291,11 +294,18 @@ $(`[tableDocumentArticles]`).on('focus', "[placeholder]", function (e) {
     e.stopPropagation()
 }).on("keyup", '[placeholder][contenteditable="true"]',function (){
     $(this).parents("ul").data("venda_codigo", $(this).text() || null);
-}).on("keyup", '[custoquantidade]',function (){
-    if((!!$(this).text() && +$(this).attr("custoquantidade") < +$(this).text()) || (+$(this).text() <= 0 && !!$(this).text())){
+}).on("keyup", '[venda_quantidade]',function (){
+    if((!!$(this).text() && +$(this).attr("venda_quantidaderemanescente") < +$(this).text()) || (+$(this).text() <= 0 && !!$(this).text())){
         xAlert("", "Quantidade inválida!", "error");
-        $(this).text($(this).attr("custoquantidade"))
+        $(this).text($(this).attr("venda_quantidaderemanescente"))
     }
+
+    let quantidade = $(this).text();
+    let venda_quantidade = $(this).attr("venda_quantidade");
+    let venda_montantecomimposto = $(this).closest("ul").find("[venda_montantecomimposto]").attr("venda_montantecomimposto");
+    let newVenda_montantecomimposto = (venda_montantecomimposto/venda_quantidade) * quantidade;
+    $(this).closest("ul").find("[venda_montantecomimposto]").text(`${newVenda_montantecomimposto.formatter()} STN`)
+
 }).on("keypress", '[placeholder][contenteditable="true"]', function (e) {
     if (e.which === 46) {
         e.which = 44;
