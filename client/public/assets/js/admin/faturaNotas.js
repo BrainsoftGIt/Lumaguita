@@ -25,7 +25,7 @@ var faturaAdmin = {
         let montanteQuantidade = 0;
         let errorCodeImposto = false;
         let result = null;
-        console.log({errorCodeImposto, montanteQuantidade})
+
         $(`${modal} [tableDocumentArticles]`).find("ul").each(function () {
             let price = $(this).find("li").eq(5).attr("price");
             if(!!price) {
@@ -67,7 +67,6 @@ var faturaAdmin = {
             });
         });
 
-        console.log({articles_table, errorCodeImposto})
         return {articles_table, errorCodeImposto};
     },
     register_invoice: function (){
@@ -75,12 +74,10 @@ var faturaAdmin = {
 
         let observacao_fatura = $("#observacao_fatura");
         let conta_posto_id = $("#colaborador_logado_armazens").find("li.active").attr("posto_admin");
-        console.log({conta_posto_id});
+
         let {conta_id} = faturaAdmin?.fatura || {};
 
         let {articles_table, errorCodeImposto} = this.articles_added();
-
-        console.log({articles_table, errorCodeImposto});
 
         if(errorCodeImposto){
             xAlert("Nota de credito", "Define o código de imposto!", "error");
@@ -88,7 +85,7 @@ var faturaAdmin = {
         }
 
         let datas = {
-            conta_id: conta_id,
+            conta_id,
             conta_posto_id,
             conta_extension: {},
             conta_mesa: {numero: null, descricao: null, lotacao: null},
@@ -169,11 +166,13 @@ var faturaAdmin = {
                 if(!conta_vendas){
                     $(` ${modal} [tableDocumentArticles] `).addClass("empty");
                     $(` ${modal} [documento_origem_data]`).prop("disabled", false);
+                    $(`[price_article], [codigo_imposto_article], [amount_article], [description_article], [search_article], [addarticletable]`).val( "").prop("disabled", false);
                     xAlert("Nota de credito", "Não foi encontrado numa fatura com esse número!", "error");
                     return
                 }
 
                 $(` ${modal} [documento_origem_data] `).val((conta_data || "").stringToDateEn().getDatePt()).prop("disabled", true);
+                $(`[price_article], [codigo_imposto_article], [amount_article], [description_article], [search_article], [addarticletable]`).val( "").prop("disabled", true);
                 $(` ${modal} [search_customer]`).val(conta_titular).keyup();
                 setTimeout(() => {
                     articlesDocuments.customer_id = conta_cliente_id
@@ -271,6 +270,7 @@ $("[documento_origem]").on("keyup", function ({keyCode}){
 
     if(keyCode === 13 && !$(this).val()) {
         xAlert("Nota de credito", "Priencha o campo fatura!", "error");
+        $(`[price_article], [codigo_imposto_article], [amount_article], [description_article], [search_article], [addarticletable], [documento_origem_data]`).val( "").prop("disabled", false);
     }
 })
 
