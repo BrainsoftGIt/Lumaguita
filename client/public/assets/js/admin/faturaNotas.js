@@ -177,7 +177,7 @@ var faturaAdmin = {
                 $(` ${modal} [search_customer]`).val(conta_titular).keyup();
                 setTimeout(() => {
                     articlesDocuments.customer_id = conta_cliente_id
-                })
+                }, 10)
 
                 let { imposto } = $(`${modal} [listfatura] li.active`).data() || {};
                 conta_vendas.forEach(({ artigo_nome, venda_custounitario, venda_montantecomimposto, artigo_codigo, venda_quantidade, taxa_percentagem, taxa_taxa, venda_id, artigo_codigoimposto}) => {
