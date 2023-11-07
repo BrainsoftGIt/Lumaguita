@@ -233,7 +233,7 @@ begin
           else  ed.venda_artigo_id
         end as venda_artigo_id,
         case
-          when arg_conta_id is null then ed.venda_quantidade * __signal
+          when arg_conta_id is null then ed\.venda_quantidade * __signal
           else coalesce( ed.venda_quantidade, ve.venda_quantidade ) * __signal
         end as venda_quantidade,
         case
@@ -252,6 +252,18 @@ begin
           when arg_conta_id is null then ed.venda_isencao
           else ve.venda_isencao
         end as venda_isencao,
+        case
+          when arg_conta_id is null then ed.venda_taxas
+          else ve.venda_taxas
+        end as venda_taxas,
+        case
+          when arg_conta_id is null then ed.venda_validade
+          else ve.venda_validade
+        end as venda_validade,
+        case
+          when arg_conta_id is null then ed.venda_lote
+          else ve.venda_lote
+        end as venda_lote,
         case
           when arg_conta_id is null then ed.venda_montante * __signal
           else ve.__venda_montante * coalesce( ed.venda_quantidade, ve.__venda_quantidade ) * __signal
@@ -289,28 +301,16 @@ begin
           else coalesce( ed.venda_descricao, ve.venda_descricao )
         end as venda_descricao,
         case
-          when arg_conta_id is null then ed.venda_lote
-          else coalesce( ed.venda_lote, ve.venda_lote )
-        end as venda_lote,
-        case
           when arg_conta_id is null then ed.venda_metadata
           else coalesce( ed.venda_metadata, ve.venda_metadata )
         end as venda_metadata,
-        case
-          when arg_conta_id is null then ed.venda_taxas
-          else coalesce( ed.venda_taxas, ve.venda_taxas )
-        end as venda_taxas,
         case
           when arg_conta_id is null then ed.venda_codigoimposto
           else coalesce( ed.venda_codigoimposto, ve.venda_codigoimposto )
         end as venda_codigoimposto,
         case
-          when arg_conta_id is null then ed.venda_validade
-          else coalesce( ed.venda_validade, ve.venda_validade )
-        end as venda_validade,
-        case
+          when arg_conta_id is null then coalesce( ed.doc->'arg_itens', jsonb_build_array() )
           when ve.venda_id is not null then coalesce( iten.itens, jsonb_build_array() )
-          else coalesce( ed.doc->'arg_itens', jsonb_build_array() )
         end as arg_itens
       from __item_doc ed
         left join __vendas_existis ve on ed.venda_id = ve.venda_id
