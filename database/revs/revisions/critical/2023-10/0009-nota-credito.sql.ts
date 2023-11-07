@@ -30,7 +30,7 @@ declare
   arg_colaborador_id uuid default args->>'arg_colaborador_id';
   arg_espaco_auth uuid default args->>'arg_espaco_auth';
   arg_conta_id uuid default args->>'conta_id';
-  __conta_docorigin uuid default args->>'conta_docorigin';
+  __conta_docorigin character varying default args->>'conta_docorigin';
   arg_branch_uid uuid default tweeks.__branch_uid( arg_colaborador_id, arg_espaco_auth );
   __branch cluster.branch;
   _data record;
