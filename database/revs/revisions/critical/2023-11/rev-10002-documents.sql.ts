@@ -17,6 +17,7 @@ declare
       _posto_id: UUID
       _artigo_id: UUID
       _client_id: UUID
+      _client_nif: character varying
       _fornecedor_id: UUID
       _documento: character varying
     }
@@ -35,6 +36,7 @@ declare
   _fornecedor_id uuid default args->>'_fornecedor_id';
   _documento character varying default args->>'_documento';
   _docfilter character varying;
+  _client_nif character varying default args->>'_client_nif';
   _const map.constant;
 begin
   _const := map.constant();
