@@ -1,0 +1,129 @@
+<link rel="stylesheet" href="../assets/css/admin/inpage.css">
+<link rel="stylesheet" href="../assets/css/admin/fatura.css">
+<link rel="stylesheet" href="../assets/css/admin/tableAdmin.css">
+<style>
+    .__included__ .inRight .xbtn {
+        margin-right: 5px;
+        margin-left: 5px;
+    }
+</style>
+<style>
+    .noborder {
+        overflow-y: hidden !important;
+    }
+
+    [body-report-list-faturas] {
+        height: 78vh;
+        overflow-y: auto;
+        margin-bottom: 10px;
+    }
+
+    .empty:after {
+        position: absolute;
+        top: 50%; /* Centraliza verticalmente */
+        left: 50%; /* Centraliza horizontalmente */
+        transform: translate(-50%, -50%); /* Isso corrige o deslocamento para o centro */
+    }
+
+    .placeholder {
+        color: #888; /* Placeholder text color */
+    }
+</style>
+
+
+<div class="__included__">
+    <div class="_head flex h-sb v-ct">
+        <div class="inLeft">
+            <h1>Documentos</h1>
+        </div>
+        <div class="inRight flex h-sb">
+            <button class="xbtn showTarget" target="xModalFindDocuments">Procurar</button>
+        </div>
+    </div>
+    <div class="_body noborder">
+        <div class="x-table grow-1">
+            <div class="xheader">
+                <ul class="flex">
+                    <li grow="1.25">Nª Documento</li>
+                    <li grow="1.50">Titular</li>
+                    <li grow="1.25">Titular NIF</li>
+                    <li grow="1.25">Montante</li>
+                    <li grow="1.25">Colaborador</li>
+                    <li grow="1.25">Posto</li>
+                    <li grow="1.25">Data</li>
+                    <li grow="1">---</li>
+                </ul>
+            </div>
+            <div body-report-list-faturas class="xbody empty">
+            </div>
+        </div>
+        <div class="x-pagination">
+            <ul ref="body-report-list" class="active pagination_master">
+                <li class="ctrl backward page-item"></li>
+                <li class="ctrl page-item forward pagination-add"></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div id="xModalFindDocuments" class="x-mobdal flex v-ct h-ct" target="xModalFindDocuments">
+    <div class="modal-frame j-stp" style="width: 450px;">
+        <h3>Filtro</h3>
+        <div class="xform">
+            <div class="xselect flutuate w50">
+                <input type="text" readonly id="_tserie_id" placeholder="_">
+                <label for="_tserie_id">Escolha o tipo de serie</label>
+                <ul list="_tserie_id">
+                    <li class="tgl" data-_tserie_id="1">Fatura (FT)</li>
+                    <li class="tgl" data-_tserie_id="2">Fatura Recibo (FR)</li>
+                    <li class="tgl" data-_tserie_id="3">Recibo (RE)</li>
+                    <li class="tgl" data-_tserie_id="4">Nota de Crédito (NC)</li>
+                    <li class="tgl" data-_tserie_id="8">Nota de Debito (ND)</li>
+                    <li class="tgl" data-_tserie_id="5">Guia de Saída (GS)</li>
+                </ul>
+                <div class="fakearrow flex"><span></span><span></span></div>
+            </div>
+            <div class="xinput w50">
+                <input type="text" placeholder="_" id="_documento" _noObrigatory="true">
+                <label for="_documento">Número de documento</label>
+            </div>
+            <div class="xinput w100">
+                <input type="text" id="_artigo_id" list="listArtigos" placeholder="_" _noObrigatory="true">
+                <label for="_artigo_id">Pesquisar artigo (nome ou código)</label>
+                <datalist id="listArtigos" artigos></datalist>
+            </div>
+            <div class="xinput w50">
+                <input  type="text" placeholder="Data de validade" data-inputmask-alias="dd-mm-yyyy" data-val="true"
+                       id="_date_start" _noObrigatory="true">
+                <label for="_date_start">Data de início</label>
+            </div>
+            <div class="xinput w50">
+                <input type="text" placeholder="Data de validade" data-inputmask-alias="dd-mm-yyyy" data-val="true"
+                       id="_date_end" _noObrigatory="true">
+                <label for="_date_end">Data de fim</label>
+            </div>
+            <div class="xselect flutuate w50">
+                <input _noObrigatory="true" type="text" readonly id="_posto_id" placeholder="_">
+                <label for="_posto_id">Escolha o posto</label>
+                <ul list="_posto_id"></ul>
+                <div class="fakearrow flex"><span></span><span></span></div>
+            </div>
+            <div class="xselect flutuate w50">
+                <input _noObrigatory="true" type="text" readonly id="_colaborator_id" placeholder="_">
+                <label for="_colaborator_id">Escolha o colaborador</label>
+                <ul list="_colaborator_id"></ul>
+                <div class="fakearrow flex"><span></span><span></span></div>
+            </div>
+        </div>
+        <div class="master-btn-right flex">
+            <span class="hideTarget" target="xModalFindDocuments">CANCELAR</span>
+            <span class="flex v-ct" id="loadDocuments">
+                    Processar
+                    <svg class="spinner" viewBox="0 0 50 50">
+                        <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
+                    </svg>
+                </span>
+        </div>
+    </div>
+</div>
+<script src="../assets/js/admin/documents.js"></script>

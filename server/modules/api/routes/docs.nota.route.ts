@@ -73,13 +73,7 @@ app.post( "/api/load/documents", (req, res, next) => {
                 console.error( error );
                 return;
             }
-
-            console.log( result.rows )
-            return res.json({
-                result: !!result?.rows?.[0]?.["result"],
-                message: result?.rows?.[0]?.["message"] || "",
-                data:result?.rows?.[0]?.data || {}
-            })
+            return res.json(result?.rows)
         }
     }).doc()
 });
