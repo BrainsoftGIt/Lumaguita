@@ -40,6 +40,7 @@ declare
   _conta_res lib.res;
   _conta_close_res lib.res;
   __iten_venda jsonb default args->'itens';
+  __signal double precision;
   
   __itens uuid[] default array(
     select (e.doc->>'venda_id')::uuid 
@@ -56,6 +57,10 @@ begin
 
   if _conta.conta_estado != _const.maguita_conta_estado_fechado then
     return  lib.res_false( 'Essa conta não se encontra fechada' );
+  end if;
+  
+  if _tserie_id = _const.maguita_tserie_notacredito then __signal := -1; 
+  else __signal := 1;
   end if;
 
 
@@ -118,7 +123,8 @@ begin
   ) select * into _data
      from notacareito_usar
   ;
-
+  
+  
 --   if _data.notacredito_aplicartotal = 0 then
 --     return lib.res_false( 'Nenhum dos iten selecionado pode-se aplicar nota de credito sobre ele' );
 --   end if;
@@ -196,88 +202,123 @@ begin
         and iten.venda_estado = _const.maguita_venda_estado_fechado
         and iten._branch_uid = arg_branch_uid
 
+  ), __vendas_item_groups as (
+    select
+        ___iten_venda_super,
+        coalesce( jsonb_agg( to_jsonb( iten ) ) filter ( where iten.venda_venda_docorign is not null ),jsonb_build_array()) as itens
+        from __iten iten
+      group by iten.___iten_venda_super
+  ), __vendas_existis as (
+    select 
+        ve.*,
+        abs( ve.venda_quantidade ) as __venda_quantidade,
+        ( abs( ve.venda_montantecomimposto ) - abs( ve.venda_montantesemimposto ) ) / abs( ve.venda_quantidade ) as __venda_montantecomimposto,
+        abs( ve.venda_montantesemimposto ) / abs( ve.venda_quantidade ) as __venda_montantesemimposto,
+        abs( ve.venda_montanteagregado ) / abs( ve.venda_quantidade ) as __venda_montanteagregado,
+        abs( ve.venda_montantetotal ) / abs( ve.venda_quantidade ) as __venda_montantetotal,
+        abs( ve.venda_imposto ) / abs( ve.venda_quantidade ) as __venda_imposto,
+        abs( ve.venda_impostoadicionar ) / abs( ve.venda_quantidade ) as __venda_impostoadicionar,
+        abs( ve.venda_impostoretirar ) / abs( ve.venda_quantidade ) as __venda_impostoretirar,
+        abs( ve.venda_montante ) / abs( ve.venda_quantidade ) as __venda_montante
+    
+      from tweeks.venda ve 
+      where ve.venda_id = any( _data.notacredito_aplicar ) and ve.venda_venda_id is null
   ), __vendas as (
     select
-        ve.venda_id as venda_venda_docorign,
-        coalesce( ve.venda_artigo_id, ed.venda_artigo_id ) as venda_artigo_id,
-        coalesce( ve.venda_quantidade * -1,
-          case
-            when _tserie_id = _const.maguita_tserie_notacredito then ed.venda_quantidade * -1
-            else ed.venda_quantidade
-          end
-        ) as venda_quantidade,
-        coalesce( ve.venda_custounitario, ed.venda_custounitario ) as venda_custounitario,
-        coalesce( ve.venda_custoquantidade, ed.venda_custoquantidade ) as venda_custoquantidade,
-        coalesce( ve.venda_editado, ed.venda_editado ) as venda_editado,
-        coalesce( ve.venda_isencao, ed.venda_isencao ) as venda_isencao,
-        coalesce( ve.venda_montante * -1, 
-          case
-            when _tserie_id = _const.maguita_tserie_notacredito then ed.venda_montante * -1
-            else ed.venda_montante
-          end 
-        ) as venda_montante,
-        coalesce(ve.venda_montanteagregado * -1,
-          case
-            when _tserie_id = _const.maguita_tserie_notacredito then ed.venda_montanteagregado * -1
-            else ed.venda_montanteagregado
-          end 
-        ) as venda_montanteagregado,
-        coalesce(ve.venda_montantetotal * -1,
-          case
-            when _tserie_id = _const.maguita_tserie_notacredito then ed.venda_montantetotal
-            else ed.venda_montantetotal
-          end  
-        ) as venda_montantetotal,
-        coalesce(ve.venda_imposto * -1,
-          case
-            when _tserie_id = _const.maguita_tserie_notacredito then ed.venda_montantetotal * -1
-            else ed.venda_montantetotal
-          end  
-        ) as venda_imposto,
-        coalesce( ve.venda_montantesemimposto * -1,
-          case
-            when _tserie_id = _const.maguita_tserie_notacredito then ed.venda_montantesemimposto * -1 
-            else ed.venda_montantesemimposto
-          end  
-        ) as venda_montantesemimposto,
-        coalesce( ve.venda_montantecomimposto * -1,
-          case
-            when _tserie_id = _const.maguita_tserie_notacredito then ed.venda_montantecomimposto * -1
-            else ed.venda_montantecomimposto
-          end
-        ) as venda_montantecomimposto,
-        coalesce(ve.venda_impostoadicionar * -1, 
-          case
-            when _tserie_id = _const.maguita_tserie_notacredito then ed.venda_impostoadicionar * -1
-            else ed.venda_impostoadicionar
-          end  
-        ) as venda_impostoadicionar,
-        coalesce( ve.venda_impostoretirar * -1,
-          case
-            when _tserie_id = _const.maguita_tserie_notacredito then ed.venda_impostoretirar * -1
-            else ed.venda_impostoretirar
-          end
-        ) as venda_impostoretirar,
-        coalesce(ve.venda_descricao, ed.venda_descricao ) as venda_descricao,
-        coalesce(ve.venda_lote,ed.venda_lote) as venda_lote,
-        coalesce(ve.venda_validade, ed.venda_validade) as venda_validade,
-        coalesce(ve.venda_metadata, ed.venda_metadata) as venda_metadata,
-        coalesce( ve.venda_taxas, ed.venda_taxas ) as venda_taxas,
-        coalesce( ed.venda_codigoimposto, ed.venda_codigoimposto ) as venda_codigoimposto,
-        coalesce( jsonb_agg( to_jsonb( iten ) ) filter ( where iten.venda_venda_docorign is not null ),
-          ed.doc->'arg_itens',
-          jsonb_build_array()
-        ) as arg_itens
+        case
+          when arg_conta_id is not null then ve.venda_id
+        end as venda_venda_docorign,
+        case 
+          when arg_conta_id is not null then ve.venda_artigo_id
+          else  ed.venda_artigo_id
+        end as venda_artigo_id,
+        case
+          when arg_conta_id is null then ed.venda_quantidade * __signal
+          else coalesce( ed.venda_quantidade, ve.venda_quantidade ) * __signal
+        end as venda_quantidade,
+        case
+          when arg_conta_id is null then ed.venda_custounitario
+          else ve.venda_custounitario
+        end as venda_custounitario,
+        case 
+          when arg_conta_id is null then ed.venda_custoquantidade
+          else ve.venda_custoquantidade
+        end as venda_custoquantidade,
+        case
+          when arg_conta_id is null then ed.venda_editado
+          else ve.venda_editado
+        end as venda_editado,
+        case 
+          when arg_conta_id is null then ed.venda_isencao
+          else ve.venda_isencao
+        end as venda_isencao,
+        case
+          when arg_conta_id is null then ed.venda_montante * __signal
+          else ve.__venda_montante * coalesce( ed.venda_quantidade, ve.__venda_quantidade ) * __signal
+        end as venda_montante,
+        case
+          when arg_conta_id is null then ed.venda_montanteagregado * __signal
+          else ve.__venda_montanteagregado * coalesce( ed.venda_quantidade, ve.__venda_quantidade ) * __signal
+        end as venda_montanteagregado,
+        case 
+          when arg_conta_id is null then ed.venda_montantetotal * __signal
+          else ve.__venda_montantetotal * coalesce( ed.venda_quantidade, ve.__venda_quantidade ) * __signal
+        end as venda_montantetotal,
+        case
+          when arg_conta_id is null then ed.venda_imposto * __signal
+          else ve.__venda_imposto * coalesce( ed.venda_quantidade, ve.__venda_quantidade ) * __signal
+        end as venda_imposto,
+        case
+          when arg_conta_id is null then ed.venda_montantesemimposto * __signal
+          else ve.__venda_montantesemimposto * coalesce( ed.venda_quantidade, ve.__venda_quantidade ) * __signal
+        end as venda_montantesemimposto,
+        case
+          when arg_conta_id is null then ed.venda_montantecomimposto * __signal
+          else ve.__venda_montantecomimposto * coalesce( ed.venda_quantidade, ve.__venda_quantidade ) * __signal
+        end as venda_montantecomimposto,
+        case
+          when arg_conta_id is null then ed.venda_impostoadicionar * __signal
+          else ve.__venda_impostoadicionar * coalesce( ed.venda_quantidade, ve.venda_quantidade ) * __signal 
+        end as venda_impostoadicionar,
+        case
+          when arg_conta_id is null then ed.venda_impostoretirar * __signal
+          else ve.__venda_impostoretirar * coalesce( ed.venda_quantidade, ve.venda_quantidade ) * __signal 
+        end as venda_impostoretirar,
+        case
+          when arg_conta_id is null then ed.venda_descricao
+          else coalesce( ed.venda_descricao, ve.venda_descricao )
+        end as venda_descricao,
+        case
+          when arg_conta_id is null then ed.venda_lote
+          else coalesce( ed.venda_lote, ve.venda_lote )
+        end as venda_lote,
+        case
+          when arg_conta_id is null then ed.venda_metadata
+          else coalesce( ed.venda_metadata, ve.venda_metadata )
+        end as venda_metadata,
+        case
+          when arg_conta_id is null then ed.venda_taxas
+          else coalesce( ed.venda_taxas, ve.venda_taxas )
+        end as venda_taxas,
+        case
+          when arg_conta_id is null then ed.venda_codigoimposto
+          else coalesce( ed.venda_codigoimposto, ve.venda_codigoimposto )
+        end as venda_codigoimposto,
+        case
+          when arg_conta_id is null then ed.venda_validade
+          else coalesce( ed.venda_validade, ve.venda_validade )
+        end as venda_validade,
+        case
+          when ve.venda_id is not null then coalesce( iten.itens, jsonb_build_array() )
+          else coalesce( ed.doc->'arg_itens', jsonb_build_array() )
+        end as arg_itens
       from __item_doc ed
-        left join tweeks.venda ve on ed.venda_id = ve.venda_id
-        left join __iten iten on ve.venda_id = iten.___iten_venda_super
+        left join __vendas_existis ve on ed.venda_id = ve.venda_id
+        left join __vendas_item_groups iten on ve.venda_id = iten.___iten_venda_super
 
-      where ve.venda_id = any( _data.notacredito_aplicar )
-        and ve.venda_venda_id is null
-      group by 
-        ve.venda_id,
-        ed.venda_id,
-        ed.venda_codigoimposto
+      where ( ve.venda_id is null and arg_conta_id is null ) 
+        or ( ve.venda_id = any( _data.notacredito_aplicar ) and ve.venda_venda_id is null )
+    
   ) select
         jsonb_agg( to_jsonb( ve ) ) as arg_vendas
         into _vendas
@@ -348,7 +389,7 @@ begin
     jsonb_build_object(
       'arg_colaborador_id', arg_colaborador_id,
       '_serie_id', _serie_id,
-      'arg_espaco_auth', _conta.conta_espaco_auth,
+      'arg_espaco_auth', coalesce( _conta.conta_espaco_auth, arg_espaco_auth ),
       'conta_posto_id', _conta_args.conta_posto_id,
       'conta_mesa', _conta_args.conta_mesa,
       'conta_extension', coalesce( _conta_args.conta_extension, jsonb_build_object()),
@@ -420,7 +461,7 @@ begin
   _conta_close_res := tweeks.funct_pos_change_conta_fechar(
     jsonb_build_object(
       'arg_colaborador_id', arg_colaborador_id,
-      'arg_espaco_auth', _conta.conta_espaco_auth,
+      'arg_espaco_auth', coalesce( _conta.conta_espaco_auth, arg_espaco_auth ),
       'arg_tserie_id', _tserie_id,
       '_serie_id', _serie_id,
       'conta_conta_docorigin', _conta.conta_id,
@@ -547,7 +588,6 @@ begin
         where ct._branch_uid = arg_branch
           and ct.conta_tserie_id = any( __docs_of )
           and ct.conta_estado = _const.maguita_conta_estado_fechado
-          and venda_ncred.venda_id is null
           and ct.conta_numerofatura = _conta_fatura
         group by ct.conta_id
     ) select to_jsonb( _ct )
