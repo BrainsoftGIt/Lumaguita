@@ -30,6 +30,7 @@ declare
   arg_colaborador_id uuid default args->>'arg_colaborador_id';
   arg_espaco_auth uuid default args->>'arg_espaco_auth';
   arg_conta_id uuid default args->>'conta_id';
+  __conta_docorigin uuid default args->>'conta_docorigin';
   arg_branch_uid uuid default tweeks.__branch_uid( arg_colaborador_id, arg_espaco_auth );
   __branch cluster.branch;
   _data record;
@@ -49,6 +50,7 @@ declare
   );
   _serie_id uuid default args->>'_serie_id';
   _tserie_id int2 default args->>'_tserie_id';
+  _check record;
 begin
   _const := map.constant();
   _conta_args := jsonb_populate_record( _conta_args, args );
@@ -62,7 +64,41 @@ begin
   if _tserie_id = _const.maguita_tserie_notacredito then __signal := -1; 
   else __signal := 1;
   end if;
-
+  
+  if arg_conta_id is not null and _conta.conta_id is null then 
+      return lib.res_false( 'Não foi encontrado nenhuma conta interna com essa ID!' );
+  end if;
+  
+  if arg_conta_id is null and exists(
+    select *
+      from tweeks.conta ct
+      where ct.conta_numerofatura = __conta_docorigin
+  ) then
+    return lib.res_false( format( 'Existe um documento interno com a mesma identificação do documento extreno %I', __conta_docorigin  ) );
+  end if;
+  
+  if arg_conta_id is not null and exists (
+    select *
+      from jsonb_array_elements( args->'itens' ) e ( doc )
+        left join jsonb_populate_record( null::tweeks.venda, e.doc ) eve on true
+        left join tweeks.venda ve on eve.venda_id = ve.venda_id
+          and ve.venda_conta_id = arg_conta_id
+      where ve.venda_id is null
+  ) then
+    return lib.res_false( 'Não pode incluir novos itens a um documento interno!' );
+  end if;
+  
+  
+  if arg_conta_id is null and exists (
+    select *
+      from jsonb_array_elements( args->'itens' ) e ( doc )
+        inner join jsonb_populate_record( null::tweeks.venda, e.doc ) eve on true
+        inner join tweeks.venda ve on eve.venda_id = ve.venda_id
+          and ve.venda_conta_id = arg_conta_id
+      where ve.venda_id is not null
+  ) then
+    return lib.res_false( 'Não pode vincular itens de documentos interno na anulação de um documento externo!' );
+  end if;
 
   with conta_origin as (
     select
@@ -185,7 +221,8 @@ begin
     select 
         ve.*,
         abs( ve.venda_quantidade ) as __venda_quantidade,
-        ( abs( ve.venda_montantecomimposto ) - abs( ve.venda_montantesemimposto ) ) / abs( ve.venda_quantidade ) as __venda_montantecomimposto,
+        ( abs( ve.venda_montantecomimposto ) - abs( ve.venda_montantesemimposto ) ) / abs( ve.venda_quantidade ) as __venda_diferencaimposto,
+        abs( ve.venda_montantecomimposto ) / abs( ve.venda_quantidade ) as __venda_montantecomimposto,
         abs( ve.venda_montantesemimposto ) / abs( ve.venda_quantidade ) as __venda_montantesemimposto,
         abs( ve.venda_montanteagregado ) / abs( ve.venda_quantidade ) as __venda_montanteagregado,
         abs( ve.venda_montantetotal ) / abs( ve.venda_quantidade ) as __venda_montantetotal,
@@ -339,8 +376,7 @@ begin
            _const.colaborador_system_data,
            __branch.branch_main_user,
            __branch.branch_main_workspace,
-           'CONTA DE NOTA DE CREDITO/DEBITO'
-            ,
+           'CONTA DE NOTA DE CREDITO/DEBITO',
            __branch._branch_uid,
            'NDC100010'
        );
@@ -505,7 +541,6 @@ begin
     ]::int2[];
   end if;
   
-  
   return query
     with __venda_remanescete as (
       select 
@@ -548,10 +583,13 @@ begin
     ), __conta as (
       select
         ct.*,
-        array_agg( to_jsonb( _veg ) || to_jsonb( _ved ) ) as conta_vendas
+        coalesce( 
+          jsonb_agg( to_jsonb( _veg ) || to_jsonb( _ved ) ) filter ( where _ved.venda_id is not null and _veg.venda_id is not  null ), 
+          jsonb_build_array( )
+        ) as conta_vendas
         from tweeks.conta ct
-          inner join __venda_group _veg on ct.conta_id = _veg.venda_conta_id
-          inner join __venda _ved on _veg.venda_id = _ved.venda_id
+          left join __venda_group _veg on ct.conta_id = _veg.venda_conta_id
+          left join __venda _ved on _veg.venda_id = _ved.venda_id
           left join tweeks.venda venda_ncred on _veg.venda_id = venda_ncred.venda_venda_docorign
             and venda_ncred.venda_estado = _const.maguita_venda_estado_fechado
         where ct._branch_uid = arg_branch
@@ -565,5 +603,7 @@ begin
 end;
 $$;
 `;
+
+
 
 
