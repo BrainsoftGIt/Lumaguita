@@ -16,6 +16,8 @@ declare
       _colaborator_id: UID
       _posto_id: UUID
       _artigo_id: UUID
+      _client_id: UUID
+      _fornecedor_id: UUID
       _documento: character varying
     }
    doc*/
@@ -29,9 +31,16 @@ declare
   _colaborator_id uuid default args->>'_colaborator_id';
   _posto_id uuid default args->>'_posto_id';
   _artigo_id uuid default args->>'_artigo_id';
+  _client_id uuid default args->>'_client_id';
+  _fornecedor_id uuid default args->>'_fornecedor_id';
+  _documento character varying default args->>'_documento';
+  _docfilter character varying;
   _const map.constant;
 begin
   _const := map.constant();
+  if _documento is not null then
+    _docfilter := format('%%%s%%', trim( upper( _documento ) ) );
+  end if;
   if _tserie_id  = _const.maguita_tserie_guiaentrada then
       return query
         with __guia_saida as (
@@ -62,6 +71,11 @@ begin
               and g.guia_dataoperacao >= coalesce( _date_start, g.guia_dataoperacao )
               and g.guia_dataoperacao <= coalesce( _date_end, g.guia_dataoperacao )
               and g.guia_colaborador_id = coalesce( _colaborator_id, g.guia_colaborador_id )
+              and f.fornecedor_id = coalesce( _fornecedor_id, f.fornecedor_id )
+              and (
+                upper( guia_numero ) like coalesce( _docfilter, guia_numero )                
+                or upper( guia_documentoperacao ) like coalesce( _docfilter, guia_documentoperacao )
+              )
             group by
               g.guia_uid,
               f.fornecedor_id,
@@ -120,6 +134,8 @@ begin
             and ct.conta_colaborador_fecho = coalesce( _colaborator_id, ct.conta_colaborador_fecho )
             and ct.conta_posto_fecho = coalesce( _posto_id, ct.conta_posto_fecho )
             and ct.conta_estado = _const.maguita_conta_estado_fechado
+            and ct.conta_cliente_id = coalesce( _client_id, ct.conta_cliente_id )
+            and upper( ct.conta_numerofatura ) like coalesce( _docfilter, ct.conta_numerofatura )
           group by ct.conta_id,
             col.colaborador_id,
             c.cliente_id,
@@ -176,6 +192,8 @@ begin
             and ct.conta_colaborador_fecho = coalesce( _colaborator_id, ct.conta_colaborador_fecho )
             and ct.conta_posto_fecho = coalesce( _posto_id, ct.conta_posto_fecho )
             and ct.conta_proforma
+            and ct.conta_cliente_id = coalesce( _client_id, ct.conta_cliente_id )
+            and upper( ct.conta_numerofatura ) like coalesce( _docfilter, ct.conta_numerofatura )
           group by ct.conta_id,
             col.colaborador_id,
             c.cliente_id,
@@ -234,6 +252,8 @@ begin
             and ct.conta_posto_fecho = coalesce( _posto_id, ct.conta_posto_fecho )
             and ct.conta_proforma
             and ct.conta_estado in ( _const.maguita_conta_estado_fechado, _const.maguita_conta_estado_aberto )
+            and ct.conta_cliente_id = coalesce( _client_id, ct.conta_cliente_id )
+            and upper( ct.conta_numerofatura ) like coalesce( _docfilter, ct.conta_numerofatura )
           group by ct.conta_id,
             col.colaborador_id,
             c.cliente_id,
