@@ -74,6 +74,11 @@ var documents = {
         let _documento = $("#_documento").val() || null;
         let _client_nif = $("#_client_nif").val() || null;
 
+        if(!_tserie_id){
+            xAlert("", "Por favor, selecione uma serie de fatura!", "error");
+            return
+        }
+
         $.ajax({
             url: "/api/load/documents",
             method: "POST",
