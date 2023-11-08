@@ -6,8 +6,8 @@ var documents = {
         [serieOperation.tipo.guiaSaida] : ({conta_id, date}) => {
             open("/api/print/guia_saida/"+JSON.stringify({date, conta_id: conta_id }));
         },
-        [serieOperation.tipo.recibo] : ({conta_id}) => {
-
+        [serieOperation.tipo.recibo] : ({deposito, date, client}) => {
+            open("/api/print/recibo/"+JSON.stringify({deposito, client, date, admin: true}));
         },
         [serieOperation.tipo.faturaProforma] : ({conta_id, date}) => {
             open("/api/print/proforma/"+JSON.stringify({type: "pdf", conta_id: conta_id, date }));
@@ -94,15 +94,15 @@ var documents = {
 
                 $(`[body-report-list-faturas]`).addClass("empty").empty();
 
-                lista.forEach(({colaborador_nome, conta_montante, posto_designacao, conta_titular, conta_titularnif, conta_numerofatura, conta_data, conta_id, tserie_id}) => {
-                    $(`[body-report-list-faturas]`).append(`<ul data-conta_id="${conta_id}" data-tserie_id="${tserie_id}" data-date="${conta_data}">
-                                            <li>${conta_numerofatura}</li>
-                                            <li>${conta_titular}</li>
-                                            <li>${conta_titularnif || "---------"}</li>
-                                            <li>${conta_montante.formatter()} STN</li>
+                lista.forEach(({cliente_nif, deposito_id, cliente_id, cliente_titular, colaborador_nome, conta_montante, posto_designacao, conta_titular, conta_titularnif, conta_numerofatura, deposito_documento, conta_data, conta_id, tserie_id, deposito_montantefinal, deposito_data}) => {
+                    $(`[body-report-list-faturas]`).append(`<ul data-conta_id="${conta_id}" data-tserie_id="${tserie_id}" data-date="${conta_data || deposito_data}" data-deposito="${deposito_id}" data-client="${cliente_id}">
+                                            <li>${conta_numerofatura || deposito_documento}</li>
+                                            <li>${cliente_titular || conta_titular}</li>
+                                            <li>${cliente_nif || conta_titularnif || "---------"}</li>
+                                            <li>${(conta_montante || deposito_montantefinal).formatter()} STN</li>
                                             <li>${colaborador_nome}</li>
                                             <li>${posto_designacao}</li>
-                                            <li>${conta_data.stringToDateEn().getDatePt()}</li>
+                                            <li>${(conta_data || deposito_data).stringToDateEn().getDatePt()}</li>
                                             <li class="flex v-ct j-stp">
                                                 <span class="flex v-ct">
                                                    <svg class="svg-icon imprimir" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
@@ -187,6 +187,6 @@ $("#loadDocuments").on("click", function (){
 })
 
 $(`[body-report-list-faturas]`).on("click", ".imprimir",function (){
-    let {tserie_id, conta_id, date} = $(this).closest("ul").data();
+    let {tserie_id, conta_id, date, deposito, client} = $(this).closest("ul").data();
     documents.reprint[tserie_id]({conta_id, date})
 })
