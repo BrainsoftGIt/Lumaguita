@@ -239,10 +239,7 @@ begin
             coalesce( ctorg.conta_data, ct.conta_datedocorigin ) as conta_datedocorigin,
             coalesce( c.cliente_titular, ct.conta_titular ) as conta_titular,
             coalesce( c.cliente_nif, ct.conta_titularnif) as conta_titularnif,
-            g.guia_uid,
-            g.guia_numero,
-            g.guia_date,
-            g.guia_documentoperacao,
+
             c.cliente_id,
             col.colaborador_id,
             col.colaborador_nome,
@@ -254,7 +251,11 @@ begin
             ct.conta_tserie_id as tserie_id,
             ct.conta_proforma,
             ct.conta_proformaextras,
-            ct.conta_proformavencimento
+            ct.conta_proformavencimento,
+            g.guia_uid,
+            g.guia_numero,
+            g.guia_date,
+            g.guia_documentoperacao
           from tweeks.conta ct
             inner join tweeks.venda ve on ct.conta_id = ve.venda_conta_id
               and ve.venda_estado in ( _const.maguita_venda_estado_fechado, _const.maguita_venda_estado_aberto )
@@ -273,7 +274,6 @@ begin
             and ct.conta_data <= coalesce( _date_end, ct.conta_data )
             and ct.conta_colaborador_fecho = coalesce( _colaborator_id, ct.conta_colaborador_fecho )
             and ct.conta_posto_fecho = coalesce( _posto_id, ct.conta_posto_fecho )
-            and ct.conta_proforma
             and ct.conta_estado in ( _const.maguita_conta_estado_fechado, _const.maguita_conta_estado_aberto )
             and ct.conta_cliente_id = coalesce( _client_id, ct.conta_cliente_id )
             and upper( ct.conta_numerofatura ) like coalesce( _docfilter, ct.conta_numerofatura )
