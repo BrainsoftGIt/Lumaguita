@@ -300,6 +300,7 @@ begin
               de.deposito_observacao,
               de.deposito_taxacambio,
               de.deposito_dataregistro,
+              de.deposito_referencia,
               cu.currency_id,
               cu.currency_code,
               cu.currency_name,
