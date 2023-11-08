@@ -336,6 +336,10 @@ begin
               and coalesce( de.deposito_posto_id, '00000000-0000-0000-0000-000000000001') = coalesce( _posto_id, de.deposito_posto_id, '00000000-0000-0000-0000-000000000001' )
               and de.deposito_estado in ( _const.maguita_deposito_estado_ativo )
               and de.deposito_cliente_id = coalesce( _client_id, de.deposito_cliente_id )
+              and ts.tserie_id in (
+                _const.maguita_tserie_recibo,
+                _const.maguita_tserie_faturarecibo
+              )
               and (
                 upper( de.deposito_documento ) like coalesce( _docfilter, de.deposito_documento )
                 or upper( de.deposito_docref ) like coalesce( _docfilter, de.deposito_docref )
