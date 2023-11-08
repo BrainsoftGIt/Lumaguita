@@ -51,7 +51,7 @@ begin
   
   if _tserie_id  = _const.maguita_tserie_guiaentrada then
       return query
-        with __guia_saida as (
+        with __guia_entrada as (
           select
               g.guia_uid,
               g.guia_date,
@@ -91,7 +91,7 @@ begin
               col.colaborador_id
             having count( * ) filter ( where entr.entrada_artigo_id = coalesce( _artigo_id, entr.entrada_artigo_id ) ) > 0
         ) select to_jsonb( _gs )
-            from __guia_saida _gs
+            from __guia_entrada _gs
             order by _gs.guia_date desc
     ;
     return;
@@ -226,7 +226,7 @@ begin
     _const.maguita_tserie_guiasaida
   ) then
     return query 
-      with __conta_documentos as (
+      with __guia_saida as (
         select
             ct.conta_id,
             ct.conta_numerofatura,
@@ -239,6 +239,10 @@ begin
             coalesce( ctorg.conta_data, ct.conta_datedocorigin ) as conta_datedocorigin,
             coalesce( c.cliente_titular, ct.conta_titular ) as conta_titular,
             coalesce( c.cliente_nif, ct.conta_titularnif) as conta_titularnif,
+            g.guia_uid,
+            g.guia_numero,
+            g.guia_date,
+            g.guia_documentoperacao,
             c.cliente_id,
             col.colaborador_id,
             col.colaborador_nome,
@@ -255,6 +259,9 @@ begin
             inner join tweeks.venda ve on ct.conta_id = ve.venda_conta_id
               and ve.venda_estado in ( _const.maguita_venda_estado_fechado, _const.maguita_venda_estado_aberto )
             inner join auth.colaborador col on ct.conta_colaborador_fecho = col.colaborador_id
+            inner join tweeks.guia g on g.guia_refuid = ct.conta_id
+              and g.guia_refclass = 'tweeks.conta'
+              and g.guia_tguia_id = _const.maguita_tguia_saida
             left join tweeks.posto p on ct.conta_posto_fecho = p.posto_id
             left join tweeks.espaco e on ct.conta_espaco_auth = e.espaco_id
             left join tweeks.cliente c on ct.conta_cliente_id = c.cliente_id
@@ -279,7 +286,7 @@ begin
             e.espaco_id
           having count( * ) filter ( where ve.venda_artigo_id = coalesce( _artigo_id, ve.venda_artigo_id ) ) > 0
       ) select  to_jsonb( _cd )
-          from __conta_documentos _cd
+          from __guia_saida _cd
           order by _cd.conta_dataregistro desc
         ;
     return;
