@@ -283,7 +283,8 @@ begin
             c.cliente_id,
             ctorg.conta_id,
             p.posto_id,
-            e.espaco_id
+            e.espaco_id,
+            g.guia_uid
           having count( * ) filter ( where ve.venda_artigo_id = coalesce( _artigo_id, ve.venda_artigo_id ) ) > 0
       ) select  to_jsonb( _cd )
           from __guia_saida _cd
