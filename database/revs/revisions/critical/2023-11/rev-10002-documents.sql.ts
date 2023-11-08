@@ -314,12 +314,17 @@ begin
               po.posto_id,
               po.posto_designacao,
               tp.tpaga_id,
-              tp.tpaga_designacao
+              tp.tpaga_designacao,
+              ts.tserie_id,
+              ts.tserie_code,
+              ts.tserie_desc
             from tweeks.deposito de
               inner join geoinfo.currency cu on de.deposito_currency_id = cu.currency_id
               inner join tweeks.cliente cli on cli.cliente_id = de.deposito_cliente_id
               inner join auth.colaborador col on col.colaborador_id = de.deposito_colaborador_id
               inner join tweeks.tpaga tp on de.deposito_tpaga_id = tp.tpaga_id
+              inner join tweeks.serie se on de.deposito_serie_id = se.serie_id
+              inner join tweeks.tserie ts on se.serie_tserie_id = ts.tserie_id
               left join tweeks.caixa cx on de.deposito_caixa_id = cx.caixa_id
               left join tweeks.posto po on de.deposito_posto_id = po.posto_id
 
