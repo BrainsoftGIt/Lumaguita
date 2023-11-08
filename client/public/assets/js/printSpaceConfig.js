@@ -49,7 +49,7 @@ var spaceConfig = {
     "fatura_recibo_2_via":{
         print(){
             if(spaceConfig.typePrinter === "pdf")
-                 open("/api/print/fatura/recibo/"+JSON.stringify({conta_id: spaceConfig.account_id, date: new Date().getTimeStampPt() }));
+                 open("/api/print/fatura/recibo/"+JSON.stringify({conta_id: spaceConfig.account_id, date: spaceConfig.data_fatura }));
             else{
                 $("body").addClass("loading");
                 $.ajax({
