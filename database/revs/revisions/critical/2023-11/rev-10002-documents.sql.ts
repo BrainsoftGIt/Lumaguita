@@ -251,18 +251,11 @@ begin
             ct.conta_tserie_id as tserie_id,
             ct.conta_proforma,
             ct.conta_proformaextras,
-            ct.conta_proformavencimento,
-            g.guia_uid,
-            g.guia_numero,
-            g.guia_date,
-            g.guia_documentoperacao
+            ct.conta_proformavencimento
           from tweeks.conta ct
             inner join tweeks.venda ve on ct.conta_id = ve.venda_conta_id
               and ve.venda_estado in ( _const.maguita_venda_estado_fechado, _const.maguita_venda_estado_aberto )
             inner join auth.colaborador col on ct.conta_colaborador_fecho = col.colaborador_id
-            inner join tweeks.guia g on g.guia_refuid = ct.conta_id
-              and g.guia_refclass = 'tweeks.conta'
-              and g.guia_tguia_id = _const.maguita_tguia_saida
             left join tweeks.posto p on ct.conta_posto_fecho = p.posto_id
             left join tweeks.espaco e on ct.conta_espaco_auth = e.espaco_id
             left join tweeks.cliente c on ct.conta_cliente_id = c.cliente_id
@@ -283,8 +276,7 @@ begin
             c.cliente_id,
             ctorg.conta_id,
             p.posto_id,
-            e.espaco_id,
-            g.guia_uid
+            e.espaco_id
           having count( * ) filter ( where ve.venda_artigo_id = coalesce( _artigo_id, ve.venda_artigo_id ) ) > 0
       ) select  to_jsonb( _cd )
           from __guia_saida _cd
