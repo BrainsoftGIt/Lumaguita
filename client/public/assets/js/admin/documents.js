@@ -187,6 +187,7 @@ $("#loadDocuments").on("click", function (){
 })
 
 $(`[body-report-list-faturas]`).on("click", ".imprimir",function (){
-    let {tserie_id, conta_id, date, deposito, client} = $(this).closest("ul").data();
-    documents.reprint[tserie_id]({conta_id, date})
+    let {conta_id, date, deposito, client} = $(this).closest("ul").data();
+    let {_tserie_id: tserie_id} = $("[list='_tserie_id'] li.active").data() || {};
+    documents.reprint[tserie_id]({conta_id, date, deposito, client})
 })
