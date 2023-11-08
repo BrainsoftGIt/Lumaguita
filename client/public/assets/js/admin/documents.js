@@ -100,8 +100,8 @@ var documents = {
                                             <li>${cliente_titular || conta_titular}</li>
                                             <li>${cliente_nif || conta_titularnif || "---------"}</li>
                                             <li>${(conta_montante || deposito_montantefinal).formatter()} STN</li>
-                                            <li>${colaborador_nome}</li>
-                                            <li>${posto_designacao}</li>
+                                            <li>${colaborador_nome || "---------"}</li>
+                                            <li>${posto_designacao || "---------"}</li>
                                             <li>${(conta_data || deposito_data).stringToDateEn().getDatePt()}</li>
                                             <li class="flex v-ct j-stp">
                                                 <span class="flex v-ct">
