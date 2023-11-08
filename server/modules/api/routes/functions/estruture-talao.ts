@@ -1,6 +1,5 @@
 export let structure = ({margin}) => {
     let { marginLeft: left, marginRight : right } = margin || {};
-    console.log(({left, right}))
     return {
         styles: {
             pequena: {
@@ -23,7 +22,7 @@ export let structure = ({margin}) => {
                 bold: true,
             },
         },
-        pageMargins: [ (+left || 5), 0, (+right || 15), 0 ],
+        pageMargins: [ (+left || 5), 0, (+right || 5), 0 ],
         pageSize: {
             width : 210,
             height: 595 * 2
