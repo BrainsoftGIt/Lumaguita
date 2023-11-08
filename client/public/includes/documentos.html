@@ -76,6 +76,7 @@
                 <ul list="_tserie_id">
                     <li class="tgl" data-_tserie_id="1">Fatura (FT)</li>
                     <li class="tgl" data-_tserie_id="2">Fatura Recibo (FR)</li>
+                    <li class="tgl" data-_tserie_id="6">Fatura Proforma (FP)</li>
                     <li class="tgl" data-_tserie_id="3">Recibo (RE)</li>
                     <li class="tgl" data-_tserie_id="4">Nota de Crédito (NC)</li>
                     <li class="tgl" data-_tserie_id="8">Nota de Debito (ND)</li>
@@ -86,6 +87,16 @@
             <div class="xinput w50">
                 <input type="text" placeholder="_" id="_documento" _noObrigatory="true">
                 <label for="_documento">Número de documento</label>
+            </div>
+            <div class="xselect flutuate w50">
+                <input _noObrigatory="true" type="text" readonly id="_client_id" placeholder="_">
+                <label for="_client_id">Escolha o titular</label>
+                <ul list="_client_id"></ul>
+                <div class="fakearrow flex"><span></span><span></span></div>
+            </div>
+            <div class="xinput w50">
+                <input type="text" placeholder="_" id="_client_nif" _noObrigatory="true">
+                <label for="_client_nif">NIF do titular</label>
             </div>
             <div class="xinput w100">
                 <input type="text" id="_artigo_id" list="listArtigos" placeholder="_" _noObrigatory="true">

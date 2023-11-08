@@ -1,6 +1,7 @@
 import {app} from '../../../service/web.service';
 import {functLoadContaData} from "../db/call-function-pos";
 import {functReportVendaPOS} from "../db/call-function-report";
+import {getUserSession, getUserSessionPOS} from "./functions/get-session";
 
 export async function load_space_configuration(req, admin) {
     const {functLoadDadosEmpresa} = require("../db/call-function-settings");
@@ -41,10 +42,15 @@ app.get("/api/print/proforma/:dados", async (req, res) =>{
 
 app.get("/api/print/fatura/recibo/:dados", async (req, res) =>{
     let dados = JSON.parse(req.params.dados);
-    const dadosConta = await functLoadContaData({arg_conta_id: dados.conta_id, with_client: true, arg_espaco_auth: req?.session?.user_pos?.auth?.armazem_atual,
-        arg_colaborador_id: req?.session?.user_pos?.auth?.colaborador_id});
+    let _session = (!!dados.admin) ? getUserSession( req ) : getUserSessionPOS( req );
+    const dadosConta = await functLoadContaData({
+        arg_conta_id: dados.conta_id,
+        with_client: true,
+        arg_espaco_auth: _session.workspace,
+        arg_colaborador_id: _session.user_id
+    });
     const file = require("./functions/export-faturarecibo");
-    let instituition = await load_space_configuration(req, false);
+    let instituition = await load_space_configuration(req, !!dados.admin);
     instituition = instituition[0].funct_load_espaco_configuracao.espaco;
     let user = req?.session?.user_pos?.auth?.colaborador_nome+" "+(req?.session?.user_pos?.auth?.colaborador_apelido === null ? "" : req?.session?.user_pos?.auth?.colaborador_apelido.split(" ").pop());
     await file.create(instituition, dadosConta.rows, res, user, dados.date, dadosConta.rows[0].main.conta_serie.serie_numatorizacao);
