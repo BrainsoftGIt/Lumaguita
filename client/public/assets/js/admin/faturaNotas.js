@@ -70,6 +70,7 @@ var faturaAdmin = {
         return {articles_table, errorCodeImposto};
     },
     register_invoice: function (){
+        let docType = (FATURA === serieOperation.tipo.notaCredito ? "Nota de crédito" : "Nota de debito");
         let modal = window.xModalGeral || ""
 
         let observacao_fatura = $("#observacao_fatura");
@@ -80,7 +81,7 @@ var faturaAdmin = {
         let {articles_table, errorCodeImposto} = this.articles_added();
 
         if(errorCodeImposto){
-            xAlert("Nota de credito", "Define o código de imposto!", "error");
+            xAlert(docType, "Define o código de imposto!", "error");
             return;
         }
 
@@ -132,7 +133,7 @@ var faturaAdmin = {
                         listfatura.find("li").mousedown();
                     }
 
-                    xAlert("Fatura", "Fatura emitida com sucesso!");
+                    xAlert(docType, "Fatura emitida com sucesso!");
                     articlesDocuments.customer_id = null;
                     observacao_fatura.val("");
                     if(FATURA === serieOperation.tipo.notaDebito){
@@ -141,7 +142,7 @@ var faturaAdmin = {
                     }
                     open("/api/print/nota-credito/"+JSON.stringify({type: "pdf", conta_id, date: new Date().getTimeStampPt(), admin: true }));
                 }
-                else xAlert("Fatura", message, "error");
+                else xAlert(docType, message, "error");
             }
         });
     },
@@ -158,7 +159,7 @@ var faturaAdmin = {
                 _tserie_id:  FATURA
             }),
             success: ({fatura}) => {
-
+                let docType = (FATURA === serieOperation.tipo.notaCredito ? "Nota de crédito" : "Nota de debito");
                 let { conta_titular, conta_vendas, conta_data, conta_cliente_id} = fatura;
                 faturaAdmin.fatura = fatura;
 
@@ -167,7 +168,15 @@ var faturaAdmin = {
                     $(` ${modal} [tableDocumentArticles] `).addClass("empty");
                     $(` ${modal} [documento_origem_data]`).prop("disabled", false);
                     $(`[price_article], [codigo_imposto_article], [amount_article], [description_article], [search_article], [addarticletable]`).val( "").prop("disabled", false);
-                    xAlert("Nota de credito", "Não foi encontrado numa fatura com esse número!", "error");
+                    xAlert(docType, "Não foi encontrado numa fatura com esse número!", "error");
+                    return
+                }
+
+                if(!conta_vendas.length){
+                    $(` ${modal} [tableDocumentArticles] `).addClass("empty");
+                    $(` ${modal} [documento_origem_data]`).prop("disabled", false);
+                    $(`[price_article], [codigo_imposto_article], [amount_article], [description_article], [search_article], [addarticletable]`).val( "").prop("disabled", false);
+                    xAlert(docType, `Não há mais itens disponíveis para efetuar a ${docType}`, "error");
                     return
                 }
 
@@ -219,36 +228,37 @@ var faturaAdmin = {
 };
 
 $("#finalizar_fatura").on("click", function () {
+    let docType = (FATURA === serieOperation.tipo.notaCredito ? "Nota de crédito" : "Nota de debito");
     let modal = window.xModalGeral || ""
     spaceConfig.loadConfig().then(value => {
         if(spaceConfig.isConfigured({object: value.config[0]})){
             if(serieOperation.missing.includes(FATURA)){
-                xAlert("Série de fatura", "Nenhuma série de fatura encontrada para este armazém. Defina-a em definições!","error");
+                xAlert(docType, "Nenhuma série de fatura encontrada para este armazém. Defina-a em definições!","error");
                 return;
             }
             if($("#colaborador_logado_armazens").find("li.active").attr("posto_admin") === "null"){
-                xAlert("Fatura", "Selecione o posto para estar associado ao armazém "+ $("[currentUserSpace]").text()+", em definições!", "error");
+                xAlert(docType, "Selecione o posto para estar associado ao armazém "+ $("[currentUserSpace]").text()+", em definições!", "error");
                 return;
             }
             if(articlesDocuments.customer_id === null){
-                xAlert("Fatura ", "Pesquise um cliente!", "info");
+                xAlert(docType, "Pesquise um cliente!", "info");
                 $(`${modal} [search_customer]`).focus();
                 return;
             }
             if($(`${modal} [tableDocumentArticles]`).find(`ul`).length === 0){
-                xAlert("Fatura", "Adicione artigos na tabela!", "info");
+                xAlert(docType, "Adicione artigos na tabela!", "info");
                 return;
             }
 
             let listfatura = $(`${modal} [listfatura]`);
             if(!!listfatura.length && !listfatura.find("li.active").length){
-                xAlert("", "Por favor, selecione uma serie de fatura!", "error");
+                xAlert(docType, "Por favor, selecione uma serie de fatura!", "error");
                 return
             }
 
             let observacao_fatura = $("#observacao_fatura")
             if(!observacao_fatura.val()){
-                xAlert("", "Por favor, adicione uma observação!", "error");
+                xAlert(docType, "Por favor, adicione uma observação!", "error");
                 observacao_fatura.focus()
                 return;
             }
@@ -265,6 +275,7 @@ $("#finalizar_fatura").on("click", function () {
 });
 
 $("[documento_origem]").on("keyup", function ({keyCode}){
+    let docType = (FATURA === serieOperation.tipo.notaCredito ? "Nota de crédito" : "Nota de debito");
     let { loadData } = faturaAdmin;
     if(keyCode === 13 && $(this).val()){
         loadData();
@@ -272,7 +283,7 @@ $("[documento_origem]").on("keyup", function ({keyCode}){
     }
 
     if(keyCode === 13 && !$(this).val()) {
-        xAlert("Nota de credito", "Priencha o campo fatura!", "error");
+        xAlert(docType, "Priencha o campo fatura!", "error");
         $(`[price_article], [codigo_imposto_article], [amount_article], [description_article], [search_article], [addarticletable], [documento_origem_data]`).val( "").prop("disabled", false);
     }
 })
@@ -296,7 +307,8 @@ $(`[tableDocumentArticles]`).on('focus', "[placeholder]", function (e) {
     $(this).parents("ul").data("venda_codigo", $(this).text() || null);
 }).on("keyup", '[venda_quantidade]',function (){
     if((!!$(this).text() && +$(this).attr("venda_quantidaderemanescente") < +$(this).text()) || (+$(this).text() <= 0 && !!$(this).text())){
-        xAlert("", "Quantidade inválida!", "error");
+        let docType = (FATURA === serieOperation.tipo.notaCredito ? "Nota de crédito" : "Nota de debito");
+        xAlert(docType, "Quantidade inválida!", "error");
         $(this).text($(this).attr("venda_quantidaderemanescente"))
     }
 
