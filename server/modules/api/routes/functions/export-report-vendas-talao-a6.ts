@@ -51,7 +51,7 @@ export let create = async (instituition, accounts, res, user, printer_name, arg_
                     },
                     {
                         alignment: "center",
-                        canvas: [ { type: 'rect', x: -3, y: 0, w: 245, h: 0, dash: { length: 9 }, lineWidth: 0.5} ],
+                        canvas: [ { type: 'rect', x: 0, y: 0, w: 245, h: 0, dash: { length: 9 }, lineWidth: 0.5} ],
                         margin: [0, 3, 0, 2],
                     }
                 ]
@@ -80,7 +80,7 @@ export let create = async (instituition, accounts, res, user, printer_name, arg_
                             },
                             {
                                 alignment: "center",
-                                canvas: [ { type: 'rect', x: -3, y: 0, w: 245, h: 0, dash: { length: 9 }, lineWidth: 0.5} ],
+                                canvas: [ { type: 'rect', x: 0, y: 0, w: 245, h: 0, dash: { length: 9 }, lineWidth: 0.5} ],
                                 margin: [0, 2, 0, 2],
                             }
                         ]
