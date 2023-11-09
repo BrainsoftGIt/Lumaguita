@@ -133,9 +133,9 @@ kconst.declares( (exports, override, SELF_NAME, props) => {
             passwordClone:"1234",
             passwordSuperUser:"1234",
 
-            databaseClinic: "clinic", // database name,
-            userClinic: "clinic", // database name,
-            passwordClinic: "1234@cli", // database name,
+            databaseClinic: "proclinic", // database name,
+            userClinic: "proclinic", // database name,
+            passwordClinic: "1234@cli-pro", // database name,
             hostClinic: "216.137.179.55", // database name,
             dbServiceName: "lumaguita-database-service"
         }; exports( targets.dbConnection );
