@@ -8,7 +8,7 @@ app.post( "/api/load/doc/to/nota", (req, res, next) => {
     let args = req.body;
     args.arg_colaborador_id = _session.user_id;
     args.arg_espaco_auth = _session.workspace;
-
+    console.log( "console.log( args )", args )
     dbRes.call.tweeks.funct_load_conta_docs_financa({ args }, (error, result) => {
         if( error ){
             res.json({
@@ -32,6 +32,9 @@ app.post( "/api/reg/credito/nota", (req, res, next) => {
     let args = req.body;
     args.arg_colaborador_id = _session.user_id;
     args.arg_espaco_auth = _session.workspace;
+
+
+    console.log( args )
 
     dbRes.call.tweeks.funct_reg_conta_docs_financa({ args }, {
         onResult(error: Error, result?: Result<any, any>): any {

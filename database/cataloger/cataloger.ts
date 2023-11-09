@@ -4,6 +4,5 @@ dbCataloger.generateCatalog().then( value => {
         console.error( value.error );
         return;
     }
-    console.log( "Database cataloged successfully!")
-
+    console.log( "Database cataloged successfully!" )
 });
