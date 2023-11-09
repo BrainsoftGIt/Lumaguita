@@ -24,8 +24,8 @@ export let structure = ({margin}) => {
         },
         pageMargins: [ (+left || 5), 0, (+right || 5), 0 ],
         pageSize: {
-            width : 210,
-            height: 595 * 2
+            width : 302,
+            height: "auto"
         },
         background: function (page) {
             return []
