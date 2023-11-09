@@ -3,22 +3,22 @@ export let structure = ({margin}) => {
     return {
         styles: {
             pequena: {
-                fontSize: 6.8,
+                fontSize: 8.8,
                 alignment : "center",
                 lineHeight: 1.2
             },
             media: {
-                fontSize: 7
+                fontSize: 9
             },
             normal: {
-                fontSize: 8
+                fontSize: 10
             },
             grande: {
-                fontSize: 8.5,
+                fontSize: 10.5,
                 bold: true,
             },
             bold: {
-                fontSize: 8,
+                fontSize: 10,
                 bold: true,
             },
         },
