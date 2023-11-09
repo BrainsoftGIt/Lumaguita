@@ -11,7 +11,7 @@ app.post("/api/users/load", async (req, res) =>{
     res.json({users: response.rows.filter(value => parseInt(value.data.colaborador_tipo) !== 0 && !usersNotShowed.includes(value.data.colaborador_id))});
 });
 app.post("/api/user/main/workspace/load", async (req, res) =>{
-    res.json({mainWorkspace: req.session.auth_data.auth.branch_main_workspace});
+    res.json({mainWorkspace: req?.session?.auth_data?.auth.branch_main_workspace});
 });
 app.post("/api/user", async (req, res) =>{
     const {functRegUser} = require("../db/call-function-colaborador");

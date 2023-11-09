@@ -2,11 +2,15 @@
 <link rel="stylesheet" href="../assets/css/admin/fatura.css">
 <link rel="stylesheet" href="../assets/css/admin/tableAdmin.css">
 <style>
-    .noborder {
+    .__included__{
         overflow-y: hidden!important;
     }
+    .noborder {
+        overflow-y: hidden!important;
+        margin-top: 10px;
+    }
     [tableDocumentArticles] {
-        height: 32vh;
+        height: 34.5vh;
         overflow-y: auto;
         margin-bottom: 10px;
     }
@@ -15,6 +19,9 @@
         top: 50%; /* Centraliza verticalmente */
         left: 50%; /* Centraliza horizontalmente */
         transform: translate(-50%, -50%); /* Isso corrige o deslocamento para o centro */
+    }
+    .xinput, .xselect {
+        margin: 4px 0 4px!important;
     }
 </style>
 <div class="__included__ fatura inpage">
@@ -84,8 +91,8 @@
                 <label>Valor unitário</label>
             </div>
             <div class="xinput w12">
-                <input type="text" placeholder="Codigo Imposto" class="integer" codigo_imposto_article _noObrigatory="true">
-                <label>Codigo Imposto</label>
+                <input type="text" placeholder="Código Imposto" class="integer" codigo_imposto_article>
+                <label>Código Imposto</label>
             </div>
             <div class="xinput w15" style="display: none">
                 <input type="text" placeholder="Lote" lote_article _noObrigatory="true">

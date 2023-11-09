@@ -2,7 +2,7 @@ import {app, storage} from '../../../service/storage.service';
 import fs from "fs";
 import path from "path";
 import {clusterServer} from "../../../service/cluster.service";
-import {getUserSession} from "./functions/get-session";
+import {getUserSession, getUserSessionPOS} from "./functions/get-session";
 import {functLoadDataCluster} from "../db/call-function-settings";
 app.post("/api/armazem", async (req, res) => {
     const {functRegArmazem} = require("../db/call-function-settings");
@@ -97,8 +97,16 @@ app.post("/api/cambio/load", async (req, res) => {
 });
 app.post("/api/armazem/load", async (req, res) => {
     const {functLoadArmazens} = require("../db/call-function-settings");
-    req.body.arg_espaco_auth = req?.session?.auth_data?.auth?.armazem_atual || null;
-    req.body.arg_colaborador_id = req?.session?.auth_data?.auth?.colaborador_id || null;
+
+    let _session = (!req.body.pos) ? getUserSession( req ) : getUserSessionPOS( req );
+    req.body.arg_espaco_auth = _session.workspace;
+    req.body.arg_colaborador_id = _session.user_id;
+    if(!_session.user_id){
+        return res.json({
+            armazens: []
+        })
+    }
+
     const response = await functLoadArmazens(req.body);
     res.json({armazens: response.rows});
 });

@@ -20,6 +20,7 @@ app.get("/api/report/type/data", async (req, res) => {
        `.stream((data) => {
         _data.push(data[ "report" ]);
     }).catch(err => {
+        console.log({err})
     }).finally(async function () {
         res.json({configs: _data});
     });
@@ -193,6 +194,14 @@ app.post( "/api/report/parametrized/load", (req, res, next) => {
     args._user_id = _session.user_id;
     args._workspace = _session.workspace;
     args._branch = _session.branch_uid;
+
+    if(!args._user_id){
+        return res.json({
+            result:true,
+            message:"success",
+            data: []
+        })
+    }
 
     dbRes.call.report.funct_load_report_parametrized( {
         args : args

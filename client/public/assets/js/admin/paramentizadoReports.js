@@ -24,6 +24,9 @@ var paramentizadoReports = {
             url: "/api/armazem/load",
             method: "POST",
             contentType: "application/json",
+            data: JSON.stringify({
+                pos: paramentizadoReports?.posto_id || undefined
+            }),
             success({armazens}) {
                 let espacoList = $('[list="armazens"]');
                 armazens.forEach(({ funct_load_espaco : { espaco_nome, espaco_id} }, idx) =>{

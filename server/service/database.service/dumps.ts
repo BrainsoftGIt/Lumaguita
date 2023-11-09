@@ -14,7 +14,7 @@ import {DEFAULTS} from "../../global/defaults";
 import {serverNotify} from "../../snotify";
 import Path from "path";
 import chalk from "chalk";
-import {PostgresContextSteep, RevisionsChecks} from "kitres";
+import {PostgresContextSteep} from "kitres";
 import {dbRes} from "./kitres/res";
 import {MaguitaTableOf} from "../../../database/cataloger/lumaguita";
 import os from "os";

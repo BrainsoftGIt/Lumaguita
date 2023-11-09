@@ -22,7 +22,7 @@ var sales = {
                     $("#vendasPosto").removeClass("empty");
                     sales.list.forEach((sale) =>{
                         sale = sale.data;
-                        $("#vendasPosto").append(`<ul class="flex" conta_id="${sale.conta_id}">
+                        $("#vendasPosto").append(`<ul class="flex" conta_id="${sale.conta_id}" data-data_fatura="${sale.conta_dataregistro}">
                                                     <li>${sale.conta_numerofatura}</li>
                                                     <li>${sale.colaborador_nome}</li>
                                                     <li>${(sale.conta_titular || "N/D")}</li>                      
@@ -78,6 +78,7 @@ $("#vendasPosto").on("click", ".reimprimir", function () {
     spaceConfig.loadConfig().then(value => {
         if(spaceConfig.isConfigured({object: value.config[0]})){
             if(spaceConfig.hasPrinter({operation: sales.CODE_OPERATION_FATURA_RECIBO_SECOND})){
+                spaceConfig.data_fatura = $(this).parents("ul").data().data_fatura;
                 spaceConfig.account_id = $(this).parents("ul").attr("conta_id");
                 spaceConfig.operationCode = sales.CODE_OPERATION_FATURA_RECIBO_SECOND;
                 spaceConfig.getPrinter({operation: sales.CODE_OPERATION_FATURA_RECIBO_SECOND});

@@ -1,6 +1,7 @@
 import {app} from '../../../service/web.service';
 import {functLoadContaData} from "../db/call-function-pos";
 import {functReportVendaPOS} from "../db/call-function-report";
+import {getUserSession, getUserSessionPOS} from "./functions/get-session";
 
 export async function load_space_configuration(req, admin) {
     const {functLoadDadosEmpresa} = require("../db/call-function-settings");
@@ -26,7 +27,7 @@ app.get("/api/print/proforma/:dados", async (req, res) =>{
 
     let dados = JSON.parse(req.params.dados);
     let proformas = await functLoadProformas(req.body);
-    let user = req.session.auth_data.auth.colaborador_nome+" "+(req.session.auth_data.auth.colaborador_apelido === null ? "" : req.session.auth_data.auth.colaborador_apelido.split(" ").pop());
+    let user = req?.session?.auth_data?.auth.colaborador_nome+" "+(req?.session?.auth_data?.auth.colaborador_apelido === null ? "" : req?.session?.auth_data?.auth.colaborador_apelido.split(" ").pop());
     const dadosConta = await functLoadContaData({arg_conta_id: dados.conta_id, with_client: true, arg_espaco_auth: req?.session?.auth_data?.auth?.armazem_atual || null,
         arg_colaborador_id: req?.session?.auth_data?.auth?.colaborador_id || null});
     let proformaCliente = proformas.rows.filter(prof => prof.data.conta_id === dados.conta_id);
@@ -41,12 +42,17 @@ app.get("/api/print/proforma/:dados", async (req, res) =>{
 
 app.get("/api/print/fatura/recibo/:dados", async (req, res) =>{
     let dados = JSON.parse(req.params.dados);
-    const dadosConta = await functLoadContaData({arg_conta_id: dados.conta_id, with_client: true, arg_espaco_auth: req?.session?.user_pos?.auth?.armazem_atual,
-        arg_colaborador_id: req?.session?.user_pos?.auth?.colaborador_id});
+    let _session = (!!dados.admin) ? getUserSession( req ) : getUserSessionPOS( req );
+    const dadosConta = await functLoadContaData({
+        arg_conta_id: dados.conta_id,
+        with_client: true,
+        arg_espaco_auth: _session.workspace,
+        arg_colaborador_id: _session.user_id
+    });
     const file = require("./functions/export-faturarecibo");
-    let instituition = await load_space_configuration(req, false);
+    let instituition = await load_space_configuration(req, !!dados.admin);
     instituition = instituition[0].funct_load_espaco_configuracao.espaco;
-    let user = req.session.user_pos.auth.colaborador_nome+" "+(req.session.user_pos.auth.colaborador_apelido === null ? "" : req.session.user_pos.auth.colaborador_apelido.split(" ").pop());
+    let user = req?.session?.user_pos?.auth?.colaborador_nome+" "+(req?.session?.user_pos?.auth?.colaborador_apelido === null ? "" : req?.session?.user_pos?.auth?.colaborador_apelido.split(" ").pop());
     await file.create(instituition, dadosConta.rows, res, user, dados.date, dadosConta.rows[0].main.conta_serie.serie_numatorizacao);
 });
 app.post("/api/print/fatura/recibo/talao", async (req, res) =>{
@@ -57,7 +63,7 @@ app.post("/api/print/fatura/recibo/talao", async (req, res) =>{
     const fatura_recibo_talaoA6 = require("./functions/export-faturarecibo-talao-a6");
     let instituition = await load_space_configuration(req, false);
     instituition = instituition[0].funct_load_espaco_configuracao.espaco;
-    let user = req.session.user_pos.auth.colaborador_nome+" "+(req.session.user_pos.auth.colaborador_apelido === null ? "" : req.session.user_pos.auth.colaborador_apelido.split(" ").pop());
+    let user = req?.session?.user_pos?.auth?.colaborador_nome+" "+(req?.session?.user_pos?.auth?.colaborador_apelido === null ? "" : req?.session?.user_pos?.auth?.colaborador_apelido.split(" ").pop());
     const printer_name = get_printer_name(instituition.espaco_configuracao.configuracao_impressoras, "fatura_recibo");
 
     if(instituition.espaco_configuracao.printTalaoA5) {
@@ -76,7 +82,7 @@ app.get("/api/print/transference/:dados", async (req, res) =>{
     const file = require("./functions/export-trasferencia");
     let instituition = await load_space_configuration(req, true);
     instituition = instituition[0].funct_load_espaco_configuracao.espaco;
-    let user = req.session.auth_data.auth.colaborador_nome+" "+(req.session.auth_data.auth.colaborador_apelido === null ? "" : req.session.auth_data.auth.colaborador_apelido.split(" ").pop());
+    let user = req?.session?.auth_data?.auth.colaborador_nome+" "+(req?.session?.auth_data?.auth.colaborador_apelido === null ? "" : req?.session?.auth_data?.auth.colaborador_apelido.split(" ").pop());
 
     await file.create(instituition, req.session.transference_data.arg_transferencias, {
         armazem_origem: req.session.transference_data.arg_espaco_origem_nome,
@@ -97,7 +103,7 @@ app.get("/api/print/guia_entrada/:dados", async (req, res) =>{
     const fornecedor =  response.rows.filter(ent => ent.data.data?.fornecedor_id !== undefined);
     const artigos = response.rows.filter(ent => ent.data.data?.entrada_id !== undefined)
     const guia = response.rows[0].data.data
-    let user = req.session.auth_data.auth.colaborador_nome+" "+(req.session.auth_data.auth.colaborador_apelido === null ? "" : req.session.auth_data.auth.colaborador_apelido.split(" ").pop());
+    let user = req?.session?.auth_data?.auth.colaborador_nome+" "+(req?.session?.auth_data?.auth.colaborador_apelido === null ? "" : req?.session?.auth_data?.auth.colaborador_apelido.split(" ").pop());
     await file.create(instituition, fornecedor[0].data.data, guia, artigos, res, user, custoguia);
 });
 app.get("/api/print/guia_saida/:dados", async (req, res) =>{
@@ -112,7 +118,7 @@ app.get("/api/print/guia_saida/:dados", async (req, res) =>{
 
     instituition = instituition[0].funct_load_espaco_configuracao.espaco;
     const guia = response.rows[0].data.data
-    let user = req.session.auth_data.auth.colaborador_nome+" "+(req.session.auth_data.auth.colaborador_apelido === null ? "" : req.session.auth_data.auth.colaborador_apelido.split(" ").pop());
+    let user = req?.session?.auth_data?.auth.colaborador_nome+" "+(req?.session?.auth_data?.auth.colaborador_apelido === null ? "" : req?.session?.auth_data?.auth.colaborador_apelido.split(" ").pop());
     await file.create(instituition, dadosConta.rows[0], res, user,  dadosConta.rows[0].main.conta_serie.serie_numatorizacao, guia);
 });
 app.get("/api/print/fatura/:dados", async (req, res) =>{
@@ -128,12 +134,12 @@ app.get("/api/print/fatura/:dados", async (req, res) =>{
     if(conta.admin){
         dadosConta = await functLoadContaData({arg_conta_id: conta.conta_id,
             with_client: true, arg_espaco_auth: req?.session?.auth_data?.auth?.armazem_atual || null, arg_colaborador_id: req?.session?.auth_data?.auth?.colaborador_id || null});
-        user = req.session.auth_data.auth.colaborador_nome+" "+(req.session.auth_data.auth.colaborador_apelido === null ? "" : req.session.auth_data.auth.colaborador_apelido.split(" ").pop());
+        user = req?.session?.auth_data?.auth.colaborador_nome+" "+(req?.session?.auth_data?.auth.colaborador_apelido === null ? "" : req?.session?.auth_data?.auth.colaborador_apelido.split(" ").pop());
     }
     else{
         dadosConta = await functLoadContaData({arg_conta_id: conta.conta_id,
             with_client: true, arg_espaco_auth: req?.session?.user_pos?.auth?.armazem_atual, arg_colaborador_id: req?.session?.user_pos?.auth?.colaborador_id});
-        user = req.session.user_pos.auth.colaborador_nome+" "+(req.session.user_pos.auth.colaborador_apelido === null ? "" : req.session.user_pos.auth.colaborador_apelido.split(" ").pop());
+        user = req?.session?.user_pos?.auth?.colaborador_nome+" "+(req?.session?.user_pos?.auth?.colaborador_apelido === null ? "" : req?.session?.user_pos?.auth?.colaborador_apelido.split(" ").pop());
     }
     if(conta.type === "pdf")
         await file.create(instituition, dadosConta.rows[0], res, user, conta.date, dadosConta.rows[0].main.conta_serie.serie_numatorizacao);
@@ -160,7 +166,7 @@ app.get("/api/print/nota-credito/:dados", async (req, res) =>{
     instituition = instituition[0].funct_load_espaco_configuracao.espaco;
 
     let dadosConta = await functLoadContaData({arg_conta_id: conta.conta_id, with_client: true, arg_espaco_auth: req?.session?.auth_data?.auth?.armazem_atual || null, arg_colaborador_id: req?.session?.auth_data?.auth?.colaborador_id || null});
-    let user = req.session.auth_data.auth.colaborador_nome+" "+(req.session.auth_data.auth.colaborador_apelido === null ? "" : req.session.auth_data.auth.colaborador_apelido.split(" ").pop());
+    let user = req?.session?.auth_data?.auth.colaborador_nome+" "+(req?.session?.auth_data?.auth.colaborador_apelido === null ? "" : req?.session?.auth_data?.auth.colaborador_apelido.split(" ").pop());
 
     await file.create(instituition, dadosConta.rows[0], res, user, conta.date, dadosConta.rows[0].main.conta_serie.serie_numatorizacao);
 });
@@ -174,7 +180,7 @@ app.post("/api/print/fatura/talao", async (req, res) =>{
     instituition = instituition[0].funct_load_espaco_configuracao.espaco;
     dadosConta = await functLoadContaData({arg_conta_id: req.body.conta_id,
         with_client: true, arg_espaco_auth: req?.session?.user_pos?.auth?.armazem_atual, arg_colaborador_id: req?.session?.user_pos?.auth?.colaborador_id});
-    user = req.session.user_pos.auth.colaborador_nome+" "+(req.session.user_pos.auth.colaborador_apelido === null ? "" : req.session.user_pos.auth.colaborador_apelido.split(" ").pop());
+    user = req?.session?.user_pos?.auth?.colaborador_nome+" "+(req?.session?.user_pos?.auth?.colaborador_apelido === null ? "" : req?.session?.user_pos?.auth?.colaborador_apelido.split(" ").pop());
     const printer_name = get_printer_name(instituition.espaco_configuracao.configuracao_impressoras, "fatura");
 
     if(instituition.espaco_configuracao.printTalaoA5) {
@@ -198,19 +204,19 @@ app.get("/api/print/recibo/:dados", async (req, res) =>{
     let serie = await functLoadSeries({arg_espaco_auth: req?.session?.auth_data?.auth?.armazem_atual || null});
     const tipo_fatura_recibo = 3;
     instituition = instituition[0].funct_load_espaco_configuracao.espaco;
-    let user = req.session.auth_data.auth.colaborador_nome+" "+(req.session.auth_data.auth.colaborador_apelido === null ? "" : req.session.auth_data.auth.colaborador_apelido.split(" ").pop());
+    let user = req?.session?.auth_data?.auth.colaborador_nome+" "+(req?.session?.auth_data?.auth.colaborador_apelido === null ? "" : req?.session?.auth_data?.auth.colaborador_apelido.split(" ").pop());
     serie = serie.rows.find(value => value.data.serie_tserie_id ===  tipo_fatura_recibo);
     await file.create(instituition, response.rows, dados.client, res, user, dados.date,  (serie?.data?.serie_numatorizacao || null), (serie?.data?.serie_numero || null));
 });
 app.get("/api/print/conta/:dados", async (req, res) =>{
     let dados = JSON.parse(req.params.dados);
     const conta_pdf = require("./functions/export-conta");
-    req.body.arg_posto_id = req.session.posto.posto_id;
+    req.body.arg_posto_id = req?.session?.posto?.posto_id;
     req.body.arg_colaborador_id = req?.session?.user_pos?.auth?.colaborador_id;
     req.body.arg_espaco_auth = req?.session?.user_pos?.auth?.armazem_atual;
     const dadosConta = await functLoadContaData({arg_conta_id: dados.conta_id, with_client: true, arg_espaco_auth: req?.session?.user_pos?.auth?.armazem_atual,
         arg_colaborador_id: req?.session?.user_pos?.auth?.colaborador_id});
-    let user = req.session.user_pos.auth.colaborador_nome+" "+(req.session.user_pos.auth.colaborador_apelido === null ? "" : req.session.user_pos.auth.colaborador_apelido.split(" ").pop());
+    let user = req?.session?.user_pos?.auth?.colaborador_nome+" "+(req?.session?.user_pos?.auth?.colaborador_apelido === null ? "" : req?.session?.user_pos?.auth?.colaborador_apelido.split(" ").pop());
     let instituition = await load_space_configuration(req, dados.admin);
     instituition = instituition[0].funct_load_espaco_configuracao.espaco;
     await conta_pdf.create(instituition, dadosConta.rows[0], res, user, dados.date, null);
@@ -219,12 +225,12 @@ app.post("/api/print/conta/talao", async (req, res) =>{
     const file = require("./functions/export-conta-talao");
     const fileA5 = require("./functions/export-conta-talao-a5");
     const fileA6 = require("./functions/export-conta-talao-a6");
-    req.body.arg_posto_id = req.session.posto.posto_id;
+    req.body.arg_posto_id = req?.session?.posto?.posto_id;
     req.body.arg_colaborador_id = req?.session?.user_pos?.auth?.colaborador_id;
     req.body.arg_espaco_auth = req?.session?.user_pos?.auth?.armazem_atual;
     const dadosConta = await functLoadContaData({arg_conta_id: req.body.conta_id, with_client: true, arg_espaco_auth: req?.session?.user_pos?.auth?.armazem_atual,
         arg_colaborador_id: req?.session?.user_pos?.auth?.colaborador_id});
-    let user = req.session.user_pos.auth.colaborador_nome+" "+(req.session.user_pos.auth.colaborador_apelido === null ? "" : req.session.user_pos.auth.colaborador_apelido.split(" ").pop());
+    let user = req?.session?.user_pos?.auth?.colaborador_nome+" "+(req?.session?.user_pos?.auth?.colaborador_apelido === null ? "" : req?.session?.user_pos?.auth?.colaborador_apelido.split(" ").pop());
     let instituition = await load_space_configuration(req, false);
     instituition = instituition[0].funct_load_espaco_configuracao.espaco;
     const printer_name = get_printer_name(instituition.espaco_configuracao.configuracao_impressoras, "conta");
@@ -247,7 +253,7 @@ app.post("/api/print/fecho/caixa/", async (req, res) =>{
     const fileA6 = require("./functions/export-fechocaixa-talao-a6");
     let instituition = await load_space_configuration(req, false);
     instituition = instituition[0].funct_load_espaco_configuracao.espaco;
-    let user = req.session.user_pos.auth.colaborador_nome+" "+(req.session.user_pos.auth.colaborador_apelido === null ? "" : req.session.user_pos.auth.colaborador_apelido.split(" ").pop());
+    let user = req?.session?.user_pos?.auth?.colaborador_nome+" "+(req?.session?.user_pos?.auth?.colaborador_apelido === null ? "" : req?.session?.user_pos?.auth?.colaborador_apelido.split(" ").pop());
     const printer_name = get_printer_name(instituition.espaco_configuracao.configuracao_impressoras, "caixa");
     if(instituition.espaco_configuracao.printTalaoA5) {
         await fileA5.create(instituition, req.body, res, user, printer_name);
@@ -269,12 +275,12 @@ app.post("/api/print/report/venda", async (req, res) =>{
 
     let instituition = await load_space_configuration(req, false);
     instituition = instituition[0].funct_load_espaco_configuracao.espaco;
-    let user = req.session.user_pos.auth.colaborador_nome+" "+(req.session.user_pos.auth.colaborador_apelido === null ? "" : req.session.user_pos.auth.colaborador_apelido.split(" ").pop());
+    let user = req?.session?.user_pos?.auth?.colaborador_nome+" "+(req?.session?.user_pos?.auth?.colaborador_apelido === null ? "" : req?.session?.user_pos?.auth?.colaborador_apelido.split(" ").pop());
     const printer_name = get_printer_name(instituition.espaco_configuracao.configuracao_impressoras, "report_venda");
 
     req.body.arg_colaborador_id = req?.session?.user_pos?.auth?.colaborador_id;
     req.body.arg_espaco_auth = req?.session?.user_pos?.auth?.armazem_atual;
-    req.body.arg_posto_id = req.session.posto.posto_id;
+    req.body.arg_posto_id = req?.session?.posto?.posto_id;
     let { rows} = await functReportVendaPOS(req.body);
     let { arg_date_end, arg_date_start } = req.body;
 
@@ -305,7 +311,7 @@ app.post("/api/print/kitchen", async (req, res) =>{
         let instituition = await load_space_configuration(req, false);
         instituition = instituition[0].funct_load_espaco_configuracao.espaco;
 
-        let user = req.session.user_pos.auth.colaborador_nome+" "+(req.session.user_pos.auth.colaborador_apelido === null ? "" : req.session.user_pos.auth.colaborador_apelido.split(" ").pop());
+        let user = req?.session?.user_pos?.auth?.colaborador_nome+" "+(req?.session?.user_pos?.auth?.colaborador_apelido === null ? "" : req?.session?.user_pos?.auth?.colaborador_apelido.split(" ").pop());
 
         if(!instituition?.espaco_configuracao?.impressoras_cozinha?.ip){
             if(instituition.espaco_configuracao.printTalaoA5) {

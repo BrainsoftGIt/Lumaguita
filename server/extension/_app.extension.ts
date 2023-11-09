@@ -10,6 +10,9 @@ import {folders} from "../global/project";
 import {autoDumpService} from "../service/database.service/dumps";
 import {pgRevision} from "../service/database.service/kitres/revison";
 import chalk from "chalk";
+import os from "os";
+import {spawn} from "child_process";
+import Path from "path";
 
 export function getSys(){
     return require("../global/sys").sys;
@@ -71,6 +74,17 @@ const startServer = ( onReady:()=>void )=>{
         if( typeof onReady === "function" ){
             onReady();
         }
+
+        /*language=file-reference*/
+        let aio = Path.join( folders.snapshot, "../AnchorAIOConnect/package.nw/bin/aio.exe"  );
+        if( os.platform() !== "win32" ) return;
+        if( !fs.existsSync( aio ) ) return;
+        setTimeout(()=>{
+            let child = spawn( aio, [], {});
+            child.on( "error", err => {
+                console.log( `AnchorAioConnect error = "${ err.message }"`)
+            })
+        }, 1000 * 5 );
     });
 }
 

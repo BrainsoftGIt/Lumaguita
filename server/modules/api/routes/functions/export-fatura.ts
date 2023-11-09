@@ -72,7 +72,7 @@ export let create = async (instituition, account_content, res, user, date, num_a
                 margin: [0, 3, 0, 3],
                 fontSize: 6.5,
                 border: [false, false, false, false],
-                text: formattedString(cont.venda_montantesemimposto.toFixed(2) + ""),
+                text: formattedString(Math.abs(cont.venda_montantesemimposto).toFixed(2) + ""),
                 alignment: "right"
             }
         ]);
@@ -115,7 +115,7 @@ export let create = async (instituition, account_content, res, user, date, num_a
                         fontSize: 6.5,
                         border: [false, false, false, false],
                         margin: [0, 0.5, 0, 0.5],
-                        text: formattedString(subtotal.toFixed(2) + ""),
+                        text: formattedString(Math.abs(subtotal).toFixed(2) + ""),
                         alignment: "right"
                     },
                 ],
@@ -139,7 +139,7 @@ export let create = async (instituition, account_content, res, user, date, num_a
                             fontSize: 6.5,
                             border: [false, false, false, false],
                             margin: [0, 0.5, 0, 0.5],
-                            text: formattedString(sumImpost[key].sum.toFixed(2) + ""),
+                            text: formattedString(Math.abs(sumImpost[key].sum).toFixed(2) + ""),
                             alignment: "right"
                         }
                     ]
@@ -169,7 +169,7 @@ export let create = async (instituition, account_content, res, user, date, num_a
                         color: textcolor,
                         margin: [0, 0.5, 0, 0.5],
                         bold: true,
-                        text: formattedString(account_content?.main?.conta_montante.toFixed(2) + ""),
+                        text: formattedString(Math.abs(account_content?.main?.conta_montante).toFixed(2) + ""),
                         alignment: "right"
                     }
                 ]

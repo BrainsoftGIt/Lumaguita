@@ -93,51 +93,60 @@ export let create = async (instituition, deposito, cliente, res, user, date, num
     let textcolor = instituition?.espaco_configuracao?.empresa_textcolor || "#ffffff";
 
     let rotape = {
-        margin: [30, 0, 30, 0],
+        margin: [40, 0, 40, 0],
         table: {
-            widths: ["100%"],
+            widths: ["5%", "6%", "14%", "35%", "10%", "13%", "17%"],
             body: [
                 [
                     {
                         border: [false, false, false, false],
-                        fillColor: baseColor,
-                        color: textcolor,
-                        columns: [
-                            {
-                                alignment: "center",
-                                fontSize: 6.5,
-                                margin: [0, 1, 0, 1],
-                                text: "Código de operação",
-                                bold: true
-                            },
-                            {
-                                alignment: "center",
-                                fontSize: 7.5,
-                                margin: [0, 1, 0, 1],
-                                bold: true,
-                                text: "Montante Pago",
-                            }
-                        ]
-                    }
+                        text: "", colSpan: 5, fillColor: "#ffffff"
+                    },
+                    {text: ""},
+                    {text: ""},
+                    {text: ""},
+                    {text: ""},
+                    {
+                        fontSize: 6.5,
+                        border: [false, false, false, false],
+                        margin: [0, 0.5, 0, 0.5],
+                        text: "Código de operação"
+                    },
+                    {
+                        fontSize: 6.5,
+                        border: [false, false, false, false],
+                        margin: [0, 0.5, 0, 0.5],
+                        text: deposito[0].data.deposito_docref || "---------",
+                        alignment: "right"
+                    },
                 ],
                 [
                     {
                         border: [false, false, false, false],
-                        fillColor: "#F5F6F6",
-                        columns: [
-                            {
-                                fontSize: 6.5,
-                                margin: [0, 1, 0, 1],
-                                text: deposito[0].data.deposito_docref || "---------",
-                                alignment: "center"
-                            },
-                            {
-                                alignment: "center",
-                                fontSize: 6.5,
-                                margin: [0, 1, 0, 1],
-                                text: formattedString(deposito[0].data.deposito_montante.toFixed(2) + ""),
-                            }
-                        ]
+                        text: "", colSpan: 5, fillColor: "#ffffff",
+                    },
+                    {text: ""},
+                    {text: ""},
+                    {text: ""},
+                    {text: ""},
+                    {
+                        fontSize: 6.5,
+                        border: [false, false, false, false],
+                        fillColor: baseColor,
+                        color: textcolor,
+                        margin: [0, 0.5, 0, 0.5],
+                        bold: true,
+                        text: "Montante Pago",
+                    },
+                    {
+                        fontSize: 6.5,
+                        border: [false, false, false, false],
+                        fillColor: baseColor,
+                        color: textcolor,
+                        margin: [0, 0.5, 0, 0.5],
+                        bold: true,
+                        text: formattedString(deposito[0].data.deposito_montante.toFixed(2) + ""),
+                        alignment: "right"
                     }
                 ]
             ]

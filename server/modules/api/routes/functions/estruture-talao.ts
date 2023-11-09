@@ -1,32 +1,31 @@
 export let structure = ({margin}) => {
     let { marginLeft: left, marginRight : right } = margin || {};
-    console.log(({left, right}))
     return {
         styles: {
             pequena: {
-                fontSize: 6.8,
+                fontSize: 10.8,
                 alignment : "center",
                 lineHeight: 1.2
             },
             media: {
-                fontSize: 7
+                fontSize: 11
             },
             normal: {
-                fontSize: 8
+                fontSize: 12
             },
             grande: {
-                fontSize: 8.5,
+                fontSize: 12.5,
                 bold: true,
             },
             bold: {
-                fontSize: 8,
+                fontSize: 12,
                 bold: true,
             },
         },
-        pageMargins: [ (+left || 5), 0, (+right || 15), 0 ],
+        pageMargins: [ (+left || 5), 0, (+right || 5), 0 ],
         pageSize: {
-            width : 210,
-            height: 595 * 2
+            width : 302,
+            height: "auto"
         },
         background: function (page) {
             return []

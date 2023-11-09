@@ -7,6 +7,8 @@ import { folders } from '../../global/project';
 import { args } from "../../global/args";
 const multerConfig = require("../../lib/multer/config");
 
+import * as ejs from "ejs";
+
 console.log( "[maguita] WebService>", `building service ${ args.app }`, `${ args.webProtocol }://127.0.0.1:${ args.appPort }` );
 
 export const app:Express = express();
@@ -20,6 +22,9 @@ import {E_TAG_VERSION} from "./etag";
 import {VERSION} from "../../version";
 import {nanoid} from "nanoid";
 import {scriptUtil} from "kitres";
+import fs from "fs";
+import Path from "path";
+import path from "path";
 //Static declarations
 
 let localStaticResource = express.static( folders.public, {
@@ -173,10 +178,56 @@ app.use( switchVersion, (req, res, next) => {
 //////////////////// GLOBAL CONFs ////////////////////
 // app.use("/storage", express.static(folders.files));
 
+
+app.locals.VERSION =  VERSION;
+
+
+
 app.use(multerConfig());
 //View engine setup
+app.use( (req, res, next) => {
+    res.locals.VERSION = VERSION.TAG;
+    next();
+});
+
 app.set( 'views', [ folders.views, folders.public ] );
 app.set( 'view engine', 'ejs' );
+
+fs.readdirSync( /*language=file-reference*/ Path.join(__dirname, "../../../client/public"), { recursive : true } ).forEach( (value) => {
+    let file:string = value.toString();
+    let state = fs.statSync(Path.join( __dirname, "../../../client/public", file ) );
+    if( !state.isFile() ) return;
+    if( !/(^)*.ejs$/.test( file ) ) return;
+    file = file.substring(0, file.length -4 );
+    file = file.split( Path.sep ) .join( "/" );
+    let resolves = [ file ];
+    let parts = file.split("/");
+
+    if( parts[ parts.length-1] === "index" ){
+        let index = parts.pop();
+        resolves.push( parts.join("/") );
+    }
+    // if( path.basename( file ) === "index" ) resolves.push(
+    //     path.posix.resolve( path.dirname( file ))
+    // )
+    console.log( "res.render( file",  resolves);
+    resolves.forEach( value1 => {
+        app.get( `/${value1}`, (req, res) => {
+            let ver = {
+                VERSION: {
+                    NUMBER: VERSION.NUMBER,
+                    TAG: VERSION.TAG,
+                    revs: VERSION.revs,
+                }
+            };
+            console.log( ver )
+            res.render( file, ver )
+        });
+    })
+});
+// app.get( "/pos", (req, res, next) => {
+//     res.render( "pos/index.ejs" );
+// });
 
 //Cors
 const cors = require('cors');

@@ -1,7 +1,7 @@
 import {sql} from "kitres";
 
-export const funct_reg_conta_nota_credito = sql`
-create or replace function tweeks.funct_reg_conta_nota_credito(args jsonb) returns lib.res
+export const funct_reg_conta_docs_financa = sql`
+create or replace function tweeks.funct_reg_conta_docs_financa(args jsonb) returns lib.res
   language plpgsql
 as
 $$
@@ -15,17 +15,22 @@ declare
       conta_data: DATE,
       conta_posto_id: UID
       conta_observacao
+      conta_docorigin
+      conta_datedocorigin
       _serie_id:UID
+      _tserie_id: TSERIE_ID
+      
       itens: [
-        { venda_id:ID },
-        { venda_id:ID },
-        { venda_id:ID }...
+        { venda_id?:ID, venda_quantidade?: NUMBER, venda_codigoimposto?:CODE, ... },
+        { venda_id?:ID, venda_quantidade?: NUMBER, venda_codigoimposto?:CODE, ...},
+        { venda_id?:ID, venda_quantidade?: NUMBER, venda_codigoimposto?:CODE, ... }...
       ]
     }
    */
   arg_colaborador_id uuid default args->>'arg_colaborador_id';
   arg_espaco_auth uuid default args->>'arg_espaco_auth';
   arg_conta_id uuid default args->>'conta_id';
+  __conta_docorigin character varying default args->>'conta_docorigin';
   arg_branch_uid uuid default tweeks.__branch_uid( arg_colaborador_id, arg_espaco_auth );
   __branch cluster.branch;
   _data record;
@@ -35,12 +40,17 @@ declare
   _const map.constant;
   _conta_res lib.res;
   _conta_close_res lib.res;
+  __iten_venda jsonb default args->'itens';
+  __signal double precision;
+  
   __itens uuid[] default array(
     select (e.doc->>'venda_id')::uuid 
       from jsonb_array_elements( args->'itens' ) e ( doc ) 
 --       where e.doc->>'venda_id' is not null and e.doc->'venda_id' != null
   );
   _serie_id uuid default args->>'_serie_id';
+  _tserie_id int2 default args->>'_tserie_id';
+  _check record;
 begin
   _const := map.constant();
   _conta_args := jsonb_populate_record( _conta_args, args );
@@ -50,7 +60,45 @@ begin
   if _conta.conta_estado != _const.maguita_conta_estado_fechado then
     return  lib.res_false( 'Essa conta não se encontra fechada' );
   end if;
-
+  
+  if _tserie_id = _const.maguita_tserie_notacredito then __signal := -1; 
+  else __signal := 1;
+  end if;
+  
+  if arg_conta_id is not null and _conta.conta_id is null then 
+      return lib.res_false( 'Não foi encontrado nenhuma conta interna com essa ID!' );
+  end if;
+  
+  if arg_conta_id is null and exists(
+    select *
+      from tweeks.conta ct
+      where ct.conta_numerofatura = __conta_docorigin
+  ) then
+    return lib.res_false( format( 'Existe um documento interno com a mesma identificação do documento extreno %I', __conta_docorigin  ) );
+  end if;
+  
+  if arg_conta_id is not null and exists (
+    select *
+      from jsonb_array_elements( args->'itens' ) e ( doc )
+        left join jsonb_populate_record( null::tweeks.venda, e.doc ) eve on true
+        left join tweeks.venda ve on eve.venda_id = ve.venda_id
+          and ve.venda_conta_id = arg_conta_id
+      where ve.venda_id is null
+  ) then
+    return lib.res_false( 'Não pode incluir novos itens a um documento interno!' );
+  end if;
+  
+  
+  if arg_conta_id is null and exists (
+    select *
+      from jsonb_array_elements( args->'itens' ) e ( doc )
+        inner join jsonb_populate_record( null::tweeks.venda, e.doc ) eve on true
+        inner join tweeks.venda ve on eve.venda_id = ve.venda_id
+          and ve.venda_conta_id = arg_conta_id
+      where ve.venda_id is not null
+  ) then
+    return lib.res_false( 'Não pode vincular itens de documentos interno na anulação de um documento externo!' );
+  end if;
 
   with conta_origin as (
     select
@@ -111,18 +159,19 @@ begin
   ) select * into _data
      from notacareito_usar
   ;
-
-  if _data.notacredito_aplicartotal = 0 then
-    return lib.res_false( 'Nenhum dos iten selecionado pode-se aplicar nota de credito sobre ele' );
-  end if;
-
-  if _data.notacredito_aplicartotal < _data.notacredito_usartotal then
-    return lib.res_false( 'Alguns dos itens selecionados já têm notas de creditos aplicado sobre ele',
-      jsonb_build_object(
-          'notacredito_exists', _data.notacredito_exists
-        )
-    );
-  end if;
+  
+  
+--   if _data.notacredito_aplicartotal = 0 then
+--     return lib.res_false( 'Nenhum dos iten selecionado pode-se aplicar nota de credito sobre ele' );
+--   end if;
+-- 
+--   if _data.notacredito_aplicartotal < _data.notacredito_usartotal then
+--     return lib.res_false( 'Alguns dos itens selecionados já têm notas de creditos aplicado sobre ele',
+--       jsonb_build_object(
+--           'notacredito_exists', _data.notacredito_exists
+--         )
+--     );
+--   end if;
 
 
   /*
@@ -149,6 +198,7 @@ begin
           + venda_lote
           + venda_validade
           + venda_metadata
+          + venda_codigoimposto
 
           arg_itens: [
               venda_id: UID
@@ -164,70 +214,123 @@ begin
           ]
    */
   with __item_doc as (
+    select *
+      from jsonb_array_elements( __iten_venda ) ed( doc )
+      inner join jsonb_populate_record( null::tweeks.venda, ed.doc ) on true
+  ), __vendas_existis as (
     select 
-        (i.doc->>'venda_id')::uuid as venda_id,
-        (i.doc->>'venda_codigoimposto') as venda_codigoimposto
-      from jsonb_array_elements( args->'itens' ) i( doc )
-  ), __iten as (
-    select
-        iten.venda_artigo_id,
-        iten.venda_quantidade * -1 as venda_quantidade,
-        iten.venda_custounitario,
-        iten.venda_custoquantidade,
-        iten.venda_descricao,
-        iten.venda_lote,
-        iten.venda_validade,
-        iten.venda_metadata,
-        iten.venda_taxas,
-        iten.venda_montantetotal * -1 as venda_montantetotal,
-        iten.venda_id as venda_venda_docorign,
-        iten.venda_venda_id as ___iten_venda_super
-      from tweeks.venda iten
-        inner join tweeks.artigo at on iten.venda_artigo_id = at.artigo_id
-          and at._branch_uid = arg_branch_uid
-      where iten.venda_venda_id = any( _data.notacredito_aplicar )
-        and iten.venda_estado = _const.maguita_venda_estado_fechado
-        and iten._branch_uid = arg_branch_uid
+        ve.*,
+        abs( ve.venda_quantidade ) as __venda_quantidade,
+        ( abs( ve.venda_montantecomimposto ) - abs( ve.venda_montantesemimposto ) ) / abs( ve.venda_quantidade ) as __venda_diferencaimposto,
+        abs( ve.venda_montantecomimposto ) / abs( ve.venda_quantidade ) as __venda_montantecomimposto,
+        abs( ve.venda_montantesemimposto ) / abs( ve.venda_quantidade ) as __venda_montantesemimposto,
+        abs( ve.venda_montanteagregado ) / abs( ve.venda_quantidade ) as __venda_montanteagregado,
+        abs( ve.venda_montantetotal ) / abs( ve.venda_quantidade ) as __venda_montantetotal,
+        abs( ve.venda_imposto ) / abs( ve.venda_quantidade ) as __venda_imposto,
+        abs( ve.venda_impostoadicionar ) / abs( ve.venda_quantidade ) as __venda_impostoadicionar,
+        abs( ve.venda_impostoretirar ) / abs( ve.venda_quantidade ) as __venda_impostoretirar,
+        abs( ve.venda_montante ) / abs( ve.venda_quantidade ) as __venda_montante
+    
+      from tweeks.venda ve 
+      where ve.venda_id = any( _data.notacredito_aplicar ) and ve.venda_venda_id is null
   ), __vendas as (
     select
-        ve.venda_id as venda_venda_docorign,
-        ve.venda_artigo_id,
-        ve.venda_quantidade * -1 as venda_quantidade,
-        ve.venda_custounitario,
-        ve.venda_custoquantidade,
-        ve.venda_editado,
-        ve.venda_isencao,
-        ve.venda_montante * -1 as venda_montante,
-        ve.venda_montanteagregado * -1 as venda_montanteagregado,
-        ve.venda_montantetotal * -1 as venda_montantetotal,
-        ve.venda_imposto * -1 as venda_imposto,
-        ve.venda_montantesemimposto * -1 as venda_montantesemimposto,
-        ve.venda_montantecomimposto * -1 as venda_montantecomimposto,
-        ve.venda_impostoadicionar * -1 as venda_impostoadicionar,
-        ve.venda_impostoretirar * -1 as venda_impostoretirar,
-        ve.venda_descricao,
-        ve.venda_lote,
-        ve.venda_validade,
-        ve.venda_metadata,
-        ve.venda_taxas,
-        _itdoc.venda_codigoimposto,
-        coalesce( jsonb_agg( to_jsonb( iten ) ) filter ( where iten.venda_venda_docorign is not null ), jsonb_build_array()) as arg_itens
-      from tweeks.venda ve
-        inner join __item_doc _itdoc on ve.venda_id = _itdoc.venda_id
-        left join __iten iten on ve.venda_id = iten.___iten_venda_super
+        case
+          when arg_conta_id is not null then ve.venda_id
+        end as venda_venda_docorign,
+        case 
+          when arg_conta_id is not null then ve.venda_artigo_id
+          else  ed.venda_artigo_id
+        end as venda_artigo_id,
+        case
+          when arg_conta_id is null then ed\.venda_quantidade * __signal
+          else coalesce( ed.venda_quantidade, ve.venda_quantidade ) * __signal
+        end as venda_quantidade,
+        case
+          when arg_conta_id is null then ed.venda_custounitario
+          else ve.venda_custounitario
+        end as venda_custounitario,
+        case 
+          when arg_conta_id is null then ed.venda_custoquantidade
+          else ve.venda_custoquantidade
+        end as venda_custoquantidade,
+        case
+          when arg_conta_id is null then ed.venda_editado
+          else ve.venda_editado
+        end as venda_editado,
+        case 
+          when arg_conta_id is null then ed.venda_isencao
+          else ve.venda_isencao
+        end as venda_isencao,
+        case
+          when arg_conta_id is null then ed.venda_taxas
+          else ve.venda_taxas
+        end as venda_taxas,
+        case
+          when arg_conta_id is null then ed.venda_validade
+          else ve.venda_validade
+        end as venda_validade,
+        case
+          when arg_conta_id is null then ed.venda_lote
+          else ve.venda_lote
+        end as venda_lote,
+        case
+          when arg_conta_id is null then ed.venda_montante * __signal
+          else ve.__venda_montante * coalesce( ed.venda_quantidade, ve.__venda_quantidade ) * __signal
+        end as venda_montante,
+        case
+          when arg_conta_id is null then ed.venda_montanteagregado * __signal
+          else ve.__venda_montanteagregado * coalesce( ed.venda_quantidade, ve.__venda_quantidade ) * __signal
+        end as venda_montanteagregado,
+        case 
+          when arg_conta_id is null then ed.venda_montantetotal * __signal
+          else ve.__venda_montantetotal * coalesce( ed.venda_quantidade, ve.__venda_quantidade ) * __signal
+        end as venda_montantetotal,
+        case
+          when arg_conta_id is null then ed.venda_imposto * __signal
+          else ve.__venda_imposto * coalesce( ed.venda_quantidade, ve.__venda_quantidade ) * __signal
+        end as venda_imposto,
+        case
+          when arg_conta_id is null then ed.venda_montantesemimposto * __signal
+          else ve.__venda_montantesemimposto * coalesce( ed.venda_quantidade, ve.__venda_quantidade ) * __signal
+        end as venda_montantesemimposto,
+        case
+          when arg_conta_id is null then ed.venda_montantecomimposto * __signal
+          else ve.__venda_montantecomimposto * coalesce( ed.venda_quantidade, ve.__venda_quantidade ) * __signal
+        end as venda_montantecomimposto,
+        case
+          when arg_conta_id is null then ed.venda_impostoadicionar * __signal
+          else ve.__venda_impostoadicionar * coalesce( ed.venda_quantidade, ve.venda_quantidade ) * __signal 
+        end as venda_impostoadicionar,
+        case
+          when arg_conta_id is null then ed.venda_impostoretirar * __signal
+          else ve.__venda_impostoretirar * coalesce( ed.venda_quantidade, ve.venda_quantidade ) * __signal 
+        end as venda_impostoretirar,
+        case
+          when arg_conta_id is null then ed.venda_descricao
+          else coalesce( ed.venda_descricao, ve.venda_descricao )
+        end as venda_descricao,
+        case
+          when arg_conta_id is null then ed.venda_metadata
+          else coalesce( ed.venda_metadata, ve.venda_metadata )
+        end as venda_metadata,
+        case
+          when arg_conta_id is null then ed.venda_codigoimposto
+          else coalesce( ed.venda_codigoimposto, ve.venda_codigoimposto )
+        end as venda_codigoimposto,
+        jsonb_build_array() as arg_itens
+      from __item_doc ed
+        left join __vendas_existis ve on ed.venda_id = ve.venda_id
 
-      where ve.venda_id = any( _data.notacredito_aplicar )
-        and ve.venda_venda_id is null
-      group by 
-        ve.venda_id,
-        _itdoc.venda_id,
-        _itdoc.venda_codigoimposto
+      where ( ve.venda_id is null and arg_conta_id is null ) 
+        or ( ve.venda_id = any( _data.notacredito_aplicar ) and ve.venda_venda_id is null )
+    
   ) select
         jsonb_agg( to_jsonb( ve ) ) as arg_vendas
         into _vendas
       from __vendas ve
   ;
-
+  
   /*
    -- obrigatorios
       arg_colaborador_id: ID,
@@ -273,9 +376,9 @@ begin
            _const.colaborador_system_data,
            __branch.branch_main_user,
            __branch.branch_main_workspace,
-           'CONTA DE NOTA DE CREDITO',
+           'CONTA DE NOTA DE CREDITO/DEBITO',
            __branch._branch_uid,
-           'NC100010'
+           'NDC100010'
        );
   end if;
   
@@ -291,7 +394,7 @@ begin
     jsonb_build_object(
       'arg_colaborador_id', arg_colaborador_id,
       '_serie_id', _serie_id,
-      'arg_espaco_auth', _conta.conta_espaco_auth,
+      'arg_espaco_auth', coalesce( _conta.conta_espaco_auth, arg_espaco_auth ),
       'conta_posto_id', _conta_args.conta_posto_id,
       'conta_mesa', _conta_args.conta_mesa,
       'conta_extension', coalesce( _conta_args.conta_extension, jsonb_build_object()),
@@ -305,8 +408,10 @@ begin
       'arg_vendas', _vendas.arg_vendas,
       'conta_conta_docorigin', _conta.conta_id,
       'conta_observacao', _conta_args.conta_observacao,
-      'conta_tserie_id', _const.maguita_tserie_notacredito,
-      'conta_espaco_notacredito', arg_espaco_auth
+      'conta_tserie_id', _tserie_id,
+      'conta_espaco_notacredito', arg_espaco_auth,
+      'conta_docorigin', args->>'conta_docorigin',
+      'conta_datedocorigin', args->>'conta_datedocorigin'
     )
   );
   
@@ -361,8 +466,8 @@ begin
   _conta_close_res := tweeks.funct_pos_change_conta_fechar(
     jsonb_build_object(
       'arg_colaborador_id', arg_colaborador_id,
-      'arg_espaco_auth', _conta.conta_espaco_auth,
-      'arg_tserie_id', _const.maguita_tserie_notacredito,
+      'arg_espaco_auth', coalesce( _conta.conta_espaco_auth, arg_espaco_auth ),
+      'arg_tserie_id', _tserie_id,
       '_serie_id', _serie_id,
       'conta_conta_docorigin', _conta.conta_id,
       'conta_id', _conta_res.data->>'conta_id',
@@ -371,7 +476,7 @@ begin
       'conta_posto_fecho',  _conta_args.conta_posto_id,
       'conta_desconto', ( _conta.conta_desconto ),
       'conta_titular', _conta.conta_titular,
-      'conta_tserie_id', _const.maguita_tserie_notacredito,
+      'conta_tserie_id', _tserie_id,
       'conta_titularnif', _conta.conta_titularnif,
       'conta_data', coalesce( _conta_args.conta_data, now()::date),
       'conta_cliente_id', _conta_args.conta_cliente_id,
@@ -397,42 +502,73 @@ $$;
 `;
 
 
-export const sss = sql`
-create or replace function tweeks.funct_load_conta_notacredito(args jsonb)
+export const funct_load_conta_docs_financa = sql`
+-- create or replace function tweeks.funct_load_conta_notacredito(args jsonb)
+create or replace function tweeks.funct_load_conta_docs_financa(args jsonb)
   returns setof jsonb
   language plpgsql
 as
 $$
 declare
-  /**
+  /**doc
     args := {
       arg_colaborador_id: UID
       arg_espaco_auth: UID
       conta_fatura
+      _tserie_id: UID
     }
-   */
+   doc*/
   arg_colaborador_id uuid default args->>'arg_colaborador_id';
   arg_espaco_auth uuid default args->>'arg_espaco_auth';
   arg_branch uuid default tweeks.__branch_uid( arg_colaborador_id, arg_espaco_auth );
+  _tserie_id int2 not null default args->>'_tserie_id';
   _conta_fatura character varying := args->>'conta_fatura';
   _const map.constant;
+  __docs_of int2[];
 begin
   _const := map.constant();
+  
+  
+  if _tserie_id = _const.maguita_tserie_notacredito then 
+      __docs_of := array[
+        _const.maguita_tserie_fatura,
+        _const.maguita_tserie_faturarecibo,
+        _const.maguita_tserie_faturasimplificada
+      ]::int2[];
+  elsif _tserie_id = _const.maguita_tserie_notadebito then 
+    __docs_of := array[ 
+      _const.maguita_tserie_notacredito
+    ]::int2[];
+  end if;
+  
   return query
-    with __venda as (
+    with __venda_remanescete as (
+      select 
+          ve.venda_id,
+          abs( ve.venda_quantidade ) - coalesce( sum( abs( ve2.venda_quantidade ) ), 0.0 ) as venda_quantidaderemanescente
+        from tweeks.venda ve
+          left join tweeks.venda ve2 on ve.venda_id  = ve2.venda_venda_docorign
+            and ve2.venda_estado = _const.maguita_venda_estado_fechado
+        where ve.venda_estado = _const.maguita_venda_estado_fechado
+        group by ve.venda_id
+        having coalesce( sum( abs( ve2.venda_quantidade ) ), 0.0) < abs( ve.venda_quantidade )
+    ), __venda as (
       select
           ve.*,
           art.*,
+          _ver.venda_quantidaderemanescente,
           sum( tx.taxa_taxa ) as taxa_taxa,
           sum( tx.taxa_percentagem ) as taxa_percentagem
         from tweeks.venda ve
+          inner join __venda_remanescete _ver on ve.venda_id = _ver.venda_id
           inner join tweeks.artigo art on ve.venda_artigo_id = art.artigo_id
           left join tweeks.taxa tx on tx.taxa_id = any( venda_taxas )
         where ve._branch_uid  = arg_branch
           and ve.venda_venda_id is null
           and ve.venda_estado = _const.maguita_venda_estado_fechado
         group by ve.venda_id,
-          art.artigo_id
+          art.artigo_id,
+         _ver.venda_quantidaderemanescente
     ), __venda_group as (
       select
           _ve.venda_id,
@@ -447,15 +583,18 @@ begin
     ), __conta as (
       select
         ct.*,
-        array_agg( to_jsonb( _veg ) || to_jsonb( _ved ) ) as conta_vendas
+        coalesce( 
+          jsonb_agg( to_jsonb( _veg ) || to_jsonb( _ved ) ) filter ( where _ved.venda_id is not null and _veg.venda_id is not  null ), 
+          jsonb_build_array( )
+        ) as conta_vendas
         from tweeks.conta ct
-          inner join __venda_group _veg on ct.conta_id = _veg.venda_conta_id
-          inner join __venda _ved on _veg.venda_id = _ved.venda_id
+          left join __venda_group _veg on ct.conta_id = _veg.venda_conta_id
+          left join __venda _ved on _veg.venda_id = _ved.venda_id
           left join tweeks.venda venda_ncred on _veg.venda_id = venda_ncred.venda_venda_docorign
             and venda_ncred.venda_estado = _const.maguita_venda_estado_fechado
         where ct._branch_uid = arg_branch
+          and ct.conta_tserie_id = any( __docs_of )
           and ct.conta_estado = _const.maguita_conta_estado_fechado
-          and venda_ncred.venda_id is null
           and ct.conta_numerofatura = _conta_fatura
         group by ct.conta_id
     ) select to_jsonb( _ct )
@@ -464,3 +603,7 @@ begin
 end;
 $$;
 `;
+
+
+
+

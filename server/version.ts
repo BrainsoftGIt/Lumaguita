@@ -1,6 +1,15 @@
 import fs from "fs"
 import * as Path from "path";
 import {execSync, spawnSync} from "child_process";
+
+
+let response = spawnSync( "git", [ "rev-list", "--count", "--all" ]);
+let gitCommits:string;
+
+if( response.status === 0 ) gitCommits = response.stdout.toString().trim();
+if( !gitCommits ) gitCommits = null;
+else gitCommits = `R${gitCommits}`;
+
 export let VERSION = {
     //language=file-reference
     NUMBER :fs.readFileSync( Path.join( __dirname, "../VERSION")).toString("utf-8")
@@ -16,6 +25,9 @@ export let VERSION = {
         return fs.existsSync( VERSION.LOOK );
     },
 
+    get revs(){
+        return gitCommits
+    },
     unlock(){
         if( fs.existsSync( VERSION.LOOK ) ) fs.unlinkSync( VERSION.LOOK );
     },
@@ -44,7 +56,8 @@ export let VERSION = {
         return  VERSION;
     },
     get TAG(){
-        return `v${VERSION.NUMBER}`
+        if( !gitCommits ) return `v${VERSION.NUMBER}`
+        else return `v${VERSION.NUMBER}-${gitCommits}`
     }
 };
 

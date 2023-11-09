@@ -1,11 +1,15 @@
 <link rel="stylesheet" href="../assets/css/admin/inpage.css">
 <link rel="stylesheet" href="../assets/css/admin/tableAdmin.css">
 <style>
-    .noborder {
+    .__included__{
         overflow-y: hidden!important;
     }
+    .noborder {
+        overflow-y: hidden!important;
+        margin-top: 10px;
+    }
     [tableDocumentArticles] {
-        height: 50vh;
+        height: 57vh;
         margin-bottom: 10px;
         overflow-y: auto;
     }
@@ -14,6 +18,9 @@
         top: 50%; /* Centraliza verticalmente */
         left: 50%; /* Centraliza horizontalmente */
         transform: translate(-50%, -50%); /* Isso corrige o deslocamento para o centro */
+    }
+    .xinput, .xselect {
+        margin: 4px 0 4px!important;
     }
 </style>
 <div class="__included__ inpage ">
@@ -50,7 +57,7 @@
                     <label>Telefone</label>
                 </div>
             </div>
-            <div class="w100">
+            <div class="w100 flex h-sb v-ct">
                 <div class="xinput w25">
                     <input type="text" placeholder="Pesquisar artigo" search_article list="guiaSaidaArtigos">
                     <label>Pesquisar artigo (nome ou código)</label>
@@ -67,10 +74,6 @@
                     <input type="text" placeholder="Valor unitário" class="double formatNumber" price_article>
                     <label>Valor unitário</label>
                 </div>
-                <div class="xinput w12">
-                    <input type="text" placeholder="Codigo Imposto" class="integer" codigo_imposto_article _noObrigatory="true">
-                    <label>Codigo Imposto</label>
-                </div>
                 <div class="xinput w15">
                     <input type="text" placeholder="Lote" lote_article _noObrigatory="true">
                     <label>Lote</label>
@@ -80,9 +83,9 @@
                            date_expiration_article _noObrigatory="true">
                     <label>Data de validade</label>
                 </div>
-            </div>
-            <div class="flex h-sb v-ct">
-                <button class="xbtn" addArticleTable>Lançar</button>
+                <div class="flex h-sb v-ct"  style="float: right;">
+                    <button class="xbtn" addArticleTable>Lançar</button>
+                </div>
             </div>
         </div>
         <div class="x-table hovered grow-1">

@@ -588,8 +588,10 @@ var article = {
 
         $("#artigo_codigoimpostoFaturacao").find(`li[codigoimposto_id="${article.selected.artigo_codigoimposto.FATURACAO}"]`).addClass("active");
         $("#artigo_codigoimpostoFaturacaoDesc").val(($("#artigo_codigoimpostoFaturacao").find(`li[codigoimposto_id="${article.selected.artigo_codigoimposto.FATURACAO}"]`).text() || ""));
+
         $("#artigo_codigoimpostoNotaDebito").find(`li[codigoimposto_id="${article.selected.artigo_codigoimposto.NOTADEBITO}"]`).addClass("active");
         $("#artigo_codigoimpostoNotaDebitoDesc").val(($("#artigo_codigoimpostoNotaDebito").find(`li[codigoimposto_id="${article.selected.artigo_codigoimposto.NOTADEBITO}"]`).text() || ""));
+
         $("#artigo_codigoimpostoNotaCredito").find(`li[codigoimposto_id="${article.selected.artigo_codigoimposto.NOTACREDITO}"]`).addClass("active");
         $("#artigo_codigoimpostoNotaCreditoDesc").val(($("#artigo_codigoimpostoNotaCredito").find(`li[codigoimposto_id="${article.selected.artigo_codigoimposto.NOTACREDITO}"]`).text() || ""));
         showTarget("xModalCtrlArtigo", "Editar artigo");
