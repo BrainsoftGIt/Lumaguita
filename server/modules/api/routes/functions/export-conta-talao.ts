@@ -132,7 +132,7 @@ export let create = async (instituition, account_content, res, user, date, print
                     },
                     {
                         alignment: "center",
-                        canvas: [ { type: 'rect', x: 0, y: 0, w: 280, h: 0, dash: { length: 9 }, lineWidth: 0.5} ],
+                        canvas: [ { type: 'rect', x: 0, y: 0, w: 280, h: 0, dash: { length: 9 }, lineWidth: 1.5} ],
                         margin: [0, 3, 0, 2],
                     }
                 ]
@@ -179,7 +179,7 @@ export let create = async (instituition, account_content, res, user, date, print
                             },
                             {
                                 alignment: "center",
-                                canvas: [ { type: 'rect', x: 0, y: 0, w: 280, h: 0, dash: { length: 9 }, lineWidth: 0.5} ],
+                                canvas: [ { type: 'rect', x: 0, y: 0, w: 280, h: 0, dash: { length: 9 }, lineWidth: 1.5} ],
                                 margin: [0, 2, 0, 2],
                             }
                         ]
