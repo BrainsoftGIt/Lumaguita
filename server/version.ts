@@ -1,14 +1,17 @@
 import fs from "fs"
 import * as Path from "path";
 import {execSync, spawnSync} from "child_process";
+import {nanoid} from "nanoid";
 
 
 let response = spawnSync( "git", [ "rev-list", "--count", "--all" ]);
-let gitCommits:string;
+let GIT_COMMIT:string;
 
-if( response.status === 0 ) gitCommits = response.stdout.toString().trim();
-if( !gitCommits ) gitCommits = null;
-else gitCommits = `R${gitCommits}`;
+if( response.status === 0 ) GIT_COMMIT = response.stdout.toString().trim();
+if( !GIT_COMMIT ) GIT_COMMIT = null;
+else GIT_COMMIT = `R${GIT_COMMIT}`;
+
+let TAG_CODE = nanoid(6 ).toUpperCase();
 
 export let VERSION = {
     //language=file-reference
@@ -26,7 +29,7 @@ export let VERSION = {
     },
 
     get revs(){
-        return gitCommits
+        return GIT_COMMIT
     },
     unlock(){
         if( fs.existsSync( VERSION.LOOK ) ) fs.unlinkSync( VERSION.LOOK );
@@ -56,9 +59,24 @@ export let VERSION = {
         return  VERSION;
     },
     get TAG(){
-        if( !gitCommits ) return `v${VERSION.NUMBER}`
-        else return `v${VERSION.NUMBER}-${gitCommits}`
+        if( !GIT_COMMIT ) return `v${VERSION.NUMBER}`
+        else return `v${VERSION.NUMBER}-${GIT_COMMIT}-${TAG_CODE}`
+    },
+    get TAG_NAME(){
+        if( !GIT_COMMIT ) return `v${VERSION.NUMBER}`
+        else return `v${VERSION.NUMBER}-${GIT_COMMIT}`
     }
 };
 
+declare global {
+    const VERSION: SystemVersion;
+}
+
+export type SystemVersion = typeof VERSION;
+// @ts-ignore
+global.VERSION = VERSION;
+
+
 console.log( "VERSION-NUMBER", VERSION.NUMBER )
+
+
