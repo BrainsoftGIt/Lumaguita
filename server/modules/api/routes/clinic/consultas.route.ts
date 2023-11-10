@@ -4,6 +4,7 @@ import {load_space_configuration} from "../print.route";
 import fs from "fs";
 import path from "path";
 import {folders} from "../../../../global/project";
+import file from "../functions/clinic/export-receita-A5";
 
 app.post("/api/clinica/consulta/set", async (req, res) =>{
     const {functSetConsulta} = require("../../db/clinic/call-function-consulta");
@@ -64,11 +65,19 @@ app.post("/api/clinica/consulta/export/receita/data", async (req, res) =>{
 });
 
 app.get("/api/clinica/consulta/export/receita/a4/:data", async (req, res) =>{
-    const file = require("../functions/clinic/export-receita-A4");
-    await createPDFReceita(req, file, res);
+    try {
+        const file = require("../functions/clinic/export-receita-A4");
+        await createPDFReceita(req, file, res);
+    }catch (e) {
+        console.log(e)
+    }
 });
 
 app.get("/api/clinica/consulta/export/receita/a5/:data", async (req, res) =>{
-    const file = require("../functions/clinic/export-receita-A5");
-    await createPDFReceita(req, file, res);
+    try {
+        const file = require("../functions/clinic/export-receita-A5");
+        await createPDFReceita(req, file, res);
+    } catch (e) {
+        console.log(e)
+    }
 });
