@@ -2,7 +2,7 @@
 console.log("NODE VERSION:", process.version )
 require( 'source-map-support' ).install();
 require('./global/pid').showUncaughtError();
-
+import "./version";
 import * as path from "path";
 import {FileUtil} from "zoo.util/lib/file-util";
 import {launcherStatus} from "./launcher/status";

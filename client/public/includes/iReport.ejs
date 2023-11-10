@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
+	<title>Luma | Dashboard</title>
+	<link rel="shortcut icon" href="../assets/img/luma.png?v=<%=VERSION.TAG%>" />
+	<link rel="stylesheet" href="../assets/css/main.css?v=<%=VERSION.TAG%>">
+	<link rel="stylesheet" href="../assets/css/admin/home.css?v=<%=VERSION.TAG%>">
+	<script src="../assets/js/jquery.js?v=<%=VERSION.TAG%>"></script>
+	<script src="../assets/js/admin/postIdentifier.js?v=<%=VERSION.TAG%>"></script>
+	<script src="../assets/js/admin/system.js?v=<%=VERSION.TAG%>"></script>
+</head>
+
+<body>
+	<div class="xloading progress">
+		<div class="indeterminate"></div>
+	</div>
+	<div class="flex master-page">
+		<article class="div-include-pages"></article>
+	</div>
+	<div class="xAlertContainer"></div>
+</body>
+
+<script src="../assets/js/main.js?v=<%=VERSION.TAG%>"></script>
+<script src="../assets/js/admin/home.js?v=<%=VERSION.TAG%>"></script>
+<script src="../assets/js/geral.js?v=<%=VERSION.TAG%>"></script>
+<script src="../assets/js/admin.js?v=<%=VERSION.TAG%>"></script>
+<script src="../assets/js/admin/internMenus.js?v=<%=VERSION.TAG%>"></script>
+<script src="../assets/js/inputMask.js?v=<%=VERSION.TAG%>"></script>
+<script src="../assets/js/socket/Config.js?v=<%=VERSION.TAG%>"></script>
+<script src="/MGT/socket.io.js?v=<%=VERSION.TAG%>"></script>
+<script src="../assets/js/socket/Package.js?v=<%=VERSION.TAG%>"></script>
+<script src="../assets/js/socket/Socket.js?v=<%=VERSION.TAG%>"></script>
+<script src="../assets/js/printSpaceConfig.js?v=<%=VERSION.TAG%>"></script>
+<script src="../assets/js/serieOperation.js?v=<%=VERSION.TAG%>"></script>
+<script src="../assets/js/admin/DBK.js?v=<%=VERSION.TAG%>"></script>
+<script>
+	function showReportParametizadeOnly( posto_id ){
+		paramentizadoReports.posto_id = posto_id;
+		setTimeout(() => {
+			$("#totalEntriesReport").html("").attr("found", "0 resultados")
+			$("[header-report-list], [body-report-list]").empty()
+			$('[xmodalsavereport]').parent("div").remove()
+			$('[xModalMasterFilter]').parent("div").remove()
+			$('[target="xModalExportFileFinanca"]').remove()
+
+			let {loadPosto, loadArmazem, load} = paramentizadoReports;
+			loadPosto();
+			loadArmazem();
+			load()
+		})
+	}
+	$(".div-include-pages").load("report");
+</script>
+</html>
