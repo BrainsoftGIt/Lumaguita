@@ -11,8 +11,7 @@ import {Pool} from "pg";
 //     password: args.dbPasswordClinic,
 // });
 
-
-export const clinicCore = new PgCore( new Pool({
+export const clinicCore = new PgCore( () => new Pool({
     host: args.dbHostClinic,
     port: args.dbPort,
     database: args.dbNameClinic,
