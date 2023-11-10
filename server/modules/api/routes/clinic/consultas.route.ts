@@ -1,10 +1,8 @@
 import {app, storage} from '../../../../service/storage.service';
-import {functLoadConsultaData} from "../../db/clinic/call-function-consulta";
 import {load_space_configuration} from "../print.route";
 import fs from "fs";
 import path from "path";
 import {folders} from "../../../../global/project";
-import file from "../functions/clinic/export-receita-A5";
 
 app.post("/api/clinica/consulta/set", async (req, res) =>{
     const {functSetConsulta} = require("../../db/clinic/call-function-consulta");
