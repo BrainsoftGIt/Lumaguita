@@ -76,11 +76,11 @@ console.log( "[maguita] WebService>",  `building service ${ args.app }`, `${ arg
 
 
 // Statics files
-// export const { resolvers,  listen, acceptors } = PageResolve( {
-//     folders: folders,
-//     dirSlash: true,
-//     hiddenIndex: true
-// });
+export const { resolvers,  listen, acceptors } = PageResolve( {
+    folders: folders,
+    dirSlash: true,
+    hiddenIndex: true
+});
 
 // export const statics = { resolvers, acceptors };
 

@@ -11,7 +11,8 @@ fs.watch( folders.public, { recursive: true }, (event, source) => {
 
 let localStaticResource = express.static( folders.public, {
     cacheControl:true,
-    maxAge: 1000 * 60 * 60 * 24 * 30,
+    immutable: true,
+    maxAge: 1000 * 60 /*segundos*/ * 60 /*minitos*/ * 24 /*horas*/ * 30 /*dias*/ * 12 /*meses*/ * 10 /*anos*/,
     etag: true,
     setHeaders( res, filename ){
         if( !eTags[ filename ] ) {
@@ -22,35 +23,6 @@ let localStaticResource = express.static( folders.public, {
     }
 });
 
-
-
-
-
-
-
-
-
-
-//
-//
-//
-// let remoteStaticResource = express.static( folders.public, {
-//     cacheControl:true,
-//     maxAge: 1000 * 60 * 60 * 24 * 30 * 12,
-//     etag: true,
-//     setHeaders( res , filename, s){
-//         // if(!eTags[filename] ){
-//             let stat = fs.statSync( filename );
-//             console.log( filename, stat )
-//         // }
-//         console.log( "console.log( req )", filename )
-//         // res.setHeader("ETag",  );
-//     }
-// });
-
 app.use( (req, res, next) => {
     localStaticResource( req, res, next );
-    // if( res.locals.REMOTE_REQUEST ) {
-    //     return remoteStaticResource( req, res, next );
-    // } else return localStaticResource( req, res, next );
 });

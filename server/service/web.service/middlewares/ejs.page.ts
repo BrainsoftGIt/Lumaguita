@@ -43,7 +43,7 @@ export function resolveEjs( req:e.Request, res:e.Response, path:string, source:s
         content,
         request: req,
         response: res
-    } )
+    })
 }
 
 
@@ -61,7 +61,8 @@ app.use( "/", (req, res, next)=>{
         Path.join( folders.public, `${path}.ejs` ),
         Path.join( folders.views, path, "index.ejs" ),
         Path.join( folders.public, path, "index.ejs" ),
-    ]
+    ];
+
     let source = paths.find( value => {
         return fs.existsSync( value );
     });
