@@ -34,6 +34,7 @@ app.post("/api/clinica/fixacao/loads", async (req, res) =>{
         load.arg_branch_uid = req?.session?.auth_data?.auth?.branch_uuid || null;
 
         let response = await functLoadItens(load);
+        console.log(response)
         datas[load.parmName] = response.rows.map(({data}) => {
             return data;
         });
