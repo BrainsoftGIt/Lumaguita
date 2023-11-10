@@ -19,7 +19,7 @@ app.post("/api/clinica/fixacao/load", async (req, res) =>{
 
     let response = await functLoadItens(req.body);
     res.json({
-        data: response.rows.map(({data}) => {
+        data: (response?.rows || []).map(({data}) => {
             return data;
         })
     });
@@ -35,7 +35,7 @@ app.post("/api/clinica/fixacao/loads", async (req, res) =>{
 
         let response = await functLoadItens(load);
         console.log("response", response)
-        datas[load.parmName] = response.rows.map(({data}) => {
+        datas[load.parmName] = (response?.rows || []).map(({data}) => {
             return data;
         });
     }
