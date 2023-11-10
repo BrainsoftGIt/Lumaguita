@@ -17,7 +17,6 @@ app.post("/api/clinica/paciente/load", async (req, res) =>{
     req.body.branch = req?.session?.auth_data?.auth?.branch_uuid || null;
 
     let response = await functLoadPatient(req.body);
-    console.log(response)
     res.json({
         data: response.rows.map(({data}) => {
             return data

@@ -4,7 +4,6 @@ import {catchAll, catchLast, sql} from "kitres";
 import {args} from "../../../../global/args";
 
 export function functSetItens(argument:any) {
-    console.log({dbUserClinic : args.dbUserClinic})
     if(!args.dbUserClinic){
         return resolveClinicLastIfNoDatabase();
     }
@@ -16,7 +15,6 @@ export function functSetItens(argument:any) {
 }
 
 export function functLoadItens(argument:any) {
-    console.log({dbUserClinic : args.dbUserClinic})
     if(!args.dbUserClinic){
         return resolveClinicAllIfNoDatabase();
     }
