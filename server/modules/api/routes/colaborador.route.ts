@@ -146,7 +146,7 @@ app.post("/api/user/logged/menus", async (req, res) =>{
          response = await functLoadMenuGrants(req.body);
          response = response.rows;
     }
-    res.json({dados: req.session?.auth_data, showConfigMenu: showConfigMenu, grants: response });
+    res.json({dados: req.session?.auth_data, showConfigMenu: showConfigMenu, grants: response, TAG: VERSION.TAG});
 });
 app.post("/api/menus/load", async (req, res) =>{
     const {functLoadMenusBranch} = require("../db/call-function-colaborador");
