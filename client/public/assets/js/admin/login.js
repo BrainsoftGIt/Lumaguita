@@ -17,7 +17,7 @@
                             login.colaborador_id = e.colaborador_id;
                             showTarget("xModalActivate", "Olá, "+e.colaborador_nome);
                         }
-                       else location.href = "dashboard";
+                       else location.href = "/admin/dashboard";
                     }
                     else xAlert("Login", e.message, "error");
                 }
