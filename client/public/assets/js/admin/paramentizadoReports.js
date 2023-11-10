@@ -222,10 +222,10 @@ $("#SaveReport").on("click", function (){
 $("[xModalSaveReport]").on("click", function (){
     let {ready} = paramentizadoReports;
     let {length} = $('div[list="filter"] [data-name]');
-    if(!length || !ready){
-        xAlert("Relatório", "Configure um relatório primeiramente!", "warning");
-        return
-    }
+    // if(!length || !ready){
+    //     xAlert("Relatório", "Configure um relatório primeiramente!", "warning");
+    //     return
+    // }
 
     let tipo_relatorios = $("#tipo_relatorios").find("li.active").text();
     $(`[id="reportName"]`).val(tipo_relatorios)

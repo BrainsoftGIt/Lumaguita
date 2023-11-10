@@ -1,4 +1,4 @@
-
+let reportCellDivider="padding-left: 3px; padding-right: 3px;";
 var report = {
     config: null,
     list: [],
@@ -248,22 +248,22 @@ var report = {
             console.log( "report.totalColumnsWeight", report.totalColumnsWeight, "Number($(this).attr(\"weight\"))", Number($(this).attr("weight")) )
             growValue = (Number($(this).attr("weight")) * 10) / report.totalColumnsWeight;
             if(alignmentFormats.includes($(this).attr("format")))
-                headerTable.append(`<li grow="${growValue}" title="${$(this).text()}" name="${$(this).text().trim()}" format="${$(this).attr("format")}" column="${$(this).attr("column")}" style="text-align: right;cursor: pointer; padding-left: 2px; padding-right: 2px;" alinhamento="right">${$(this).text()}</li>`);
+                headerTable.append(`<li grow="${growValue}" title="${$(this).text()}" name="${$(this).text().trim()}" format="${$(this).attr("format")}" column="${$(this).attr("column")}" style="text-align: right;cursor: pointer; ${reportCellDivider}" alinhamento="right">${$(this).text()}</li>`);
             else
-                headerTable.append(`<li grow="${growValue}" title="${$(this).text()}" name="${$(this).text().trim()}" format="${$(this).attr("format")}" column="${$(this).attr("column")}" style="padding-left: 2px; padding-right: 2px;">${$(this).text()}</li>`);
+                headerTable.append(`<li grow="${growValue}" title="${$(this).text()}" name="${$(this).text().trim()}" format="${$(this).attr("format")}" column="${$(this).attr("column")}" style="${reportCellDivider}">${$(this).text()}</li>`);
         });
         $("#grupos_colunas_relatorio").find("li.active").each(function () {
             growValue = (Number($(this).attr("weight")) * 10) / report.totalColumnsWeight;
             if(alignmentFormats.includes($(this).attr("format")))
-                headerTable.append(`<li grow="${growValue}" title="${$(this).text()}" name="${$(this).attr("rename")}" format="${$(this).attr("format")}" style="text-align: right; padding-left: 2px; padding-right: 2px;" alinhamento="right">${$(this).attr("name")}</li>`);
-            else       headerTable.append(`<li grow="${growValue}" title="${$(this).text()}" name="${$(this).attr("rename")}" format="${$(this).attr("format")}" style="padding-left: 2px; padding-right: 2px;">${$(this).attr("name")}</li>`);
+                headerTable.append(`<li grow="${growValue}" title="${$(this).text()}" name="${$(this).attr("rename")}" format="${$(this).attr("format")}" style="text-align: right; margin-left: 1px;  ${reportCellDivider}" alinhamento="right">${$(this).attr("name")}</li>`);
+            else       headerTable.append(`<li grow="${growValue}" title="${$(this).text()}" name="${$(this).attr("rename")}" format="${$(this).attr("format")}" style="${reportCellDivider}">${$(this).attr("name")}</li>`);
         });
         report.groups.forEach((group) =>{
             growValue = (Number(group.weight) * 10) / report.totalColumnsWeight;
              if(alignmentFormats.includes(group.format))
-                headerTable.append(`<li grow="${growValue}" title="${group.name}" name="${group.rename}" format="${group.format}" style="text-align: right; padding-left: 2px; padding-right: 2px;" alinhamento="right">${group.name}</li>`);
+                headerTable.append(`<li grow="${growValue}" title="${group.name}" name="${group.rename}" format="${group.format}" style="text-align: right; ${reportCellDivider}" alinhamento="right">${group.name}</li>`);
              else
-                 headerTable.append(`<li grow="${growValue}" title="${group.name}" name="${group.rename}" format="${group.format}" style="padding-left: 2px; padding-right: 2px;">${group.name}</li>`);
+                 headerTable.append(`<li grow="${growValue}" title="${group.name}" name="${group.rename}" format="${group.format}" style="${reportCellDivider}">${group.name}</li>`);
         });
     },
     setWeightColumns(columnFormat){
@@ -338,10 +338,10 @@ var report = {
                                 let headerValue = report.formatValue({value: rep.data[headerTable.find("li").eq(columnIndex).attr("name")],
                                         format: headerTable.find("li").eq(columnIndex).attr("format")});
                                 if(headerTable.find("li").eq(columnIndex).attr("alinhamento")){
-                                    reportBody.find("ul:last").append(`<li grow="${grow}" title="${(headerValue || "")}" style=" padding-left: 2px; padding-right: 2px; text-align: ${headerTable.find("li").eq(columnIndex).attr("alinhamento")}">${(headerValue || "")}</li>`);
+                                    reportBody.find("ul:last").append(`<li grow="${grow}" title="${(headerValue || "")}" style=" ${reportCellDivider} text-align: ${headerTable.find("li").eq(columnIndex).attr("alinhamento")}">${(headerValue || "")}</li>`);
                                 }
                                 else{
-                                    reportBody.find("ul:last").append(`<li grow="${grow}" title="${(headerValue || "")}" style="padding-left: 2px; padding-right: 2px;">${(headerValue || "")}</li>`);
+                                    reportBody.find("ul:last").append(`<li grow="${grow}" title="${(headerValue || "")}" style="${reportCellDivider}">${(headerValue || "")}</li>`);
                                 }
 
                             }
@@ -357,9 +357,9 @@ var report = {
                             footerValue = null;
                         }
                         if(headerTable.find("li").eq(columnIndex).attr("alinhamento") )
-                             reportBody.find("ul:last").append(`<li grow="${grow}" style="font-weight: bold;text-align: right; padding-left: 2px; padding-right: 2px;" class="report_footer" filled="${(footerValue ? "y" : "n")}">${(footerValue ? footerValue.dc().formatter() : "")}</li>`);
+                             reportBody.find("ul:last").append(`<li grow="${grow}" style="font-weight: bold;text-align: right; ${reportCellDivider}" class="report_footer" filled="${(footerValue ? "y" : "n")}">${(footerValue ? footerValue.dc().formatter() : "")}</li>`);
                         else
-                            reportBody.find("ul:last").append(`<li grow="${grow}" style="font-weight: bold; padding-left: 2px; padding-right: 2px;" class="report_footer" filled="${(footerValue ? "y" : "n")}">${(footerValue ? footerValue.dc().formatter() : "")}</li>`);
+                            reportBody.find("ul:last").append(`<li grow="${grow}" style="font-weight: bold; ${reportCellDivider}" class="report_footer" filled="${(footerValue ? "y" : "n")}">${(footerValue ? footerValue.dc().formatter() : "")}</li>`);
 
                         columnIndex = columnIndex + 1;
                     }
