@@ -1,7 +1,6 @@
 import {args} from "../../../global/args";
 import {PgCore, scriptUtil} from "kitres";
 import {ClientConfig, Pool} from "pg"
-import {clinicCore} from "../clinica.factory";
 
 let configs:ClientConfig = {
     host: args.dbHost,
