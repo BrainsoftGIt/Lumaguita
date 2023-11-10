@@ -38,6 +38,10 @@ export function resolveEjs( req:e.Request, res:e.Response, path:string, source:s
         content = contentLoad[ contentType.type ]( contentType.file );
     }
 
+    if ( req.query.v  && req.query.v === VERSION.TAG ){
+        res.setHeader(  "ETag", VERSION.TAG );
+        res.setHeader( "Cache-Control", `public, max-age=31536000, immutable` );
+    }
 
     res.render( path, {
         content,
