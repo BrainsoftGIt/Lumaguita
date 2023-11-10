@@ -1,6 +1,6 @@
-<link rel="stylesheet" href="../assets/css/admin/inpage.css">
-<link rel="stylesheet" href="../assets/css/admin/fatura.css">
-<link rel="stylesheet" href="../assets/css/admin/tableAdmin.css">
+<link rel="stylesheet" href="../assets/css/admin/inpage.css?v=<%=VERSION.TAG%>">
+<link rel="stylesheet" href="../assets/css/admin/fatura.css?v=<%=VERSION.TAG%>">
+<link rel="stylesheet" href="../assets/css/admin/tableAdmin.css?v=<%=VERSION.TAG%>">
 <style>
     .__included__{
         overflow-y: hidden!important;
@@ -10,7 +10,7 @@
         margin-top: 10px;
     }
     [tableDocumentArticles] {
-        height: 34.5vh;
+        height: 33vh;
         overflow-y: auto;
         margin-bottom: 10px;
     }
@@ -20,65 +20,75 @@
         left: 50%; /* Centraliza horizontalmente */
         transform: translate(-50%, -50%); /* Isso corrige o deslocamento para o centro */
     }
+    .placeholder{
+        color: #888; /* Placeholder text color */
+    }
     .xinput, .xselect {
         margin: 4px 0 4px!important;
     }
 </style>
-<div class="__included__ fatura inpage">
+<div class="__included__ faturaNota inpage">
     <div class="_head flex h-sb v-ct">
         <div class="inLeft">
-            <h1>Fatura</h1>
+            <h1>Nota de Credito</h1>
         </div>
         <div class="flex v-ct">
             <div class="inMenus">
                 <ul class="flex" menus_internos>
                 </ul>
             </div>
-            <button class="xbtn" id="ver_proformas">Listar Proformas</button>
         </div>
     </div>
-    <datalist id="faturaClientes" fatura>
+    <datalist id="faturaClientes" fatura faturaNota>
     </datalist>
     <datalist id="faturaArtigos" artigos>
     </datalist>
     <div class="_body noborder" id="faturaAdmin">
-        <div class="inputs flex xform">
-            <div class="xselect flutuate w15">
+        <div class="inputs flex xform h-sb">
+            <div class="xselect flutuate w25">
                 <input type="text" readonly placeholder="_">
                 <label>Serie Fatura</label>
-                <ul listFatura id="f1"></ul>
+                <ul listFatura id="f4"></ul>
                 <div class="fakearrow flex"><span></span><span></span></div>
             </div>
-            <div class="xinput w15">
+            <div class="xinput w25">
+                <input type="text" documento_origem placeholder="_">
+                <label>Documento de origem</label>
+            </div>
+            <div class="xinput w25">
+                <input type="text" data-inputmask-alias="dd-mm-yyyy" data-val="true" documento_origem_data placeholder="_">
+                <label>Data Doc. origem</label>
+            </div>
+            <div class="xinput w25">
                 <input type="text" placeholder="Data de emissão" _noObrigatory="true" id="fatura_data_emissao"
                        data-inputmask-alias="dd-mm-yyyy" data-val="true">
                 <label for="fatura_data_emissao">Data de emissão</label>
             </div>
-            <div class="xinput w15">
+            <div class="xinput w25">
                 <input type="text" placeholder="Pesquisar cliente" search_customer list="faturaClientes">
                 <label>Pesquisar cliente</label>
             </div>
-            <div class="xinput w15">
+            <div class="xinput w25">
                 <input type="text" disabled cliente_titular placeholder="_">
                 <label>Nome do cliente</label>
             </div>
-            <div class="xinput w15">
+            <div class="xinput w25">
                 <input type="text" placeholder="NIF" maxlength="9" disabled cliente_nif _noObrigatory="true">
                 <label>NIF</label>
             </div>
-            <div class="xinput w15">
+            <div class="xinput w25">
                 <input type="text" placeholder="Telefone" disabled cliente_contacto _noObrigatory="true">
                 <label>Telefone</label>
             </div>
             <div class="xinput w100">
-                <textarea placeholder="_" _noObrigatory="true" id="observacao_fatura" ></textarea>
-                <label for="observacao_fatura">Termos</label>
+                <textarea placeholder="_" id="observacao_fatura" ></textarea>
+                <label for="observacao_fatura">Termos / Observação</label>
             </div>
-            <div class="xinput w20">
+            <div class="xinput w25">
                 <input type="text" search_article list="faturaArtigos" placeholder="_">
                 <label>Pesquisar artigo (nome ou código)</label>
             </div>
-            <div class="xinput w15">
+            <div class="xinput w20">
                 <input type="text" placeholder="Descrição" description_article>
                 <label>Descrição</label>
             </div>
@@ -87,12 +97,12 @@
                 <label>Qtd</label>
             </div>
             <div class="xinput w15">
-                <input type="text" placeholder="Valor unitário" class="double formatNumber" price_article>
-                <label>Valor unitário</label>
-            </div>
-            <div class="xinput w12">
                 <input type="text" placeholder="Código Imposto" class="integer" codigo_imposto_article>
                 <label>Código Imposto</label>
+            </div>
+            <div class="xinput w15">
+                <input type="text" placeholder="Valor unitário" class="double formatNumber" price_article>
+                <label>Valor unitário</label>
             </div>
             <div class="xinput w15" style="display: none">
                 <input type="text" placeholder="Lote" lote_article _noObrigatory="true">
@@ -103,20 +113,10 @@
                        date_expiration_article _noObrigatory="true">
                 <label>Data de validade</label>
             </div>
-            <div class="flex v-ct h-sa w30">
-                <div class="xinput w50">
+            <div class="flex v-ct h-sa w15">
+                <div class="xinput w100">
                     <input type="text" placeholder="Imposto" imposto _noObrigatory="true" disabled>
                     <label>Imposto</label>
-                </div>
-                <div class="xcheck w100" style="padding-left: 0.7rem; display: none">
-                    <ul>
-                        <li class="stgl" isencaoImposto>Isenção de imposto</li>
-                    </ul>
-                </div>
-                <div class="xcheck w100" style="padding-left: 0.7rem;">
-                    <ul>
-                        <li class="stgl" imprimirGuiaSaida>Imprimir guia de saída</li>
-                    </ul>
                 </div>
             </div>
             <div class="flex h-sb v-ct" style="float: right;">
@@ -126,15 +126,14 @@
         <div class="x-table hovered grow-1">
             <div class="xheader">
                 <ul class="flex">
-                    <li grow="1">Cód. Artigo</li>
-                    <li grow="2">Descrição</li>
+                    <li grow="1.5">Cód. Artigo</li>
+                    <li grow="2.5">Descrição</li>
                     <li grow="1">Qtd</li>
-                    <li grow="1">Lote</li>
-                    <li grow="1">Data de validade</li>
-                    <li grow="1">Imposto</li>
-                    <li grow="1">Valor Unit</li>
-                    <li grow="1">Valor Final</li>
-                    <li grow="1"></li>
+                    <li grow="1">Valor Imposto</li>
+                    <li grow="1">Código Imposto</li>
+                    <li grow="1.25">Valor Unit</li>
+                    <li grow="1.25">Valor Final</li>
+                    <li grow="0.5"></li>
                 </ul>
             </div>
             <div class="xbody" tableDocumentArticles>
@@ -160,49 +159,12 @@
             </div>
         </div>
     </div>
-    <div id="xModalListProformas" class="x-mobdal XM-listProformas flex v-ct h-ct"
-         target="xModalListProformas" style="z-index: 20;">
-        <div class="modal-frame">
-            <div class="flex h-sb v-ct">
-                <h3>Faturas próforma</h3>
-                <div class="isinRight flex v-ct">
-                    <div class="masterSearch">
-                        <input type="search" placeholder="Pesquise aqui..." id="pesquisar_proformas">
-                        <svg x="0px" y="0px" viewBox="0 0 118.783 118.783"
-                             style="enable-background:new 0 0 118.783 118.783;" xml:space="preserve">
-                            <g>
-                                <path d="M115.97,101.597L88.661,74.286c4.64-7.387,7.333-16.118,7.333-25.488c0-26.509-21.49-47.996-47.998-47.996
-                        S0,22.289,0,48.798c0,26.51,21.487,47.995,47.996,47.995c10.197,0,19.642-3.188,27.414-8.605l26.984,26.986
-                        c1.875,1.873,4.333,2.806,6.788,2.806c2.458,0,4.913-0.933,6.791-2.806C119.72,111.423,119.72,105.347,115.97,101.597z
-                         M47.996,81.243c-17.917,0-32.443-14.525-32.443-32.443s14.526-32.444,32.443-32.444c17.918,0,32.443,14.526,32.443,32.444
-                        S65.914,81.243,47.996,81.243z"></path>
-                            </g>
-                        </svg>
-                    </div>
-                    <span class="close hideTarget" target="IDlistAllProformas"></span>
-                </div>
-            </div>
-            <div class="x-table hovered grow-1">
-                <div class="xheader">
-                    <ul class="flex">
-                        <li grow="1.428571429">Número</li>
-                        <li grow="1.428571429">Colaborador(a)</li>
-                        <li grow="1.428571429">Cliente</li>
-                        <li grow="1.428571429">Montante</li>
-                        <li grow="1.428571429" title="Data de vencimento">Data de venc.</li>
-                        <li grow="1.428571429">Data de registo</li>
-                        <li grow="1.428571429"></li>
-                    </ul>
-                </div>
-                <div class="xbody" id="listProformAccounts">
-                </div>
-            </div>
-            <div class="master-btn-right flex">
-                <span class="hideTarget" target="xModalListProformas">Fechar</span>
-            </div>
-        </div>
-    </div>
 </div>
-<script src="../assets/js/admin/articlesDocuments.js"></script>
-<script src="../assets/js/admin/fatura.js"></script>
-<script src="../assets/js/admin/articleTax.js"></script>
+<script src="../assets/js/admin/articlesDocuments.js?v=<%=VERSION.TAG%>"></script>
+<script src="../assets/js/admin/faturaNotas.js?v=<%=VERSION.TAG%>"></script>
+<script src="../assets/js/admin/articleTax.js?v=<%=VERSION.TAG%>"></script>
+<script>
+    serieOperation.loadSerieOperation([serieOperation.tipo.notaCredito]);
+    articlesDocuments.loadSerieDistribuicao(serieOperation.tipo.notaCredito);
+    FATURA = serieOperation.tipo.notaCredito;
+</script>
