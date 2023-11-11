@@ -4,11 +4,13 @@
     }
 </style>
 <script src="../assets/js/jquery.js?v=<%=VERSION.TAG%>"></script>
-<page id="cachedDocumentRoot" class="hide"  />
+<dd id="cachedDocumentRoot" class="hide"  >
 <script>
     $("#cachedDocumentRoot").empty().load("./index?v=<%=VERSION.TAG%>", function () {
         setTimeout(() => {
-            $("#cachedDocumentRoot").removeClass("hide")
+            let cachedDocumentRoot = $("#cachedDocumentRoot");
+            cachedDocumentRoot.prepend(cachedDocumentRoot.html());
+            cachedDocumentRoot.remove()
         })
     });
 </script>
