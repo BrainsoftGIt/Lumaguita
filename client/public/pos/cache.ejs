@@ -1,0 +1,16 @@
+<html >
+<head>
+    <script src="../assets/js/jquery.js?v=<%=VERSION.TAG%>"></script>
+
+</head>
+<body >
+<div id="cachedDocumentRoot" >
+
+</div>
+</body>
+</html>
+<script>
+    $("#cachedDocumentRoot").empty().load("./index?v=<%=VERSION.TAG%>", function () {
+
+    });
+</script>
