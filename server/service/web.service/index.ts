@@ -38,6 +38,19 @@ app.get( "/VERSION", (req, res, next) => {
     res.send( VERSION.NUMBER );
 });
 
+app.get( "/TAG", (req, res, next) => {
+    res.send( VERSION.TAG );
+});
+
+app.get( "/TAG_NAME", (req, res, next) => {
+    res.send( VERSION.TAG_NAME );
+});
+
+app.get( "/TAG_REVS", (req, res, next) => {
+    res.send( VERSION.revs );
+});
+
+
 //Body Parser
 require( './middlewares/body-parser' );
 
