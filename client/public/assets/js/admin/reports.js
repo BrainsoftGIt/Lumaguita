@@ -323,12 +323,16 @@ var report = {
                     else if(total === 1) $("#totalEntriesReport").attr("found", "1 resultado");
                     else $("#totalEntriesReport").attr("found", total+" resultados");
 
-                    let reportBody = $("[body-report-list]");
+                    let reportBody = $("[body-report-list]").removeClass("empty");
                     reportBody.empty();
                     $("#xModalMasterFilter .hideTarget").click();
                     let columnIndex;
                     let grow;
                     let headerTable = $("[ header-report-list]");
+                    if(!report.list.length){
+                        reportBody.addClass("empty");
+                    }
+
                     report.list.forEach((rep, i) =>{
                         reportBody.append(`<ul></ul>`);
                         columnIndex = 0;
@@ -415,7 +419,7 @@ var report = {
         let {value: year} = $("#financa_report_yaer li.active").data();
         let {value: month} = $("#financa_report_month li.active").data();
 
-        $("body").addClass("loading");
+        $("body, [load-report-imposto]").addClass("loading");
         $.ajax({
             url: "/api/report/export/imposto",
             method: "POST",
@@ -425,11 +429,17 @@ var report = {
                 arg_datafim: new Date(year, month, 0).getDateEn()
             }),
             success(ordenList) {
-                $("body").removeClass("loading");
+                $("body,  [load-report-imposto]").removeClass("loading");
                 report.iOrdenList = ordenList;
                 let sumatorio = 0;
-                $(" [listIReport] ").empty();
-                Object.keys(ordenList).forEach((key) => {
+                let listIReport = $(" [listIReport] ").empty().removeClass("empty");
+                let list =  Object.keys(ordenList);
+
+                if(!list.length){
+                    listIReport.addClass("empty");
+                }
+
+                list.forEach((key) => {
                     ordenList[key].forEach(({desc_itens, total_valor_itens, taxa_aplicavel_itens, quant_itens, numero_documento_origem, tserie_code}) => {
                         $("[listIReport]").append(`<ul>
                                 <li>${ordenList[key][0].documento_numero ?? "N/A"}</li>
