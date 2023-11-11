@@ -9,7 +9,7 @@
     $("#cachedDocumentRoot").empty().load("./index?v=<%=VERSION.TAG%>", function () {
         setTimeout(() => {
             let cachedDocumentRoot = $("#cachedDocumentRoot");
-            cachedDocumentRoot.prepend(cachedDocumentRoot.html());
+            cachedDocumentRoot.before(cachedDocumentRoot.html());
             cachedDocumentRoot.remove()
         })
     });
