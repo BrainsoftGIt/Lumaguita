@@ -50,7 +50,7 @@ export function resolveEjs( req:e.Request, res:e.Response, path:string, source:s
 
     if( res.locals.REMOTE_REQUEST ) {
         remote.isRemote = true
-        remote.VERSION = `v=${VERSION.TAG}`
+        remote.VERSION = `?v=${VERSION.TAG}`
 
     }
 
