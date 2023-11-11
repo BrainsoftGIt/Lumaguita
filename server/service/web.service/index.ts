@@ -13,18 +13,8 @@ console.log( "[maguita] WebService>", `building service ${ args.app }`, `${ args
 
 export const app:Express = express();
 
-//////////////////// MIDDLEWARES ////////////////////
-
-// import "./middlewares/remote/route.remote";
 
 import '../../modules/api/routes/check-static';
-import {nanoid} from "nanoid";
-import {scriptUtil} from "kitres";
-import fs from "fs";
-import Path from "path";
-import path from "path";
-import {res} from "../../../build/compile/res";
-import e from "express";
 // Static declarations
 
 
@@ -50,6 +40,7 @@ app.get( "/TAG_REVS", (req, res, next) => {
     res.send( VERSION.revs );
 });
 
+//////////////////// MIDDLEWARES ////////////////////
 
 //Body Parser
 require( './middlewares/body-parser' );
@@ -59,7 +50,6 @@ require( './middlewares/cookie' );
 
 // Session Express
 require( './middlewares/session' );
-
 require( "./middlewares/remote" );
 require( "./middlewares/ejs.page.js" );
 require( "./middlewares/static.page.js" );
@@ -88,12 +78,12 @@ server.listen( args.appPort, (...values )=>{
 console.log( "[maguita] WebService>",  `building service ${ args.app }`, `${ args.webProtocol }://127.0.0.1:${ args.appPort }`, "ok..." );
 
 
-// Statics files
-export const { resolvers,  listen, acceptors } = PageResolve( {
-    folders: folders,
-    dirSlash: true,
-    hiddenIndex: true
-});
+// // Statics files
+// export const { resolvers,  listen, acceptors } = PageResolve( {
+//     folders: folders,
+//     dirSlash: true,
+//     hiddenIndex: true
+// });
 
 // export const statics = { resolvers, acceptors };
 
