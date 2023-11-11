@@ -1,4 +1,4 @@
-let reportCellDivider="padding-left: 3px; padding-right: 3px;";
+var reportCellDivider="padding-left: 3px; padding-right: 3px;";
 var report = {
     config: null,
     list: [],
