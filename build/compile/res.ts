@@ -22,6 +22,7 @@ const  raws:ResourceItem[] = [
     /*language=file-reference*/  { base: "/",                    dist: "/",                  filter: "package.json" },
     /*language=file-reference*/  { base: "/",                    dist: "/",                  filter: "tsconfig.json" },
     /*language=file-reference*/  { base: "/",                    dist: "/",                  filter: "VERSION" },
+    /*language=file-reference*/  { base: "/",                    dist: "/",                  filter: "REVISION" },
     /*language=file-reference*/  { base: "/",                    dist: "/",                  filter: "kitres-*.tgz" },
     /*language=file-reference*/  { base: "/etc",                 dist: "/etc",                  filter: "anchorio.conf" },
     /*language=file-reference*/  { base: "/bin",                 dist: "/bin",               filter: "**/*.exe" },
