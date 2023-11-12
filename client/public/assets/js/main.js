@@ -52,7 +52,7 @@ $('body').on('click', '.toggleTarget', function (event) {
     $("#" + $(this).attr('target')).toggleClass('show');
 });
 
-let xAlertTiming, xtm;
+var xAlertTiming, xtm;
 function xAlert(_title, _text, _type = "success", _time = 8) {
     clearTimeout(xAlertTiming);
     clearTimeout(xtm);
@@ -142,7 +142,7 @@ $('body').on('click', '.stepper h4', function (event) {
     $(this).parent().toggleClass('closed');
 });
 
-let filterXSelect = "";
+var filterXSelect = "";
 function liPesquisaXSelect() {
     if (filterXSelect !== "") {
         $(this).parents(".xselect").find(`li`).each(function () {

@@ -39,15 +39,27 @@ export function resolveEjs( req:e.Request, res:e.Response, path:string, source:s
     }
 
     if ( req.query.v  && req.query.v === VERSION.TAG ){
-        res.setHeader(  "ETag", VERSION.TAG );
+        res.setHeader( "ETag", VERSION.TAG );
         res.setHeader( "Cache-Control", `public, max-age=31536000, immutable` );
+    }
+
+    let remote = {
+        VERSION:"",
+        isRemote: false
+    };
+
+    if( res.locals.REMOTE_REQUEST ) {
+        remote.isRemote = true
+        remote.VERSION = `?v=${VERSION.TAG}`
+
     }
 
     res.render( path, {
         content,
         request: req,
-        response: res
-    })
+        response: res,
+        REMOTE: remote
+    });
 }
 
 

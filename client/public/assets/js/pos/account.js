@@ -350,7 +350,12 @@ var account = {
 
 account.loadPost();
 $("[admin]").on("click", function () {
-    location.href = "/admin";
+    var urlParams = new URLSearchParams(window.location.search);
+    let query = "";
+    if( urlParams.has( "v" ) && !!urlParams.get( "v" ) ) {
+        query = `?v=${urlParams.get( "v" )}`
+    }
+    location.href = `/admin${ query }`;
 });
 $(".credentialPIN").on("click", ".list-users li", function () {
     $(this).addClass('active').siblings().removeClass('active');
