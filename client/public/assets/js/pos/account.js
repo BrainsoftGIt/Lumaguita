@@ -355,7 +355,7 @@ $("[admin]").on("click", function () {
     if( urlParams.has( "v" ) && !!urlParams.get( "v" ) ) {
         query = `?v=${urlParams.get( "v" )}`
     }
-    window.top.location.href = `/admin${ query }`;
+    window.top.location.href = `/admin`;
 });
 $(".credentialPIN").on("click", ".list-users li", function () {
     $(this).addClass('active').siblings().removeClass('active');
