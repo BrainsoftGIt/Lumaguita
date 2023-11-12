@@ -243,7 +243,7 @@ var consulta = {
         });
     },
     loadFatutaPage : (consultaType) => {
-        $("[loadFatutaPage]").load("/includes/fatura", () => {
+        $("[loadFatutaPage]").load(`/includes/fatura?v=${VERSION.TAG}`, () => {
             let untente = paciente.selected;
             let {cliente_titular} = client.list.find(({cliente_id}) => {
                 return cliente_id === untente.patient_client_id;
