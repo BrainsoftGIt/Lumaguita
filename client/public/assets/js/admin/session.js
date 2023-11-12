@@ -6,7 +6,7 @@ function checkSession(){
         contentType: "application/json",
         success(e) {
             if(!e.result){
-                location.href = "./index";
+                window.top.location.href = "./index";
             }
         }
     });

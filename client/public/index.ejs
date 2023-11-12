@@ -22,7 +22,7 @@
             TAG: `<%=VERSION.TAG%>`,
             NUMBER: `<%=VERSION.NUMBER %>`,
             TAG_NAME: `<%=VERSION.TAG_NAME%>`,
-            REV: `<%=VERSION.revs %>`,
+            REV: `<%=VERSION.REVISION %>`,
         }
     </script>
     <script src="assets/js/jquery.js?v=<%=VERSION.TAG%>"></script>
@@ -59,8 +59,10 @@
         </footer>
     </div>
 </body>
+<script src="assets/js/remote-access.js?v=<%=VERSION.TAG%>"></script>
 <script src="assets/fw/moment/moment.min.js?v=<%=VERSION.TAG%>"></script>
 <script src="assets/fw/moment/moment-timezone.js?v=<%=VERSION.TAG%>"></script>
 <script type="module" src="assets/js/version.js?v=<%=VERSION.TAG%>"></script>
 <script src="assets/js/geral.js?v=<%=VERSION.TAG%>"></script>
+
 </html>

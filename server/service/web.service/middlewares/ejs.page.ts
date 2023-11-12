@@ -4,6 +4,7 @@ import {folders} from "../../../global/project";
 import fs from "fs";
 import {app} from "../index";
 import e from "express";
+import {isRemote, remotePage} from "./remote";
 
 app.locals.VERSION = VERSION;
 app.set( 'views', [ folders.public, folders.views ] );
@@ -21,7 +22,10 @@ const contentLoad = {
     }
 }
 
-export function resolveEjs( req:e.Request, res:e.Response, path:string, source:string ){
+export function resolveEjs( req:e.Request, res:e.Response){
+    res.locals.page_engni = "EJS";
+    let path:string = res.locals.page_path;
+    let source:string = res.locals.page_source;
     let contentType:{ type:keyof typeof contentLoad, file:string };
     if( fs.existsSync( Path.join( folders.contents, `${source}.json`)) ) contentType  = {
         type: "json",
@@ -84,5 +88,21 @@ app.use( "/", (req, res, next)=>{
     });
 
     if( !source ) return next();
-    return resolveEjs( req, res, path, source )
-})
+
+    res.locals.page_engni = "EJS";
+    res.locals.page_path = path;
+    res.locals.page_source = source;
+    return next();
+});
+
+
+app.use( "/", (req, res, next) => {
+    if( res.locals.page_engni !== "EJS" ) return next();
+    if( !isRemote( res ) ) return next();
+    return remotePage( req, res, next );
+});
+
+app.use( "/", (req, res, next) => {
+    if( res.locals.page_engni !== "EJS" ) return next();
+    return resolveEjs( req, res );
+} );

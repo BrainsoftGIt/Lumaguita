@@ -19,7 +19,7 @@
                         xAlert("Carregar licença", "Licença validada com sucesso!");
                         postKey.codePost();
                         setTimeout(()=>{
-                            location.href = "./index";
+                            window.top.location.href = "./index";
                         }, 2000)
                     }
                     else xAlert("Carregar licença", e.data, "error");

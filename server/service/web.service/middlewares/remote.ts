@@ -1,5 +1,5 @@
-import {nanoid} from "nanoid";
 import {app} from "../index";
+import e from "express";
 
 let redirect :{
     [ code:string ]: {
@@ -18,25 +18,35 @@ let switchVersion = "/switch-version";
 //http://v207.pirata.luma.brainsoftstp.com/
 
 app.use( (req, res, next) => {
-    let existingQueryParams = Object.entries(
-        Object.assign( req.query, {
-            v: VERSION.TAG
-        })
-    ).map(([key, value]) => `${key}=${value}`).join('&');
+
     res.locals.REMOTE_REQUEST = false;
 
     if( RESOLVE_REGEXP.test( req.headers.host ) ) {
-        let domainsParts = req.headers.host.split( "." );
-        let [ client, eTagVersion] = domainsParts.reverse().filter( (value, index) => index > 2 );
         res.locals.REMOTE_REQUEST = true;
+    }
+    return next();
+});
 
-        if( !eTagVersion ){
-            if( existingQueryParams.trim().length ) existingQueryParams = "?"+existingQueryParams
-            const redirectUrl = `http://${versionCode}.${client}.${BASE_REMOTE}${req.path}${existingQueryParams}`;
+export function isRemote( res:e.Response ){
+    return res.locals.REMOTE_REQUEST;
+}
 
-            res.setHeader( "access-control-max-age", 0 );
-            res.setHeader( "Etag", VERSION.TAG );
-            return res.send(`
+export function remotePage( req:e.Request, res:e.Response, next:e.NextFunction ){
+    let query = Object.entries(
+        Object.assign({...req.query}, {
+            v: VERSION.TAG
+        })
+    ).map(([key, value]) => `${key}=${value}`).join('&');
+
+    let domainsParts = req.headers.host.split( "." );
+    let [ client] = domainsParts.reverse().filter( (value, index) => index > 2 );
+    const redirectUrl = `https://${ client }.${ BASE_REMOTE }${req.path}?${ query }`;
+    let eTagVersion = req.query.v;
+
+    if( !eTagVersion ){
+        res.setHeader( "access-control-max-age", 0 );
+        res.setHeader( "Etag", VERSION.TAG );
+        return res.send(`
                 <!DOCTYPE html>
                     <html lang="en">
                     <head>
@@ -51,7 +61,7 @@ app.use( (req, res, next) => {
                                 overflow: hidden;
                             }
 
-                            #fullscreen-iframe {
+                            #remote {
                                 position: absolute;
                                 top: 0;
                                 left: 0;
@@ -62,46 +72,15 @@ app.use( (req, res, next) => {
                         </style>
                     </head>
                     <body>
-                        <iframe id="fullscreen-iframe" src="${redirectUrl}" ></iframe>
-                        <script>
-                            var iframe = document.getElementById('fullscreen-iframe');
+                        <iframe id="remote" src="${redirectUrl}" ></iframe>
+                        <script src="/assets/js/remote-access.js?v=${VERSION.TAG}"></script>
 
-                        </script>
                     </body>
                 </html>
             `);
-        }
-
-        if( !eTagVersion || eTagVersion !== versionCode ) {
-            let redirectCode = nanoid(16 );
-            const redirectUrl = `http://${versionCode}.${client}.${BASE_REMOTE}${switchVersion}?code=${redirectCode}`;
-
-            redirect[ redirectCode ] = {
-                query:existingQueryParams,
-                session: req.session,
-                path: req.path
-            };
-            return res.redirect( redirectUrl );
-        }
+    } else if( eTagVersion !== VERSION.TAG ){
+        return res.redirect( redirectUrl );
     }
+
     return next();
-});
-
-
-app.use( switchVersion, (req, res, next) => {
-    let redirectCode:string = req.query.code as string;
-    let status = redirect[ redirectCode ];
-    let redirectUrl = `https://${req.headers.host}`;
-    if( !status ) return next()
-    delete redirect[ redirectCode ];
-
-    Object.entries( status.session||{} ).forEach( ([key, value ], index) => {
-        req.session[ key ] = value;
-    });
-
-    req.session.save( ()=>{
-        redirectUrl+=`${status.path}`;
-        if( status.query?.length ) redirectUrl += `?`+status.query;
-        return res.redirect(  redirectUrl );
-    });
-});
+}

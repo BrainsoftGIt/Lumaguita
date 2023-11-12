@@ -10,15 +10,16 @@
   <link rel="stylesheet" href="assets/css/prev.css?v=<%=VERSION.TAG%>">
   <link rel="stylesheet" href="assets/css/pos/home.css?v=<%=VERSION.TAG%>">
   <link rel="stylesheet" href="assets/css/main.css?v=<%=VERSION.TAG%>">
-  <script src="assets/js/jquery.js?v=<%=VERSION.TAG%>"></script>
   <script>
     var VERSION = {
       TAG: `<%=VERSION.TAG%>`,
       NUMBER: `<%=VERSION.NUMBER %>`,
       TAG_NAME: `<%=VERSION.TAG_NAME%>`,
-      REV: `<%=VERSION.revs %>`,
+      REV: `<%=VERSION.REVISION %>`,
     }
   </script>
+  <script src="assets/js/jquery.js?v=<%=VERSION.TAG%>"></script>
+  <script src="assets/js/remote-access.js?v=<%=VERSION.TAG%>"></script>
   <script src="assets/js/admin/postIdentifier.js?v=<%=VERSION.TAG%>"></script>
   <title>Luma | Licença</title>
 </head>
@@ -47,4 +48,5 @@
 <script src="assets/js/geral.js?v=<%=VERSION.TAG%>"></script>
 <script src="assets/js/license.js?v=<%=VERSION.TAG%>"></script>
 <script src="assets/js/main.js?v=<%=VERSION.TAG%>"></script>
+
 </html>

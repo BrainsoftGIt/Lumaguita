@@ -61,7 +61,7 @@ let checkHasLicense =  ( req:Request, res:Response, next:NextFunction ) =>{
         } else {
             res.status( 403 );
             res.setHeader("Content-Type", "text/html");
-            res.redirect( "/license.html");
+            res.redirect( "/license");
         }
     };
     _next();
@@ -76,12 +76,12 @@ export function checkLicenseValida( req:Request, res:Response, next:NextFunction
        } else if ( !checker.isValidClock ) {
            res.status(403);
            res.setHeader("Content-Type", "text/html");
-           return  res.redirect("/changeDate.html");
+           return  res.redirect("/changeDate");
 
        } else if( !checker.isValidLicense ){
            res.status(403);
            res.setHeader("Content-Type", "text/html");
-           return  res.redirect("/renovar.html");
+           return  res.redirect("/renovar");
 
        } else {
            next();

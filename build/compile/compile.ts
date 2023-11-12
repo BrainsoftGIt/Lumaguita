@@ -198,16 +198,26 @@ function deps( args:CompileArgs  ){
 }
 
 async function build( args:CompileArgs  ){
+    let tag = spawnSync( "git", [ "rev-parse", "origin/main" ]);
+    let GIT_TAG = tag.stdout.toString().trim();
     const _res  = res();
     console.log( "ROOT", _res.root );
     console.log( "DIST", _res.distRoot );
+    console.log( "VERSION", VERSION.TAG );
+    console.log( "GIT-TAG", GIT_TAG );
+
+    if( tag.status === 0 && !!GIT_TAG ){
+        /*language=file-reference*/
+        fs.writeFileSync( Path.join( __dirname, "../../TAG" ), GIT_TAG );
+    }
+
+
 
     require("../clean").cleanJs( path.join(__dirname, "../../"))
     //language=file-reference
     tsc( path.join( __dirname, "../.." ) );
 
     clean( args );
-
 
     fs.mkdirSync( _res.distRoot, { recursive: true }  )
     if( !args.fast ) await raw();

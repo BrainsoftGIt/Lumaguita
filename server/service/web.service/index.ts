@@ -37,7 +37,7 @@ app.get( "/TAG_NAME", (req, res, next) => {
 });
 
 app.get( "/TAG_REVS", (req, res, next) => {
-    res.send( VERSION.revs );
+    res.send( VERSION.REVISION );
 });
 
 //////////////////// MIDDLEWARES ////////////////////
