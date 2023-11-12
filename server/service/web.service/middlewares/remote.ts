@@ -32,7 +32,7 @@ app.use( (req, res, next) => {
 
         if( !eTagVersion ){
             if( existingQueryParams.trim().length ) existingQueryParams = "?"+existingQueryParams
-            const redirectUrl = `https://${versionCode}.${client}.${BASE_REMOTE}${req.path}${existingQueryParams}`;
+            const redirectUrl = `http://${versionCode}.${client}.${BASE_REMOTE}${req.path}${existingQueryParams}`;
 
             res.setHeader( "access-control-max-age", 0 );
             res.setHeader( "Etag", VERSION.TAG );
@@ -74,7 +74,7 @@ app.use( (req, res, next) => {
 
         if( !eTagVersion || eTagVersion !== versionCode ) {
             let redirectCode = nanoid(16 );
-            const redirectUrl = `https://${versionCode}.${client}.${BASE_REMOTE}${switchVersion}?code=${redirectCode}`;
+            const redirectUrl = `http://${versionCode}.${client}.${BASE_REMOTE}${switchVersion}?code=${redirectCode}`;
 
             redirect[ redirectCode ] = {
                 query:existingQueryParams,
