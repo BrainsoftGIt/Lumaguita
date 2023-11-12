@@ -12,8 +12,6 @@ if( !GIT_COMMIT ) GIT_COMMIT = null;
 else GIT_COMMIT = `R${GIT_COMMIT}`;
 
 let TAG_CODE = nanoid(6 ).toUpperCase();
-GIT_COMMIT = null;
-
 console.log( { GIT_COMMIT })
 
 
