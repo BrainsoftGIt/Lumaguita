@@ -17,6 +17,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="assets/css/default.css?v=<%=VERSION.TAG%>">
     <link rel="stylesheet" href="assets/css/prev.css?v=<%=VERSION.TAG%>">
+    <script>
+        var VERSION = {
+            TAG: `<%=VERSION.TAG%>`,
+            NUMBER: `<%=VERSION.NUMBER %>`,
+            TAG_NAME: `<%=VERSION.TAG_NAME%>`,
+            REV: `<%=VERSION.revs %>`,
+        }
+    </script>
     <script src="assets/js/jquery.js?v=<%=VERSION.TAG%>"></script>
     <script src="assets/js/admin/postIdentifier.js?v=<%=VERSION.TAG%>"></script>
     <title>Luma | Software de faturação e POS</title>
