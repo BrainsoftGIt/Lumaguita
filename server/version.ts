@@ -5,34 +5,39 @@ import {nanoid} from "nanoid";
 
 
 let response = spawnSync( "git", [ "rev-list", "--count", "--all" ]);
-let GIT_REVISION:string;
-
-if( response.status === 0 ) GIT_REVISION = response.stdout.toString().trim();
-if( !GIT_REVISION ) GIT_REVISION = null;
-else GIT_REVISION = `R${GIT_REVISION}`;
-let TAG_REVISION = GIT_REVISION;
-
-let LAUNCHE_CODE = nanoid(6 ).toUpperCase();
-
-if( GIT_REVISION ){
-    /*language=file-reference*/
-    fs.writeFileSync( Path.join(__dirname, "../REVISION" ), GIT_REVISION );
-} else if( fs.existsSync( Path.join(__dirname, "../REVISION" ) )) {
-    /*language=file-reference*/
-    TAG_REVISION = fs.readFileSync( Path.join(__dirname, "../REVISION" ) ).toString().trim();
+const __VERSION = {
+    GIT_REVISION:"",
+    GIT_TAG: "",
+    LAUNCHER_CODE: nanoid(6 ).toUpperCase(),
+    IS_GIT: false
 }
 
-let _TAG:string;
+if( response.status === 0 && !!response.stdout.toString().trim() ){
+    __VERSION.IS_GIT = true;
+    __VERSION.GIT_REVISION = `R${response.stdout.toString().trim()}`;
+    /*language=file-reference*/
+    fs.writeFileSync( Path.join(__dirname, "../REVISION" ), __VERSION.GIT_REVISION );
+
+    let tag = spawnSync( "git", [ "rev-parse", "origin/main" ]);
+    __VERSION.GIT_TAG = `T${tag.stdout.toString().trim()}`;
+    fs.writeFileSync( Path.join(__dirname, "../TAG" ), __VERSION.GIT_TAG );
+}
+
 /*language=file-reference*/
-if( fs.existsSync( Path.join(__dirname, "../TAG"))){
-    _TAG = fs.readFileSync( Path.join(__dirname, "../TAG" ) ).toString().trim();
+if( !__VERSION.GIT_TAG && fs.existsSync( Path.join(__dirname, "../TAG" ) ) ){
+    /*language=file-reference*/
+    __VERSION.GIT_TAG = fs.readFileSync( Path.join(__dirname, "../TAG" ) ).toString().trim();
 }
 
+/*language=file-reference*/
+if( !__VERSION.GIT_REVISION && fs.existsSync( Path.join(__dirname, "../REVISION" ) ) ){
+    /*language=file-reference*/
+    __VERSION.GIT_REVISION = fs.readFileSync( Path.join(__dirname, "../REVISION" ) ).toString().trim();
+}
 
 
 export let VERSION = {
-    //language=file-reference
-    NUMBER :fs.readFileSync( Path.join( __dirname, "../VERSION")).toString("utf-8")
+    NUMBER :fs.readFileSync( Path.join( __dirname, /*language=file-reference*/ "../VERSION")).toString("utf-8")
         .trim()
         .split("\n")
         .map( value => value.trim() )
@@ -46,7 +51,7 @@ export let VERSION = {
     },
 
     get REVISION(){
-        return GIT_REVISION
+        return __VERSION.GIT_REVISION
     },
     unlock(){
         if( fs.existsSync( VERSION.LOOK ) ) fs.unlinkSync( VERSION.LOOK );
@@ -55,7 +60,7 @@ export let VERSION = {
     increment(){
         let currentBranch = spawnSync( "git", ["branch", "--show-current"], {
             //language=file-reference
-            cwd: Path.join( __dirname, "../" )
+            cwd: Path.join( __dirname, ".." )
         })
 
         if( currentBranch.error ){
@@ -76,28 +81,31 @@ export let VERSION = {
         return  VERSION;
     },
     get TAG(){
-        if( !GIT_REVISION ) return VERSION.TAG_REV;
-        return `${VERSION.TAG_REV}-${LAUNCHE_CODE}`
+        if( !VERSION.isGit ) return VERSION.TAG_REV;
+        return `${VERSION.TAG_REV}-${__VERSION.LAUNCHER_CODE}`
         // else return `v${VERSION.NUMBER}-${TAG_REVISION}-${TAG_CODE}`
     },
     get TAG_REV(){
-        if( !!TAG_REVISION && !!_TAG ) return `v${VERSION.NUMBER}-${TAG_REVISION}-${_TAG}`;
-        else if(!!_TAG ) return `v${VERSION.NUMBER}-${_TAG}`;
+        if( !!__VERSION.GIT_REVISION && !!__VERSION.GIT_TAG ) return `v${ VERSION.NUMBER }-${ __VERSION.GIT_REVISION }-${ __VERSION.GIT_TAG }`;
+        else if(!!__VERSION.GIT_TAG ) return `v${ VERSION.NUMBER }-${ __VERSION.GIT_TAG }`;
+        else if(!!__VERSION.GIT_REVISION ) return `v${ VERSION.NUMBER }-${ __VERSION.GIT_REVISION }`;
         else  return `v${VERSION.NUMBER}`;
     },
     get TAG_NAME(){
-        if( !GIT_REVISION ) return `v${VERSION.NUMBER}`
-        else return `v${VERSION.NUMBER}-${GIT_REVISION}`
+        if( !__VERSION.GIT_REVISION ) return `v${VERSION.NUMBER}`
+        else return `v${VERSION.NUMBER}-${__VERSION.GIT_REVISION}`
     }, get isGit(){
-        return !!GIT_REVISION;
+        return !!__VERSION.IS_GIT;
+    }, get GIT_TAG(){
+        return __VERSION.GIT_TAG;
     }
 };
 
 declare global {
-    const VERSION: SystemVersion;
+    const VERSION: AppVersion;
 }
 
-export type SystemVersion = typeof VERSION;
+export type AppVersion = typeof VERSION;
 // @ts-ignore
 global.VERSION = VERSION;
 
