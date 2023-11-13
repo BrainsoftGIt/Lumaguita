@@ -79,19 +79,16 @@ export let VERSION = {
         VERSION.NUMBER = versionsParts.join(".");
         fs.writeFileSync( Path.join( __dirname, "../VERSION"), VERSION.NUMBER );
         return  VERSION;
-    },
-    get TAG(){
+    }, get TAG(){
         if( !VERSION.isGit ) return VERSION.TAG_REV;
         return `${VERSION.TAG_REV}-${__VERSION.LAUNCHER_CODE}`
         // else return `v${VERSION.NUMBER}-${TAG_REVISION}-${TAG_CODE}`
-    },
-    get TAG_REV(){
+    }, get TAG_REV(){
         if( !!__VERSION.GIT_REVISION && !!__VERSION.GIT_TAG ) return `v${ VERSION.NUMBER }-${ __VERSION.GIT_REVISION }-${ __VERSION.GIT_TAG }`;
         else if(!!__VERSION.GIT_TAG ) return `v${ VERSION.NUMBER }-${ __VERSION.GIT_TAG }`;
         else if(!!__VERSION.GIT_REVISION ) return `v${ VERSION.NUMBER }-${ __VERSION.GIT_REVISION }`;
         else  return `v${VERSION.NUMBER}`;
-    },
-    get VERSION_NAME(){
+    }, get VERSION_NAME(){
         if( !__VERSION.GIT_REVISION ) return `v${VERSION.NUMBER}`
         else return `v${VERSION.NUMBER}-${__VERSION.GIT_REVISION}`
     }, get isGit(){
