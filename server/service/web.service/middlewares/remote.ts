@@ -32,15 +32,19 @@ export function isRemote( res:e.Response ){
 }
 
 export function remotePage( req:e.Request, res:e.Response, next:e.NextFunction ){
-    let query = Object.entries(
-        Object.assign({...req.query}, {
-            v: VERSION.TAG
-        })
-    ).map(([key, value]) => `${key}=${value}`).join('&');
+    let record:Record<string, string> = {};
+    Object.entries( req.query ).forEach( ([key, value]) => {
+        record[ key ] = value?.toString?.();
+    });
+
+    let query = new URLSearchParams( {
+        ...record,
+        v: VERSION.TAG
+    });
 
     let domainsParts = req.headers.host.split( "." );
     let [ client] = domainsParts.reverse().filter( (value, index) => index > 2 );
-    const redirectUrl = `https://${ client }.${ BASE_REMOTE }${req.path}?${ query }`;
+    const redirectUrl = `${req.protocol}://${ client }.${ BASE_REMOTE }${req.path}?${ query.toString() }`;
     let eTagVersion = req.query.v;
 
     if( !eTagVersion ){
@@ -74,7 +78,6 @@ export function remotePage( req:e.Request, res:e.Response, next:e.NextFunction )
                     <body>
                         <iframe id="remote" src="${redirectUrl}" ></iframe>
                         <script src="/assets/js/remote-access.js?v=${VERSION.TAG}"></script>
-
                     </body>
                 </html>
             `);
