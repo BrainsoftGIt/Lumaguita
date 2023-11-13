@@ -91,7 +91,7 @@ export let VERSION = {
         else if(!!__VERSION.GIT_REVISION ) return `v${ VERSION.NUMBER }-${ __VERSION.GIT_REVISION }`;
         else  return `v${VERSION.NUMBER}`;
     },
-    get TAG_NAME(){
+    get VERSION_NAME(){
         if( !__VERSION.GIT_REVISION ) return `v${VERSION.NUMBER}`
         else return `v${VERSION.NUMBER}-${__VERSION.GIT_REVISION}`
     }, get isGit(){
@@ -102,7 +102,7 @@ export let VERSION = {
 };
 
 declare global {
-    const VERSION: AppVersion;
+    let VERSION: AppVersion;
 }
 
 export type AppVersion = typeof VERSION;

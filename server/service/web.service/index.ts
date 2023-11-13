@@ -1,13 +1,9 @@
 import express, {  Express } from "express";
 import { Server } from "http";
-import { PageResolve } from "zoo.util/lib/page-resolve" ;
 
 import { db } from "../../global/autogen/config/db";
-import { folders } from '../../global/project';
 import { args } from "../../global/args";
 const multerConfig = require("../../lib/multer/config");
-
-import * as ejs from "ejs";
 
 console.log( "[maguita] WebService>", `building service ${ args.app }`, `${ args.webProtocol }://127.0.0.1:${ args.appPort }` );
 
@@ -15,55 +11,33 @@ export const app:Express = express();
 
 
 import '../../modules/api/routes/check-static';
-// Static declarations
-
-
-app.use( (req, res, next) => {
-    console.log(`[maguita] new request from ${req.headers.host} | ${req.method}${req.path}`);
-    // res.setHeader("ETag", VERSION.TAG )
-    next();
-});
-
-app.get( "/VERSION", (req, res, next) => {
-    res.send( VERSION.NUMBER );
-});
-
-app.get( "/TAG", (req, res, next) => {
-    res.send( VERSION.TAG );
-});
-
-app.get( "/TAG_NAME", (req, res, next) => {
-    res.send( VERSION.TAG_NAME );
-});
-
-app.get( "/TAG_REVS", (req, res, next) => {
-    res.send( VERSION.REVISION );
-});
 
 //////////////////// MIDDLEWARES ////////////////////
+require( './middlewares/head' );
 
 //Body Parser
 require( './middlewares/body-parser' );
+
 
 // Cookie Parser
 require( './middlewares/cookie' );
 
 // Session Express
 require( './middlewares/session' );
+
+//Remote
 require( "./middlewares/remote" );
+
+//Cors
+require( './middlewares/cors' );
+
+//Resources
 require( "./middlewares/ejs.page.js" );
 require( "./middlewares/static.page.js" );
 require( "./middlewares/static.file" );
 
-//////////////////// GLOBAL CONFs ////////////////////
-// app.use("/storage", express.static(folders.files));
-
 
 app.use(multerConfig());
-
-//Cors
-const cors = require('cors');
-app.use( cors() );
 
 
 //On Listener
@@ -76,15 +50,3 @@ server.listen( args.appPort, (...values )=>{
 });
 
 console.log( "[maguita] WebService>",  `building service ${ args.app }`, `${ args.webProtocol }://127.0.0.1:${ args.appPort }`, "ok..." );
-
-
-// // Statics files
-// export const { resolvers,  listen, acceptors } = PageResolve( {
-//     folders: folders,
-//     dirSlash: true,
-//     hiddenIndex: true
-// });
-
-// export const statics = { resolvers, acceptors };
-
-// app.use( "/", listen );
