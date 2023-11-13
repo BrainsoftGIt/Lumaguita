@@ -48,16 +48,11 @@ export let VERSION = {
 
     looked(){
         return fs.existsSync( VERSION.LOOK );
-    },
-
-    get REVISION(){
+    }, get REVISION(){
         return __VERSION.GIT_REVISION
-    },
-    unlock(){
+    }, unlock(){
         if( fs.existsSync( VERSION.LOOK ) ) fs.unlinkSync( VERSION.LOOK );
-    },
-
-    increment(){
+    }, increment(){
         let currentBranch = spawnSync( "git", ["branch", "--show-current"], {
             //language=file-reference
             cwd: Path.join( __dirname, ".." )
