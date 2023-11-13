@@ -44,7 +44,7 @@ export function remotePage( req:e.Request, res:e.Response, next:e.NextFunction )
 
     let domainsParts = req.headers.host.split( "." );
     let [ client] = domainsParts.reverse().filter( (value, index) => index > 2 );
-    const redirectUrl = `${"https"}://${ client }.${ BASE_REMOTE }${req.path}?${ query.toString() }`;
+    const redirectUrl = `${req.path}?${ query.toString() }`;
     let eTagVersion = req.query.v;
 
     if( !eTagVersion ){
