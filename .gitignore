@@ -49,3 +49,4 @@ database/project/upgrade/dists/*
 /TAG
 /REVISION
 /test/
+!/test/.keep
