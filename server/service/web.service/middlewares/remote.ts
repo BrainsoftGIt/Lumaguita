@@ -42,8 +42,8 @@ export function remotePage( req:e.Request, res:e.Response, next:e.NextFunction )
         v: VERSION.TAG
     });
 
-    let domainsParts = req.headers.host.split( "." );
-    let [ client] = domainsParts.reverse().filter( (value, index) => index > 2 );
+    // let domainsParts = req.headers.host.split( "." );
+    // let [ client] = domainsParts.reverse().filter( (value, index) => index > 2 );
     const redirectUrl = `${req.path}?${ query.toString() }`;
     let eTagVersion = req.query.v;
 
