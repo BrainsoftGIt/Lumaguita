@@ -13,7 +13,7 @@ declare
   _record record;
   _iterate int default 0;
 begin
-  lock table cluster.sequence;
+  lock table cluster.sequence ;
   if sub is null then sub := ''; end if;
   if next.name is null then
     raise exception 'Sequence name is required!';
