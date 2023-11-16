@@ -28,7 +28,7 @@ begin
         serie_tserie_id,
         serie_espaco_id,
         serie_designacao,
-        format('%s%s', substr( serie_numero, 1, length( serie_numero )-2 ), to_char( current_date, 'yy')) as serie_numero,
+        format('%s%s', substr( serie_numero, 1, length( serie_numero ) -2 ), to_char( current_date, 'yy')) as serie_numero,
         serie_quantidade,
         serie_numcertificacao,
         serie_numatorizacao,
