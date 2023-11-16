@@ -31,6 +31,8 @@ declare
   _autorizacao tweeks.autorizacao;
   _data record;
 begin
+    lock table tweeks.serie;
+    
     _const := map.constant();
     
     select * into _tserie
