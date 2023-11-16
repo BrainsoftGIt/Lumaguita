@@ -7,6 +7,7 @@ alter table tweeks.tserie add column if not exists tserie_numlimitmin int defaul
 `
 
 export const __sets_generate_documento = sql`
+drop function if exists tweeks.__sets_generate_documento(uuid, integer);
 drop function if exists tweeks.__sets_generate_documento(arg_espaco_auth uuid, arg_tserie integer);
 drop function if exists tweeks.__sets_generate_documento(arg_espaco_auth uuid, arg_tserie integer, arg_serie_id int );
 drop function if exists tweeks.__sets_generate_documento(arg_espaco_auth uuid, arg_tserie integer, arg_serie_id uuid );
@@ -87,7 +88,7 @@ begin
       returning * into _serie;
 
       if _serie.serie_id is null then
-        raise exception '%', format( 'Nenhuma serie disponivel para gerar a sequencia para %I!', _tserie.tserie_desc );
+        raise exception '%', format( 'Nenhuma serie de %I disponivel para o ano %I!', _tserie.tserie_desc, to_char( current_date, 'yyyy') );
       end if;
 
       if length( _serie.serie_sequencia::text ) > _tserie.tserie_seqlimit::int then
