@@ -96,19 +96,14 @@ $$
 declare
   arg_espaco_auth uuid default args->>'arg_espaco_auth';
   arg_colaborador_id uuid default args->>'arg_colaborador_id';
-  arg_tserie_id int2 default args->>'tserie_id';
+  __series int2[] default args->>'tseries';
   ___branch uuid default tweeks.__branch_uid( arg_colaborador_id, arg_espaco_auth );
   _const map.constant;
   _espaco tweeks.espaco;
-  _tserie tweeks.tserie;
   __next record;
 begin
   _const := map.constant();
 
-  select * into _tserie
-    from tweeks.tserie ts
-    where ts.tserie_id = arg_tserie_id
-  ;
   
   for __next in 
     select *
@@ -161,7 +156,7 @@ begin
           and s._branch_uid = ___branch
           and a._branch_uid = ___branch
           and s.serie_espaco_id = _espaco.espaco_id
-          and s.serie_tserie_id = arg_tserie_id
+          and s.serie_tserie_id = any( __series )
           and s.serie_estado = _const.maguita_serie_estado_ativo
           and a.autorizacao_estado = _const.maguita_autorizacao_estado_ativo
           and a.autorizacao_ano = extract( years from now() )::int
