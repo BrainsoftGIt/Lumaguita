@@ -5,6 +5,11 @@ export const add_autorizacao_autorizacao_uid = patchSQL({ unique: true }).sql`
 alter table tweeks.autorizacao add if not exists autorizacao_autorizacao_continuer uuid;
 `;
 
+export const add_serie_serie_id = patchSQL({ unique: true }).sql`
+alter table tweeks.serie add if not exists serie_serie_id uuid;
+`;
+
+
 export const funct_sets_autorizacao_continue = sql`
 create or replace function tweeks.funct_sets_autorizacao_continue(args jsonb) returns lib.res
   language plpgsql
@@ -25,6 +30,8 @@ declare
   _autorizacao tweeks.autorizacao;
   _const map.constant;
   _data record;
+  _next record;
+  _res lib.res;
 begin
   lock table tweeks.autorizacao;
   _autorizacao := tweeks.__get_autorizacao( ( args->>'autorizacao_uid' )::uuid );
@@ -47,6 +54,7 @@ begin
         serie_quantidade,
         serie_numcertificacao,
         serie_numatorizacao,
+        se.serie_id as serie_serie_id,
         case 
           when _autorizacao.autorizacao_ano = extract( years from current_date)::int then serie_sequencia
           else 0
@@ -57,11 +65,13 @@ begin
         and se.serie_fechoautorizacao
         and se._branch_uid = arg_branch_uid
   ) select
-        jsonb_agg( to_jsonb( _s ) ) as series
+        jsonb_agg( to_jsonb( _s ) ) as series,
+        array_agg( _s.serie_serie_id ) as _series_id
         into _data
       from __serie _s;
-  
-  return tweeks.funct_sets_autorizacao( jsonb_build_object(
+
+
+  _res :=  tweeks.funct_sets_autorizacao( jsonb_build_object(
     'arg_colaborador_id', arg_colaborador_id,
     'arg_espaco_auth', arg_espaco_auth,
     '_autorizacao_continue', _autorizacao,
@@ -72,6 +82,32 @@ begin
     'autorizacao_numero', _autorizacao.autorizacao_numero,
     'series', _data.series
   ));
+
+
+  for _next in
+    select
+        al.*,
+        newFT.serie_id as _serie_fatura,
+        newFR.serie_id as _serie_faturarecibo
+      from tweeks.aloca al
+        left join tweeks.serie oldFR on al.aloca_serie_faturarecibo = oldFR.serie_id
+          and oldFR.serie_id = any ( _data._series_id )
+        left join tweeks.serie newFR on newFR.serie_serie_id = oldFR.serie_id
+        left join tweeks.serie oldFT on al.aloca_serie_fatura = oldft.serie_id
+          and oldFT.serie_id = any ( _data._series_id )
+        left join tweeks.serie newFT on newFT.serie_serie_id = oldFT.serie_id
+      where al.aloca_estado = _const.maguita_aloca_estado_ativo
+        and ( newFT.serie_id is not  null or newFR.serie_id is not null )
+  loop
+    update tweeks.aloca
+      set 
+        aloca_serie_faturarecibo = _next._serie_faturarecibo,
+        aloca_serie_fatura = _next.aloca_serie_fatura
+      where aloca_id = _next.aloca_id
+    ;
+  end loop;
+  
+  return _res;
 end;
 $$;
 `;
