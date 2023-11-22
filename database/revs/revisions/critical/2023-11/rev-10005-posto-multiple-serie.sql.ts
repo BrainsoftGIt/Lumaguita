@@ -64,7 +64,13 @@ $$
         ) then
           return false ? 'Código do posto já existe!';
         end if;
-    
+        
+        _posto := jsonb_populate_record( _posto, args );
+        
+        _posto.posto_colaborador_atualizacao := null;
+        _posto.posto_dataatualizacao := null;
+        _posto._branch_uid := ___branch;
+        _posto.posto_id := null;
         _posto.posto_espaco_auth := arg_espaco_auth;
         _posto.posto_tposto_id := arg_tposto_id;
         _posto.posto_colaborador_id := arg_colaborador_id;
