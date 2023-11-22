@@ -107,8 +107,8 @@ begin
   
   for __next in 
     select *
-      from rule.espaco_get_childrens( arg_espaco_auth ) e ( next )
-        inner join unnest( e.next ) e ( espaco_id )  on true
+      from rule.espaco_get_childrens( arg_espaco_auth ) c ( childrens )
+        inner join unnest( c.childrens ) e ( espaco_id )  on true
   loop
     
     -- Obter o espaço superior que pode gerar numero de seire
