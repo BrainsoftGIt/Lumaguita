@@ -96,7 +96,7 @@ $$
 declare
   arg_espaco_auth uuid default args->>'arg_espaco_auth';
   arg_colaborador_id uuid default args->>'arg_colaborador_id';
-  __series int2[] default args->>'tseries';
+  __series int2[] default array( select e.text::int2 from jsonb_array_elements_text( args->'tseries' ) e ( text ));
   ___branch uuid default tweeks.__branch_uid( arg_colaborador_id, arg_espaco_auth );
   _const map.constant;
   _espaco tweeks.espaco;
@@ -160,11 +160,18 @@ begin
           and s.serie_estado = _const.maguita_serie_estado_ativo
           and a.autorizacao_estado = _const.maguita_autorizacao_estado_ativo
           and a.autorizacao_ano = extract( years from now() )::int
-      )  select 
-            __next.espaco_id,
-            array_agg( to_jsonb( _a ) ) as series
-          from __autorizacao _a
-          group by __next.espaco_id
+      ), __espaco as(
+        select 
+            e.espaco_id,
+            e.espaco_nome,
+            e.espaco_codigo,
+            coalesce(jsonb_agg( to_jsonb( _a ) ) filter ( where _a.serie_id is not null ), jsonb_build_array()) as espaco_series
+          from tweeks.espaco e 
+            left join __autorizacao _a on true
+          where e.espaco_id = __next.espaco_id
+          group by e.espaco_id
+      ) select to_jsonb( _e )
+          from __espaco _e
     ;
   end loop;
 end;
