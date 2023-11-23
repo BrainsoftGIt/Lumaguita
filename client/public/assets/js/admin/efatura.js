@@ -185,6 +185,12 @@ var efatura = {
             })
         },
         load : () => {
+            efatura.loadsSeriesToArmazem([
+                serieOperation.tipo.fatura,
+                serieOperation.tipo.faturaSimplificada,
+                serieOperation.tipo.fatura_recibo
+            ]);
+
             $("body").addClass("loading");
             $.ajax({
                 url: "/api/efatura/authorization/load",
@@ -291,7 +297,55 @@ var efatura = {
                 });
             },
         }
-    }
+    },
+    loadsSeriesToArmazem:(tseries) => {
+        $.ajax({
+            url: "/api/load/futuras/setting",
+            method: "POST",
+            contentType: "application/json",
+            error(){},
+            data: JSON.stringify({tseries}),
+            success: ({data}) => {
+                console.log(data)
+                let armazens_posto = $("[armazens_posto], [armazens_posto_edit]");
+                let armazens_posto_faturas = $("[armazens_posto_faturas], [armazens_posto_faturas_edit]");
+                data.forEach(({espaco_id, espaco_nome, espaco_series}) => {
+                    armazens_posto.append(`
+                        <li class="stgl" id="${espaco_id}" uuid="${espaco_id.replaceAll("-", "")}">
+                            ${espaco_nome}
+                        </li>
+                    `);
+
+                    armazens_posto_faturas.append(`<div armazem="${espaco_id}" class="flex v-ct hide">
+                        <div class="xselect w100" fatura>
+                            <input type="text" readonly="" placeholder="_" class="_noObrigatory" _noObrigatory="true">
+                            <label>${espaco_nome} Serie Fatura</label>
+                            <ul>
+                                ${espaco_series
+                                    .filter(( {tserie_id}) => tserie_id === serieOperation.tipo.fatura )
+                                        .map(({serie_id, serie_designacao}) => { 
+                                    return `<li data-serie_fatura="${serie_id}">${serie_designacao}</li>`
+                                }).join("")}
+                            </ul>
+                            <div class="fakearrow flex"><span></span><span></span></div>
+                        </div>
+                        <div class="xselect w100" recibo>
+                            <input type="text" readonly="" placeholder="_" class="_noObrigatory" _noObrigatory="true">
+                            <label>${espaco_nome} Serie Fatura Recibo</label>
+                            <ul>
+                                ${espaco_series
+                                    .filter(({tserie_id}) => (tserie_id === serieOperation.tipo.fatura_recibo || tserie_id === serieOperation.tipo.faturaSimplificada) )
+                                        .map(({serie_id, serie_designacao}) => {
+                                    return `<li data-serie_faturarecibo="${serie_id}" >${serie_designacao}</li>`
+                                }).join("")}
+                            </ul>
+                            <div class="fakearrow flex"><span></span><span></span></div>
+                        </div>
+                    </div>`);
+                })
+            }
+        })
+    },
 };
 
 efatura.authorization.load();

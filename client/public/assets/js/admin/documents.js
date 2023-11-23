@@ -3,6 +3,9 @@ var documents = {
         [serieOperation.tipo.fatura_recibo] : ({conta_id, date}) => {
             open("/api/print/fatura/recibo/"+JSON.stringify({conta_id, date, admin: true}));
         },
+        [serieOperation.tipo.faturaSimplificada] : ({conta_id, date}) => {
+            open("/api/print/fatura/recibo/"+JSON.stringify({conta_id, date, admin: true}));
+        },
         [serieOperation.tipo.guiaSaida] : ({conta_id, date}) => {
             open("/api/print/guia_saida/"+JSON.stringify({date, conta_id: conta_id }));
         },

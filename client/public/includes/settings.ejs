@@ -16,6 +16,10 @@
 	.marginSection{
 		width: 59vh;
 	}
+
+	.hide{
+		display: none;
+	}
 </style>
 <div class="__included__ settings">
 	<div class="_head flex h-sb v-ct">
@@ -381,6 +385,12 @@
 						<li class="tgl" tipo="2">Pedir uma única vez</li>
 					</ul>
 				</div>
+				<div class="xselect flutuate w100">
+					<input type="text" readonly placeholder="_">
+					<label>Serie Fatura</label>
+					<ul listFatura id="f3"></ul>
+					<div class="fakearrow flex"><span></span><span></span></div>
+				</div>
 				<div class="xcheck multiple w100">
 					<ul>
 						<li class="stgl" id="posto_varias_caixas_abertas">Pode ter várias caixas abertas</li>
@@ -401,7 +411,7 @@
 					<ul armazens_posto>
 					</ul>
 				</div>
-
+				<div class="w100" armazens_posto_faturas></div>
 			</div>
 			<div class="master-btn-right flex">
 				<span class="hideTarget" target="xModalCtrlPosto">CANCELAR</span>
@@ -469,6 +479,9 @@
 				<div class="xcheck multiple">
 					<ul armazens_posto_edit>
 					</ul>
+				</div>
+				<div class="w100" armazens_posto_faturas_edit>
+
 				</div>
 			</div>
 			<div class="master-btn-right flex">
@@ -674,6 +687,7 @@
 							<ul id="tipo_serie_efaturav2">
 								<li noremove="true" class="tgl" tipo_id="1" tipo_sigla="FT-">Fatura</li>
 								<li noremove="true" class="tgl" tipo_id="2" tipo_sigla="FR-">Fatura Recibo</li>
+								<li noremove="true" class="tgl" tipo_id="7" tipo_sigla="FS-">Fatura Simplificada</li>
 								<li noremove="true" class="tgl" tipo_id="3" tipo_sigla="RE-">Recibo</li>
 								<li noremove="true" class="tgl" tipo_id="4" tipo_sigla="NC-">Nota de Crédito</li>
 								<li noremove="true" class="tgl" tipo_id="8" tipo_sigla="ND-">Nota de Debito</li>

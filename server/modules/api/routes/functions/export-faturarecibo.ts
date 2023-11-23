@@ -227,13 +227,14 @@ export let create = async (instituition, account_content, res, user, date, num_a
         }
     };
 
+    let typeDoc = account_content.main.tserie_desc;
     let docDefinition = {
         compress: true,
         info: {
-            title: 'Fatura/Recibo',
+            title: typeDoc,
             author: 'maguita',
-            subject: 'Fatura/Recibo',
-            keywords: 'maguita, fatura, recibo, brainsoft',
+            subject: `Imppresão ${typeDoc}`,
+            keywords: `maguita, fatura, ${typeDoc}, brainsoft`,
         },
         content: [
             (!hasPersonalizadoHarder) ? {
@@ -314,7 +315,7 @@ export let create = async (instituition, account_content, res, user, date, num_a
                                 stack: [
                                     {
                                         color: '#000000',
-                                        text: `FATURA/RECIBO`,
+                                        text: account_content.main.serie_designacao.toUpperCase(),
                                         bold: true,
                                     },
                                     {
@@ -357,7 +358,7 @@ export let create = async (instituition, account_content, res, user, date, num_a
                                     {
                                         bold: true,
                                         color: '#000000',
-                                        text: "Nº da Fatura/recibo"
+                                        text: `Nº da ${typeDoc}`
                                     },
                                     {
                                         margin: [0, 0, 0, 15],
@@ -484,7 +485,7 @@ export let create = async (instituition, account_content, res, user, date, num_a
 
     const pdfDocGenerator = pdfMake.createPdf(docDefinition);
     pdfDocGenerator.getBuffer((buffer) => {
-        let filename = "FaturaRecibo_" + (new Date().getTime() + Math.random()) + ".pdf";
+        let filename = typeDoc.split(" ").join("") + (new Date().getTime() + Math.random()) + ".pdf";
         fs.mkdirSync(path.join(folders.temp, 'multer'), {recursive: true});
         fs.writeFile(path.join(folders.temp, 'multer/' + filename), buffer, function (err) {
             if (err) return console.log(err);

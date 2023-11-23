@@ -149,6 +149,28 @@ export function functLoadSerieDistribuicao(args) {
         })
     })
 }
+export function functLoadSeriesDistribuicao(args) {
+    return new Promise((resolve) => {
+        dbRes.call.tweeks.funct_load_serie_distribuicao_pos({ args }, {
+            onResult(error: Error, result?: Result<any, any>): any {
+                if( error ){
+                    resolve({
+                        result:false,
+                        message: error.message,
+                        hint: error
+                    })
+                    return;
+                }
+
+                resolve({
+                    result: !!result?.rows?.[0]?.["result"],
+                    message: result?.rows?.[0]?.["message"] || "",
+                    data:result?.rows
+                })
+            }
+        })
+    })
+}
 
 
 

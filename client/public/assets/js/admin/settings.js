@@ -312,16 +312,12 @@ var settings = {
                 settings.armazens = e.armazens;
                 let estruturaArmazem = $(".list-armazens");
                 let armazens_dados_empresa = $("#armazens_dados_empresa");
-                let armazens_posto = $("[armazens_posto]");
-                let armazens_posto_edit = $("[armazens_posto_edit]");
                 let armazens_efatura = $("#armazem_efatura, #armazem_efaturav2");
                 let imposto_espacos = $("#imposto_espacos");
                 let spaceOptions;
-                armazens_posto.empty();
                 armazens_dados_empresa.empty();
                 estruturaArmazem.empty();
                 armazens_efatura.empty();
-                armazens_posto_edit.empty();
                 imposto_espacos.empty();
                 if(settings.armazens.length === 0) estruturaArmazem.addClass("empty");
                 else estruturaArmazem.removeClass("empty");
@@ -392,9 +388,7 @@ var settings = {
                                                 ${spaceOptions}
                                         </ul>`);
                     armazens_dados_empresa.append(`<li id="${arm.espaco_id}">${arm.espaco_nome}</li>`);
-                    armazens_posto.append(`<li class="stgl" id="${arm.espaco_id}" uuid="${arm.espaco_id.replaceAll("-", "")}">${arm.espaco_nome}</li>`);
                     imposto_espacos.append(`<li class="stgl" id="${arm.espaco_id}" uuid="${arm.espaco_id.replaceAll("-", "")}">${arm.espaco_nome}</li>`);
-                    armazens_posto_edit.append(`<li class="stgl" id="${arm.espaco_id}" uuid="${arm.espaco_id.replaceAll("-", "")}">${arm.espaco_nome}</li>`);
                 });
             }
         });
@@ -501,14 +495,32 @@ var settings = {
     get armazensSelecionados(){
         let armazens = [];
         $("[armazens_posto]").find("li.active").each(function () {
-            armazens.push($(this).attr("id"));
+            let espaco_id = $(this).attr("id");
+            let series = $(this).closest(".xform").find(`[armazem="${espaco_id}"]`)
+            let {serie_faturarecibo} = series.find("[recibo] li.active").data() || null;
+            let {serie_fatura} = series.find("[fatura] li.active").data() || null;
+
+            armazens.push({
+                espaco_id,
+                serie_faturarecibo,
+                serie_fatura
+            });
         });
         return armazens;
     },
     get armazensSelecionadosChange(){
         let armazens = [];
         $("[armazens_posto_edit]").find("li.active").each(function () {
-            armazens.push($(this).attr("id"));
+            let espaco_id = $(this).attr("id");
+            let series = $(this).closest(".xform").find(`[armazem="${espaco_id}"]`)
+            let {serie_faturarecibo} = series.find("[recibo] li.active").data() || null;
+            let {serie_fatura} = series.find("[fatura] li.active").data() || null;
+
+            armazens.push({
+                espaco_id,
+                serie_faturarecibo,
+                serie_fatura
+            });
         });
         return armazens;
     },
@@ -867,8 +879,13 @@ $(".list-postos").on("click", ".editar", function () {
     $("[tipoCaixaEdit]").find(`li[tipo=${settings.selected.posto_caixamode}]`).addClass("active");
     $("[pinAuthEdit]").find(`li[tipo=${settings.selected.posto_authmode}]`).addClass("active");
     let postosAlocados =  settings.selected.posto_alocacao || [];
-    postosAlocados.forEach((al) =>{
-        $("[armazens_posto_edit]").find(`li[uuid=${al.espaco_id.replaceAll("-", "")}]`).addClass("active");
+    let armazens_posto_edit = $("[armazens_posto_edit]");
+    postosAlocados.forEach(({espaco_id, aloca_serie_faturarecibo, aloca_serie_fatura}) =>{
+        armazens_posto_edit.find(`li[uuid=${espaco_id.replaceAll("-", "")}]`).addClass("active");
+
+        let localSerie = armazens_posto_edit.closest(".xform").find(`[armazem="${espaco_id}"]`).removeClass("hide");
+        localSerie.find(`li[data-serie_faturarecibo='${aloca_serie_faturarecibo}']`).mousedown();
+        localSerie.find(`li[data-serie_fatura='${aloca_serie_fatura}']`).mousedown()
     });
     showTarget("xModalCtrlEditPosto", "Editar posto");
 }).on("click", ".xSwitch", function (e){
@@ -921,6 +938,11 @@ $("[migrate_space]").on("click", function () {
     }
 });
 
-$("[bt_set_aturizacao]").on("click", function (){
-
+$("[armazens_posto_edit], [armazens_posto]").on("click", "li",function (){
+    let espaco_id = $(this).attr("id");
+    let armazens_posto_faturas = $(`[armazem="${espaco_id}"]`).toggleClass("hide");
+    if(!armazens_posto_faturas.hasClass()){
+        armazens_posto_faturas.find("input").val("")
+        armazens_posto_faturas.find("li").removeClass("active")
+    }
 });
