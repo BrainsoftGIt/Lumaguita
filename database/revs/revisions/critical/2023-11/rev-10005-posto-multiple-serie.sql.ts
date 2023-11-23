@@ -103,11 +103,13 @@ $$
     
       -- Desativar os antigos espaços alocados ao posto
       update tweeks.aloca
-      set aloca_estado = _const.maguita_aloca_estado_fechado,
+        set
+          aloca_estado = _const.maguita_aloca_estado_fechado,
           aloca_colaborador_atualizacao = arg_colaborador_id,
           aloca_dataatualizacao = current_timestamp
-      where aloca_posto_id = _posto.posto_id
-        and aloca_espaco_destino != all( arg_espaco_destino )
+        where aloca_posto_id = _posto.posto_id
+          and aloca_estado = _const.maguita_aloca_estado_ativo
+--           and aloca_espaco_destino != all( arg_espaco_destino )
       ;
       
       for _next in 
@@ -125,8 +127,8 @@ $$
             coalesce( arg_posto_montanteinicial, 0 )
           from __aloca n 
             left join tweeks.aloca al on n.espaco_id = al.aloca_espaco_destino
-            and al.aloca_posto_id = _posto.posto_id
-            and al.aloca_estado = _const.maguita_aloca_estado_ativo
+              and al.aloca_posto_id = _posto.posto_id
+              and al.aloca_estado = _const.maguita_aloca_estado_ativo
         where al.aloca_id is null
       loop 
         insert into tweeks.aloca (
