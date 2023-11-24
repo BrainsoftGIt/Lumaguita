@@ -1,12 +1,11 @@
-import {sql} from "kitres";
+import {patchSQL} from "kitres";
 import {SQL} from "kitres/src/core/pg-core/scape";
 import {importsMenus} from "../../../exports/exports-menus";
 import {VERSION} from "../../../../server/version";
 
 
 
-export const menuPatch = {
-    [VERSION.TAG] :sql`
+export const menuPatch = patchSQL({ force: VERSION.VERSION_NAME }).sql`
 do $block$
   declare
     _data record;
@@ -21,5 +20,4 @@ do $block$
     end loop;
   end;
 $block$;
-`
-}
+`;
