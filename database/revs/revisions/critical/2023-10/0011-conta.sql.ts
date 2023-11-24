@@ -98,6 +98,7 @@ declare
     _rec record;
     _guia tweeks.guia;
     _message text;
+    _tserie tweeks.tserie;
   begin
     _const := map.constant();
     _caixa := tweeks._get_caixa( arg_caixa_id );
@@ -124,10 +125,11 @@ declare
     if _conta.conta_estado = _const.maguita_conta_estado_fechado then
       return lib.res_false( 'Essa conta já se encontra fechada!' );
     end if;
-
+    
     if arg_tserie_id not in (
         _const.maguita_tserie_fatura,
         _const.maguita_tserie_faturarecibo,
+        _const.maguita_tserie_faturasimplificada,
         _const.maguita_tserie_guiasaida,
         _const.maguita_tserie_notacredito,
         _const.maguita_tserie_notadebito
@@ -140,7 +142,7 @@ declare
     end if;
 
     -- Na fatura recibo não pode haver conta corrente
-    if arg_tserie_id = _const.maguita_tserie_faturarecibo and _deposito.deposito_montantemoeda is null then
+    if arg_tserie_id in ( _const.maguita_tserie_faturarecibo, _const.maguita_tserie_faturasimplificada ) and _deposito.deposito_montantemoeda is null then
       return lib.res_false( 'O pagamento para as faturas/recibo é obrigatorio!' );
     end if;
 
@@ -149,14 +151,15 @@ declare
         _conta.conta_cliente_id is null,
         _conta.conta_cliente_id = lib.to_uuid( 1 ) -- cliente final
     ) and arg_tserie_id not in (
-      _const.maguita_tserie_faturarecibo
+      _const.maguita_tserie_faturarecibo,
+      _const.maguita_tserie_faturasimplificada
     ) then
       return lib.res_false( 'Só pode lançar nos cliente finais as futuras/recibos!');
     end if;
 
 
     -- Quando hover necessidade de efetuar o deposito então, deve-se obter a taxa de cambio para o dia
-    if arg_tserie_id = _const.maguita_tserie_faturarecibo
+    if arg_tserie_id in (_const.maguita_tserie_faturarecibo, _const.maguita_tserie_faturasimplificada )
       or _deposito.deposito_montantemoeda is not null
     then
       if _deposito.deposito_tpaga_id = _const.maguita_tpaga_contacorrente then
@@ -177,7 +180,7 @@ declare
     end if;
 
     -- O valor do deposito nas conta de fatura/recibo deve ser o suficiente para cobrir o montante da fatura
-    if arg_tserie_id = _const.maguita_tserie_faturarecibo then
+    if arg_tserie_id in ( _const.maguita_tserie_faturarecibo, _const.maguita_tserie_faturasimplificada ) then
       if round( ( _cambio.cambio_taxa * _deposito.deposito_montantemoeda)::numeric, _const.money_round )  < round( _conta.conta_montante::numeric, _const.money_round ) then
         return lib.res_false( 'Montante para pagamento insuficiente' );
       end if;
@@ -190,7 +193,7 @@ declare
 
     -- Definir em aqual conta a fatura deve ser enviado
     _conta._tgrupo_id := case
-      when arg_tserie_id = _const.maguita_tserie_faturarecibo then _const.maguita_tgrupo_cnormal
+      when arg_tserie_id in (_const.maguita_tserie_faturarecibo, _const.maguita_tserie_faturasimplificada ) then _const.maguita_tgrupo_cnormal
       when arg_tserie_id = _const.maguita_tserie_fatura then _const.maguita_tgrupo_ccorrente
       when arg_tserie_id = _const.maguita_tserie_guiasaida then _const.maguita_tgrupo_ccorrente
       when arg_tserie_id = _const.maguita_tserie_notacredito then _const.maguita_tgrupo_ccorrente

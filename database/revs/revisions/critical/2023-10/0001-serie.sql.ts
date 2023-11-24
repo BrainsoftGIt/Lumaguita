@@ -156,7 +156,7 @@ end
 $$
 `;
 
-export const setSeries = sql`
+export const setSeries =  patchSQL({ force:"v1.0.1" }).sql`
 create or replace function tweeks.funct_sets_serie(args jsonb) returns lib.res
   language plpgsql
 as
@@ -215,23 +215,13 @@ begin
   if _serie.serie_id is null then
     _serie.serie_colaborador_id := arg_colaborador_id;
     _serie.serie_espaco_auth := arg_espaco_auth;
-
---     -- Desativar as serie ativa para o espaçoa
---     update tweeks.serie
---       set serie_estado = _const.maguita_serie_estado_fechado,
---           serie_colaborador_atualizacao = arg_colaborador_id,
---           serie_dataatualizacao = current_timestamp
---       where serie_tserie_id = _serie.serie_tserie_id
---         and serie_espaco_id = _serie.serie_espaco_id
---         and _branch_uid = ___branch
---         and serie_estado = _const.maguita_serie_estado_ativo
---     ;
   else
     _serie.serie_colaborador_atualizacao := arg_colaborador_id;
     _serie.serie_dataatualizacao := current_timestamp;
   end if;
-
-
+  
+  _serie.serie_estado := null;
+  
   -- Quando for registrar nova serie
   select ( "returning" ).* into _serie
     from lib.sets( _serie );

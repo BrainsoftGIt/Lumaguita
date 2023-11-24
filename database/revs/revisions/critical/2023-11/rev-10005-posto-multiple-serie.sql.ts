@@ -109,7 +109,7 @@ $$
           aloca_dataatualizacao = current_timestamp
         where aloca_posto_id = _posto.posto_id
           and aloca_estado = _const.maguita_aloca_estado_ativo
---           and aloca_espaco_destino != all( arg_espaco_destino )
+          and aloca_espaco_destino != all( arg_espaco_destino )
       ;
       
       for _next in 
@@ -124,13 +124,28 @@ $$
             n.*,
             arg_espaco_auth,
             arg_colaborador_id,
+            al.aloca_id,
             coalesce( arg_posto_montanteinicial, 0 )
           from __aloca n 
             left join tweeks.aloca al on n.espaco_id = al.aloca_espaco_destino
               and al.aloca_posto_id = _posto.posto_id
               and al.aloca_estado = _const.maguita_aloca_estado_ativo
         where al.aloca_id is null
+          or coalesce( al.aloca_serie_fatura, lib.to_uuid(0) ) != coalesce( n.serie_fatura, al.aloca_serie_fatura, lib.to_uuid(0) )
+          or coalesce( al.aloca_serie_faturarecibo, lib.to_uuid(0) ) != coalesce( n.serie_faturarecibo, al.aloca_serie_faturarecibo, lib.to_uuid(0) )
       loop 
+        if _next.aloca_id is not null then
+          -- Desativar os antigos espaços alocados ao posto
+          update tweeks.aloca
+            set
+              aloca_estado = _const.maguita_aloca_estado_fechado,
+              aloca_colaborador_atualizacao = arg_colaborador_id,
+              aloca_dataatualizacao = current_timestamp
+            where aloca_posto_id = _posto.posto_id
+              and aloca_id = _next.aloca_id
+          ;
+        end if;
+        
         insert into tweeks.aloca (
           aloca_posto_id, 
           aloca_espaco_destino,
