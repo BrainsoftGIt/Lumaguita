@@ -262,7 +262,7 @@ begin
           left join tweeks.serie ft on al.aloca_serie_fatura = ft.serie_id
           left join tweeks.tserie ft_type on ft.serie_tserie_id = ft_type.tserie_id
           left join tweeks.serie fr on al.aloca_serie_faturarecibo = fr.serie_id
-          left join tweeks.tserie fr_type on fr.serie_tserie_id = ft_type.tserie_id
+          left join tweeks.tserie fr_type on fr.serie_tserie_id = fr_type.tserie_id
         where c.cambio_rank = 1
           and e.espaco_vender = _local.cluster_identifier
         group by al.aloca_id,
