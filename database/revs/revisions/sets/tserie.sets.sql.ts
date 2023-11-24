@@ -2,15 +2,14 @@ import fs from "fs";
 import Path from "path";
 import JSON5 from "json5";
 import {VERSION} from "../../../../server/version";
-import {sql} from "kitres";
+import {patchSQL, sql} from "kitres";
 import {SQL} from "kitres/src/core/pg-core/scape";
 
 /*language=file-reference*/
 let content = fs.readFileSync( Path.join( __dirname, "tserie.sets.json" ) ).toString();
 let __tserie = JSON5.parse( content );
 
-export const sets_tseries = {
-    [VERSION.TAG] : sql`
+export const sets_tseries = patchSQL( { force: VERSION.VERSION_NAME }).sql`
 do $$ 
 declare
   _content jsonb default ${ SQL.jsonb( __tserie ) };
@@ -26,5 +25,4 @@ begin
   end loop;
 end;
 $$
-`
-}
+`;

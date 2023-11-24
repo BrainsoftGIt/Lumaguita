@@ -1,8 +1,9 @@
-import {sql} from "kitres";
+import {patchSQL} from "kitres";
+import {VERSION} from "../../../../../server/version";
 
 
 
-export const vreport_imposto_financas = sql`
+export const vreport_imposto_financas = patchSQL( { force: VERSION.VERSION_NAME }).sql`
 create or replace function report.vreport_imposto_financas(args jsonb) returns SETOF jsonb
   language plpgsql
 as

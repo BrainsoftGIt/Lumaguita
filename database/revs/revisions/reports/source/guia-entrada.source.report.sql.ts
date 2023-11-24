@@ -1,6 +1,7 @@
-import {sql} from "kitres";
+import {patchSQL, sql} from "kitres";
+import {VERSION} from "../../../../../server/version";
 
-export const vreport_guiaentrada =  sql`
+export const vreport_guiaentrada =  patchSQL( { force: VERSION.VERSION_NAME }).sql`
 drop view if exists report.vreport_guiaentrada;
 create view report.vreport_guiaentrada as 
   select 
