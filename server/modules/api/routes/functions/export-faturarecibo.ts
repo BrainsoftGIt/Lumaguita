@@ -227,7 +227,6 @@ export let create = async (instituition, account_content, res, user, date, num_a
         }
     };
 
-    console.log(account_content)
     let typeDoc = account_content[0].main.tserie_desc;
     let docDefinition = {
         compress: true,
