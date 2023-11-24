@@ -6,14 +6,8 @@ import chalk from "chalk";
 import {args} from "../../../global/args";
 import {eventsListener} from "../../notify.service/notify";
 import Path from "path";
-import fs from "fs";
-import {dbRes} from "./res";
-import {MaguitaTableOf} from "../../../../database/cataloger/lumaguita";
-import moment from "moment";
-import archiver from "archiver";
-import {dumpNow, preventiveBackup, saveBackup} from "../dumps";
+import {preventiveBackup, saveBackup} from "../dumps";
 import {serverNotify} from "../../../snotify";
-import os from "os";
 import {scriptUtil} from "kitres";
 
 let resolvedRevisions = folders.databaseRevisionResolved;
@@ -26,7 +20,7 @@ if( args.appMode === "dev" ){
 export const pgRevision = new RevisionCore( pgCore, {
     schema: "kitres",
     dirname: folders.databaseRevision,
-    DATA_VERSION: VERSION.TAG,
+    VERSION: VERSION,
     resolvedDirectory: resolvedRevisions,
     history: history,
     props: {
