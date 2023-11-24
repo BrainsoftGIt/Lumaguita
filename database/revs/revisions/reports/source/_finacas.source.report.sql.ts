@@ -3,7 +3,7 @@ import {VERSION} from "../../../../../server/version";
 
 
 
-export const vreport_imposto_financas = patchSQL( { force: VERSION.VERSION_NAME }).sql`
+export const vreport_imposto_financas = patchSQL( { force: VERSION.VERSION_CODE }).sql`
 create or replace function report.vreport_imposto_financas(args jsonb) returns SETOF jsonb
   language plpgsql
 as

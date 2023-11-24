@@ -16,7 +16,7 @@
 		var VERSION = {
 			TAG: `<%=VERSION.TAG%>`,
 			NUMBER: `<%=VERSION.NUMBER %>`,
-			VERSION_NAME: `<%=VERSION.VERSION_NAME%>`,
+			VERSION_NAME: `<%=VERSION.VERSION_CODE%>`,
 			REV: `<%=VERSION.revs %>`,
 		}
 	</script>
@@ -34,7 +34,7 @@
 		<div class="inLeft flex v-ct">
 			<div class="logoname flex v-ct">
 				<img  alt="">
-				<b><a href="/<%=REMOTE.VERSION%>">LUMA <%= VERSION.VERSION_NAME %></a></b>
+				<b><a href="/<%=REMOTE.VERSION%>">LUMA <%= VERSION.VERSION_CODE %></a></b>
 			</div>
 			<div class="systatus flex v-ct">
 				<!-- utilize as classes

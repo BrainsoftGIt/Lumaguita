@@ -13,7 +13,7 @@ app.get( ["/TAG", "/tag"], (req, res, next) => {
 });
 
 app.get( ["/VERSION-NAME", "/VER-NAME", "/version-name", "/ver-name"], (req, res, next) => {
-    res.send( VERSION.VERSION_NAME );
+    res.send( VERSION.VERSION_CODE );
 });
 
 app.get( [ "/REVISION", "/REV", "/REVS", "/revision", "/rev", "/revs" ], (req, res, next) => {
