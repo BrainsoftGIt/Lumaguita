@@ -845,8 +845,14 @@ $("body").on("mousedown", "[postos_criados] li", function () {
          $("#tipoCaixaDesc").val((posto[0].funct_load_posto.posto_caixamode !== null ? $("[tipoCaixa]").find(`li[tipo=${posto[0].funct_load_posto.posto_caixamode}]`).text() : "")).attr("disabled", true);
          $("#tipoAuthPOS").val((posto[0].funct_load_posto.posto_authmode !== null ? $("[pinAuthPOS]").find(`li[tipo=${posto[0].funct_load_posto.posto_authmode}]`).text() : "")).attr("disabled", true);
          $("[tipoposto]").find(`li[id=${posto[0].funct_load_posto.tposto_id}]`).addClass("active");
-         posto[0].funct_load_posto.posto_alocacao.forEach((al) =>{
-             $("[armazens_posto]").find(`li[uuid=${al.espaco_id.replaceAll("-", "")}]`).addClass("active").attr("disabled", true);
+
+        let armazens_posto = $("[armazens_posto]");
+         posto[0].funct_load_posto.posto_alocacao.forEach(({espaco_id, aloca_serie_faturarecibo, aloca_serie_fatura}) =>{
+             $("[armazens_posto]").find(`li[uuid=${espaco_id.replaceAll("-", "")}]`).click().attr("disabled", true);
+
+             let localSerie = armazens_posto.closest(".xform").find(`[armazem="${espaco_id}"]`).removeClass("hide");
+             localSerie.find(`li[data-serie_faturarecibo='${aloca_serie_faturarecibo}']`).mousedown();
+             localSerie.find(`li[data-serie_fatura='${aloca_serie_fatura}']`).mousedown()
          });
          settings.chaveDefinitiva = posto[0].funct_load_posto.posto_chave;
     }

@@ -227,7 +227,8 @@ export let create = async (instituition, account_content, res, user, date, num_a
         }
     };
 
-    let typeDoc = account_content.main.tserie_desc;
+    console.log(account_content)
+    let typeDoc = account_content[0].main.tserie_desc;
     let docDefinition = {
         compress: true,
         info: {
@@ -315,7 +316,7 @@ export let create = async (instituition, account_content, res, user, date, num_a
                                 stack: [
                                     {
                                         color: '#000000',
-                                        text: account_content.main.serie_designacao.toUpperCase(),
+                                        text: account_content[0].main.serie_designacao.toUpperCase(),
                                         bold: true,
                                     },
                                     {
