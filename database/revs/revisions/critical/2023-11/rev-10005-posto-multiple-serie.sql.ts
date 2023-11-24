@@ -199,6 +199,7 @@ declare
   _posto tweeks.posto;
   _posto_disponivel boolean;
   _local cluster.cluster;
+  ___branch uuid;
 begin
   _const := map.constant();
   _local := cluster._get_cluster_local();
@@ -207,6 +208,9 @@ begin
 
   _posto := jsonb_populate_record( _posto, _chave_doc );
   _posto_disponivel := _chave_doc->>'posto_disponivel';
+  
+  
+  ___branch := tweeks.__branch_uid( _posto.posto_colaborador_id, _posto.posto_espaco_auth );
 
   if _chave_doc is not null and not _posto_disponivel or _posto.posto_id is null then
     return next _chave_doc;
@@ -235,6 +239,24 @@ begin
       where cb.cambio_data <= current_timestamp::date
         and cb.cambio_estado != _const.maguita_cambio_estado_anulado
       order by cb.cambio_dataregistro desc
+    ), __serie as (
+      select 
+          se.serie_id,
+          se.serie_numero,
+          se.serie_sequencia,
+          se.serie_quantidade,
+          se.serie_designacao,
+          se.serie_numatorizacao,
+          ts.tserie_id,
+          ts.tserie_desc,
+          ts.tserie_code,
+          ts.tserie_financa,
+          aut.autorizacao_uid,
+          aut.autorizacao_ano
+        from tweeks.serie se
+          inner join tweeks.tserie ts on se.serie_tserie_id = ts.tserie_id
+          inner join tweeks.autorizacao aut on se.serie_autorizacao_uid = aut.autorizacao_uid
+        where se._branch_uid = ___branch
     ), __space_cambio as (
       select
           e.espaco_id,
@@ -242,10 +264,8 @@ begin
           e.espaco_nivel,
           e.espaco_vender,
           al.aloca_id,
-          al.aloca_serie_faturarecibo,
-          al.aloca_serie_fatura,
-          to_jsonb( ft ) || to_jsonb( ft_type ) as "FATURA",
-          to_jsonb( fr ) || to_jsonb( fr_type ) as "FATURARECIBO",
+          to_jsonb( ft ) as "FATURA",
+          to_jsonb( fr ) as "FATURARECIBO",
           al.aloca_estado,
           al.aloca_montante,
           _local.cluster_identifier,
@@ -259,10 +279,8 @@ begin
           inner join tweeks.aloca al on e.espaco_id = al.aloca_espaco_destino
             and al.aloca_posto_id = _posto.posto_id
             and al.aloca_estado = _const.maguita_aloca_estado_ativo
-          left join tweeks.serie ft on al.aloca_serie_fatura = ft.serie_id
-          left join tweeks.tserie ft_type on ft.serie_tserie_id = ft_type.tserie_id
-          left join tweeks.serie fr on al.aloca_serie_faturarecibo = fr.serie_id
-          left join tweeks.tserie fr_type on fr.serie_tserie_id = fr_type.tserie_id
+          left join __serie ft on al.aloca_serie_fatura = ft.serie_id
+          left join __serie fr on al.aloca_serie_faturarecibo = fr.serie_id
         where c.cambio_rank = 1
           and e.espaco_vender = _local.cluster_identifier
         group by al.aloca_id,
