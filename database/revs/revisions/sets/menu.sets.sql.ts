@@ -5,7 +5,7 @@ import {VERSION} from "../../../../server/version";
 
 
 
-export const menuPatch = patchSQL({ force: VERSION.VERSION_NAME }).sql`
+export const menuPatch = patchSQL({ force: VERSION.VERSION_CODE }).sql`
 do $block$
   declare
     _data record;
@@ -14,6 +14,9 @@ do $block$
     for _data in
       select *
         from jsonb_array_elements( ${SQL.jsonb( importsMenus() )}) d ( document )
+      
+      
+      
     loop
       _menu := jsonb_populate_record( _menu, _data.document );
       perform lib.sets( _menu );
