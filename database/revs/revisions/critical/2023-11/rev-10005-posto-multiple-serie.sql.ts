@@ -283,8 +283,11 @@ begin
           left join __serie frecibo on al.aloca_serie_faturarecibo = frecibo.serie_id
         where c.cambio_rank = 1
           and e.espaco_vender = _local.cluster_identifier
-        group by al.aloca_id,
-          e.espaco_id
+        group by 
+          al.aloca_id,
+          e.espaco_id,
+          to_jsonb( fatura ),
+          to_jsonb( frecibo )
     ) select to_jsonb( sc )
       from __space_cambio sc
   ;
