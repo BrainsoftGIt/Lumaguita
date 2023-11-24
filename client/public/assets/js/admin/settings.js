@@ -497,8 +497,8 @@ var settings = {
         $("[armazens_posto]").find("li.active").each(function () {
             let espaco_id = $(this).attr("id");
             let series = $(this).closest(".xform").find(`[armazem="${espaco_id}"]`)
-            let {serie_faturarecibo} = series.find("[recibo] li.active").data() || null;
-            let {serie_fatura} = series.find("[fatura] li.active").data() || null;
+            let {serie_faturarecibo} = series.find("[recibo] li.active").data() || {};
+            let {serie_fatura} = series.find("[fatura] li.active").data() || {};
 
             armazens.push({
                 espaco_id,
@@ -513,8 +513,8 @@ var settings = {
         $("[armazens_posto_edit]").find("li.active").each(function () {
             let espaco_id = $(this).attr("id");
             let series = $(this).closest(".xform").find(`[armazem="${espaco_id}"]`)
-            let {serie_faturarecibo} = series.find("[recibo] li.active").data() || null;
-            let {serie_fatura} = series.find("[fatura] li.active").data() || null;
+            let {serie_faturarecibo} = series.find("[recibo] li.active").data() || {};
+            let {serie_fatura} = series.find("[fatura] li.active").data() || {};
 
             armazens.push({
                 espaco_id,
@@ -860,6 +860,7 @@ $(".list-postos").on("click", ".editar", function () {
     settings.selected = settings.postos[$(this).attr("i")].funct_load_posto;
     $("[postoDesignacao]").val(settings.selected.posto_designacao);
     $("[armazens_posto_edit], [tipoPostoEdit], [pinAuthEdit], [tipoCaixaEdit]").find("li").removeClass("active");
+    $("[armazem]").addClass("hide");
     $("#posto_varias_caixas_abertas_edit").removeClass("active");
     $("#posto_definir_montante_automaticamente_edit").removeClass("active");
     $("#posto_ver_montate_faturado_edit").removeClass("active");
@@ -881,7 +882,7 @@ $(".list-postos").on("click", ".editar", function () {
     let postosAlocados =  settings.selected.posto_alocacao || [];
     let armazens_posto_edit = $("[armazens_posto_edit]");
     postosAlocados.forEach(({espaco_id, aloca_serie_faturarecibo, aloca_serie_fatura}) =>{
-        armazens_posto_edit.find(`li[uuid=${espaco_id.replaceAll("-", "")}]`).addClass("active");
+        armazens_posto_edit.find(`li[uuid=${espaco_id.replaceAll("-", "")}]`).click();
 
         let localSerie = armazens_posto_edit.closest(".xform").find(`[armazem="${espaco_id}"]`).removeClass("hide");
         localSerie.find(`li[data-serie_faturarecibo='${aloca_serie_faturarecibo}']`).mousedown();
