@@ -2,7 +2,7 @@
 window.version = await new Promise((resolve) => {
 
     fetch(`${location.origin}/VERSION`).then(function (response) {
-        return response.text();
+        return  response.text();
     }).then(function (text) {
         resolve(text)
     });

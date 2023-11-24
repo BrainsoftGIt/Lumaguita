@@ -244,6 +244,8 @@ begin
           al.aloca_id,
           al.aloca_serie_faturarecibo,
           al.aloca_serie_fatura,
+          to_jsonb( ft ) || to_jsonb( ft_type ) as "FATURA",
+          to_jsonb( fr ) || to_jsonb( fr_type ) as "FATURARECIBO",
           al.aloca_estado,
           al.aloca_montante,
           _local.cluster_identifier,
@@ -257,6 +259,10 @@ begin
           inner join tweeks.aloca al on e.espaco_id = al.aloca_espaco_destino
             and al.aloca_posto_id = _posto.posto_id
             and al.aloca_estado = _const.maguita_aloca_estado_ativo
+          left join tweeks.serie ft on al.aloca_serie_fatura = ft.serie_id
+          left join tweeks.tserie ft_type on ft.serie_tserie_id = ft_type.tserie_id
+          left join tweeks.serie fr on al.aloca_serie_faturarecibo = fr.serie_id
+          left join tweeks.tserie fr_type on fr.serie_tserie_id = ft_type.tserie_id
         where c.cambio_rank = 1
           and e.espaco_vender = _local.cluster_identifier
         group by al.aloca_id,
