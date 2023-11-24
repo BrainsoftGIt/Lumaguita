@@ -295,8 +295,14 @@ var account = {
             contentType: "application/json",
             success(e) {
                 if(e.result){
-                    account.user_spaces = [];
                     account.user_spaces = e.user_spaces;
+                    let {
+                        data: {
+                            FATURA,
+                            FATURARECIBO
+                        }
+                    } = e.user_spaces.find(({data: {space_id: eSpace_id}}) => eSpace_id = e.space_id) || {data: {}};
+                    account.SERIES = { FATURARECIBO, FATURA };
                     account.functionAfterCheckDefaultSpace(e.space_id);
                 }
                 else xAlert("POS", e.message, "error");

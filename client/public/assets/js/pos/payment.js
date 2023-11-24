@@ -337,7 +337,10 @@ var payment = {
         let tiposPagamento = $("#tiposPagamento");
         let documento_referencia_pagamento = $("#documento_referencia_pagamento");
 
-        let arg_tserie_id = tiposPagamento.find("li.active").attr("arg_tserie_id");
+        let seletedType = tiposPagamento.find("li.active").attr("arg_tserie_id");
+        let {serie_id, tserie_id} = account.SERIES[seletedType];
+        dados._serie_id = serie_id;
+        dados.arg_tserie_id = tserie_id;
 
         if(tiposPagamento.find("li.active").attr("corrente") === undefined){
             dados.deposito = {
@@ -368,6 +371,7 @@ var payment = {
         dados.guia_dataopeacao = null;
         dados.guia_metadata = {};
         dados.custos = [];
+
         if(!$(".fk-body").hasClass("loading"))
             $(".fk-body").addClass("loading");
 
@@ -375,7 +379,7 @@ var payment = {
             url: "/api/pos/pay",
             method: "POST",
             contentType: "application/json",
-            data: JSON.stringify({...dados, arg_tserie_id}),
+            data: JSON.stringify(dados),
             error(){$("#posPay").prop("disabled", false)},
             complete(){
                 payment.pay = currentFunction;
@@ -390,8 +394,10 @@ var payment = {
                     }
                     else{
                         $(".fk-body").removeClass("loading");
-                         spaceConfig.operationCode = tiposPagamento.find("li.active").attr("corrente") === undefined ? payment.CODE_OPERATION_FATURA_RECIBO
-                            : payment.CODE_OPERATION_FATURA;
+                         spaceConfig.operationCode =
+                             tiposPagamento.find("li.active").attr("corrente") === undefined
+                             ? payment.CODE_OPERATION_FATURA_RECIBO
+                             : payment.CODE_OPERATION_FATURA;
                          spaceConfig.account_id = pos.conta_id;
                          spaceConfig.getPrinter({operation: spaceConfig.operationCode});
                         $("#posPay").prop("disabled", false);

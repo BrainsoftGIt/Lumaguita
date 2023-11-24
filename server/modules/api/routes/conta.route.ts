@@ -16,24 +16,25 @@ app.post("/api/post/login", async (req, res) =>{
     const {validate_user_space, getDefaultSpace} = require("./functions/userDefaultSpace");
     const response = await functLogin({arg_auth_name: "id", arg_auth_value: req.body.colaborador_id, arg_auth_method: "pin", arg_auth_key: req.body.pin});
     req.session.user_pos = undefined;
-    if(response.rows.length === 0){
+    if (response.rows.length === 0) {
         res.json({result: false, message: "PIN incorreto."});
-    }
-    else{
+    } else {
         let acesso = response.rows[0].data.auth.colaborador_accesso;
-        if(acesso === 2) res.json({result: true, acesso: acesso});
-        else{
-            let userSpace = validate_user_space( response.rows[0].data.espaco_trabalha.filter(esp => esp.espaco_vender !== null), req.session.posto.spaces);
-            if(!userSpace.result) res.json({result: false, message: userSpace.message});
-            else{
+        if (acesso === 2) res.json({result: true, acesso: acesso});
+        else {
+            let userSpace = validate_user_space(response.rows[0].data.espaco_trabalha.filter(esp => esp.espaco_vender !== null), req.session.posto.spaces);
+            if (!userSpace.result) res.json({result: false, message: userSpace.message});
+            else {
                 req.session.user_pos = response.rows[0].data;
-                if(userSpace.spaces.length === 1)  req.session.user_pos.auth.armazem_atual = userSpace.spaces[0].data.espaco_id;
+                if (userSpace.spaces.length === 1) req.session.user_pos.auth.armazem_atual = userSpace.spaces[0].data.espaco_id;
                 else req.session.user_pos.auth.armazem_atual = getDefaultSpace(req, req?.session?.user_pos?.auth?.colaborador_id, userSpace.spaces);
 
-                req.session.save(() =>{
-                    res.json({result: true, acesso: acesso, armazens: userSpace.spaces,
-                        defaultSpace:  req?.session?.user_pos?.auth?.armazem_atual,
-                        user_uuid: req?.session?.user_pos?.auth?.colaborador_id});
+                req.session.save(() => {
+                    res.json({
+                        result: true, acesso: acesso, armazens: userSpace.spaces,
+                        defaultSpace: req?.session?.user_pos?.auth?.armazem_atual,
+                        user_uuid: req?.session?.user_pos?.auth?.colaborador_id
+                    });
                 });
             }
         }

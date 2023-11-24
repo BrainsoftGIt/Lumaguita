@@ -3,6 +3,7 @@ import {debugResponse, factory} from "../../../service/database.service";
 import {Templates} from "zoo.pg";
 import {clusterServer} from "../../../service/cluster.service";
 import {functGenerateKey, functloadKey} from "../db/call-function-posto";
+import {functLoadSeriesDistribuicao} from "../db/call-function-article";
 
 app.post("/api/post/key", async (req, res) =>{
     const {functGenerateKey} = require("../db/call-function-posto");
@@ -95,7 +96,7 @@ app.post("/api/posto/data", async (req, res) =>{
 app.post("/api/verify/user/space", async (req, res) =>{
     const {validate_user_space, getDefaultSpace} = require("./functions/userDefaultSpace");
     if(req.session.user_pos !== undefined){
-        let response = await validate_user_space(req.session.user_pos.espaco_trabalha, req.session.posto.spaces);
+        let response = await validate_user_space(req.session?.user_pos?.espaco_trabalha, req.session.posto.spaces);
         if(response.result){
             const userSpaces = response.spaces;
             response = await getDefaultSpace(req, req?.session?.user_pos?.auth?.colaborador_id, userSpaces);

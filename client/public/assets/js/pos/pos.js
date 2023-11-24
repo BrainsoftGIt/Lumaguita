@@ -530,6 +530,3 @@ $("[btPrintKitchen]").on("click", function () {
     pos.printKitchen();
     $("#xModalKuchenObservation .hideTarget").click();
 });
-
-
-console.log( "Lalalala!" );
