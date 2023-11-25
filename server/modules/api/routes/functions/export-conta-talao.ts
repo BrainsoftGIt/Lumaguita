@@ -14,9 +14,7 @@ export let create = async (instituition, account_content, res, user, date, print
     pdfMake.fonts = getFonts();
     let subtotal = 0;
     let preco_artigo = 0;
-    const footerSystem =  instituition.espaco_configuracao.certification !== null ? "Documento emitido por sistema informático com o nº de certificado "+instituition.espaco_configuracao.certification
-      : "";
-
+    const footerSystem = "Nota: Este documento não é uma fatura final. Apenas uma prévia sujeita a ajustes antes da fatura definitiva."
     let logoTipo = clusterServer.res.resolve(instituition?.espaco_configuracao?.logo_referencia);
 
     let sumImpost = {};

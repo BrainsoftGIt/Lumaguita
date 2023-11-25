@@ -368,7 +368,7 @@ export let create = async (instituition, account_content, res, user, date, num_a
             }
         ],
         ...structure(user, num_autorization, instituition.espaco_configuracao.certification,
-            (instituition?.espaco_configuracao?.cabecalho_referencia === null ? "" : clusterServer.res.resolve(instituition?.espaco_configuracao?.cabecalho_referencia)), textcolor, baseColor, rotape)
+            (instituition?.espaco_configuracao?.cabecalho_referencia === null ? "" : clusterServer.res.resolve(instituition?.espaco_configuracao?.cabecalho_referencia)), textcolor, baseColor, rotape, true)
     };
 
     const pdfDocGenerator = pdfMake.createPdf(docDefinition);
