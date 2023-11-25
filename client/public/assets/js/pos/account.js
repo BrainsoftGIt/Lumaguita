@@ -89,6 +89,8 @@ var account = {
                         account.user_spaces = [];
                         account.user_spaces = e.armazens;
                         account.pos_user_session_uuid = e.user_uuid;
+                        let {data: {FATURARECIBO, FATURA}} = e.armazens.find(({data : { espaco_id }}) => espaco_id === e.defaultSpace) || { data : {}};
+                        account.SERIES = { FATURARECIBO, FATURA };
                         account.functionAfterAuth(e.acesso, e.defaultSpace);
                     }
                 }

@@ -3,7 +3,8 @@ import fs from "fs";
 import {getFonts, structure} from "./estruture-talao-a5";
 import {folders} from "../../../../global/project";
 import {clusterServer} from "../../../../service/cluster.service";
-import {print} from "./printer";
+import * as print from "./printer";
+import {sys} from "../../../../global/sys";
 
 function getTypePayment(tipo_id){
     if(tipo_id === 1) return "Cash";
@@ -11,7 +12,7 @@ function getTypePayment(tipo_id){
     else if(tipo_id === 2) return "Depósito";
     else return "Transferência";
 }
-export let create = async (instituition, account_content, res, user, date, printer_name, num_autorization) => {
+export let create = async (instituition, account_content, res, user, date, printer_name, num_autorization, onlyOpen, versionPrinter="printV2") => {
     const pdfMake = require("../../../../../libs/js/pdfmake/pdfmake");
     const pdfFonts = require('../../../../../libs/js/pdfmake/vfs_fonts');
     const {formattedString} = require("./formatValue");
@@ -263,12 +264,15 @@ export let create = async (instituition, account_content, res, user, date, print
         let filename = "FaturaReciboTalao_"+(new Date().getTime()+Math.random())+".pdf";
         fs.mkdirSync(path.join(folders.temp, 'multer'), {recursive: true});
         fs.writeFile(path.join(folders.temp, 'multer/'+filename), buffer, function (err) {
-            if (err) return console.log(err);
-            else{
-                let paper = "A5";
-                print(printer_name, path.resolve(path.join(folders.temp, 'multer/'+filename)), paper);
-                res.json("done");
+            let paper = "A5";
+            if(!onlyOpen) {
+                print[versionPrinter](printer_name, path.resolve(path.join(folders.temp, 'multer/' + filename)), paper);
             }
+            res.json("done");
         });
+
+        if(onlyOpen) {
+            sys.openUrl(`http://127.0.0.1:3210/fr/${filename}`)
+        }
     });
 }

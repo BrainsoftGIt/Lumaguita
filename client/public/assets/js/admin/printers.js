@@ -152,13 +152,16 @@ $("[bt_impressora]").on("click", function () {
     settings.empresa.impressoras_cozinha.ip = $("#hasKuchen").hasClass("active") ? ($("#ip_impressora_cozinha").val().trim() || null) : null
     settings.empresa.printTalaoA5 = $("#printTalaoA5").hasClass("active");
     settings.empresa.printTalaoA6 = $("#printTalaoA6").hasClass("active");
-
+    settings.empresa.versionPrinter = $("[version].active").attr("version") || "";
     settings.empresa.impressorasTalao = {};
+
     settings.empresa.impressorasTalao.marginLeft =  $("#margin-left").val();
     settings.empresa.impressorasTalao.marginRight = $("#margin-right").val();
+    settings.empresa.impressorasTalao.onlyOpen = $("#onlyOpen").hasClass("active");
 
     settings.empresa.impressoras_cozinha.marginLeft =  $("#cosinha-margin-left").val();
     settings.empresa.impressoras_cozinha.marginRight = $("#cosinha-margin-right").val();
+    settings.empresa.impressoras_cozinha.onlyOpen = $("#onlyOpen").hasClass("active");
 
 
     printersConfigured.find("li").each(function () {

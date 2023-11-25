@@ -2,10 +2,11 @@ import path from "path";
 import fs from "fs";
 import {getFonts, structure} from "./estruture-talao-a6";
 import {folders} from "../../../../global/project";
-import {print} from "./printer";
+import * as print from "./printer";
 import {clusterServer} from "../../../../service/cluster.service";
+import {sys} from "../../../../global/sys";
 
-export let create = async (instituition, account_content, res, user, date, printer_name, num_autorization) => {
+export let create = async (instituition, account_content, res, user, date, printer_name, num_autorization, onlyOpen, versionPrinter="printV2") => {
     const pdfMake = require("../../../../../libs/js/pdfmake/pdfmake");
     const pdfFonts = require('../../../../../libs/js/pdfmake/vfs_fonts');
     const {formattedString} = require("./formatValue");
@@ -221,12 +222,15 @@ export let create = async (instituition, account_content, res, user, date, print
         let filename = "FaturaTalao_"+(new Date().getTime()+Math.random())+".pdf";
         fs.mkdirSync(path.join(folders.temp, 'multer'), {recursive: true});
         fs.writeFile(path.join(folders.temp, 'multer/'+filename), buffer, function (err) {
-            if (err) return console.log(err);
-            else{
-                let paper = "A6";
-                print(printer_name, path.resolve(path.join(folders.temp, 'multer/'+filename)), paper);
-                res.json("done");
+            let paper = "A6";
+            if(!onlyOpen) {
+                print[versionPrinter](printer_name, path.resolve(path.join(folders.temp, 'multer/' + filename)), paper);
             }
+            res.json("done");
         });
+
+        if(onlyOpen) {
+            sys.openUrl(`http://127.0.0.1:3210/fr/${filename}`)
+        }
     });
 }

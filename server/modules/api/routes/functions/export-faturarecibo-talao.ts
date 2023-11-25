@@ -3,7 +3,11 @@ import fs from "fs";
 import {getFonts, structure} from "./estruture-talao";
 import {folders} from "../../../../global/project";
 import {clusterServer} from "../../../../service/cluster.service";
-import {print} from "./printer";
+import * as print from "./printer";
+import {app} from "../../../../service/web.service";
+import Path from "path";
+import {sys} from "../../../../global/sys";
+import {args} from "../../../../global/args";
 
 function getTypePayment(tipo_id){
     if(tipo_id === 1) return "Cash";
@@ -11,7 +15,7 @@ function getTypePayment(tipo_id){
     else if(tipo_id === 2) return "Depósito";
     else return "Transferência";
 }
-export let create = async (instituition, account_content, res, user, date, printer_name, num_autorization, margin) => {
+export let create = async (instituition, account_content, res, user, date, printer_name, num_autorization, margin, onlyOpen, versionPrinter="printV2") => {
     const pdfMake = require("../../../../../libs/js/pdfmake/pdfmake");
     const pdfFonts = require('../../../../../libs/js/pdfmake/vfs_fonts');
     const {formattedString} = require("./formatValue");
@@ -309,14 +313,18 @@ export let create = async (instituition, account_content, res, user, date, print
     };
     const pdfDocGenerator = pdfMake.createPdf(docDefinition);
     pdfDocGenerator.getBuffer((buffer) => {
-        let filename = "FaturaReciboTalao_"+(new Date().getTime()+Math.random())+".pdf";
+        let filename = "FaturaReciboTalao_"+account_content[0].main.conta_serie.document+".pdf";
         fs.mkdirSync(path.join(folders.temp, 'multer'), {recursive: true});
         fs.writeFile(path.join(folders.temp, 'multer/'+filename), buffer, function (err) {
-            if (err) return console.log(err);
-            else{
-                print(printer_name, path.resolve(path.join(folders.temp, 'multer/'+filename)));
-                res.json("done");
+            if(!onlyOpen) {
+                print[versionPrinter](printer_name, path.resolve(path.join(folders.temp, 'multer/' + filename)));
             }
+            res.json("done");
         });
+
+        if(onlyOpen) {
+            sys.openUrl(`http://127.0.0.1:3210/fr/${filename}`)
+        }
     });
 }
+
