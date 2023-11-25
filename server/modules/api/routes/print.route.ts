@@ -2,6 +2,8 @@ import {app} from '../../../service/web.service';
 import {functLoadContaData} from "../db/call-function-pos";
 import {functReportVendaPOS} from "../db/call-function-report";
 import {getUserSession, getUserSessionPOS} from "./functions/get-session";
+import Path from "path";
+import {folders} from "../../../global/project";
 
 export async function load_space_configuration(req, admin) {
     const {functLoadDadosEmpresa} = require("../db/call-function-settings");
@@ -61,21 +63,26 @@ app.post("/api/print/fatura/recibo/talao", async (req, res) =>{
     const fatura_recibo_talao = require("./functions/export-faturarecibo-talao");
     const fatura_recibo_talaoA5 = require("./functions/export-faturarecibo-talao-a5");
     const fatura_recibo_talaoA6 = require("./functions/export-faturarecibo-talao-a6");
+
     let instituition = await load_space_configuration(req, false);
     instituition = instituition[0].funct_load_espaco_configuracao.espaco;
+    let {versionPrinter, printTalaoA5, printTalaoA6, impressorasTalao: margin} = instituition.espaco_configuracao;
+    let {onlyOpen} = margin;
+
+
     let user = req?.session?.user_pos?.auth?.colaborador_nome+" "+(req?.session?.user_pos?.auth?.colaborador_apelido === null ? "" : req?.session?.user_pos?.auth?.colaborador_apelido.split(" ").pop());
     const printer_name = get_printer_name(instituition.espaco_configuracao.configuracao_impressoras, "fatura_recibo");
 
-    if(instituition.espaco_configuracao.printTalaoA5) {
-        await fatura_recibo_talaoA5.create(instituition, dadosConta.rows, res, user, req.body.date, printer_name,  dadosConta.rows[0].main.conta_serie.serie_numatorizacao);
+    if(printTalaoA5) {
+        await fatura_recibo_talaoA5.create(instituition, dadosConta.rows, res, user, req.body.date, printer_name,  dadosConta.rows[0].main.conta_serie.serie_numatorizacao, onlyOpen, versionPrinter);
         return
     }
 
-    if(instituition.espaco_configuracao.printTalaoA6) {
-        await fatura_recibo_talaoA6.create(instituition, dadosConta.rows, res, user, req.body.date, printer_name,  dadosConta.rows[0].main.conta_serie.serie_numatorizacao);
+    if(printTalaoA6) {
+        await fatura_recibo_talaoA6.create(instituition, dadosConta.rows, res, user, req.body.date, printer_name,  dadosConta.rows[0].main.conta_serie.serie_numatorizacao, onlyOpen, versionPrinter);
         return
     }
-    await fatura_recibo_talao.create(instituition, dadosConta.rows, res, user, req.body.date, printer_name,  dadosConta.rows[0].main.conta_serie.serie_numatorizacao, instituition.espaco_configuracao.impressorasTalao);
+    await fatura_recibo_talao.create(instituition, dadosConta.rows, res, user, req.body.date, printer_name,  dadosConta.rows[0].main.conta_serie.serie_numatorizacao, margin, onlyOpen, versionPrinter);
 });
 app.get("/api/print/transference/:dados", async (req, res) =>{
     let dados = JSON.parse(req.params.dados);
@@ -89,7 +96,7 @@ app.get("/api/print/transference/:dados", async (req, res) =>{
         armazem_destino: req.session.transference_data.arg_espaco_destino_nome,
         armazem_origem_codigo: req.session.transference_data.arg_espaco_origem_codigo,
         armazem_destino_codigo: req.session.transference_data.arg_espaco_destino_codigo
-    }, res, user, dados.date,);
+    }, res, user, dados.date);
 });
 app.get("/api/print/guia_entrada/:dados", async (req, res) =>{
     let dados = JSON.parse(req.params.dados);
@@ -233,18 +240,21 @@ app.post("/api/print/conta/talao", async (req, res) =>{
     let user = req?.session?.user_pos?.auth?.colaborador_nome+" "+(req?.session?.user_pos?.auth?.colaborador_apelido === null ? "" : req?.session?.user_pos?.auth?.colaborador_apelido.split(" ").pop());
     let instituition = await load_space_configuration(req, false);
     instituition = instituition[0].funct_load_espaco_configuracao.espaco;
+    let {versionPrinter, printTalaoA5, printTalaoA6, impressorasTalao : margin} = instituition.espaco_configuracao;
+    let {onlyOpen} = margin;
+
     const printer_name = get_printer_name(instituition.espaco_configuracao.configuracao_impressoras, "conta");
-    if(instituition.espaco_configuracao.printTalaoA5) {
-        await fileA5.create(instituition, dadosConta.rows[0], res, user, req.body.date, printer_name);
+    if(printTalaoA5) {
+        await fileA5.create(instituition, dadosConta.rows[0], res, user, req.body.date, printer_name, onlyOpen, versionPrinter);
         return
     }
 
-    if(instituition.espaco_configuracao.printTalaoA6) {
-        await fileA6.create(instituition, dadosConta.rows[0], res, user, req.body.date, printer_name);
+    if(printTalaoA6) {
+        await fileA6.create(instituition, dadosConta.rows[0], res, user, req.body.date, printer_name, onlyOpen, versionPrinter);
         return
     }
 
-    await file.create(instituition, dadosConta.rows[0], res, user, req.body.date, printer_name, instituition.espaco_configuracao.impressorasTalao);
+    await file.create(instituition, dadosConta.rows[0], res, user, req.body.date, printer_name, margin, onlyOpen, versionPrinter);
 });
 
 app.post("/api/print/fecho/caixa/", async (req, res) =>{
@@ -253,19 +263,22 @@ app.post("/api/print/fecho/caixa/", async (req, res) =>{
     const fileA6 = require("./functions/export-fechocaixa-talao-a6");
     let instituition = await load_space_configuration(req, false);
     instituition = instituition[0].funct_load_espaco_configuracao.espaco;
+    let {versionPrinter, printTalaoA5, printTalaoA6, impressorasTalao : margin} = instituition.espaco_configuracao;
+    let {onlyOpen} = margin;
+
     let user = req?.session?.user_pos?.auth?.colaborador_nome+" "+(req?.session?.user_pos?.auth?.colaborador_apelido === null ? "" : req?.session?.user_pos?.auth?.colaborador_apelido.split(" ").pop());
     const printer_name = get_printer_name(instituition.espaco_configuracao.configuracao_impressoras, "caixa");
-    if(instituition.espaco_configuracao.printTalaoA5) {
-        await fileA5.create(instituition, req.body, res, user, printer_name);
+    if(printTalaoA5) {
+        await fileA5.create(instituition, req.body, res, user, printer_name, onlyOpen, versionPrinter);
         return
     }
 
-    if(instituition.espaco_configuracao.printTalaoA6) {
-        await fileA6.create(instituition, req.body, res, user, printer_name);
+    if(printTalaoA6) {
+        await fileA6.create(instituition, req.body, res, user, printer_name, onlyOpen, versionPrinter);
         return
     }
 
-    await file.create(instituition, req.body, res, user, printer_name, instituition.espaco_configuracao.impressorasTalao);
+    await file.create(instituition, req.body, res, user, printer_name, margin, onlyOpen, versionPrinter);
 });
 
 app.post("/api/print/report/venda", async (req, res) =>{
@@ -275,6 +288,10 @@ app.post("/api/print/report/venda", async (req, res) =>{
 
     let instituition = await load_space_configuration(req, false);
     instituition = instituition[0].funct_load_espaco_configuracao.espaco;
+    let {versionPrinter, printTalaoA5, printTalaoA6, impressorasTalao: margin} = instituition.espaco_configuracao;
+    let {onlyOpen} = margin;
+
+
     let user = req?.session?.user_pos?.auth?.colaborador_nome+" "+(req?.session?.user_pos?.auth?.colaborador_apelido === null ? "" : req?.session?.user_pos?.auth?.colaborador_apelido.split(" ").pop());
     const printer_name = get_printer_name(instituition.espaco_configuracao.configuracao_impressoras, "report_venda");
 
@@ -284,17 +301,17 @@ app.post("/api/print/report/venda", async (req, res) =>{
     let { rows} = await functReportVendaPOS(req.body);
     let { arg_date_end, arg_date_start } = req.body;
 
-    if(instituition.espaco_configuracao.printTalaoA5) {
-        await fileA5.create(instituition, rows, res, user, printer_name, arg_date_start, arg_date_end);
+    if(printTalaoA5) {
+        await fileA5.create(instituition, rows, res, user, printer_name, arg_date_start, arg_date_end, onlyOpen, versionPrinter);
         return
     }
 
-    if(instituition.espaco_configuracao.printTalaoA6) {
-        await fileA6.create(instituition, rows, res, user, printer_name, arg_date_start, arg_date_end);
+    if(printTalaoA6) {
+        await fileA6.create(instituition, rows, res, user, printer_name, arg_date_start, arg_date_end, onlyOpen, versionPrinter);
         return
     }
 
-    await file.create(instituition, rows, res, user, printer_name, arg_date_start, arg_date_end, instituition.espaco_configuracao.impressorasTalao);
+    await file.create(instituition, rows, res, user, printer_name, arg_date_start, arg_date_end, margin, onlyOpen, versionPrinter);
 });
 
 app.post("/api/print/kitchen", async (req, res) =>{
@@ -310,28 +327,35 @@ app.post("/api/print/kitchen", async (req, res) =>{
     try {
         let instituition = await load_space_configuration(req, false);
         instituition = instituition[0].funct_load_espaco_configuracao.espaco;
+        let {versionPrinter, printTalaoA5, printTalaoA6, impressoras_cozinha} = instituition.espaco_configuracao;
+        let {onlyOpen} = impressoras_cozinha;
 
         let user = req?.session?.user_pos?.auth?.colaborador_nome+" "+(req?.session?.user_pos?.auth?.colaborador_apelido === null ? "" : req?.session?.user_pos?.auth?.colaborador_apelido.split(" ").pop());
 
-        if(!instituition?.espaco_configuracao?.impressoras_cozinha?.ip){
-            if(instituition.espaco_configuracao.printTalaoA5) {
-                await createA5(instituition, req.body.articles, res, req.body.date, req.body.table, req.body.obs, user);
+        if(impressoras_cozinha?.ip){
+            if(printTalaoA5) {
+                await createA5(instituition, req.body.articles, res, req.body.date, req.body.table, req.body.obs, user, onlyOpen, versionPrinter);
                 return
             }
 
-            if(instituition.espaco_configuracao.printTalaoA6) {
-                await createA6(instituition, req.body.articles, res, req.body.date, req.body.table, req.body.obs, user);
+            if(printTalaoA6) {
+                await createA6(instituition, req.body.articles, res, req.body.date, req.body.table, req.body.obs, user, onlyOpen, versionPrinter);
                 return
             }
 
-            await create(instituition, req.body.articles, res, req.body.date, req.body.table, req.body.obs, instituition?.espaco_configuracao?.impressoras_cozinha);
+            await create(instituition, req.body.articles, res, req.body.date, req.body.table, req.body.obs, impressoras_cozinha, onlyOpen, versionPrinter);
         }
-        else if(instituition?.espaco_configuracao?.impressoras_cozinha?.ip){
+        else if(impressoras_cozinha?.ip){
             await printNetwork({articles: req.body.articles, table: req.body.table,
-                idPrinter: instituition.espaco_configuracao.impressoras_cozinha.ip});
+                idPrinter: impressoras_cozinha.ip});
         }
     }catch (e) {
         res.json("done");
     }
+});
+
+app.get( "/fr/:futura", (req, res) => {
+    let filename = req.params.futura;
+    res.download( Path.join( folders.temp, 'multer/'+filename ))
 });
 

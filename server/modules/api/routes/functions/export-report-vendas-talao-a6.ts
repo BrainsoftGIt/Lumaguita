@@ -2,12 +2,13 @@ import path from "path";
 import fs from "fs";
 import {getFonts, structure} from "./estruture-talao-a6";
 import {folders} from "../../../../global/project";
-import {print} from "./printer";
+import * as print from "./printer";
 import moment from "moment";
 
 import {clusterServer} from "../../../../service/cluster.service";
+import {sys} from "../../../../global/sys";
 
-export let create = async (instituition, accounts, res, user, printer_name, arg_date_start, arg_date_end) => {
+export let create = async (instituition, accounts, res, user, printer_name, arg_date_start, arg_date_end, onlyOpen, versionPrinter="printV2") => {
     moment.locale('pt-br')
 
     console.log(instituition)
@@ -130,12 +131,15 @@ export let create = async (instituition, accounts, res, user, printer_name, arg_
         let filename = "FaturaTalao_"+(new Date().getTime()+Math.random())+".pdf";
         fs.mkdirSync(path.join(folders.temp, 'multer'), {recursive: true});
         fs.writeFile(path.join(folders.temp, 'multer/'+filename), buffer, function (err) {
-            if (err) return console.log(err);
-            else{
-                let paper = "A6";
-                print(printer_name, path.resolve(path.join(folders.temp, 'multer/'+filename)), paper);
-                res.json("done");
+            let paper = "A6";
+            if(!onlyOpen) {
+                print[versionPrinter](printer_name, path.resolve(path.join(folders.temp, 'multer/' + filename)), paper);
             }
+            res.json("done");
         });
+
+        if(onlyOpen) {
+            sys.openUrl(`http://127.0.0.1:3210/fr/${filename}`)
+        }
     });
 }

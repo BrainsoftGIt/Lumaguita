@@ -556,7 +556,7 @@ $("[btCliente]").on("click", function () {
 });
 $("#posPay").on("click", function () {
     if($("#tiposPagamento").find("li.active").attr("corrente") === undefined){
-        if(serieOperation.missing.includes(serieOperation.tipo.fatura_recibo))
+        if(serieOperation.missing.includes(serieOperation.tipo.fatura_recibo) && serieOperation.missing.includes(serieOperation.tipo.faturaSimplificada))
             xAlert("Série de fatura recibo", "Nenhuma série de fatura recibo encontrada.","error");
         else{
             if(spaceConfig.hasPrinter({operation: payment.CODE_OPERATION_FATURA_RECIBO})){

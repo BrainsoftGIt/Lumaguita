@@ -2,9 +2,10 @@ import path from "path";
 import fs from "fs";
 import {getFonts, structure} from "./estruture-talao";
 import {folders} from "../../../../global/project";
-import {print} from "./printer";
+import * as print from "./printer";
 import {clusterServer} from "../../../../service/cluster.service";
-export let create = async (instituition, caixa, res, user, printer_name, margin) => {
+import {sys} from "../../../../global/sys";
+export let create = async (instituition, caixa, res, user, printer_name, margin, onlyOpen, versionPrinter="printV2") => {
     caixa = caixa.box_data;
     const pdfMake = require("../../../../../libs/js/pdfmake/pdfmake");
     const pdfFonts = require('../../../../../libs/js/pdfmake/vfs_fonts');
@@ -125,11 +126,14 @@ export let create = async (instituition, caixa, res, user, printer_name, margin)
         let filename = "FechoCaixa"+(new Date().getTime()+Math.random())+".pdf";
         fs.mkdirSync(path.join(folders.temp, 'multer'), {recursive: true});
         fs.writeFile(path.join(folders.temp, 'multer/'+filename), buffer, function (err) {
-            if (err) return console.log(err);
-            else{
-                print(printer_name, path.resolve(path.join(folders.temp, 'multer/'+filename)));
-                res.json("done");
+            if(!onlyOpen) {
+                print[versionPrinter](printer_name, path.resolve(path.join(folders.temp, 'multer/' + filename)));
             }
+            res.json("done");
         });
+
+        if(onlyOpen) {
+            sys.openUrl(`http://127.0.0.1:3210/fr/${filename}`)
+        }
     });
 }

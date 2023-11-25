@@ -154,7 +154,7 @@ var settings = {
                             settings.empresa["configuracao_impressoras"] = [];
                         }
 
-                        $("#printTalaoA5, #printTalaoA6").removeClass( "active");
+                        $("#printTalaoA5, #printTalaoA6, #onlyOpen, [version]").removeClass( "active");
                         $(" #hasKuchen ").removeClass("active");
                         $(" #xModalPrintSett ").removeClass("haveKuchen");
 
@@ -180,9 +180,12 @@ var settings = {
 
                         $("#margin-right").val(settings?.empresa?.impressorasTalao?.marginRight || "");
                         $("#margin-left").val(settings?.empresa?.impressorasTalao?.marginLeft || "");
+                        $("#onlyOpen").addClass(settings.empresa?.impressorasTalao?.onlyOpen ? "active" : "");
 
                         $("#printTalaoA5").addClass(settings.empresa.printTalaoA5 ? "active" : "");
                         $("#printTalaoA6").addClass(settings.empresa.printTalaoA6 ? "active" : "");
+                        $(`[version='${settings.empresa.versionPrinter}']`).addClass("active");
+
                         if(emp.configuracao_impressoras.length === 0) impressorasEstrutura.addClass("empty");
                         else impressorasEstrutura.removeClass("empty");
 
@@ -422,6 +425,7 @@ var settings = {
         dados.printTalaoA5 = !!this.empresa?.printTalaoA5;
         dados.printTalaoA6 = !!this.empresa?.printTalaoA6;
         dados.impressorasTalao = this?.empresa?.impressorasTalao || {};
+        dados.versionPrinter = this?.versionPrinter || "";
 
         let formData = new FormData();
         formData.append("data", JSON.stringify({dados_empresa: dados}));

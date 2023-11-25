@@ -15,7 +15,7 @@ var categoriasArtigosPOS = {
         $("#histBackCategories").empty().append("<span>Todas</span>");
         $("#artigos_carrinho").empty();
         this.load();
-        serieOperation.loadSerieOperation([serieOperation.tipo.fatura_recibo, serieOperation.tipo.fatura], "pos");
+        serieOperation.loadSerieOperation([serieOperation.tipo.fatura_recibo, serieOperation.tipo.fatura, serieOperation.tipo.faturaSimplificada], "pos");
     },
     load(){
         $(".fk-body").addClass("loading");

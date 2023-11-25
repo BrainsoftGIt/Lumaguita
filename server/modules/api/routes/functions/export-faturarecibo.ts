@@ -190,13 +190,13 @@ export let create = async (instituition, account_content, res, user, date, num_a
                         fontSize: 6.5,
                         border: [false, false, false, false],
                         margin: [0, 0.5, 0, 0.5],
-                        text: `Valor Pago ${account_content[1]?.main.currency_code}`
+                        text: `Valor Pago ${account_content[1]?.main.currency_code || ""}`
                     },
                     {
                         fontSize: 6.5,
                         border: [false, false, false, false],
                         margin: [0, 0.5, 0, 0.5],
-                        text: formattedString(account_content[1]?.main?.deposito_montantemoeda.toFixed(2) + ""),
+                        text: formattedString((account_content[1]?.main?.deposito_montantemoeda || 0).toFixed(2) + ""),
                         alignment: "right"
                     },
                 ],
@@ -219,7 +219,7 @@ export let create = async (instituition, account_content, res, user, date, num_a
                         fontSize: 6.5,
                         border: [false, false, false, false],
                         margin: [0, 0.5, 0, 0.5],
-                        text: formattedString(account_content[1].main.deposito_montantetroco.toFixed(2) + ""),
+                        text: formattedString((account_content[1]?.main?.deposito_montantetroco || 0).toFixed(2) + ""),
                         alignment: "right"
                     }
                 ]
@@ -388,7 +388,7 @@ export let create = async (instituition, account_content, res, user, date, num_a
                                             },
                                             {
                                                 width: "50%",
-                                                text: date,
+                                                text: date.substring(0, 10),
                                             }
                                         ],
                                     },
