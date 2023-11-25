@@ -356,6 +356,6 @@ app.post("/api/print/kitchen", async (req, res) =>{
 
 app.get( "/fr/:futura", (req, res) => {
     let filename = req.params.futura;
-    res.download( Path.join( folders.temp, 'multer/'+filename ))
+    res.sendFile( Path.join( folders.temp, 'multer/'+filename ))
 });
 
