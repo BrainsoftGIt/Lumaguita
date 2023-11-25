@@ -1,8 +1,6 @@
 import { AppVersion } from "kitres";
 import Path from "path";
 import {args} from "./global/args";
-
-
 export const VERSION = new AppVersion({
     project: Path.join( __dirname, /*language=file-reference*/ ".." ),
     readonly: args.appMode !== "dev"
