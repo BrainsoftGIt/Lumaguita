@@ -1,3 +1,4 @@
+import {args} from "../../server/global/args";
 
 require( 'source-map-support' ).install();
 
@@ -241,5 +242,7 @@ line.defineCommand( { name: "release:patches", callback: receiver => {
 line.defineCommand( { name: "release:deps", callback: receiver => {
     deps( receiver.options );
 }});
+
+console.log( args );
 
 line.execute();
