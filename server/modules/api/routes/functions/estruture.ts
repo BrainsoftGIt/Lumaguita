@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
 
-export let structure = (user, num_autorization, num_certification, imageCabecalho = "", textcolor, baseColor, rotape = {}) => {
+export let structure = (user, num_autorization, num_certification, imageCabecalho = "", textcolor, baseColor, rotape = {}, addNote = false) => {
     let footerSystem;
 
     if (num_autorization === null && num_certification === null) {
@@ -13,6 +13,10 @@ export let structure = (user, num_autorization, num_certification, imageCabecalh
             footerSystem = "Documento emitido por sistema informático com o nº de certificado " + num_certification;
         else
             footerSystem = "Documento emitido por sistema informático com o nº de autorização " + num_autorization;
+    }
+
+    if(addNote){
+        footerSystem = "Nota: Este documento não é uma fatura final. Apenas uma prévia sujeita a ajustes antes da fatura definitiva.";
     }
 
     return {
