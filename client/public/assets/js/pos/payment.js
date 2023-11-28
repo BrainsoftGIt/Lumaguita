@@ -338,7 +338,7 @@ var payment = {
         let documento_referencia_pagamento = $("#documento_referencia_pagamento");
 
         let seletedType = tiposPagamento.find("li.active").attr("arg_tserie_id");
-        let {serie_id, tserie_id} = account.SERIES[seletedType];
+        let {serie_id, tserie_id} = account.SERIES?.[seletedType] || {};
         dados._serie_id = serie_id;
         dados.arg_tserie_id = tserie_id;
 
