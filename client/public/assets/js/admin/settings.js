@@ -425,7 +425,7 @@ var settings = {
         dados.printTalaoA5 = !!this.empresa?.printTalaoA5;
         dados.printTalaoA6 = !!this.empresa?.printTalaoA6;
         dados.impressorasTalao = this?.empresa?.impressorasTalao || {};
-        dados.versionPrinter = this?.versionPrinter || "";
+        dados.versionPrinter = this?.versionPrinter || undefined;
 
         let formData = new FormData();
         formData.append("data", JSON.stringify({dados_empresa: dados}));
