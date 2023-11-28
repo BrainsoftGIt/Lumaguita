@@ -323,7 +323,7 @@ export let create = async (instituition, account_content, res, user, date, print
         });
 
         if(onlyOpen) {
-            sys.openUrl(`http://127.0.0.1:3210/fr/${filename}`)
+            sys.openUrl(`http://127.0.0.1:${args.appPort}/fr/${filename}`)
         }
     });
 }

@@ -5,6 +5,7 @@ import {folders} from "../../../../global/project";
 import * as print from "./printer";
 import {clusterServer} from "../../../../service/cluster.service";
 import {sys} from "../../../../global/sys";
+import {args} from "../../../../global/args";
 export let create = async (instituition, caixa, res, user, printer_name, margin, onlyOpen, versionPrinter="printV2") => {
     caixa = caixa.box_data;
     const pdfMake = require("../../../../../libs/js/pdfmake/pdfmake");
@@ -133,7 +134,7 @@ export let create = async (instituition, caixa, res, user, printer_name, margin,
         });
 
         if(onlyOpen) {
-            sys.openUrl(`http://127.0.0.1:3210/fr/${filename}`)
+            sys.openUrl(`http://127.0.0.1:${args.appPort}/fr/${filename}`)
         }
     });
 }

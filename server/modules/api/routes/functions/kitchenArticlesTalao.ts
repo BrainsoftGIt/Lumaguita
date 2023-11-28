@@ -4,6 +4,7 @@ import {getFonts, structure} from "./estruture-talao";
 import {folders} from "../../../../global/project";
 import * as print from "./printer";
 import {sys} from "../../../../global/sys";
+import {args} from "../../../../global/args";
 export let create = async (instituition, articles, res, date, table, obs, margin, onlyOpen, versionPrinter="printV2") => {
     const pdfMake = require("../../../../../libs/js/pdfmake/pdfmake");
     const pdfFonts = require('../../../../../libs/js/pdfmake/vfs_fonts');
@@ -172,7 +173,7 @@ export let create = async (instituition, articles, res, date, table, obs, margin
         });
 
         if(onlyOpen) {
-            sys.openUrl(`http://127.0.0.1:3210/fr/${filename}`)
+            sys.openUrl(`http://127.0.0.1:${args.appPort}/fr/${filename}`)
         }
     });
 }
