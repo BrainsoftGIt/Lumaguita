@@ -337,12 +337,12 @@ begin
       into __serie
     ;
     
-    if _conta_data > current_date and _message is null then 
-      _message :=  format( 'Data de emissão invalida para a operação! A data para a %I%s não pode ser superior a data atual!', __serie.tserie_desc, case
-        when __serie.serie_designacao is null then ''
-        else format( ' com designação %I', __serie.serie_designacao)
-      end);
-    end if;
+--     if _conta_data > current_date and _message is null then 
+--       _message :=  format( 'Data de emissão invalida para a operação! A data para a %I%s não pode ser superior a data atual!', __serie.tserie_desc, case
+--         when __serie.serie_designacao is null then ''
+--         else format( ' com designação %I', __serie.serie_designacao)
+--       end);
+--     end if;
     
     if _conta_data < _data.conta_data and _message is null then
       _message := format( 'Data de emissão invalida para a operação! A última data de emissão para %I%s foi de %I!', __serie.tserie_desc, case 
