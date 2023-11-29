@@ -5,6 +5,7 @@ import {folders} from "../../../../global/project";
 import {clusterServer} from "../../../../service/cluster.service";
 import * as print from "./printer";
 import {sys} from "../../../../global/sys";
+import {args} from "../../../../global/args";
 
 function getTypePayment(tipo_id){
     if(tipo_id === 1) return "Cash";
@@ -21,10 +22,8 @@ export let create = async (instituition, account_content, res, user, date, print
     let logoTipo = clusterServer.res.resolve(instituition?.espaco_configuracao?.logo_referencia);
 
     let footerSystem;
-    let valorTotalImpostos = 0;
     let subtotal = 0;
     let preco_artigo = 0;
-    // let mostrar_logo = instituition.espaco_configuracao.certification?.logo_talao ? instituition.espaco_configuracao.certification?.logo_talao : false;
     if(num_autorization !== null && instituition.espaco_configuracao.certification !== null)
         footerSystem = "Documento emitido por sistema informático com o nº de autorização "+num_autorization+" e de certificado "+instituition.espaco_configuracao.certification;
     else if(num_autorization === null && instituition.espaco_configuracao.certification !== null)
@@ -272,7 +271,7 @@ export let create = async (instituition, account_content, res, user, date, print
         });
 
         if(onlyOpen) {
-            sys.openUrl(`http://127.0.0.1:3210/fr/${filename}`)
+            sys.openUrl(`http://127.0.0.1:${args.appPort}/fr/${filename}`)
         }
     });
 }

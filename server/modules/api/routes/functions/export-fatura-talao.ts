@@ -5,6 +5,7 @@ import {folders} from "../../../../global/project";
 import * as print from "./printer";
 import {clusterServer} from "../../../../service/cluster.service";
 import {sys} from "../../../../global/sys";
+import {args} from "../../../../global/args";
 
 export let create = async (instituition, account_content, res, user, date, printer_name, num_autorization, margin, onlyOpen, versionPrinter="printV2") => {
     const pdfMake = require("../../../../../libs/js/pdfmake/pdfmake");
@@ -150,7 +151,7 @@ export let create = async (instituition, account_content, res, user, date, print
                     },
                     {
                         alignment: "center",
-                        canvas: [ { type: 'rect', x: 0, y: 0, w: 280, h: 0, dash: { length: 9 }, lineWidth: 1.5} ],
+                        canvas: [ { type: 'rect', x: 0, y: 0, w: 170, h: 0, dash: { length: 9 }, lineWidth: 0.5} ],
                         margin: [0, 3, 0, 2],
                     }
                 ]
@@ -196,7 +197,7 @@ export let create = async (instituition, account_content, res, user, date, print
                             },
                             {
                                 alignment: "center",
-                                canvas: [ { type: 'rect', x: 0, y: 0, w: 280, h: 0, dash: { length: 9 }, lineWidth: 1.5} ],
+                                canvas: [ { type: 'rect', x: 0, y: 0, w: 170, h: 0, dash: { length: 9 }, lineWidth: 0.5} ],
                                 margin: [0, 2, 0, 2],
                             }
                         ]
@@ -279,7 +280,7 @@ export let create = async (instituition, account_content, res, user, date, print
         });
 
         if(onlyOpen) {
-            sys.openUrl(`http://127.0.0.1:3210/fr/${filename}`)
+            sys.openUrl(`http://127.0.0.1:${args.appPort}/fr/${filename}`)
         }
     });
 }

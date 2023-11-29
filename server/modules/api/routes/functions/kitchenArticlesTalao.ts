@@ -4,6 +4,7 @@ import {getFonts, structure} from "./estruture-talao";
 import {folders} from "../../../../global/project";
 import * as print from "./printer";
 import {sys} from "../../../../global/sys";
+import {args} from "../../../../global/args";
 export let create = async (instituition, articles, res, date, table, obs, margin, onlyOpen, versionPrinter="printV2") => {
     const pdfMake = require("../../../../../libs/js/pdfmake/pdfmake");
     const pdfFonts = require('../../../../../libs/js/pdfmake/vfs_fonts');
@@ -107,7 +108,7 @@ export let create = async (instituition, articles, res, date, table, obs, margin
                         ]
                     },
                     {
-                        canvas: [ { type: 'rect', x: 0, y: 0, w: 280, h: 0, dash: { length: 9 }, lineWidth: 1.5} ],
+                        canvas: [ { type: 'rect', x: 0, y: 0, w: 170, h: 0, dash: { length: 9 }, lineWidth: 0.5} ],
                         margin: [0, 3, 0, 2],
                     }
                 ]
@@ -132,7 +133,7 @@ export let create = async (instituition, articles, res, date, table, obs, margin
                                 ]
                             },
                             {
-                                canvas: [ { type: 'rect', x: 0, y: 0, w: 820, h: 0, dash: { length: 9 }, lineWidth: 1.5} ],
+                                canvas: [ { type: 'rect', x: 0, y: 0, w: 820, h: 0, dash: { length: 9 }, lineWidth: 0.5} ],
                                 margin: [0, 2, 0, 2],
                             }
                         ]
@@ -172,7 +173,7 @@ export let create = async (instituition, articles, res, date, table, obs, margin
         });
 
         if(onlyOpen) {
-            sys.openUrl(`http://127.0.0.1:3210/fr/${filename}`)
+            sys.openUrl(`http://127.0.0.1:${args.appPort}/fr/${filename}`)
         }
     });
 }

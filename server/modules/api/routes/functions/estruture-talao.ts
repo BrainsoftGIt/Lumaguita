@@ -3,29 +3,29 @@ export let structure = ({margin}) => {
     return {
         styles: {
             pequena: {
-                fontSize: 10.8,
+                fontSize: 8.8,
                 alignment : "center",
                 lineHeight: 1.2
             },
             media: {
-                fontSize: 11
+                fontSize: 9
             },
             normal: {
-                fontSize: 12
+                fontSize: 10
             },
             grande: {
-                fontSize: 12.5,
+                fontSize: 10.5,
                 bold: true,
             },
             bold: {
-                fontSize: 12,
+                fontSize: 10,
                 bold: true,
             },
         },
         pageMargins: [ (+left || 5), 0, (+right || 5), 0 ],
         pageSize: {
-            width : 302,
-            height: 1195
+            width : 204.0944881889764,
+            height: 841.8897637795277
         },
         background: function (page) {
             return []

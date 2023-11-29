@@ -7,6 +7,7 @@ import moment from "moment";
 
 import {clusterServer} from "../../../../service/cluster.service";
 import {sys} from "../../../../global/sys";
+import {args} from "../../../../global/args";
 
 export let create = async (instituition, accounts, res, user, printer_name, arg_date_start, arg_date_end, margin, onlyOpen, versionPrinter="printV2") => {
     moment.locale('pt-br')
@@ -83,7 +84,7 @@ export let create = async (instituition, accounts, res, user, printer_name, arg_
                     },
                     {
                         alignment: "center",
-                        canvas: [ { type: 'rect', x: 0, y: 0, w: 280, h: 0, dash: { length: 9 }, lineWidth: 1.5} ],
+                        canvas: [ { type: 'rect', x: 0, y: 0, w: 170, h: 0, dash: { length: 9 }, lineWidth: 0.5} ],
                         margin: [0, 3, 0, 2],
                     }
                 ]
@@ -112,7 +113,7 @@ export let create = async (instituition, accounts, res, user, printer_name, arg_
                             },
                             {
                                 alignment: "center",
-                                canvas: [ { type: 'rect', x: 0, y: 0, w: 280, h: 0, dash: { length: 9 }, lineWidth: 1.5} ],
+                                canvas: [ { type: 'rect', x: 0, y: 0, w: 170, h: 0, dash: { length: 9 }, lineWidth: 0.5} ],
                                 margin: [0, 2, 0, 2],
                             }
                         ]
@@ -187,7 +188,7 @@ export let create = async (instituition, accounts, res, user, printer_name, arg_
         });
 
         if(onlyOpen) {
-            sys.openUrl(`http://127.0.0.1:3210/fr/${filename}`)
+            sys.openUrl(`http://127.0.0.1:${args.appPort}/fr/${filename}`)
         }
     });
 }

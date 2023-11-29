@@ -7,6 +7,7 @@ import moment from "moment";
 
 import {clusterServer} from "../../../../service/cluster.service";
 import {sys} from "../../../../global/sys";
+import {args} from "../../../../global/args";
 
 export let create = async (instituition, accounts, res, user, printer_name, arg_date_start, arg_date_end, onlyOpen, versionPrinter="printV2") => {
     moment.locale('pt-br')
@@ -139,7 +140,7 @@ export let create = async (instituition, accounts, res, user, printer_name, arg_
         });
 
         if(onlyOpen) {
-            sys.openUrl(`http://127.0.0.1:3210/fr/${filename}`)
+            sys.openUrl(`http://127.0.0.1:${args.appPort}/fr/${filename}`)
         }
     });
 }
