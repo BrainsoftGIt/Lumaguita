@@ -23,7 +23,7 @@ $$
     arg_espaco_child :=  rule.espaco_get_childrens( arg_espaco_auth );
     __branch := tweeks.__branch_uid( arg_colaborador_id, arg_espaco_auth );
     
-    if __branch then
+    if __branch is null then
         return;
     end if;
     
