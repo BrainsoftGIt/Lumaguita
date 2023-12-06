@@ -145,7 +145,6 @@ app.post("/api/importar_artigos", async (req, res) =>{
                         categoriasInexistentes.push({classe_nome: (row.values[5] || "Sem categoria"), classe_id: null});
                     }
 
-                    console.log(listCorrectData)
                 }
             } else{
                 headers = row.values.filter(function(value, index, arr){
