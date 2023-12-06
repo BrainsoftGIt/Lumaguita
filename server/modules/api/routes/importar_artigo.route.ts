@@ -98,14 +98,14 @@ app.post("/api/importar_artigos", async (req, res) =>{
                         validRow = false;
                     }
                 }
-                if(row.values[10] !== undefined){
-                    if (typeof row.values[10] !== "number") {
+                if(row.values[12] !== undefined){
+                    if (typeof row.values[12] !== "number") {
                         errors.push("Valor de quantidade de artigo no stock incorreto na coluna J linha " + rowNumber+".");
                         validRow = false;
                     }
                 }
-                if(row.values[9] === undefined || typeof row.values[9] !== "string") stockNegativo = false;
-                else stockNegativo = row.values[9].toLowerCase().includes("sim") || row.values[9].toLowerCase().includes("s");
+                if(row.values[11] === undefined || typeof row.values[11] !== "string") stockNegativo = false;
+                else stockNegativo = row.values[11].toLowerCase().includes("sim") || row.values[11].toLowerCase().includes("s");
 
                 let { main : { unit_id : artigo_unit_id } } = unidades.find(({main: {unit_code}}) => unit_code === row.values[3]) || {};
 
@@ -120,7 +120,11 @@ app.post("/api/importar_artigos", async (req, res) =>{
                         artigo_codigo: (row.values[2] || generateCode().toUpperCase()),
                         artigo_unit_id,
                         artigo_nome: clearText(row.values[4]),
-                        artigo_codigoimposto: row.values[8] || null,
+                        artigo_codigoimposto: {
+                            FATURACAO: row.values[8] || null,
+                            NOTACREDITO: row.values[9] || null,
+                            NOTADEBITO: row.values[10] || null,
+                        },
                         artigo_preparacao: false,
                         artigo_stocknegativo: stockNegativo,
                         artigo_foto: null,
@@ -135,7 +139,7 @@ app.post("/api/importar_artigos", async (req, res) =>{
                         }]),
                         arg_espaco_auth: req?.session?.auth_data?.auth?.armazem_atual || null,
                         arg_colaborador_id: req?.session?.auth_data?.auth?.colaborador_id || null,
-                        acerto_quantidade: (row.values[10] || 0)
+                        acerto_quantidade: (row.values[12] || 0)
                     });
                     if(categorias.findIndex(cat => cat.classe_nome === clearText((row.values[5] || "Sem categoria"))) === -1){
                         categoriasInexistentes.push({classe_nome: (row.values[5] || "Sem categoria"), classe_id: null});
@@ -145,7 +149,7 @@ app.post("/api/importar_artigos", async (req, res) =>{
                 }
             } else{
                 headers = row.values.filter(function(value, index, arr){
-                    return index > 10;
+                    return index > 12;
                 });
             }
         });

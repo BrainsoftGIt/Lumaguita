@@ -321,7 +321,9 @@ app.get("/api/exportar/modelo/artigos/:dados", async (req, res) => {
         {header: "Categoria", key: "cat", width: 45},
         {header: "Imposto", key: "imp", width: 45},
         {header: "Aplicação de imposto", key: "aplic_imp", width: 45},
-        {header: "Código Imposto", key: "impcode", width: 45},
+        {header: "Código Imposto Faturação", key: "impcodefaturacao", width: 45},
+        {header: "Código Imposto Nota de Credito", key: "impcodenotacredito", width: 45},
+        {header: "Código Imposto Nota de Debito", key: "impcodenotadebito", width: 45},
         {header: "Stock negativo (S/N)", key: "stock", width: 25},
         {header: "Quantidade", key: "quant", width: 20},
         ...(() => {
@@ -385,6 +387,18 @@ app.get("/api/exportar/modelo/artigos/:dados", async (req, res) => {
             tooltip: "Clique para selecionar a unidade"
         };
         workSheet.getCell(`H${i}`).dataValidation = {
+            type: 'list',
+            allowBlank: false,
+            formulae: [`Armazens!$F$1:$F$${(dados.taxCodes.length || 1)}`],
+            tooltip: "Clique para selecionar o código imposto"
+        };
+        workSheet.getCell(`I${i}`).dataValidation = {
+            type: 'list',
+            allowBlank: false,
+            formulae: [`Armazens!$F$1:$F$${(dados.taxCodes.length || 1)}`],
+            tooltip: "Clique para selecionar o código imposto"
+        };
+        workSheet.getCell(`J${i}`).dataValidation = {
             type: 'list',
             allowBlank: false,
             formulae: [`Armazens!$F$1:$F$${(dados.taxCodes.length || 1)}`],
