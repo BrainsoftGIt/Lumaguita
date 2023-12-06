@@ -3,6 +3,7 @@ import fs from "fs";
 import path from "path";
 import {clusterServer} from "../../../service/cluster.service";
 import {folders} from "../../../global/project";
+import excel from "exceljs";
 
 app.get("/api/categorias", async (req, res) => {
     const {functLoadCategories} = require("../db/call-function-article");
@@ -296,13 +297,63 @@ app.post("/api/artigo/stocks", async (req, res) => {
     res.json({stocks: response.rows});
 });
 app.get("/api/exportar/modelo/artigos/:dados", async (req, res) => {
-    const excel = require("exceljs");
+    let workBook = GetModel(req);
     let file_name = "Luma - modelo de importação de artigos.xlsx";
+    fs.mkdirSync(path.join(folders.temp, 'multer'), {recursive: true});
+    await workBook.xlsx.writeFile(path.join(folders.temp, 'multer/' + file_name)).then(() => {
+        res.download(path.join(folders.temp, 'multer') + "/" + file_name, file_name, function () {
+            fs.unlinkSync(path.join(folders.temp, 'multer') + "/" + file_name);
+        });
+    });
+});
 
+app.post("/api/importacao/artigo/data", async (req, res) => {
+    let random = (Math.random() + 1).toString(36).substring(7);
+    let data = new Date();
+    let file = `${random}-${data.getSeconds()}.json`
+    fs.writeFile(path.join(folders.temp, file), JSON.stringify(req.body), function (err) {
+        if (err) return console.log(err);
+        res.json(file)
+    });
+});
+
+app.post("/api/search/provider", async (req, res) => {
+    const {functSearchProvider} = require("../db/call-function-article");
+    req.body.arg_espaco_auth = req?.session?.auth_data?.auth?.armazem_atual || null;
+    req.body.arg_colaborador_id = req?.session?.auth_data?.auth?.colaborador_id || null;
+    const response = await functSearchProvider(req.body);
+    res.json({data: response.rows});
+});
+app.post("/api/search/article/code", async (req, res) => {
+    const {functSearchArticleByCode} = require("../db/call-function-article");
+    req.body.arg_espaco_auth = req?.session?.auth_data?.auth?.armazem_atual || null;
+    req.body.arg_colaborador_id = req?.session?.auth_data?.auth?.colaborador_id || null;
+    const response = await functSearchArticleByCode(req.body);
+    res.json({data: response.rows});
+});
+
+app.post("/api/load/futura/article", async (req, res) => {
+    const {functLoadSerieDistribuicao} = require("../db/call-function-article");
+    req.body.arg_espaco_auth = req?.session?.auth_data?.auth?.armazem_atual || null;
+    req.body.arg_colaborador_id = req?.session?.auth_data?.auth?.colaborador_id || null;
+    const response = await functLoadSerieDistribuicao(req.body);
+    res.json(response);
+});
+app.post("/api/load/futuras/setting", async (req, res) => {
+    const {functLoadSeriesDistribuicao} = require("../db/call-function-article");
+    req.body.arg_espaco_auth = req?.session?.auth_data?.auth?.armazem_atual || null;
+    req.body.arg_colaborador_id = req?.session?.auth_data?.auth?.colaborador_id || null;
+    const response = await functLoadSeriesDistribuicao(req.body);
+    res.json(response);
+});
+
+let GetModel = (req) => {
     let data = JSON.parse(req.params.dados);
     let fileData = fs.readFileSync(path.join(folders.temp, data.file));
 
     let dados = JSON.parse(fileData.toString());
+
+    const excel = require("exceljs");
     let workBook = new excel.Workbook();
     let workSheet = workBook.addWorksheet("Modelo de artigos");
     let workSheetSpaces = workBook.addWorksheet("Armazens");
@@ -312,7 +363,8 @@ app.get("/api/exportar/modelo/artigos/:dados", async (req, res) => {
             x: 0, y: 0, width: 10000, height: 20000,
             firstSheet: 0, activeTab: 0, visibility: 'visible'
         }
-    ]
+    ];
+
     workSheet.columns = [
         {header: "EAN", key: "ean", width: 30, alignment: "center"},
         {header: "Código", key: "codigo", width: 30, alignment: "center"},
@@ -368,36 +420,42 @@ app.get("/api/exportar/modelo/artigos/:dados", async (req, res) => {
             formulae: [`Armazens!$B$1:$B$${(dados.categs.length || 1)}`],
             tooltip: "Clique para selecionar a categoria"
         };
+
         workSheet.getCell(`F${i}`).dataValidation = {
             type: 'list',
             allowBlank: false,
             formulae: [`Armazens!$C$1:$C$${(dados.taxs.length || 1)}`],
             tooltip: "Clique para selecionar o imposto"
         };
+
         workSheet.getCell(`G${i}`).dataValidation = {
             type: 'list',
             allowBlank: false,
             formulae: [`Armazens!$D$1:$D$${(dados.aplicImposto.length || 1)}`],
             tooltip: "Clique para selecionar a forma de aplicar o imposto"
         };
+
         workSheet.getCell(`C${i}`).dataValidation = {
             type: 'list',
             allowBlank: false,
             formulae: [`Armazens!$E$1:$E$${(dados.units.length || 1)}`],
             tooltip: "Clique para selecionar a unidade"
         };
+
         workSheet.getCell(`H${i}`).dataValidation = {
             type: 'list',
             allowBlank: false,
             formulae: [`Armazens!$F$1:$F$${(dados.taxCodes.length || 1)}`],
             tooltip: "Clique para selecionar o código imposto"
         };
+
         workSheet.getCell(`I${i}`).dataValidation = {
             type: 'list',
             allowBlank: false,
             formulae: [`Armazens!$F$1:$F$${(dados.taxCodes.length || 1)}`],
             tooltip: "Clique para selecionar o código imposto"
         };
+
         workSheet.getCell(`J${i}`).dataValidation = {
             type: 'list',
             allowBlank: false,
@@ -406,51 +464,19 @@ app.get("/api/exportar/modelo/artigos/:dados", async (req, res) => {
         };
     }
 
+    return workBook;
+}
+
+app.get("/api/exportar/artigos/:dados", async (req, res) => {
+    let workBook = GetModel(req);
+
+
+    let file_name = "Luma - exportação de artigos.xlsx";
     fs.mkdirSync(path.join(folders.temp, 'multer'), {recursive: true});
     await workBook.xlsx.writeFile(path.join(folders.temp, 'multer/' + file_name)).then(() => {
         res.download(path.join(folders.temp, 'multer') + "/" + file_name, file_name, function () {
             fs.unlinkSync(path.join(folders.temp, 'multer') + "/" + file_name);
         });
     });
-});
-
-app.post("/api/importacao/artigo/data", async (req, res) => {
-    let random = (Math.random() + 1).toString(36).substring(7);
-    let data = new Date();
-    let file = `${random}-${data.getSeconds()}.json`
-    fs.writeFile(path.join(folders.temp, file), JSON.stringify(req.body), function (err) {
-        if (err) return console.log(err);
-        res.json(file)
-    });
-});
-
-app.post("/api/search/provider", async (req, res) => {
-    const {functSearchProvider} = require("../db/call-function-article");
-    req.body.arg_espaco_auth = req?.session?.auth_data?.auth?.armazem_atual || null;
-    req.body.arg_colaborador_id = req?.session?.auth_data?.auth?.colaborador_id || null;
-    const response = await functSearchProvider(req.body);
-    res.json({data: response.rows});
-});
-app.post("/api/search/article/code", async (req, res) => {
-    const {functSearchArticleByCode} = require("../db/call-function-article");
-    req.body.arg_espaco_auth = req?.session?.auth_data?.auth?.armazem_atual || null;
-    req.body.arg_colaborador_id = req?.session?.auth_data?.auth?.colaborador_id || null;
-    const response = await functSearchArticleByCode(req.body);
-    res.json({data: response.rows});
-});
-
-app.post("/api/load/futura/article", async (req, res) => {
-    const {functLoadSerieDistribuicao} = require("../db/call-function-article");
-    req.body.arg_espaco_auth = req?.session?.auth_data?.auth?.armazem_atual || null;
-    req.body.arg_colaborador_id = req?.session?.auth_data?.auth?.colaborador_id || null;
-    const response = await functLoadSerieDistribuicao(req.body);
-    res.json(response);
-});
-app.post("/api/load/futuras/setting", async (req, res) => {
-    const {functLoadSeriesDistribuicao} = require("../db/call-function-article");
-    req.body.arg_espaco_auth = req?.session?.auth_data?.auth?.armazem_atual || null;
-    req.body.arg_colaborador_id = req?.session?.auth_data?.auth?.colaborador_id || null;
-    const response = await functLoadSeriesDistribuicao(req.body);
-    res.json(response);
 });
 

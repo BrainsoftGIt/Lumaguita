@@ -29,6 +29,26 @@ var artigosImportacao = {
          $("#xModalArmazensImportarArtigos .hideTarget, #xModalExImportArt .hideTarget").click();
          $("[armazens_importar_artigos]").find("li").removeClass("active");
      },
+    exportarArtigos(){
+        $.ajax({
+            url: "/api/importacao/artigo/data",
+            method: "POST",
+            contentType: "application/json",
+            data: JSON.stringify({
+                units: article.units,
+                taxs: article.impostos,
+                taxCodes: article.taxCodes,
+                aplicImposto: article.imposto_lista_tipo_aplicacao,
+                categs: artigosImportacao.lista_categorias_exportar,
+                spaces: artigosImportacao.armazensSelecionadosExportar
+            }),
+            success: (file) => {
+                open("/api/exportar/artigos/" + JSON.stringify({file}));
+            }
+        })
+        $("#xModalArmazensImportarArtigos .hideTarget, #xModalExImportArt .hideTarget").click();
+        $("[armazens_importar_artigos]").find("li").removeClass("active");
+    },
     importar(){
         $("body").addClass("loading");
         let formData = new FormData();
@@ -74,11 +94,13 @@ var artigosImportacao = {
 
 
 $("#baixarModeloArtigos").on("click", function () {
-    if( $("[armazens_importar_artigos]").find("li").length === 1){
+    if ($("[armazens_importar_artigos]").find("li").length === 1) {
         artigosImportacao.exportarModelo();
         $("#xModalExImportArt .hideTarget").click();
+    } else {
+        artigosImportacao.lastExport = artigosImportacao.exportarModelo;
+        showTarget("xModalArmazensImportarArtigos");
     }
-    else showTarget("xModalArmazensImportarArtigos");
 });
 $("#artigoImportIpt").on("change", function () {
     if (!window.File || !window.FileReader || !window.FileList || !window.Blob) return;
@@ -91,10 +113,24 @@ $("#artigoImportIpt").on("change", function () {
     };
     reader.readAsDataURL(file);
 });
+
 $("[btExportarModelo]").on("click", function () {
     if($("[armazens_importar_artigos]").find("li.active").length === 0){
         xAlert("Baixar modelo", "Selecione o(s) armazém(s)!", "info");
         return;
     }
-    artigosImportacao.exportarModelo();
+
+    if(artigosImportacao.lastExport) {
+        artigosImportacao.lastExport();
+    }
+});
+
+$("[btArtigoExportar]").on("click", function () {
+    if ($("[armazens_importar_artigos]").find("li").length === 1) {
+        artigosImportacao.exportarArtigos();
+        $("#xModalExImportArt .hideTarget").click();
+    } else {
+        artigosImportacao.lastExport = artigosImportacao.exportarArtigos;
+        showTarget("xModalArmazensImportarArtigos");
+    }
 });
