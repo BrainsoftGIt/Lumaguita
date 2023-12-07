@@ -34,7 +34,7 @@ begin
   for _product in
     with __imposto as (
       select 
-          io.imposto_artigo_id as _artigo_id,
+          io.imposto_artigo_id as _artigo_uid,
           io.imposto_percentagem,
           io.imposto_valor,
           io.imposto_id,
@@ -78,9 +78,9 @@ begin
     ), __artigo_impostos as (
       select
           array_agg(e) as impostos,
-          _artigo_id
+          _artigo_uid
         from __imposto e
-        group by e._artigo_id
+        group by e._artigo_uid
     ), __artigo as (
       select
           art.*,
@@ -96,15 +96,14 @@ begin
           origin.artigo_nome as origin_nome,
           origin.artigo_compostoquantidade as orign_compostoquantidade,
           origin.artigo_artigo_id as origin_origin_id,
-          
+      
           coalesce( array_agg( l.link_espaco_destino ) filter ( where l.link_id is not null ), array[]::uuid[] )  as links,
-          array_agg( to_jsonb( l ) ) as armazems,
-          ip.impostos
+          array_agg( to_jsonb( l ) ) as armazems
         from tweeks.artigo art
           left join tweeks.unit u on art.artigo_unit_id = u.unit_id
           left join tweeks.artigo origin on art.artigo_artigo_id = origin.artigo_id
           left join tweeks.unit uorig on origin.artigo_unit_id = uorig.unit_id
-          left join __artigo_impostos ip on art.artigo_id = ip._artigo_id
+
           
           left join tweeks.link l on l.link_estado = _const.maguita_link_estado_ativo
             and ( l.link_referencia->>'artigo_id' )::uuid = art.artigo_id
@@ -121,9 +120,11 @@ begin
           u.unit_id,
           uorig.unit_id,
           origin.artigo_id,
-          s.stock_quantidade,
-          ip.impostos
-    ) select * from __artigo
+          s.stock_quantidade
+    ) select * 
+        from __artigo art
+          left join __artigo_impostos ip on art.artigo_id = ip._artigo_uid
+          left join __artigo_ean ea on art.artigo_id = ea._artigo_uid
   loop 
     return next to_jsonb( _product );
   end loop;
