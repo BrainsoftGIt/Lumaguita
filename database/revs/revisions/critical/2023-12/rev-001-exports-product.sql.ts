@@ -96,9 +96,10 @@ begin
           origin.artigo_nome as origin_nome,
           origin.artigo_compostoquantidade as orign_compostoquantidade,
           origin.artigo_artigo_id as origin_origin_id,
-      
+    
+          count( l.link_id ) as _counts,
           coalesce( array_agg( l.link_espaco_destino ) filter ( where l.link_id is not null ), array[]::uuid[] )  as links,
-          array_agg( to_jsonb( l ) ) as armazems
+          coalesce( array_agg( l ) filter ( where l.link_id is not null ), '{}'::tweeks.link[] ) as armazems
         from tweeks.artigo art
           left join tweeks.unit u on art.artigo_unit_id = u.unit_id
           left join tweeks.artigo origin on art.artigo_artigo_id = origin.artigo_id
@@ -125,6 +126,7 @@ begin
         from __artigo art
           left join __artigo_impostos ip on art.artigo_id = ip._artigo_uid
           left join __artigo_ean ea on art.artigo_id = ea._artigo_uid
+        where art._counts > 0
   loop 
     return next to_jsonb( _product );
   end loop;
