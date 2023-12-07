@@ -3,7 +3,6 @@ import fs from "fs";
 import path from "path";
 import {clusterServer} from "../../../service/cluster.service";
 import {folders} from "../../../global/project";
-import excel from "exceljs";
 
 app.get("/api/categorias", async (req, res) => {
     const {functLoadCategories} = require("../db/call-function-article");
@@ -297,7 +296,7 @@ app.post("/api/artigo/stocks", async (req, res) => {
     res.json({stocks: response.rows});
 });
 app.get("/api/exportar/modelo/artigos/:dados", async (req, res) => {
-    let workBook = GetModel(req);
+    let {workBook} = GetModel(req);
     let file_name = "Luma - modelo de importação de artigos.xlsx";
     fs.mkdirSync(path.join(folders.temp, 'multer'), {recursive: true});
     await workBook.xlsx.writeFile(path.join(folders.temp, 'multer/' + file_name)).then(() => {
@@ -389,7 +388,7 @@ let GetModel = (req) => {
         return sp.espaco_id;
     });
 
-    workSheetSpaces.state = 'hidden';
+    // workSheetSpaces.state = 'hidden';
     workSheet.getRow(1).font = {family: 2, size: 13, bold: true};
     workSheet.getRow(1).alignment = {vertical: 'middle', horizontal: 'center'};
 
@@ -464,12 +463,49 @@ let GetModel = (req) => {
         };
     }
 
-    return workBook;
+    return {
+        workBook,
+        workSheet,
+        spaces: dados.spaces,
+        categs: dados.categs
+    };
 }
 
 app.get("/api/exportar/artigos/:dados", async (req, res) => {
-    let workBook = GetModel(req);
+    let {workBook, workSheet, spaces, categs} = GetModel(req);
 
+    const {functLoadArticles} = require("../db/call-function-article");
+
+    req.body.arg_espaco_auth = req?.session?.auth_data?.auth?.armazem_atual || null;
+    const response = await functLoadArticles(req.body);
+    response.rows.forEach(({funct_load_artigo: {artigo_classe_id, artigo_nome, artigo_codigo, unit_code, stock_quantidade, artigo_stocknegativo, artigo_codigoimposto: { FATURACAO, NOTACREDITO, NOTADEBITO }}}, index) => {
+        if(index === 0){
+            console.log({artigo_nome})
+        }
+        let newIndex = index+2;
+
+        let {classe_nome: categoria} = categs.find(({classe_id}) => artigo_classe_id === classe_id);
+        workSheet.getCell(`A${newIndex}`).value = "EAN";
+        workSheet.getCell(`B${newIndex}`).value = artigo_codigo;
+        workSheet.getCell(`C${newIndex}`).value = unit_code;
+        workSheet.getCell(`D${newIndex}`).value = artigo_nome;
+        workSheet.getCell(`E${newIndex}`).value = categoria;
+        workSheet.getCell(`F${newIndex}`).value = "Imposto";
+        workSheet.getCell(`G${newIndex}`).value = "Aplicação de imposto";
+        workSheet.getCell(`H${newIndex}`).value = FATURACAO;
+        workSheet.getCell(`I${newIndex}`).value = NOTACREDITO;
+        workSheet.getCell(`J${newIndex}`).value = NOTADEBITO;
+        workSheet.getCell(`K${newIndex}`).value = artigo_stocknegativo ? "S" : "N";
+        workSheet.getCell(`L${newIndex}`).value = (stock_quantidade > 0) ? stock_quantidade : "";
+
+        let letra = "L";
+        spaces.map((sp) => {
+            var codigoAscii = letra.charCodeAt(0);
+            codigoAscii++;
+            var proximaLetra = String.fromCharCode(codigoAscii);
+            workSheet.getCell(`${proximaLetra}${newIndex}`).value = "spaces";
+        })
+    });
 
     let file_name = "Luma - exportação de artigos.xlsx";
     fs.mkdirSync(path.join(folders.temp, 'multer'), {recursive: true});
