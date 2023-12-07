@@ -58,12 +58,29 @@ begin
           and ta._branch_uid = __branch
           and tp._branch_uid = __branch
           and io._branch_uid = __branch
+    ), __ean as (
+      select
+          ean_artigo_id as _artigo_uid, 
+          e.ean_id,
+          ean_code,
+          ean_dateout,
+          ean_datein,
+          ean_estado,
+          ean_date
+        from tweeks.ean e
+        where e._branch_uid = __branch
+    ), __artigo_ean as (
+      select 
+        e._artigo_uid as _artigo_uid,
+        array_agg(e) as eans
+        from __ean e 
+        group by e._artigo_uid
     ), __artigo_impostos as (
       select
-          array_agg( ip ) as impostos,
+          array_agg(e) as impostos,
           _artigo_id
-        from __imposto ip
-        group by ip._artigo_id
+        from __imposto e
+        group by e._artigo_id
     ), __artigo as (
       select
           art.*,
