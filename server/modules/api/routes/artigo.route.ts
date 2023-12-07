@@ -483,10 +483,11 @@ app.get("/api/exportar/artigos/:dados", async (req, res) => {
     req.body._espaco_id = spaces.map(({espaco_id}) => espaco_id) || null;
 
     const response = await functLoadArticlesExport(req.body);
-    response.rows.forEach(({funct_load_artigo_exports: { eans, links, armazems, impostos, artigo_classe_id, artigo_nome, artigo_codigo, unit_code, stock_quantidade, artigo_stocknegativo, artigo_codigoimposto: { FATURACAO, NOTACREDITO, NOTADEBITO }, ...all}}, index) => {
+    response.rows.forEach(({funct_load_artigo_exports: { eans, links, armazems, impostos, artigo_classe_id, artigo_nome, artigo_codigo, unit_code, stock_quantidade, artigo_stocknegativo, artigo_codigoimposto, ...all}}, index) => {
 
         let {ean_code} = eans?.[0] || {};
 
+        let { FATURACAO, NOTACREDITO, NOTADEBITO } = artigo_codigoimposto || {}
         let { tipoimposto_nome,  taplicar_descricao} = impostos?.[0] || {}
         let newIndex = index+2;
 
@@ -498,9 +499,9 @@ app.get("/api/exportar/artigos/:dados", async (req, res) => {
         workSheet.getCell(`E${newIndex}`).value = categoria;
         workSheet.getCell(`F${newIndex}`).value = tipoimposto_nome || "";
         workSheet.getCell(`G${newIndex}`).value = taplicar_descricao || "";
-        workSheet.getCell(`H${newIndex}`).value = FATURACAO;
-        workSheet.getCell(`I${newIndex}`).value = NOTACREDITO;
-        workSheet.getCell(`J${newIndex}`).value = NOTADEBITO;
+        workSheet.getCell(`H${newIndex}`).value = FATURACAO || "";
+        workSheet.getCell(`I${newIndex}`).value = NOTACREDITO || "";
+        workSheet.getCell(`J${newIndex}`).value = NOTADEBITO || "";
         workSheet.getCell(`K${newIndex}`).value = artigo_stocknegativo ? "S" : "N";
         workSheet.getCell(`L${newIndex}`).value = (stock_quantidade > 0) ? stock_quantidade : "";
 
