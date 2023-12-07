@@ -122,7 +122,10 @@ begin
           uorig.unit_id,
           origin.artigo_id,
           s.stock_quantidade
-    ) select * 
+    ) select
+          art.*,
+          coalesce( ip.impostos, '{}' ) as impostos,
+          coalesce( ea.eans, '{}' ) as eans
         from __artigo art
           left join __artigo_impostos ip on art.artigo_id = ip._artigo_uid
           left join __artigo_ean ea on art.artigo_id = ea._artigo_uid
