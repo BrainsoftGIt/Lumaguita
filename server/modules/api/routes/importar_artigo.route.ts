@@ -27,7 +27,7 @@ function clearText( text ) {
 }
 function getSpacePrices(req, row, headers, spaces, errors, rowNumber) {
     let precosArmazens = [];
-    let pricePosition = 11;
+    let pricePosition = 12;
     let isValid = true;
     for (let i = 0; i < headers.length; i++) {
         if(row.values[pricePosition] !== undefined){
