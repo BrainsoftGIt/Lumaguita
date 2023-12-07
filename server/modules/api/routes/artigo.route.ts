@@ -3,6 +3,7 @@ import fs from "fs";
 import path from "path";
 import {clusterServer} from "../../../service/cluster.service";
 import {folders} from "../../../global/project";
+import {functLoadArticlesExport} from "../db/call-function-article";
 
 app.get("/api/categorias", async (req, res) => {
     const {functLoadCategories} = require("../db/call-function-article");
@@ -476,22 +477,27 @@ app.get("/api/exportar/artigos/:dados", async (req, res) => {
 
     const {functLoadArticles} = require("../db/call-function-article");
 
+
     req.body.arg_espaco_auth = req?.session?.auth_data?.auth?.armazem_atual || null;
-    const response = await functLoadArticles(req.body);
-    response.rows.forEach(({funct_load_artigo: {artigo_classe_id, artigo_nome, artigo_codigo, unit_code, stock_quantidade, artigo_stocknegativo, artigo_codigoimposto: { FATURACAO, NOTACREDITO, NOTADEBITO }}}, index) => {
-        if(index === 0){
-            console.log({artigo_nome})
-        }
+    req.body.arg_colaborador_uid = req?.session?.auth_data?.auth?.colaborador_id || null;
+    req.body._espaco_id = spaces.map(({espaco_id}) => espaco_id) || null;
+
+    const response = await functLoadArticlesExport(req.body);
+    response.rows.forEach(({funct_load_artigo_exports: { eans, links, armazems, impostos, artigo_classe_id, artigo_nome, artigo_codigo, unit_code, stock_quantidade, artigo_stocknegativo, artigo_codigoimposto: { FATURACAO, NOTACREDITO, NOTADEBITO }, ...all}}, index) => {
+
+        let {ean_code} = eans?.[0] || {};
+
+        let { tipoimposto_nome,  taplicar_descricao} = impostos?.[0] || {}
         let newIndex = index+2;
 
         let {classe_nome: categoria} = categs.find(({classe_id}) => artigo_classe_id === classe_id);
-        workSheet.getCell(`A${newIndex}`).value = "EAN";
+        workSheet.getCell(`A${newIndex}`).value = ean_code || "";
         workSheet.getCell(`B${newIndex}`).value = artigo_codigo;
         workSheet.getCell(`C${newIndex}`).value = unit_code;
         workSheet.getCell(`D${newIndex}`).value = artigo_nome;
         workSheet.getCell(`E${newIndex}`).value = categoria;
-        workSheet.getCell(`F${newIndex}`).value = "Imposto";
-        workSheet.getCell(`G${newIndex}`).value = "Aplicação de imposto";
+        workSheet.getCell(`F${newIndex}`).value = tipoimposto_nome || "";
+        workSheet.getCell(`G${newIndex}`).value = taplicar_descricao || "";
         workSheet.getCell(`H${newIndex}`).value = FATURACAO;
         workSheet.getCell(`I${newIndex}`).value = NOTACREDITO;
         workSheet.getCell(`J${newIndex}`).value = NOTADEBITO;
@@ -499,11 +505,13 @@ app.get("/api/exportar/artigos/:dados", async (req, res) => {
         workSheet.getCell(`L${newIndex}`).value = (stock_quantidade > 0) ? stock_quantidade : "";
 
         let letra = "L";
-        spaces.map((sp) => {
+        spaces.map(({espaco_id}) => {
+            let { link_metadata } = armazems.find(({link_espaco_auth}) =>  link_espaco_auth === espaco_id) || {};
+            let { precario_custo } = link_metadata || {};
             var codigoAscii = letra.charCodeAt(0);
             codigoAscii++;
             var proximaLetra = String.fromCharCode(codigoAscii);
-            workSheet.getCell(`${proximaLetra}${newIndex}`).value = "spaces";
+            workSheet.getCell(`${proximaLetra}${newIndex}`).value = precario_custo || "";
         })
     });
 

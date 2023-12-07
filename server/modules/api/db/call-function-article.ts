@@ -48,6 +48,13 @@ export function functLoadArticles(args) {
         sql `select * from tweeks.funct_load_artigo( ${ args })`
     );
 }
+
+export function functLoadArticlesExport(args) {
+    const {sql} = factory.create(Templates.PARAMETERIZED);
+    return catchAll(
+        sql `select * from tweeks.funct_load_artigo_exports( ${ args })`
+    );
+}
 export function functChangeAmountInStock(args) {
     const {sql} = factory.create(Templates.PARAMETERIZED);
     return catchLast(
