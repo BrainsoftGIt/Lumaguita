@@ -502,14 +502,19 @@ app.get("/api/exportar/artigos/:dados", async (req, res) => {
         workSheet.getCell(`K${newIndex}`).value = artigo_stocknegativo ? "S" : "N";
         workSheet.getCell(`L${newIndex}`).value = (stock_quantidade > 0) ? stock_quantidade : "";
 
+        armazems.forEach((armazem) => {
+            console.log({armazem});
+        })
+
         let letra = "L";
         spaces.map(({espaco_id}) => {
-            let { link_metadata } = armazems.find(({link_espaco_auth}) =>  link_espaco_auth === espaco_id) || {};
+            let { link_metadata } = armazems.find(({link_espaco_destino}) =>  link_espaco_destino === espaco_id) || {};
             let { precario_custo } = link_metadata || {};
             var codigoAscii = letra.charCodeAt(0);
             codigoAscii++;
             var proximaLetra = String.fromCharCode(codigoAscii);
             workSheet.getCell(`${proximaLetra}${newIndex}`).value = precario_custo || "";
+            letra = proximaLetra;
         })
     });
 
