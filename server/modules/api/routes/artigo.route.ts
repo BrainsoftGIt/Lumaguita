@@ -389,7 +389,7 @@ let GetModel = (req) => {
         return sp.espaco_id;
     });
 
-    // workSheetSpaces.state = 'hidden';
+    workSheetSpaces.state = 'hidden';
     workSheet.getRow(1).font = {family: 2, size: 13, bold: true};
     workSheet.getRow(1).alignment = {vertical: 'middle', horizontal: 'center'};
 
@@ -474,9 +474,6 @@ let GetModel = (req) => {
 
 app.get("/api/exportar/artigos/:dados", async (req, res) => {
     let {workBook, workSheet, spaces, categs} = GetModel(req);
-
-    const {functLoadArticles} = require("../db/call-function-article");
-
 
     req.body.arg_espaco_auth = req?.session?.auth_data?.auth?.armazem_atual || null;
     req.body.arg_colaborador_uid = req?.session?.auth_data?.auth?.colaborador_id || null;
