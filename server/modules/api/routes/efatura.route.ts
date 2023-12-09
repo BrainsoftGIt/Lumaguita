@@ -205,7 +205,7 @@ app.get("/api/efatura/report/excel/:data", async (req, res) => {
         }
 
         if(!!data_documento_origem){
-            data_documento_origem = new Date(documento_data);
+            data_documento_origem = new Date(data_documento_origem);
         }
 
         if(!!codigo_isento){
