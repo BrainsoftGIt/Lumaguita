@@ -208,6 +208,10 @@ app.get("/api/efatura/report/excel/:data", async (req, res) => {
             data_documento_origem = moment(documento_data, 'YYYY-MM-DD').toDate();
         }
 
+        if(codigo_isento){
+            codigo_isento = +codigo_isento;
+        }
+
         documento_serie = `${tserie_code || "N/A"}${documento_serie ?? ""}`
         workSheet.addRow([documento_numero, documento_serie, documento_data, nif_consumidor, total_valor_itens, taxa_aplicavel_itens, codigo_isento, quant_itens, desc_itens, numero_documento_origem, data_documento_origem, tipo_documento_origem]);
 
