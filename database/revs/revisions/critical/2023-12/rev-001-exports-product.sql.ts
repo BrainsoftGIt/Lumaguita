@@ -6,8 +6,13 @@ alter table tweeks.conta add column conta_cambio_uid uuid default null;
 alter table tweeks.venda alter column venda_metadata type jsonb using venda_metadata::jsonb;
 `;
 
+
 export const conta_add_conta_taxacambio = patchSQL({ unique: true } ).sql`
 alter table tweeks.conta add column conta_taxacambio double precision default null;
+`;
+export const conta_currency_uid = patchSQL({ unique: true}).sql`
+alter table tweeks.conta rename column conta_currency_uid to conta_currency_id;
+alter table tweeks.conta alter conta_currency_id type int2 using null;
 `;
 
 export const Rev001ExportsProductSql = sql`
@@ -256,16 +261,16 @@ begin
     from geoinfo.currency cu 
       left join tweeks.cambio ca on ca.cambio_currency_id = cu.currency_id
     where ca.cambio_estado = 1 
-      and ca.cambio_currency_id = _change.conta_cambio_uid
+      and ca.cambio_currency_id = _change.conta_currency_id
     order by ca.cambio_dataregistro desc 
     limit 1
     into _cambio;
   
-  if _change.conta_currency_uid is not null and _cambio.cambio_id is null then
+  if _change.conta_currency_id is not null and _cambio.cambio_id is null then
     return lib.res_false(format('Não existe cambio definido para %I!', _cambio.currency_name ) );
   end if;
   
-  if _change.conta_currency_uid is not null then
+  if _change.conta_currency_id is not null then
     _change.conta_cambio_uid := _cambio.cambio_id;
     _change.conta_taxacambio := _cambio.cambio_taxa;
   end if;
