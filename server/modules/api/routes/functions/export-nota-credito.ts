@@ -437,15 +437,11 @@ export let create = async (instituition, account_content, res, user, date, num_a
 
     const pdfDocGenerator = pdfMake.createPdf(docDefinition);
     pdfDocGenerator.getBuffer((buffer) => {
-        let filename = "NotaCredito_" + (new Date().getTime() + Math.random()) + ".pdf";
-        fs.mkdirSync(path.join(folders.temp, 'multer'), {recursive: true});
-        fs.writeFile(path.join(folders.temp, 'multer/' + filename), buffer, function (err) {
-            if (err) return console.log(err);
-            if (res) {
-                res.download(path.join(folders.temp, 'multer') + "/" + filename, filename, function () {
-                    fs.unlinkSync(path.join(folders.temp, 'multer') + "/" + filename);
-                });
-            }
-        });
+        const pdfBuffer = Buffer.from(buffer);
+        // Set response headers
+        res.setHeader('Content-Type', 'application/pdf');
+        res.setHeader('Content-Disposition', 'inline; filename=file.pdf');
+        // Send the PDF file in the response
+        res.send(pdfBuffer);
     });
 }

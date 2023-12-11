@@ -26,13 +26,19 @@ var spaceConfig = {
             setTimeout(function () {
                 $("#getBackPos").click();
             }, 1000);
-             open("/api/print/proforma/"+JSON.stringify({type: spaceConfig.typePrinter, conta_id: spaceConfig.account_id, date: new Date().getTimeStampPt() }));
+            Documents.open({
+                data: "/api/print/proforma/"+JSON.stringify({type: spaceConfig.typePrinter, conta_id: spaceConfig.account_id, date: new Date().getTimeStampPt() }),
+                name: "ProForma"
+            });
         }
     },
     "fatura_recibo":{
         print(){
             if(spaceConfig.typePrinter === "pdf")
-                 open("/api/print/fatura/recibo/"+JSON.stringify({conta_id: spaceConfig.account_id, date: new Date().getTimeStampPt() }));
+                Documents.open({
+                    data: "/api/print/fatura/recibo/"+JSON.stringify({conta_id: spaceConfig.account_id, date: new Date().getTimeStampPt() }),
+                    name: "Fatura Recibo"
+                });
             else{
                 $("body").addClass("loading");
                 $.ajax({
@@ -49,7 +55,10 @@ var spaceConfig = {
     "fatura_recibo_2_via":{
         print(){
             if(spaceConfig.typePrinter === "pdf")
-                 open("/api/print/fatura/recibo/"+JSON.stringify({conta_id: spaceConfig.account_id, date: spaceConfig.data_fatura }));
+                Documents.open({
+                    data: "/api/print/fatura/recibo/"+JSON.stringify({conta_id: spaceConfig.account_id, date: spaceConfig.data_fatura }),
+                    name : "Fatura Redibo 2ª via"
+                });
             else{
                 $("body").addClass("loading");
                 $.ajax({
@@ -66,7 +75,10 @@ var spaceConfig = {
     "fatura":{
         print(){
             if(spaceConfig.typePrinter === "pdf")
-                 open("/api/print/fatura/"+JSON.stringify({type: spaceConfig.typePrinter, conta_id: spaceConfig.account_id, date: new Date().getTimeStampPt(), admin: location.href.includes("admin") }));
+                Documents.open({
+                    data: "/api/print/fatura/"+JSON.stringify({type: spaceConfig.typePrinter, conta_id: spaceConfig.account_id, date: new Date().getTimeStampPt(), admin: location.href.includes("admin") }),
+                    name: "Fatura"
+                });
             else{
                 $("body").addClass("loading");
                 $.ajax({
@@ -83,7 +95,10 @@ var spaceConfig = {
     "conta":{
         print(){
             if(spaceConfig.typePrinter === "pdf")
-                  open("/api/print/conta/"+JSON.stringify({conta_id: spaceConfig.account_id, date: new Date().getTimeStampPt(), admin: location.href.includes("admin") }));
+                Documents.open({
+                    data:  "/api/print/conta/"+JSON.stringify({conta_id: spaceConfig.account_id, date: new Date().getTimeStampPt(), admin: location.href.includes("admin") }),
+                    name : "Conta"
+                });
             else{
                 $("body").addClass("loading");
                 $.ajax({
@@ -138,8 +153,13 @@ var spaceConfig = {
     },
     "recibo":{
         print(){
-            open("/api/print/recibo/"+JSON.stringify({deposito: spaceConfig.deposito, client: contacorrente.clienteSelecionado,
-               date: new Date().getTimeStampPt(), admin: location.href.includes("admin")}));
+            Documents.open({
+                data: "/api/print/recibo/" + JSON.stringify({
+                    deposito: spaceConfig.deposito, client: contacorrente.clienteSelecionado,
+                    date: new Date().getTimeStampPt(), admin: location.href.includes("admin")
+                }),
+                name: "Recibo"
+            });
         }
     },
     isConfigured({object}){

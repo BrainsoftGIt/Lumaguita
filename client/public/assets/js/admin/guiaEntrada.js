@@ -66,7 +66,10 @@ var guiaEntrada = {
                 if(e.result){
                     guiaEntrada.clearAllData();
                     xAlert("Guia de Entrada", "Entrada registada com sucesso!");
-                    open("/api/print/guia_entrada/"+JSON.stringify({guia_uuid: e.guia_uuid}));
+                    Documents.open({
+                        data: "/api/print/guia_entrada/"+JSON.stringify({guia_uuid: e.guia_uuid}),
+                        name: "Guia de Entrada"
+                    });
                 }
                 else xAlert("Guia de Entrada", e.message, "error");
             }

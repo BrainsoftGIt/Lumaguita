@@ -22,10 +22,7 @@ export let create = async (instituition, account, account_content, res, user, da
     let baseColor = instituition?.espaco_configuracao?.empresa_basecolor || "#000000";
     let textcolor = instituition?.espaco_configuracao?.empresa_textcolor || "#ffffff";
 
-    console.log(account)
-
     let sumImpost = {};
-    console.log({conta_vendas: JSON.stringify(account_content?.main?.conta_vendas)});
     (account_content?.main?.conta_vendas || []).forEach((cont) => {
         if (!!cont.tipoimposto_id) {
             if (!sumImpost[cont.tipoimposto_id]) {
@@ -452,15 +449,11 @@ export let create = async (instituition, account, account_content, res, user, da
 
     const pdfDocGenerator = pdfMake.createPdf(docDefinition);
     pdfDocGenerator.getBuffer((buffer) => {
-        let filename = "Proforma_" + (new Date().getTime() + Math.random()) + ".pdf";
-        fs.mkdirSync(path.join(folders.temp, 'multer'), {recursive: true});
-        fs.writeFile(path.join(folders.temp, 'multer/' + filename), buffer, function (err) {
-            if (err) return console.log(err);
-            if (res) {
-                res.download(path.join(folders.temp, 'multer') + "/" + filename, filename, function () {
-                    fs.unlinkSync(path.join(folders.temp, 'multer') + "/" + filename);
-                });
-            }
-        });
+        const pdfBuffer = Buffer.from(buffer);
+        // Set response headers
+        res.setHeader('Content-Type', 'application/pdf');
+        res.setHeader('Content-Disposition', 'inline; filename=file.pdf');
+        // Send the PDF file in the response
+        res.send(pdfBuffer);
     });
 }

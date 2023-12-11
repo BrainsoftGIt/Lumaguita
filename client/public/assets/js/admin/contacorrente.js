@@ -413,7 +413,10 @@ $("[bt_lancamento]").on("click", function () {
 });
 $("#xbodyHistoricoContaCliente").on("click", ".imprimir", function () {
     if($(this).attr("ref_class").includes("conta"))
-        open("/api/print/fatura/"+JSON.stringify({type: "pdf", conta_id: $(this).attr("ref_id"), date: new Date().getTimeStampPt(), admin: true }));
+        Documents.open({
+            data: "/api/print/fatura/"+JSON.stringify({type: "pdf", conta_id: $(this).attr("ref_id"), date: new Date().getTimeStampPt(), admin: true }),
+            name: "Fatura"
+        });
     else{
         spaceConfig.deposito = $(this).attr("ref_id");
         spaceConfig["recibo"].print();

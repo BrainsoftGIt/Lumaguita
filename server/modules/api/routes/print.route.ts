@@ -166,6 +166,25 @@ app.get("/api/print/fatura/:dados", async (req, res) =>{
         await fatura_talao.create(instituition, dadosConta.rows[0], res, user, conta.date, printer_name, dadosConta.rows[0].main.conta_serie.serie_numatorizacao, instituition.espaco_configuracao.impressorasTalao);
     }
 });
+
+app.get("/api/print/fatura/gringa/:dados", async (req, res) =>{
+    let {...conta} = JSON.parse(req.params.dados);
+    const file = require("./functions/export-fatura");
+    let instituition = await load_space_configuration(req, conta.admin);
+
+    instituition = instituition[0].funct_load_espaco_configuracao.espaco;
+    let dadosConta = await functLoadContaData({
+        arg_conta_id: conta.conta_id,
+        with_client: true,
+        arg_espaco_auth: req?.session?.auth_data?.auth?.armazem_atual || null,
+        arg_colaborador_id: req?.session?.auth_data?.auth?.colaborador_id || null
+    });
+
+    let user = req?.session?.auth_data?.auth.colaborador_nome + " " + (req?.session?.auth_data?.auth.colaborador_apelido === null ? "" : req?.session?.auth_data?.auth.colaborador_apelido.split(" ").pop());
+
+    await file.create(instituition, dadosConta.rows[0], res, user, conta.date, dadosConta.rows[0].main.conta_serie.serie_numatorizacao);
+});
+
 app.get("/api/print/nota-credito/:dados", async (req, res) =>{
     let conta = JSON.parse(req.params.dados);
     const file = require("./functions/export-nota-credito");

@@ -103,7 +103,14 @@ var proformaAdmin = {
                     $(`${modal} #proformaAdminBody`).find("input, textarea").val("");
                     $(`${modal} [tableDocumentArticles]`).empty().addClass("empty");
                     articlesDocuments.customer_id = null;
-                    open("/api/print/proforma/"+JSON.stringify({type: "pdf", conta_id: conta_id, date: new Date().getTimeStampPt() }));
+                    Documents.open({
+                        data: "/api/print/proforma/" + JSON.stringify({
+                            type: "pdf",
+                            conta_id: conta_id,
+                            date: new Date().getTimeStampPt()
+                        }),
+                        name: "ProForma"
+                    });
                 }
                 else xAlert("Fatura Proforma", e.data, "error");
             }

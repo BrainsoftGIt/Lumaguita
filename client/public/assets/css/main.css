@@ -603,29 +603,75 @@ ul {
     stroke-dashoffset: -124;
   }
 }
-
 .itemFlex1 {
   width: 100%;
-  max-width: 350px;
-  margin-right: 1rem;
+  max-width: 300px;
 }
 
 .itemFlex2 {
   width: 100%;
 }
-.itemFlex2 fieldset{
-  border: 1px solid #ddd;
-  padding: 0 1rem;
-  border-radius: .5rem;
-}
-.itemFlex2 fieldset legend{
-  color: #555;
-}
+
 .bodyFrom {
-  align-items: start !important;
-  width: 100% !important;
+  align-items: start;
 }
-.modalFrame{
-  width: 45%!important;
+
+.m-pdf-visualize {
+  height: auto !important;
 }
+.m-pdf-visualize .modal-frame {
+  width: 100%;
+  padding: 0;
+}
+.m-pdf-visualize .cctnrr {
+  width: 100%;
+  height: 99vh;
+}
+.m-pdf-visualize .cctnrr .list-pdfs {
+  width: 320px;
+  flex-shrink: 0;
+  background: #FFF;
+  height: 100%;
+  padding: 1rem;
+}
+.m-pdf-visualize .cctnrr .list-pdfs > * {
+  flex-shrink: 0;
+}
+.m-pdf-visualize .cctnrr .list-pdfs b {
+  margin: 2rem 0;
+  padding-left: 2rem;
+}
+.m-pdf-visualize .cctnrr .list-pdfs ul {
+  padding-left: 2rem;
+}
+.m-pdf-visualize .cctnrr .list-pdfs ul li {
+  cursor: pointer;
+  margin-bottom: 5px;
+}
+.m-pdf-visualize .cctnrr .list-pdfs ul li.active, .m-pdf-visualize .cctnrr .list-pdfs ul li.active i {
+  color: #E14045;
+}
+.m-pdf-visualize .cctnrr .list-pdfs ul li svg {
+  padding-right: 0.5rem;
+}
+.m-pdf-visualize .cctnrr .container-pdf iframe {
+  width: 100%;
+  height: 100vh;
+}
+.m-pdf-visualize .controllers {
+  right: 4rem;
+  top: 10vh;
+  color: #FFF;
+  position: absolute;
+}
+.m-pdf-visualize .controllers div {
+  width: 36px;
+  height: 35px;
+  /* background: #F2F2F2; */
+  margin-bottom: 1rem;
+  /* box-shadow: 0 2px 0 #666; */
+  cursor: pointer;
+  /* border-radius: 50%;*/
+}
+
 /*# sourceMappingURL=main.css.map */
