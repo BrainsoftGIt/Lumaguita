@@ -30,7 +30,7 @@ export let create = async (instituition, account_content, res, user, date, num_a
     let hasPersonalizadoHarder = (instituition?.espaco_configuracao?.cabecalho_referencia === null ? "" : clusterServer.res.resolve(instituition?.espaco_configuracao?.cabecalho_referencia));
 
     (account_content.main.conta_vendas || []).forEach((cont, index) => {
-        let hasDescricao = "";
+        let hasDescricao = cont?.venda_metadata?.artigoDetahe || "";
         preco_artigo = cont.venda_montantesemimposto / cont.venda_quantidade;
         artigosConta.push([
             {

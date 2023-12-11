@@ -29,7 +29,7 @@ export let create = async (instituition, account_content, res, user, date, num_a
 
     let {cambio_taxa, currency_code, currency_symbol} = account_content?.main;
     (account_content.main.conta_vendas || []).forEach((cont, index) => {
-        let hasDescricao = "Artigo x é do tipo y";
+        let hasDescricao = cont?.venda_metadata?.artigoDetahe || "";
         preco_artigo = cont.venda_montantesemimposto / cont.venda_quantidade;
         artigosConta.push([
             {

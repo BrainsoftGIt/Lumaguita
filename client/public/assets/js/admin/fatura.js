@@ -175,6 +175,9 @@ var faturaAdmin = {
                 venda_montantecomimposto: (semImposto ? result.subtotal : result.total),
                 venda_impostoadicionar: result.valor_imposto_adicionar,
                 venda_impostoretirar: result.valor_imposto_retirar,
+                venda_metadata: {
+                    artigoDetahe: $(this).attr("artigoDetahe") || ""
+                },
                 arg_itens: [],
                 venda_taxas: taxasArtigos.getImpostos($(this).attr("article_id"))
             });
@@ -374,7 +377,8 @@ $("#listProformAccounts").on("click", ".editar", function () {
     Documents.open({
         data: "/api/print/proforma/" + JSON.stringify({
             type: "pdf", conta_id: $(this).parents("ul").attr("conta_id"),
-            date: new Date().getTimeStampPt()
+            date: new Date().getTimeStampPt(),
+            admin: true
         }),
         name: "ProForma"
     });

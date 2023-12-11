@@ -107,7 +107,8 @@ var proformaAdmin = {
                         data: "/api/print/proforma/" + JSON.stringify({
                             type: "pdf",
                             conta_id: conta_id,
-                            date: new Date().getTimeStampPt()
+                            date: new Date().getTimeStampPt(),
+                            admin: true
                         }),
                         name: "ProForma"
                     });

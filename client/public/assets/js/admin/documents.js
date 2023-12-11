@@ -14,7 +14,7 @@ var documents = {
         },
         [serieOperation.tipo.guiaSaida] : ({conta_id, date}) => {
             Documents.open({
-                data: "/api/print/guia_saida/"+JSON.stringify({date, conta_id: conta_id }),
+                data: "/api/print/guia_saida/"+JSON.stringify({date, conta_id: conta_id, admin: true}),
                 name : "Guia de Saida"
             });
         },
@@ -26,7 +26,7 @@ var documents = {
         },
         [serieOperation.tipo.faturaProforma] : ({conta_id, date}) => {
             Documents.open({
-                data: "/api/print/proforma/"+JSON.stringify({type: "pdf", conta_id: conta_id, date }),
+                data: "/api/print/proforma/"+JSON.stringify({type: "pdf", conta_id: conta_id, date, admin: true}),
                 name: "ProForma"
             });
         },

@@ -181,8 +181,9 @@ var articlesDocuments = {
     add_articles_invoice(){
         let modal = window.xModalGeral || "";
         let montanteQuantidade = $(`${modal} [amount_article]`).val().unFormatter() * $(`${modal} [price_article]`).val().unFormatter();
+        let artigoDetahe = $("[artigoDetahe]").val();
         let result = taxasArtigos.calculateValues({montanteQuantidade: montanteQuantidade, artigo_id: articlesDocuments.article_id});
-        $(`${modal} [tableDocumentArticles]`).append(`<ul article_id="${articlesDocuments.article_id}" custoquantidade="${articlesDocuments.precario_quantidade}" codigoimposto="${$(`${modal} [codigo_imposto_article]`).val() || ""}">
+        $(`${modal} [tableDocumentArticles]`).append(`<ul artigoDetahe="${artigoDetahe}" article_id="${articlesDocuments.article_id}" custoquantidade="${articlesDocuments.precario_quantidade}" codigoimposto="${$(`${modal} [codigo_imposto_article]`).val() || ""}">
                                             <li>${articlesDocuments.article_code}</li>
                                             <li>${$(`${modal} [description_article]`).val()}</li>
                                             <li>${$(` ${modal} [amount_article] `).val()}</li>

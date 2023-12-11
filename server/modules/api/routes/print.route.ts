@@ -30,8 +30,12 @@ app.get("/api/print/proforma/:dados", async (req, res) =>{
     let dados = JSON.parse(req.params.dados);
     let proformas = await functLoadProformas(req.body);
     let user = req?.session?.auth_data?.auth.colaborador_nome+" "+(req?.session?.auth_data?.auth.colaborador_apelido === null ? "" : req?.session?.auth_data?.auth.colaborador_apelido.split(" ").pop());
-    const dadosConta = await functLoadContaData({arg_conta_id: dados.conta_id, with_client: true, arg_espaco_auth: req?.session?.auth_data?.auth?.armazem_atual || null,
-        arg_colaborador_id: req?.session?.auth_data?.auth?.colaborador_id || null});
+    const dadosConta = await functLoadContaData({
+        arg_conta_id: dados.conta_id,
+        with_client: true,
+        arg_espaco_auth: req.body.arg_espaco_auth,
+        arg_colaborador_id:  req.body.arg_colaborador_id
+    });
     let proformaCliente = proformas.rows.filter(prof => prof.data.conta_id === dados.conta_id);
     let instituition = await load_space_configuration(req, true);
     instituition = instituition[0].funct_load_espaco_configuracao.espaco;

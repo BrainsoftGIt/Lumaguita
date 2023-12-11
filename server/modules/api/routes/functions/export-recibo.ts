@@ -153,7 +153,7 @@ export let create = async (instituition, deposito, cliente, res, user, date, num
                         color: textcolor,
                         margin: [0, 0.5, 0, 0.5],
                         bold: true,
-                        text: formattedString(deposito[0]?.data?.deposito_montante?.toFixed?.(2) + ""),
+                        text: formattedString((deposito[0]?.data?.deposito_montante || 0)?.toFixed?.(2) + ""),
                         alignment: "right"
                     }
                 ]

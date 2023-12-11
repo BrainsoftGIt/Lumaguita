@@ -104,7 +104,8 @@ app.post( "/api/get/number/document", (req, res, next) => {
 
     if(dados.deposito) {
         functLoadDepositoData({deposito_id: dados.deposito}).then(({rows}) => {
-            let {0: {data: {deposito_documento: document}}} = rows;
+            let {data} = rows?.[0] || {};
+            let  {deposito_documento: document} = data || {};
             res.json({
                 document
             })
