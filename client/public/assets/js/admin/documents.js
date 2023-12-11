@@ -48,7 +48,7 @@ var documents = {
                 name: "Fatura"
             });
 
-            if(cambio_taxa !== 1){
+            if(!!cambio_taxa && cambio_taxa !== 1){
                 Documents.open({
                     data: "/api/print/fatura/gringa/"+JSON.stringify({type: "pdf", conta_id, date, admin: true}),
                     name: `Fatura em ${currency_code}`
