@@ -26,6 +26,7 @@ export let create = async (instituition, account_content, res, user, date, num_a
 
     let hasPersonalizadoHarder = (instituition?.espaco_configuracao?.cabecalho_referencia === null ? "" : clusterServer.res.resolve(instituition?.espaco_configuracao?.cabecalho_referencia));
 
+    let {cambio_taxa, currency_code, currency_symbol} = account_content?.main;
     (account_content.main.conta_vendas || []).forEach((cont, index) => {
         let hasDescricao = "Artigo x é do tipo y";
         preco_artigo = cont.venda_montantesemimposto / cont.venda_quantidade;
@@ -66,14 +67,14 @@ export let create = async (instituition, account_content, res, user, date, num_a
                 margin: [0, 3, 0, hasDescricao ? 0 : 3],
                 fontSize: 6.5,
                 border: [false, false, false, false],
-                text: formattedString(preco_artigo.toFixed(2) + ""),
+                text: `${currency_symbol} `+ formattedString((preco_artigo / cambio_taxa).toFixed(2) + ""),
                 alignment: "right"
             },
             {
                 margin: [0, 3, 0, hasDescricao ? 0 : 3],
                 fontSize: 6.5,
                 border: [false, false, false, false],
-                text: formattedString(Math.abs(cont.venda_montantesemimposto).toFixed(2) + ""),
+                text: `${currency_symbol} `+ formattedString(Math.abs(cont.venda_montantesemimposto / cambio_taxa).toFixed(2) + ""),
                 alignment: "right"
             }
         ]);
@@ -106,10 +107,10 @@ export let create = async (instituition, account_content, res, user, date, num_a
                 }
             }
 
-            sumImpost[cont.tipoimposto_id].sum += cont.venda_imposto;
+            sumImpost[cont.tipoimposto_id].sum += cont.venda_imposto / cambio_taxa;
         }
 
-        subtotal = Number(subtotal) + Number(cont.venda_montantesemimposto);
+        subtotal = Number(subtotal) + Number(cont.venda_montantesemimposto / cambio_taxa);
     });
 
     let rotape = {
@@ -138,6 +139,33 @@ export let create = async (instituition, account_content, res, user, date, num_a
                     {text: ""},
                     {text: ""},
                     {
+                        fillColor: baseColor,
+                        color: textcolor,
+                        fontSize: 6.5,
+                        border: [false, false, false, false],
+                        margin: [0, 0.5, 0, 0.5],
+                        text: formattedString(Math.abs(cambio_taxa).toFixed(2) + ``)+` ${currency_code}`
+                    },
+                    {
+                        fillColor: baseColor,
+                        color: textcolor,
+                        fontSize: 6.5,
+                        border: [false, false, false, false],
+                        margin: [0, 0.5, 0, 0.5],
+                        text: "1 STN",
+                        alignment: "right"
+                    },
+                ],
+                [
+                    {
+                        border: [false, false, false, false],
+                        text: "", colSpan: 5, fillColor: "#ffffff"
+                    },
+                    {text: ""},
+                    {text: ""},
+                    {text: ""},
+                    {text: ""},
+                    {
                         fontSize: 6.5,
                         border: [false, false, false, false],
                         margin: [0, 0.5, 0, 0.5],
@@ -147,7 +175,7 @@ export let create = async (instituition, account_content, res, user, date, num_a
                         fontSize: 6.5,
                         border: [false, false, false, false],
                         margin: [0, 0.5, 0, 0.5],
-                        text: formattedString(Math.abs(subtotal).toFixed(2) + ""),
+                        text: `${currency_symbol} `+ formattedString(Math.abs(subtotal).toFixed(2) + ""),
                         alignment: "right"
                     },
                 ],
@@ -171,7 +199,7 @@ export let create = async (instituition, account_content, res, user, date, num_a
                             fontSize: 6.5,
                             border: [false, false, false, false],
                             margin: [0, 0.5, 0, 0.5],
-                            text: formattedString(Math.abs(sumImpost[key].sum).toFixed(2) + ""),
+                            text: `${currency_symbol} `+ formattedString(Math.abs(sumImpost[key].sum).toFixed(2) + ""),
                             alignment: "right"
                         }
                     ]
@@ -201,7 +229,7 @@ export let create = async (instituition, account_content, res, user, date, num_a
                         color: textcolor,
                         margin: [0, 0.5, 0, 0.5],
                         bold: true,
-                        text: formattedString(Math.abs(account_content?.main?.conta_montante).toFixed(2) + ""),
+                        text: `${currency_symbol} `+ formattedString(Math.abs(account_content?.main?.conta_montante / cambio_taxa).toFixed(2) + ""),
                         alignment: "right"
                     }
                 ]
@@ -448,7 +476,7 @@ export let create = async (instituition, account_content, res, user, date, num_a
                                 margin: [0, 3, 0, 3],
                                 borderColor: [baseColor, baseColor, baseColor, baseColor],
                                 fillColor: baseColor,
-                                text: "Valor Unit. STN",
+                                text: `Valor Unit. ${currency_code}`,
                                 color: textcolor,
                                 alignment: "right"
                             },
@@ -456,7 +484,7 @@ export let create = async (instituition, account_content, res, user, date, num_a
                                 margin: [0, 3, 0, 3],
                                 borderColor: [baseColor, baseColor, baseColor, baseColor],
                                 fillColor: baseColor,
-                                text: "Subtotal STN",
+                                text: `Subtotal  ${currency_code}`,
                                 color: textcolor,
                                 alignment: "right"
                             }
