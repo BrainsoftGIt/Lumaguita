@@ -219,7 +219,7 @@ $("[listDocuments]").on("click", "li", function (){
     let {key} = $(this).data();
     let urlData = Documents.list[key];
     Documents.getDocumentNumber(key);
-    $("#iframe-pdf").attr("src", urlData+`#navpanes=0&scrollbar=0&view=FitH`);
+    $("#iframe-pdf").attr("src", urlData+`#navpanes=0&scrollbar=0`);
 })
 
 $("[closeDocuments]").on("click", function (){

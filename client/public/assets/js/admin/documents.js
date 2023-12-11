@@ -42,11 +42,18 @@ var documents = {
                 name: "Nota de Debito"
             });
         },
-        [serieOperation.tipo.fatura] : ({conta_id, date}) => {
+        [serieOperation.tipo.fatura] : ({conta_id, date, cambio_taxa, currency_code}) => {
             Documents.open({
                 data: "/api/print/fatura/"+JSON.stringify({type: "pdf", conta_id, date, admin: true}),
                 name: "Fatura"
             });
+
+            if(cambio_taxa !== 1){
+                Documents.open({
+                    data: "/api/print/fatura/gringa/"+JSON.stringify({type: "pdf", conta_id, date, admin: true}),
+                    name: `Fatura em ${currency_code}`
+                });
+            }
         },
     },
     init : () => {
@@ -126,8 +133,8 @@ var documents = {
 
                 $(`[body-report-list-faturas]`).addClass("empty").empty();
 
-                lista.forEach(({cliente_nif, deposito_id, cliente_id, cliente_titular, colaborador_nome, conta_montante, posto_designacao, conta_titular, conta_titularnif, conta_numerofatura, deposito_documento, conta_data, conta_id, tserie_id, deposito_montantefinal, deposito_data}) => {
-                    $(`[body-report-list-faturas]`).append(`<ul data-conta_id="${conta_id}" data-tserie_id="${tserie_id}" data-date="${conta_data || deposito_data}" data-deposito="${deposito_id}" data-client="${cliente_id}">
+                lista.forEach(({currency_code, cambio_taxa, cliente_nif, deposito_id, cliente_id, cliente_titular, colaborador_nome, conta_montante, posto_designacao, conta_titular, conta_titularnif, conta_numerofatura, deposito_documento, conta_data, conta_id, tserie_id, deposito_montantefinal, deposito_data}) => {
+                    $(`[body-report-list-faturas]`).append(`<ul data-currency_code="${currency_code}" data-cambio_taxa="${cambio_taxa}" data-conta_id="${conta_id}" data-tserie_id="${tserie_id}" data-date="${conta_data || deposito_data}" data-deposito="${deposito_id}" data-client="${cliente_id}">
                                             <li>${conta_numerofatura || deposito_documento}</li>
                                             <li>${cliente_titular || conta_titular}</li>
                                             <li>${cliente_nif || conta_titularnif || "---------"}</li>
@@ -219,7 +226,7 @@ $("#loadDocuments").on("click", function (){
 })
 
 $(`[body-report-list-faturas]`).on("click", ".imprimir",function (){
-    let {conta_id, date, deposito, client} = $(this).closest("ul").data();
+    let {conta_id, date, deposito, client, cambio_taxa, currency_code} = $(this).closest("ul").data();
     let {_tserie_id: tserie_id} = $("[list='_tserie_id'] li.active").data() || {};
-    documents.reprint[tserie_id]({conta_id, date, deposito, client})
+    documents.reprint[tserie_id]({conta_id, date, deposito, client, cambio_taxa, currency_code})
 })
