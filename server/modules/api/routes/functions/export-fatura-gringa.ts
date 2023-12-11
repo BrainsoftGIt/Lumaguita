@@ -153,7 +153,7 @@ export let create = async (instituition, account_content, res, user, date, num_a
                         fontSize: 6.5,
                         border: [false, false, false, false],
                         margin: [0, 0.5, 0, 0.5],
-                        text: formattedString(Math.abs(cambio_taxa).toFixed(2) + ``)+` ${currency_code}`,
+                        text: formattedString(Math.abs(cambio_taxa).toFixed(2) + ``)+` STN`,
                         alignment: "right"
                     },
                 ],
