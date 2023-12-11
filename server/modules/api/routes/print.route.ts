@@ -169,7 +169,7 @@ app.get("/api/print/fatura/:dados", async (req, res) =>{
 
 app.get("/api/print/fatura/gringa/:dados", async (req, res) =>{
     let {...conta} = JSON.parse(req.params.dados);
-    const file = require("./functions/export-fatura.gringa.js");
+    const file = require("./functions/export-fatura-gringa.js");
     let { 0: { funct_load_espaco_configuracao: { espaco: instituition}} }= await load_space_configuration(req, conta.admin);
 
     let dadosConta = await functLoadContaData({
