@@ -1,9 +1,6 @@
-import path from "path";
 import fs from "fs";
 import {getFonts, structure, getImage} from "./estruture";
-import {folders} from "../../../../global/project";
 import {clusterServer} from "../../../../service/cluster.service";
-import {formattedString} from "./formatValue";
 
 function getTypePayment(tipo_id) {
     if (tipo_id === 1) return "Cash";

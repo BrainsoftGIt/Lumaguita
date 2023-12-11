@@ -1,12 +1,10 @@
-import path from "path";
 import fs from "fs";
 import {getFonts, structure, getImage} from "./estruture";
-import {folders} from "../../../../global/project";
 import {clusterServer} from "../../../../service/cluster.service";
 import moment from "moment";
 import Path from "path";
 
-export let create = async (instituition, account_content, res, user, date, num_autorization, currency_code) => {
+export let create = async (instituition, account_content, res, user, date, num_autorization) => {
     const pdfMake = require("../../../../../libs/js/pdfmake/pdfmake");
     const pdfFonts = require('../../../../../libs/js/pdfmake/vfs_fonts');
     const {formattedString} = require("./formatValue");
@@ -24,58 +22,81 @@ export let create = async (instituition, account_content, res, user, date, num_a
 
     let baseColor = instituition?.espaco_configuracao?.empresa_basecolor || "#000000";
     let textcolor = instituition?.espaco_configuracao?.empresa_textcolor || "#ffffff";
+    let removerLinhaDoCabecalho = !instituition?.espaco_configuracao.removerLinhaDoCabecalho;
 
     let hasPersonalizadoHarder = (instituition?.espaco_configuracao?.cabecalho_referencia === null ? "" : clusterServer.res.resolve(instituition?.espaco_configuracao?.cabecalho_referencia));
 
-    (account_content.main.conta_vendas || []).forEach((cont) => {
+    (account_content.main.conta_vendas || []).forEach((cont, index) => {
+        let hasDescricao = "Artigo x é do tipo y";
         preco_artigo = cont.venda_montantesemimposto / cont.venda_quantidade;
         artigosConta.push([
             {
-                margin: [0, 3, 0, 3],
+                index,
+                margin: [0, 3, 0, hasDescricao ? 0 : 3],
                 fontSize: 6.5,
                 border: [false, false, false, false],
                 text: cont.venda_quantidade
             },
             {
-                margin: [0, 3, 0, 3],
+                margin: [0, 3, 0, hasDescricao ? 0 : 3],
                 fontSize: 6.5,
                 border: [false, false, false, false],
                 text: cont?.unit_code || "---"
             },
             {
-                margin: [0, 3, 0, 3],
+                margin: [0, 3, 0, hasDescricao ? 0 : 3],
                 fontSize: 6.5,
                 border: [false, false, false, false],
                 text: cont?.artigo_codigo || "---"
             },
             {
-                margin: [0, 3, 0, 3],
+                margin: [0, 3, 0, hasDescricao ? 0 : 3],
                 fontSize: 6.5,
                 border: [false, false, false, false],
                 text: (cont.venda_descricao === null ? cont.artigo_nome : cont.venda_descricao)
             },
             {
-                margin: [0, 3, 0, 3],
+                margin: [0, 3, 0, hasDescricao ? 0 : 3],
                 fontSize: 6.5,
                 border: [false, false, false, false],
                 text: `${cont.taxa_percentagem || cont.taxa_taxa || ""} ${(!cont.taxa_taxa && !cont.taxa_percentagem) ? "" : (cont.taxa_taxa) ? "" : "%"}`,
                 alignment: "center"
             },
             {
-                margin: [0, 3, 0, 3],
+                margin: [0, 3, 0, hasDescricao ? 0 : 3],
                 fontSize: 6.5,
                 border: [false, false, false, false],
                 text: formattedString(preco_artigo.toFixed(2) + ""),
                 alignment: "right"
             },
             {
-                margin: [0, 3, 0, 3],
+                margin: [0, 3, 0, hasDescricao ? 0 : 3],
                 fontSize: 6.5,
                 border: [false, false, false, false],
                 text: formattedString(Math.abs(cont.venda_montantesemimposto).toFixed(2) + ""),
                 alignment: "right"
             }
         ]);
+
+        if(hasDescricao) {
+            artigosConta.push([
+                {
+                    lineHeight: 0.5,
+                    index,
+                    margin: [0, -2, 0, 5],
+                    fontSize: 6.5,
+                    border: [false, false, false, false],
+                    text: hasDescricao,
+                    colSpan: 7,
+                },
+                {text: ""},
+                {text: ""},
+                {text: ""},
+                {text: ""},
+                {text: ""},
+                {text: ""},
+            ]);
+        }
 
         if (!!cont.tipoimposto_id) {
             if (!sumImpost[cont.tipoimposto_id]) {
@@ -181,7 +202,7 @@ export let create = async (instituition, account_content, res, user, date, num_a
     let docDefinition = {
         compress: true,
         info: {
-            title: typeDoc+" "+currency_code,
+            title: typeDoc,
             author: 'Luma',
             subject: `Impressão de ${typeDoc}`,
             keywords: `luma, ${typeDoc}, brainsoft`,
@@ -260,7 +281,7 @@ export let create = async (instituition, account_content, res, user, date, num_a
                         [
                             {
                                 fontSize: 8,
-                                border: [false, false, true, false],
+                                border: [false, false, removerLinhaDoCabecalho, false],
                                 borderColor: ['#000000', '#000000', '#000000', '#000000'],
                                 stack: [
                                     {
@@ -313,7 +334,7 @@ export let create = async (instituition, account_content, res, user, date, num_a
                             {
                                 alignment: "right",
                                 fontSize: 8,
-                                border: [true, false, false, false],
+                                border: [removerLinhaDoCabecalho, false, false, false],
                                 borderColor: ['#000000', '#000000', '#000000', '#000000'],
                                 stack: [
                                     {
@@ -335,16 +356,16 @@ export let create = async (instituition, account_content, res, user, date, num_a
                                         text: moment(account_content.main.conta_data).format("DD-MM-YYYY"),
                                     },
                                     (!!account_content?.main?.conta_documentoorigem) ? {
-                                            stack: [
-                                                {
-                                                    bold: true,
-                                                    color: '#000000',
-                                                    text: "Nº de Documento Origen"
-                                                },
-                                                {
-                                                    text: account_content.main.conta_documentoorigem,
-                                                }
-                                            ]
+                                        stack: [
+                                            {
+                                                bold: true,
+                                                color: '#000000',
+                                                text: "Nº de Documento Origen"
+                                            },
+                                            {
+                                                text: account_content.main.conta_documentoorigem,
+                                            }
+                                        ]
                                     } : {}
                                 ]
                             }
@@ -360,8 +381,9 @@ export let create = async (instituition, account_content, res, user, date, num_a
                 fontSize: 7,
                 lineHeight: 1.3,
                 layout: {
-                    fillColor: function (rowIndex, node, columnIndex) {
-                        return (rowIndex % 2 === 0) ? '#F5F6F6' : null;
+                    fillColor: function (rowIndex, { table: {body} }, columnIndex) {
+                        let {0: {index}} = body[rowIndex];
+                        return (index % 2 === 0) ? '#F5F6F6' : null;
                     },
                     hLineWidth: function (i, node) {
                         return 0.8;

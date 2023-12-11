@@ -1,10 +1,7 @@
-import path from "path";
 import fs from "fs";
 import {getFonts, structure, getImage} from "./estruture";
 import moment from "moment";
-import {folders} from "../../../../global/project";
 import {clusterServer} from "../../../../service/cluster.service";
-import {formattedString} from "./formatValue";
 
 export let create = async (instituition, fornecedor, guia, artigos, res, user, custo_guia) => {
     const pdfMake = require("../../../../../libs/js/pdfmake/pdfmake");

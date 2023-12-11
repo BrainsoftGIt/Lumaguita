@@ -48,7 +48,7 @@ async function createPDFReceita(req, file, res){
     let {client, tratamento, utente} = JSON.parse(fileData.toString());
     let {0: {funct_load_espaco_configuracao: {espaco}}} = await load_space_configuration(req, true);
     let user = req?.session?.auth_data?.auth.colaborador_nome + " " + (req?.session?.auth_data?.auth.colaborador_apelido === null ? "" : req?.session?.auth_data?.auth.colaborador_apelido.split(" ").pop());
-    fs.unlinkSync(path.join(folders.temp, data.file))
+    // fs.unlinkSync(path.join(folders.temp, data.file))
     await file.create(espaco, res, user, client, utente, tratamento);
 }
 
