@@ -132,7 +132,7 @@ begin
   ;
   
   if _change.conta_currency_id is not null and _cambio.cambio_id is null then
-    return lib.res_false(format('Não existe cambio definido para %I!', _currency.currency_name ) );
+    return lib.res_false(format('Não existe cambio definido para %I!', _currency.currency_code ) );
   end if;
   
   if _change.conta_currency_id is not null then
