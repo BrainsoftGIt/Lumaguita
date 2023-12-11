@@ -209,7 +209,7 @@ let Documents = {
             contentType: "application/json",
             data: jsonString,
             success({document}) {
-                $(`[data-key="${key}"] document`).html(`  ${document}`);
+                $(`[data-key="${key}"] document`).html(`  ${document || ""}`);
             }
         });
     }
@@ -219,7 +219,7 @@ $("[listDocuments]").on("click", "li", function (){
     let {key} = $(this).data();
     let urlData = Documents.list[key];
     Documents.getDocumentNumber(key);
-    $("#iframe-pdf").attr("src", urlData);
+    $("#iframe-pdf").attr("src", urlData+`#navpanes=0&scrollbar=0&view=FitH`);
 })
 
 $("[closeDocuments]").on("click", function (){

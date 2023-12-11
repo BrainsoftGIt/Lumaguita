@@ -94,7 +94,8 @@ app.post( "/api/get/number/document", (req, res, next) => {
             arg_espaco_auth: _session.workspace,
             arg_colaborador_id: _session.user_id
         }).then(({rows}) => {
-            let {0: {main: {conta_serie: {document}}}} = rows;
+            let {0: {main: {conta_serie}}} = rows;
+            let {document} = conta_serie || {};
             res.json({
                 document
             })
