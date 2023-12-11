@@ -296,7 +296,10 @@ var consulta = {
             contentType: "application/json",
             data,
             success: (file) => {
-                open(`/api/clinica/consulta/export/receita/${type}/`+JSON.stringify({ file }));
+                Documents.open({
+                    data: `/api/clinica/consulta/export/receita/${type}/`+JSON.stringify({ file }),
+                    name: `Receita ${type.toUpperCase()}`
+                });
             }
         })
     },

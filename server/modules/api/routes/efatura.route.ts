@@ -201,14 +201,14 @@ app.get("/api/efatura/report/excel/:data", async (req, res) => {
     list.forEach(({vreport_imposto_financas: {...artigo}}, index) => {
         let {tserie_code, documento_numero, documento_serie, documento_data, nif_consumidor, total_valor_itens, tipo_documento_origem, data_documento_origem, codigo_isento, desc_itens, taxa_aplicavel_itens, quant_itens, numero_documento_origem} = artigo;
         if(!!documento_data){
-            documento_data = moment(documento_data, 'YYYY-MM-DD').toDate();
+            documento_data = new Date(documento_data);
         }
 
         if(!!data_documento_origem){
-            data_documento_origem = moment(documento_data, 'YYYY-MM-DD').toDate();
+            data_documento_origem = new Date(data_documento_origem);
         }
 
-        if(codigo_isento){
+        if(!!codigo_isento){
             codigo_isento = +codigo_isento;
         }
 

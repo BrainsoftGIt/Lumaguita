@@ -1,7 +1,5 @@
-import path from "path";
 import fs from "fs";
 import {getFonts, structure, getImage} from "./estruture";
-import {folders} from "../../../../global/project";
 import {clusterServer} from "../../../../service/cluster.service";
 import moment from "moment";
 
@@ -15,6 +13,7 @@ export let create = async (instituition, account_content, res, user, num_autoriz
 
     let baseColor = instituition?.espaco_configuracao?.empresa_basecolor || "#000000";
     let textcolor = instituition?.espaco_configuracao?.empresa_textcolor || "#ffffff";
+    let removerLinhaDoCabecalho = !instituition?.espaco_configuracao.removerLinhaDoCabecalho;
 
     let hasPersonalizadoHarder = (instituition?.espaco_configuracao?.cabecalho_referencia === null ? "" : clusterServer.res.resolve(instituition?.espaco_configuracao?.cabecalho_referencia));
     let imageCabecalho = (instituition?.espaco_configuracao?.cabecalho_referencia === null ? "" : clusterServer.res.resolve(instituition?.espaco_configuracao?.cabecalho_referencia));
@@ -137,7 +136,7 @@ export let create = async (instituition, account_content, res, user, num_autoriz
                         [
                             {
                                 fontSize: 8,
-                                border: [false, false, true, false],
+                                border: [false, false, removerLinhaDoCabecalho, false],
                                 borderColor: ['#000000', '#000000', '#000000', '#000000'],
                                 stack: [
                                     {
@@ -180,7 +179,7 @@ export let create = async (instituition, account_content, res, user, num_autoriz
                             },
                             {
                                 alignment: "right",
-                                border: [true, false, false, false],
+                                border: [removerLinhaDoCabecalho, false, false, false],
                                 borderColor: ['#000000', '#000000', '#000000', '#000000'],
                                 stack: [
                                     {
@@ -307,15 +306,11 @@ export let create = async (instituition, account_content, res, user, num_autoriz
 
     const pdfDocGenerator = pdfMake.createPdf(docDefinition);
     pdfDocGenerator.getBuffer((buffer) => {
-        let filename = "Guia_Saída_" + (new Date().getTime() + Math.random()) + ".pdf";
-        fs.mkdirSync(path.join(folders.temp, 'multer'), {recursive: true});
-        fs.writeFile(path.join(folders.temp, 'multer/' + filename), buffer, function (err) {
-            if (err) return console.log(err);
-            if (res) {
-                res.download(path.join(folders.temp, 'multer') + "/" + filename, filename, function () {
-                    fs.unlinkSync(path.join(folders.temp, 'multer') + "/" + filename);
-                });
-            }
-        });
+        const pdfBuffer = Buffer.from(buffer);
+        // Set response headers
+        res.setHeader('Content-Type', 'application/pdf');
+        res.setHeader('Content-Disposition', 'inline; filename=file.pdf');
+        // Send the PDF file in the response
+        res.send(pdfBuffer);
     });
 }

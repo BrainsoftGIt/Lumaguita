@@ -1,28 +1,52 @@
 var documents = {
     reprint: {
         [serieOperation.tipo.fatura_recibo] : ({conta_id, date}) => {
-            open("/api/print/fatura/recibo/"+JSON.stringify({conta_id, date, admin: true}));
+            Documents.open({
+                data: "/api/print/fatura/recibo/"+JSON.stringify({conta_id, date, admin: true}),
+                name: "Fatura Recibo"
+            });
         },
         [serieOperation.tipo.faturaSimplificada] : ({conta_id, date}) => {
-            open("/api/print/fatura/recibo/"+JSON.stringify({conta_id, date, admin: true}));
+            Documents.open({
+                data: "/api/print/fatura/recibo/"+JSON.stringify({conta_id, date, admin: true}),
+                name: "Fatura Simplificada"
+            });
         },
         [serieOperation.tipo.guiaSaida] : ({conta_id, date}) => {
-            open("/api/print/guia_saida/"+JSON.stringify({date, conta_id: conta_id }));
+            Documents.open({
+                data: "/api/print/guia_saida/"+JSON.stringify({date, conta_id: conta_id }),
+                name : "Guia de Saida"
+            });
         },
         [serieOperation.tipo.recibo] : ({deposito, date, client}) => {
-            open("/api/print/recibo/"+JSON.stringify({deposito, client, date, admin: true}));
+            Documents.open({
+                data: "/api/print/recibo/" + JSON.stringify({deposito, client, date, admin: true}),
+                name: "Recibo"
+            });
         },
         [serieOperation.tipo.faturaProforma] : ({conta_id, date}) => {
-            open("/api/print/proforma/"+JSON.stringify({type: "pdf", conta_id: conta_id, date }));
+            Documents.open({
+                data: "/api/print/proforma/"+JSON.stringify({type: "pdf", conta_id: conta_id, date }),
+                name: "ProForma"
+            });
         },
         [serieOperation.tipo.notaCredito] : ({conta_id, date}) => {
-            open("/api/print/nota-credito/"+JSON.stringify({type: "pdf", conta_id, date, admin: true }));
+            Documents.open({
+                data: "/api/print/nota-credito/"+JSON.stringify({type: "pdf", conta_id, date, admin: true }),
+                name: "Nota de Credito"
+            });
         },
         [serieOperation.tipo.notaDebito] : ({conta_id, date}) => {
-            open("/api/print/fatura/"+JSON.stringify({type: "pdf", conta_id, date, admin: true}));
+            Documents.open({
+                data: "/api/print/fatura/"+JSON.stringify({type: "pdf", conta_id, date, admin: true}),
+                name: "Nota de Debito"
+            });
         },
         [serieOperation.tipo.fatura] : ({conta_id, date}) => {
-            open("/api/print/fatura/"+JSON.stringify({type: "pdf", conta_id, date, admin: true}));
+            Documents.open({
+                data: "/api/print/fatura/"+JSON.stringify({type: "pdf", conta_id, date, admin: true}),
+                name: "Fatura"
+            });
         },
     },
     init : () => {

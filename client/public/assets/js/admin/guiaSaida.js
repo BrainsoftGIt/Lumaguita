@@ -122,7 +122,10 @@ var guiaSaida = {
                     $(`${modal} [tableDocumentArticles]`).empty().addClass("empty");
                     xAlert("Guia de Saída", "Guia de Saída emitido com sucesso!");
                     articlesDocuments.customer_id = null;
-                    open("/api/print/guia_saida/"+JSON.stringify({date: new Date().getTimeStampPt(), guia_uuid: e.data, conta_id: conta_id }));
+                    Documents.open({
+                        data: "/api/print/guia_saida/"+JSON.stringify({date: new Date().getTimeStampPt(), guia_uuid: e.data, conta_id: conta_id }),
+                        name: "Guia de Saída"
+                    });
                 }
                 else xAlert("Guia de Saída",  e.data, "error");
             }

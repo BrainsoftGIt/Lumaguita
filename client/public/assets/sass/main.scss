@@ -645,3 +645,68 @@ ul {
 .bodyFrom{
 	align-items: start;
 }
+
+.m-pdf-visualize{
+	height: auto!important;
+
+	.modal-frame {
+		width: 100%;
+		padding: 0
+	}
+	.cctnrr{
+		width: 100%;
+		height: 99vh;
+		.list-pdfs{
+			width: 320px;
+			flex-shrink: 0;
+			background: #FFF;
+			height: 100%;
+			padding: 1rem ;
+			> *{
+				flex-shrink: 0;
+			}
+			b{
+				margin: 2rem 0;
+				padding-left: 2rem;
+			}
+			ul{
+				padding-left: 2rem;
+
+				li{
+					cursor: pointer;
+					margin-bottom: 5px;
+					&.active,
+					&.active i{
+						color: $blue;
+					}
+					svg{
+						padding-right: 0.5rem;
+					}
+				}
+			}
+
+		}
+		.container-pdf{
+			iframe{
+				width: 100%;
+				height: 100vh;
+			}
+
+		}
+	}
+	.controllers{
+		right: 4rem;
+		top: 10vh;
+		color: #FFF;
+		position: absolute;
+		div {
+			width: 36px;
+			height: 35px;
+			/* background: #F2F2F2; */
+			margin-bottom: 1rem;
+			/* box-shadow: 0 2px 0 #666; */
+			cursor: pointer;
+			/* border-radius: 50%;*/
+		}
+	}
+}

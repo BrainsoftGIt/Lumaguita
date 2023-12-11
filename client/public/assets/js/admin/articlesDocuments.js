@@ -9,6 +9,7 @@ var articlesDocuments = {
         $("[tableDocumentArticles]").addClass("empty");
         xTableGenerate();
         articlesDocuments.loadCustomersDataList();
+        articlesDocuments.carregarCambios();
     },
     loadCustomersDataList(){
         $.ajax({
@@ -291,7 +292,22 @@ var articlesDocuments = {
         articlesDocuments.resetFieldsArticle();
         $(`${modal} [search_article]`).val("");
         xTableGenerate();
-    }
+    },
+    carregarCambios(){
+        $.ajax({
+            url: "/api/cambios",
+            method: "GET",
+            contentType: "application/json",
+            success({cambio_ativos}) {
+                let factura_moeda = $("#factura_moeda");
+                factura_moeda.empty();
+                cambio_ativos.forEach(({data : {cambio_taxa, currency_id, currency_code}}) =>{
+                    factura_moeda.append(`<li data-currency_code="${currency_code}" data-cambio_taxa="${cambio_taxa}" data-currency_id="${currency_id}">${currency_code}</li>`);
+                });
+                factura_moeda.find("li[data-cambio_taxa='1']").mousedown();
+            }
+        });
+    },
 };
 articlesDocuments.init();
 $("[search_article]").keyup(function (e) {

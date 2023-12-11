@@ -193,6 +193,7 @@ var faturaAdmin = {
         conta.conta_docorigin = ($(` ${modal} [documento_origem]`).val() || "").trim() || null;
         conta.admin = true;
         conta.conta_tserie_id = FATURA;
+        conta.conta_currency_id = $("#factura_moeda li.active").data().currency_id;
         conta._serie_id = ($(`${modal} [listFatura] li.active`).data() || {}).id || null;
         conta.conta_chave = faturaAdmin.key;
 
@@ -211,12 +212,15 @@ var faturaAdmin = {
             }
         });
     },
-    register_invoice({conta_id}){
+    register_invoice: ({conta_id}) => {
         let modal = window.xModalGeral || ""
+
+        let {cambio_taxa, currency_id, currency_code} = $("#factura_moeda li.active").data()
 
         let observacao_fatura = $("#observacao_fatura");
         let dados = {};
         dados.conta_id = conta_id;
+        dados.conta_currency_id = currency_id;
         dados.conta_extension = {};
         dados.conta_mesa =  { numero: null, descricao:null, lotacao:null };
         dados.conta_desconto = null;
@@ -249,23 +253,36 @@ var faturaAdmin = {
             success(e) {
                 $("#finalizar_fatura").prop("disabled", false).removeClass("loading");
                 if(e.result){
+                    xAlert("Fatura", "Fatura emitida com sucesso!");
+                    articlesDocuments.customer_id = null;
+                    Documents.open({
+                        data: "/api/print/fatura/"+JSON.stringify({type: "pdf", conta_id: dados.conta_id, date: new Date().getTimeStampPt(), admin: true}),
+                        name: "Fatura"
+                    });
+
+                    if(cambio_taxa !== 1){
+                        Documents.open({
+                            data: "/api/print/fatura/gringa/"+JSON.stringify({type: "pdf", conta_id: dados.conta_id, date: new Date().getTimeStampPt(), admin: true, currency_code}),
+                            name: `Fatura em ${currency_code}`
+                        });
+                    }
+
+                    if($(`${modal} [imprimirGuiaSaida]`).hasClass("active")){
+                        Documents.open({
+                            data: "/api/print/guia_saida/"+JSON.stringify({date: new Date().getTimeStampPt(), guia_uuid: e.data, conta_id: dados.conta_id }),
+                            name: "Guia de Saida"
+                        });
+                    }
+                    $(` ${modal} [imprimirGuiaSaida]`).removeClass("active");
+                    observacao_fatura.val("");
                     $(`${modal} [isencaoImposto]`).removeClass("active");
                     $(`${modal} #faturaAdmin`).find("input").val("");
                     $(`${modal} [tableDocumentArticles]`).empty().addClass("empty");
-
+                    $("#factura_moeda li[data-cambio_taxa='1']").mousedown()
                     let listfatura = $(`${modal} [listfatura]`);
                     if (!!listfatura.length && listfatura.find("li").length === 1) {
                         listfatura.find("li").mousedown();
                     }
-
-                    xAlert("Fatura", "Fatura emitida com sucesso!");
-                    articlesDocuments.customer_id = null;
-                    open("/api/print/fatura/"+JSON.stringify({type: "pdf", conta_id: dados.conta_id, date: new Date().getTimeStampPt(), admin: true}));
-                    if($(`${modal} [imprimirGuiaSaida]`).hasClass("active")){
-                        open("/api/print/guia_saida/"+JSON.stringify({date: new Date().getTimeStampPt(), guia_uuid: e.data, conta_id: dados.conta_id }));
-                    }
-                    $(` ${modal} [imprimirGuiaSaida]`).removeClass("active");
-                    observacao_fatura.val("");
                 }
                 else xAlert("Fatura", e.data, "error");
             }
@@ -326,6 +343,11 @@ $("#finalizar_fatura").on("click", function () {
                 return
             }
 
+            if($("#factura_moeda li.active").length === 0){
+                xAlert("", "Por favor, selecione uma moeda!", "error");
+                return;
+            }
+
             $("#finalizar_fatura").attr("disabled", true).addClass("loading");
             faturaAdmin.loadAccountKey().then(value =>{
                 faturaAdmin.key = value.accountKey;
@@ -349,10 +371,13 @@ $("#listProformAccounts").on("click", ".editar", function () {
     faturaAdmin.conta_id = $(this).parents("ul").attr("conta_id");
     showTarget("xModalAnularProforma", "Anular proforma");
 }).on("click", ".imprimir", function () {
-    open("/api/print/proforma/" + JSON.stringify({
-        type: "pdf", conta_id: $(this).parents("ul").attr("conta_id"),
-        date: new Date().getTimeStampPt()
-    }));
+    Documents.open({
+        data: "/api/print/proforma/" + JSON.stringify({
+            type: "pdf", conta_id: $(this).parents("ul").attr("conta_id"),
+            date: new Date().getTimeStampPt()
+        }),
+        name: "ProForma"
+    });
 });
 $("#confirmarAnularProforma").on("click", function () {
     faturaAdmin.anular_proforma();

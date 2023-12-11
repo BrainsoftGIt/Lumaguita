@@ -1,11 +1,7 @@
-import path from "path";
 import fs from "fs";
 import {getFonts, structure, getImage} from "./estruture";
 import {clusterServer} from "../../../../service/cluster.service";
-import {folders} from "../../../../global/project";
 import moment from "moment";
-import {formattedString} from "./formatValue";
-
 
 function getTypePayment(tipo_id) {
     if (tipo_id === 1) return "Cash";
@@ -22,14 +18,14 @@ export let create = async (instituition, deposito, cliente, res, user, date, num
     pdfMake.vfs = pdfFonts.pdfMake.vfs;
     pdfMake.fonts = getFonts();
     let valor_depositado = 0;
-    let valor_restante = deposito[0].data.deposito_montantefinal;
+    let valor_restante = deposito[0]?.data?.deposito_montantefinal;
     let logoTipo = clusterServer.res.resolve(instituition?.espaco_configuracao?.logo_referencia);
     let depositoPagamento = [];
     let deposito_distribuicao = 0;
     let preview = 0;
     let pendente = 0;
     let faturas_deposito = deposito.filter(dep => dep.data.lancamento_doc !== undefined);
-    const moeda = deposito[0].data.currency_code;
+    const moeda = deposito[0]?.data?.currency_code;
 
     faturas_deposito.forEach((dep, index) => {
         dep = dep.data;
@@ -91,8 +87,20 @@ export let create = async (instituition, deposito, cliente, res, user, date, num
 
     let baseColor = instituition?.espaco_configuracao?.empresa_basecolor || "#000000";
     let textcolor = instituition?.espaco_configuracao?.empresa_textcolor || "#ffffff";
+    let removerLinhaDoCabecalho = !instituition?.espaco_configuracao.removerLinhaDoCabecalho;
 
     let rotape = {
+        layout: {
+            fillColor: function (rowIndex, node, columnIndex) {
+                return (rowIndex % 2 === 0) ? '#F5F6F6' : null;
+            },
+            hLineWidth: function (i, node) {
+                return 0.8;
+            },
+            vLineWidth: function (i, node) {
+                return 0.8;
+            },
+        },
         margin: [40, 0, 40, 0],
         table: {
             widths: ["5%", "6%", "14%", "35%", "10%", "13%", "17%"],
@@ -116,7 +124,7 @@ export let create = async (instituition, deposito, cliente, res, user, date, num
                         fontSize: 6.5,
                         border: [false, false, false, false],
                         margin: [0, 0.5, 0, 0.5],
-                        text: deposito[0].data.deposito_docref || "---------",
+                        text: deposito[0]?.data?.deposito_docref || "---------",
                         alignment: "right"
                     },
                 ],
@@ -145,7 +153,7 @@ export let create = async (instituition, deposito, cliente, res, user, date, num
                         color: textcolor,
                         margin: [0, 0.5, 0, 0.5],
                         bold: true,
-                        text: formattedString(deposito[0].data.deposito_montante.toFixed(2) + ""),
+                        text: formattedString(deposito[0]?.data?.deposito_montante?.toFixed?.(2) + ""),
                         alignment: "right"
                     }
                 ]
@@ -237,7 +245,7 @@ export let create = async (instituition, deposito, cliente, res, user, date, num
                         [
                             {
                                 fontSize: 8,
-                                border: [false, false, true, false],
+                                border: [false, false, removerLinhaDoCabecalho, false],
                                 borderColor: ['#000000', '#000000', '#000000', '#000000'],
                                 stack: [
                                     {
@@ -298,7 +306,7 @@ export let create = async (instituition, deposito, cliente, res, user, date, num
                             },
                             {
                                 fontSize: 8,
-                                border: [true, false, false, false],
+                                border: [removerLinhaDoCabecalho, false, false, false],
                                 borderColor: ['#000000', '#000000', '#000000', '#000000'],
                                 stack: [
                                     {
@@ -308,7 +316,7 @@ export let create = async (instituition, deposito, cliente, res, user, date, num
                                     },
                                     {
                                         margin: [0, 0, 0, 15],
-                                        text: deposito[0].data.deposito_documento
+                                        text: deposito[0]?.data?.deposito_documento
                                     },
                                     {
                                         columns: [
@@ -330,7 +338,7 @@ export let create = async (instituition, deposito, cliente, res, user, date, num
                                         columns: [
                                             {
                                                 width: "50%",
-                                                text: getTypePayment(deposito[0].data.tpaga_id)
+                                                text: getTypePayment(deposito[0]?.data?.tpaga_id)
                                             },
                                             {
                                                 width: "50%",
@@ -417,15 +425,11 @@ export let create = async (instituition, deposito, cliente, res, user, date, num
 
     const pdfDocGenerator = pdfMake.createPdf(docDefinition);
     pdfDocGenerator.getBuffer((buffer) => {
-        let filename = "Recibo_" + (new Date().getTime() + Math.random()) + ".pdf";
-        fs.mkdirSync(path.join(folders.temp, 'multer'), {recursive: true});
-        fs.writeFile(path.join(folders.temp, 'multer/' + filename), buffer, function (err) {
-            if (err) return console.log(err);
-            if (res) {
-                res.download(path.join(folders.temp, 'multer') + "/" + filename, filename, function () {
-                    fs.unlinkSync(path.join(folders.temp, 'multer') + "/" + filename);
-                });
-            }
-        });
+        const pdfBuffer = Buffer.from(buffer);
+        // Set response headers
+        res.setHeader('Content-Type', 'application/pdf');
+        res.setHeader('Content-Disposition', 'inline; filename=file.pdf');
+        // Send the PDF file in the response
+        res.send(pdfBuffer);
     });
 }

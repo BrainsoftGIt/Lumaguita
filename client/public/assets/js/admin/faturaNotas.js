@@ -137,10 +137,17 @@ var faturaAdmin = {
                     articlesDocuments.customer_id = null;
                     observacao_fatura.val("");
                     if(FATURA === serieOperation.tipo.notaDebito){
-                        open("/api/print/fatura/"+JSON.stringify({type: "pdf", conta_id, date: new Date().getTimeStampPt(), admin: true}));
+                        Documents.open({
+                            data: ("/api/print/fatura/"+JSON.stringify({type: "pdf", conta_id, date: new Date().getTimeStampPt(), admin: true})),
+                            name: "Nota de Debito"
+                        });
                         return
                     }
-                    open("/api/print/nota-credito/"+JSON.stringify({type: "pdf", conta_id, date: new Date().getTimeStampPt(), admin: true }));
+
+                    Documents.open({
+                        data: "/api/print/nota-credito/"+JSON.stringify({type: "pdf", conta_id, date: new Date().getTimeStampPt(), admin: true }),
+                        name: "Nota de Credito"
+                    });
                 }
                 else xAlert(docType, message, "error");
             }

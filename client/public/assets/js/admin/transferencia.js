@@ -55,7 +55,10 @@ var transference = {
             success(e) {
                 $("#finalizar_transferencia").attr("disabled", false).removeClass("loading");
                 if(e.result){
-                    open("/api/print/transference/"+JSON.stringify({date: (transferencia_data === null ? new Date().getDatePt() : transferencia_data)}));
+                    Documents.open({
+                        data: "/api/print/transference/"+JSON.stringify({date: (transferencia_data === null ? new Date().getDatePt() : transferencia_data)}),
+                        name: "Transferencia"
+                    });
                     $(`${modal} [tableDocumentArticles]`).empty().addClass("empty");
                     $(`${modal} #transferArticlesBody`).find("input, textarea").val("");
                     xAlert("Transferir artigos", "Artigos transferidos com sucesso!");
