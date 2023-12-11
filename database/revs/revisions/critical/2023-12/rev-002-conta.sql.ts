@@ -93,6 +93,7 @@ declare
   _old jsonb;
   _serie_id uuid default args->>'_serie_id';
   _cambio record;
+  _currency record;
 begin
   _const := map.constant();
   _conta := tweeks._get_conta( arg_conta_id );
@@ -116,6 +117,12 @@ begin
   end if;
   
   select *
+    from geoinfo.currency cu 
+    where cu.currency_id = _change.conta_currency_id
+    into _currency
+  ;
+  
+  select *
     from tweeks.funct_load_cambio_ativo( args ) c( doc )
       inner join jsonb_populate_record( null::tweeks.cambio, c.doc ) cb on true
       inner join jsonb_populate_record( null::geoinfo.currency, c.doc ) cur on true    
@@ -125,7 +132,7 @@ begin
   ;
   
   if _change.conta_currency_id is not null and _cambio.cambio_id is null then
-    return lib.res_false(format('Não existe cambio definido para %I!', _cambio.currency_name ) );
+    return lib.res_false(format('Não existe cambio definido para %I!', _currency.currency_name ) );
   end if;
   
   if _change.conta_currency_id is not null then
