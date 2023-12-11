@@ -56,7 +56,7 @@ var transference = {
                 $("#finalizar_transferencia").attr("disabled", false).removeClass("loading");
                 if(e.result){
                     Documents.open({
-                        data: "/api/print/transference/"+JSON.stringify({date: (transferencia_data === null ? new Date().getDatePt() : transferencia_data)}),
+                        data: "/api/print/transference/"+JSON.stringify({date: (transferencia_data === null ? new Date().getDatePt() : transferencia_data), file: e.file}),
                         name: "Transferencia"
                     });
                     $(`${modal} [tableDocumentArticles]`).empty().addClass("empty");

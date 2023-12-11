@@ -229,19 +229,28 @@ app.post("/api/artigos/transferir", async (req, res) => {
     req.body.arg_espaco_auth = req?.session?.auth_data?.auth?.armazem_atual || null;
     const response = await functRegTransferencia(req.body);
     let after = await clusterServer.service.loadLocalCluster();
-    res.json({result: response.row.result, message: response.row.message});
 
-    if (response.row.result) {
+    if(response.row.result) {
+        let rand = (Math.random() + 1).toString(36).substring(7);
+        let data = new Date();
+        let file = `${rand}-${data.getSeconds()}.json`
+        fs.writeFile(path.join(folders.temp, file), JSON.stringify(req.body), function (err) {
+            if (err) return console.log(err);
+            res.json({result: response.row.result, message: response.row.message, file});
+        });
+
         if (before.cluster_version < after.cluster_version) {
-            req.session.transference_data = req.body;
-            req.session.save();
             clusterServer.notifyLocalChange({
                 event: "TRANSFER:ARTICLES",
                 extras: null,
                 message: "Foi registado transferencia de artigos."
             });
         }
+
+        return
     }
+
+    res.json({result: response.row.result, message: response.row.message});
 });
 app.post("/api/extra/remove", async (req, res) => {
     const {functDisableArticle} = require("../db/call-function-article");

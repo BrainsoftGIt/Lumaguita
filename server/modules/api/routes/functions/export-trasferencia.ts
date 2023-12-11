@@ -13,19 +13,19 @@ export let create = async (instituition, artigos_transferencia:any, armazens, re
     artigos_transferencia.forEach((art) =>{
         artigos.push([
             {
-                margin : [0, 7, 0, 5],
+                margin: [0, 3, 0, 3],
                 fontSize : 6.5,
                 border: [false, false, false, false],
                 text : art.artigo_codigo
             },
             {
-                margin : [0, 7, 0, 5],
+                margin: [0, 3, 0, 3],
                 fontSize : 6.5,
                 border: [false, false, false, false],
                 text : art.artigo_nome
             },
             {
-                margin : [0, 7, 0, 5],
+                margin: [0, 3, 0, 3],
                 fontSize : 6.5,
                 border: [false, false, false, false],
                 text : art.transferencia_quantidade
@@ -137,10 +137,12 @@ export let create = async (instituition, artigos_transferencia:any, armazens, re
                                 borderColor: ['#000000', '#000000', '#000000', '#000000'],
                                 stack: [
                                     {
+                                        alignment: "right",
                                         color: '#000000',
                                         text: "Data de transferência"
                                     },
                                     {
+                                        alignment: "right",
                                         width: "100%",
                                         text: date,
                                     }
@@ -153,7 +155,6 @@ export let create = async (instituition, artigos_transferencia:any, armazens, re
             {
                 // font: "NimbusRomanno9l",
                 lineHeight: 1.3,
-                margin: [0, 40, 0, 0],
                 columns: [
                     {
                         width: "45%",
@@ -162,6 +163,8 @@ export let create = async (instituition, artigos_transferencia:any, armazens, re
                             body: [
                                 [
                                     {
+                                        fontSize : 8,
+                                        border: [false, false, false, false],
                                         text: [
                                             {
                                                 bold: true,
@@ -174,6 +177,8 @@ export let create = async (instituition, artigos_transferencia:any, armazens, re
                                 ],
                                 [
                                     {
+                                        fontSize : 8,
+                                        border: [false, false, false, false],
                                         text: [
                                             {
                                                 bold: true,
@@ -198,8 +203,11 @@ export let create = async (instituition, artigos_transferencia:any, armazens, re
                             body: [
                                 [
                                     {
+                                        fontSize : 8,
+                                        border: [false, false, false, false],
                                         text: [
                                             {
+                                                alignment: "right",
                                                 bold: true,
                                                 color : '#000000',
                                                 text : "Armazém de Entrada: "
@@ -210,8 +218,11 @@ export let create = async (instituition, artigos_transferencia:any, armazens, re
                                 ],
                                 [
                                     {
+                                        fontSize : 8,
+                                        border: [false, false, false, false],
                                         text: [
                                             {
+                                                alignment: "right",
                                                 bold: true,
                                                 color : '#000000',
                                                 text : "Cód. Armazém de Entrada: "
@@ -250,21 +261,21 @@ export let create = async (instituition, artigos_transferencia:any, armazens, re
                     body : [
                         [
                             {
-                                margin: [0, 7, 0, 5],
+                                margin: [0, 3, 0, 3],
                                 borderColor: [baseColor, baseColor, baseColor, baseColor],
                                 fillColor: baseColor,
                                 text: "Código",
                                 color: textcolor
                             },
                             {
-                                margin : [0, 7, 0, 5],
+                                margin: [0, 3, 0, 3],
                                 borderColor: [baseColor, baseColor, baseColor, baseColor],
                                 fillColor: baseColor,
                                 text : "Descrição",
                                 color: textcolor
                             },
                             {
-                                margin : [0, 7, 0, 5],
+                                margin: [0, 3, 0, 3],
                                 borderColor: [baseColor, baseColor, baseColor, baseColor],
                                 fillColor: baseColor,
                                 text: "Quantidade",

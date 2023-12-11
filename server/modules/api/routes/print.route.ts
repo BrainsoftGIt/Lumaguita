@@ -4,6 +4,8 @@ import {functReportVendaPOS} from "../db/call-function-report";
 import {getUserSession, getUserSessionPOS} from "./functions/get-session";
 import Path from "path";
 import {folders} from "../../../global/project";
+import fs from "fs";
+import path from "path";
 
 export async function load_space_configuration(req, admin) {
     const {functLoadDadosEmpresa} = require("../db/call-function-settings");
@@ -90,16 +92,22 @@ app.post("/api/print/fatura/recibo/talao", async (req, res) =>{
 });
 app.get("/api/print/transference/:dados", async (req, res) =>{
     let dados = JSON.parse(req.params.dados);
+    console.log(dados)
+
+    let fileData = fs.readFileSync(path.join(folders.temp, dados.file));
+
+    let dadosFile = JSON.parse(fileData.toString());
+
     const file = require("./functions/export-trasferencia");
     let instituition = await load_space_configuration(req, true);
     instituition = instituition[0].funct_load_espaco_configuracao.espaco;
     let user = req?.session?.auth_data?.auth.colaborador_nome+" "+(req?.session?.auth_data?.auth.colaborador_apelido === null ? "" : req?.session?.auth_data?.auth.colaborador_apelido.split(" ").pop());
 
-    await file.create(instituition, req.session.transference_data.arg_transferencias, {
-        armazem_origem: req.session.transference_data.arg_espaco_origem_nome,
-        armazem_destino: req.session.transference_data.arg_espaco_destino_nome,
-        armazem_origem_codigo: req.session.transference_data.arg_espaco_origem_codigo,
-        armazem_destino_codigo: req.session.transference_data.arg_espaco_destino_codigo
+    await file.create(instituition, dadosFile.arg_transferencias, {
+        armazem_origem: dadosFile.arg_espaco_origem_nome,
+        armazem_destino: dadosFile.arg_espaco_destino_nome,
+        armazem_origem_codigo: dadosFile.arg_espaco_origem_codigo,
+        armazem_destino_codigo: dadosFile.arg_espaco_destino_codigo
     }, res, user, dados.date);
 });
 app.get("/api/print/guia_entrada/:dados", async (req, res) =>{
