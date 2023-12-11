@@ -212,12 +212,15 @@ var faturaAdmin = {
             }
         });
     },
-    register_invoice({conta_id}){
+    register_invoice: ({conta_id}) => {
         let modal = window.xModalGeral || ""
+
+        let {cambio_taxa, currency_id, currency_code} = +$("#factura_moeda li.active").data()
 
         let observacao_fatura = $("#observacao_fatura");
         let dados = {};
         dados.conta_id = conta_id;
+        dados.conta_currency_id = currency_id;
         dados.conta_extension = {};
         dados.conta_mesa =  { numero: null, descricao:null, lotacao:null };
         dados.conta_desconto = null;
@@ -257,11 +260,10 @@ var faturaAdmin = {
                         name: "Fatura"
                     });
 
-                    let {cambio_taxa} = +$("#factura_moeda li.active").data()
                     if(cambio_taxa !== 1){
                         Documents.open({
                             data: "/api/print/fatura/gringa/"+JSON.stringify({type: "pdf", conta_id: dados.conta_id, date: new Date().getTimeStampPt(), admin: true}),
-                            name: "Fatura Ex"
+                            name: `Fatura em ${currency_code}`
                         });
                     }
 
