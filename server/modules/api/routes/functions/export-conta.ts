@@ -19,8 +19,7 @@ export let create = async (instituition, account_content, res, user, date, num_a
 
     let baseColor = instituition?.espaco_configuracao?.empresa_basecolor || "#000000";
     let textcolor = instituition?.espaco_configuracao?.empresa_textcolor || "#ffffff";
-
-    console.log({account_content});
+    let removerLinhaDoCabecalho = !instituition?.espaco_configuracao.removerLinhaDoCabecalho;
 
     (account_content?.main?.conta_vendas || []).forEach((cont) => {
 
@@ -257,7 +256,7 @@ export let create = async (instituition, account_content, res, user, date, num_a
                         [
                             {
                                 fontSize: 8,
-                                border: [false, false, true, false],
+                                border: [false, false, removerLinhaDoCabecalho, false],
                                 borderColor: ['#000000', '#000000', '#000000', '#000000'],
                                 stack: [
                                     {

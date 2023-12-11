@@ -134,6 +134,9 @@ var settings = {
                             $("[logo_talao]").text("Sim");
                             $("#mostrarLogoTalao").addClass("active");
                         }
+                        if(emp?.removerLinhaDoCabecalho){
+                            $("#removerLinhaDoCabecalho").addClass("active");
+                        }
                         else $("[logo_talao]").text("Nao");
 
                         $("#empresa_cabecalho_nome").text((emp?.cabecalho_nome || ""));
@@ -409,6 +412,7 @@ var settings = {
         dados.empresa_textcolor = $("#empresa_textcolor").val().trim() || null;
         dados.logo_nome = this.empresa?.logo_nome || null;
         dados.logo_talao = $("#mostrarLogoTalao").hasClass("active");
+        dados.removerLinhaDoCabecalho = $("#removerLinhaDoCabecalho").hasClass("active");
         if($("#remove_header").hasClass("active")){
             $("#empresa_cabecalho").val("");
             dados.cabecalho_nome = null;

@@ -91,6 +91,7 @@ export let create = async (instituition, deposito, cliente, res, user, date, num
 
     let baseColor = instituition?.espaco_configuracao?.empresa_basecolor || "#000000";
     let textcolor = instituition?.espaco_configuracao?.empresa_textcolor || "#ffffff";
+    let removerLinhaDoCabecalho = !instituition?.espaco_configuracao.removerLinhaDoCabecalho;
 
     let rotape = {
         margin: [40, 0, 40, 0],
@@ -237,7 +238,7 @@ export let create = async (instituition, deposito, cliente, res, user, date, num
                         [
                             {
                                 fontSize: 8,
-                                border: [false, false, true, false],
+                                border: [false, false, removerLinhaDoCabecalho, false],
                                 borderColor: ['#000000', '#000000', '#000000', '#000000'],
                                 stack: [
                                     {
@@ -298,7 +299,7 @@ export let create = async (instituition, deposito, cliente, res, user, date, num
                             },
                             {
                                 fontSize: 8,
-                                border: [true, false, false, false],
+                                border: [removerLinhaDoCabecalho, false, false, false],
                                 borderColor: ['#000000', '#000000', '#000000', '#000000'],
                                 stack: [
                                     {

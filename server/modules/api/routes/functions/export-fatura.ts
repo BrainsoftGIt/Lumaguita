@@ -24,6 +24,7 @@ export let create = async (instituition, account_content, res, user, date, num_a
 
     let baseColor = instituition?.espaco_configuracao?.empresa_basecolor || "#000000";
     let textcolor = instituition?.espaco_configuracao?.empresa_textcolor || "#ffffff";
+    let removerLinhaDoCabecalho = !instituition?.espaco_configuracao.removerLinhaDoCabecalho;
 
     let hasPersonalizadoHarder = (instituition?.espaco_configuracao?.cabecalho_referencia === null ? "" : clusterServer.res.resolve(instituition?.espaco_configuracao?.cabecalho_referencia));
 
@@ -260,7 +261,7 @@ export let create = async (instituition, account_content, res, user, date, num_a
                         [
                             {
                                 fontSize: 8,
-                                border: [false, false, true, false],
+                                border: [false, false, removerLinhaDoCabecalho, false],
                                 borderColor: ['#000000', '#000000', '#000000', '#000000'],
                                 stack: [
                                     {
@@ -313,7 +314,7 @@ export let create = async (instituition, account_content, res, user, date, num_a
                             {
                                 alignment: "right",
                                 fontSize: 8,
-                                border: [true, false, false, false],
+                                border: [removerLinhaDoCabecalho, false, false, false],
                                 borderColor: ['#000000', '#000000', '#000000', '#000000'],
                                 stack: [
                                     {

@@ -21,6 +21,7 @@ export let create = async (instituition, account, account_content, res, user, da
 
     let baseColor = instituition?.espaco_configuracao?.empresa_basecolor || "#000000";
     let textcolor = instituition?.espaco_configuracao?.empresa_textcolor || "#ffffff";
+    let removerLinhaDoCabecalho = !instituition?.espaco_configuracao.removerLinhaDoCabecalho;
 
     let sumImpost = {};
     (account_content?.main?.conta_vendas || []).forEach((cont) => {
@@ -247,7 +248,7 @@ export let create = async (instituition, account, account_content, res, user, da
                         [
                             {
                                 fontSize: 8,
-                                border: [false, false, true, false],
+                                border: [false, false, removerLinhaDoCabecalho, false],
                                 borderColor: ['#000000', '#000000', '#000000', '#000000'],
                                 stack: [
                                     {
@@ -309,7 +310,7 @@ export let create = async (instituition, account, account_content, res, user, da
                             },
                             {
                                 fontSize: 8,
-                                border: [true, false, false, false],
+                                border: [removerLinhaDoCabecalho, false, false, false],
                                 borderColor: ['#000000', '#000000', '#000000', '#000000'],
                                 stack: [
                                     {
