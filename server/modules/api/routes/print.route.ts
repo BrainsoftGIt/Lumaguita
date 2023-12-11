@@ -169,10 +169,9 @@ app.get("/api/print/fatura/:dados", async (req, res) =>{
 
 app.get("/api/print/fatura/gringa/:dados", async (req, res) =>{
     let {...conta} = JSON.parse(req.params.dados);
-    const file = require("./functions/export-fatura");
-    let instituition = await load_space_configuration(req, conta.admin);
+    const file = require("./functions/export-fatura.gringa.js");
+    let { 0: { funct_load_espaco_configuracao: { espaco: instituition}} }= await load_space_configuration(req, conta.admin);
 
-    instituition = instituition[0].funct_load_espaco_configuracao.espaco;
     let dadosConta = await functLoadContaData({
         arg_conta_id: conta.conta_id,
         with_client: true,
@@ -182,7 +181,7 @@ app.get("/api/print/fatura/gringa/:dados", async (req, res) =>{
 
     let user = req?.session?.auth_data?.auth.colaborador_nome + " " + (req?.session?.auth_data?.auth.colaborador_apelido === null ? "" : req?.session?.auth_data?.auth.colaborador_apelido.split(" ").pop());
 
-    await file.create(instituition, dadosConta.rows[0], res, user, conta.date, dadosConta.rows[0].main.conta_serie.serie_numatorizacao);
+    await file.create(instituition, dadosConta.rows[0], res, user, conta.date, dadosConta.rows[0].main.conta_serie.serie_numatorizacao, conta.currency_code);
 });
 
 app.get("/api/print/nota-credito/:dados", async (req, res) =>{

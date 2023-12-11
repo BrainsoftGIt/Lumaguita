@@ -215,7 +215,7 @@ var faturaAdmin = {
     register_invoice: ({conta_id}) => {
         let modal = window.xModalGeral || ""
 
-        let {cambio_taxa, currency_id, currency_code} = +$("#factura_moeda li.active").data()
+        let {cambio_taxa, currency_id, currency_code} = $("#factura_moeda li.active").data()
 
         let observacao_fatura = $("#observacao_fatura");
         let dados = {};
@@ -262,7 +262,7 @@ var faturaAdmin = {
 
                     if(cambio_taxa !== 1){
                         Documents.open({
-                            data: "/api/print/fatura/gringa/"+JSON.stringify({type: "pdf", conta_id: dados.conta_id, date: new Date().getTimeStampPt(), admin: true}),
+                            data: "/api/print/fatura/gringa/"+JSON.stringify({type: "pdf", conta_id: dados.conta_id, date: new Date().getTimeStampPt(), admin: true, currency_code}),
                             name: `Fatura em ${currency_code}`
                         });
                     }

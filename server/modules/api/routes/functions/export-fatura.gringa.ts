@@ -6,7 +6,7 @@ import {clusterServer} from "../../../../service/cluster.service";
 import moment from "moment";
 import Path from "path";
 
-export let create = async (instituition, account_content, res, user, date, num_autorization) => {
+export let create = async (instituition, account_content, res, user, date, num_autorization, currency_code) => {
     const pdfMake = require("../../../../../libs/js/pdfmake/pdfmake");
     const pdfFonts = require('../../../../../libs/js/pdfmake/vfs_fonts');
     const {formattedString} = require("./formatValue");
@@ -181,7 +181,7 @@ export let create = async (instituition, account_content, res, user, date, num_a
     let docDefinition = {
         compress: true,
         info: {
-            title: typeDoc,
+            title: typeDoc+" "+currency_code,
             author: 'Luma',
             subject: `Impressão de ${typeDoc}`,
             keywords: `luma, ${typeDoc}, brainsoft`,
