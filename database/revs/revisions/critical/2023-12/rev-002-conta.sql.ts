@@ -661,7 +661,7 @@ begin
           ts.tserie_code,
           ts.tserie_financa
         from tweeks.conta c
-          left join geoinfo.currency eur on c.conta_currency_uid = eur.currency_id
+          left join geoinfo.currency eur on c.conta_currency_id = eur.currency_id
           left join tweeks.cambio cb on c.conta_cambio_uid = cb.cambio_id
           left join tweeks.serie se on c.conta_serie_id = se.serie_id
           left join tweeks.tserie ts on se.serie_tserie_id = ts.tserie_id
