@@ -3,6 +3,7 @@ import {getFonts, structure, getImage} from "./estruture";
 import {clusterServer} from "../../../../service/cluster.service";
 import moment from "moment";
 import Path from "path";
+import {formattedString} from "./formatValue";
 
 export let create = async (instituition, account_content, res, user, date, num_autorization) => {
     const pdfMake = require("../../../../../libs/js/pdfmake/pdfmake");
@@ -144,7 +145,7 @@ export let create = async (instituition, account_content, res, user, date, num_a
                         fontSize: 6.5,
                         border: [false, false, false, false],
                         margin: [0, 0.5, 0, 0.5],
-                        text: formattedString(Math.abs(cambio_taxa).toFixed(2) + ``)+` ${currency_code}`
+                        text: "Taxa de Câmbio"
                     },
                     {
                         fillColor: baseColor,
@@ -152,7 +153,7 @@ export let create = async (instituition, account_content, res, user, date, num_a
                         fontSize: 6.5,
                         border: [false, false, false, false],
                         margin: [0, 0.5, 0, 0.5],
-                        text: "1 STN",
+                        text: formattedString(Math.abs(cambio_taxa).toFixed(2) + ``)+` ${currency_code}`,
                         alignment: "right"
                     },
                 ],
