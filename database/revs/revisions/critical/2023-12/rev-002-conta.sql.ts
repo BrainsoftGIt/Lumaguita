@@ -117,8 +117,8 @@ begin
   
   select *
     from tweeks.funct_load_cambio_ativo( args ) c( doc )
-      inner join jsonb_populate_record( null::tweeks.cambio, c.doc ) on true
-      inner join jsonb_populate_record( null::geoinfo.currency, c.doc ) on true    
+      inner join jsonb_populate_record( null::tweeks.cambio, c.doc ) cb on true
+      inner join jsonb_populate_record( null::geoinfo.currency, c.doc ) cur on true    
   where cambio_currency_id = _change.conta_currency_id
     limit 1
     into _cambio
