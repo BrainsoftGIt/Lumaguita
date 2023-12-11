@@ -652,6 +652,10 @@ ul {
 .m-pdf-visualize .cctnrr .list-pdfs ul li.active, .m-pdf-visualize .cctnrr .list-pdfs ul li.active i {
   background-color: rgba(26, 115, 232, 0.26);
 }
+.m-pdf-visualize .cctnrr .list-pdfs ul li document {
+  display: block;
+  font-size: 13px;
+}
 .m-pdf-visualize .cctnrr .list-pdfs ul li svg {
   padding-right: 0.5rem;
 }

@@ -681,6 +681,10 @@ ul {
 					&.active i{
 						background-color: rgba(26, 115, 232, 0.26);
 					}
+					document{
+						display: block;
+						font-size: 13px;
+					}
 					svg{
 						padding-right: 0.5rem;
 					}
