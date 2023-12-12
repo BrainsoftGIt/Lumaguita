@@ -35,25 +35,34 @@ export let structure = (user, num_autorization, num_certification, imageCabecalh
             ];
         },
         footer: function (currentPage, pageCount) {
+            let certificacao = {
+                alignment: "center",
+                lineHeight: 1.3,
+                fontSize: 6.5,
+                margin: [35, 10, 35, 5],
+                stack: [
+                    {
+                        text: `${user} | Processado pelo software Luma`
+                    },
+                    {
+                        text: `${footerSystem}`,
+                    },
+                    {
+                        text: `${currentPage}/${pageCount}`,
+                    }
+                ]
+            }
+
+            if(!!rotape?.table?.body?.[0]?.[0]?.rowSpan){
+                certificacao.margin = [35, 30, 35, 5]
+                rotape.table.body[0][0].stack = [
+                    certificacao
+                ]
+            }
+
             return [
                 (currentPage === pageCount) ? rotape : {},
-                {
-                    alignment: "center",
-                    lineHeight: 1.3,
-                    fontSize: 6.5,
-                    margin: [35, 10, 35, 5],
-                    stack: [
-                        {
-                            text: `${user} | Processado pelo software Luma`
-                        },
-                        {
-                            text: `${footerSystem}`,
-                        },
-                        {
-                            text: `${currentPage}/${pageCount}`,
-                        }
-                    ]
-                }
+                !rotape?.table?.body?.[0]?.[0]?.rowSpan ? certificacao : {}
             ]
         },
     }
