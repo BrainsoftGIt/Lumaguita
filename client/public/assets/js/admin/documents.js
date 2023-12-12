@@ -140,6 +140,7 @@ var documents = {
             return
         }
 
+        $("body").addClass("loading")
         $.ajax({
             url: "/api/load/documents",
             method: "POST",
@@ -158,10 +159,9 @@ var documents = {
             error() {},
             success(lista) {
 
+                $("body").removeClass("loading")
                 $(`[body-report-list-faturas]`).addClass("empty").empty();
-
                 let hide = (!!documents.edit[_tserie_id]) ? "" : "hide";
-                console.log({hide, _tserie_id})
 
                 lista.forEach(({currency_code, cambio_taxa, cliente_nif, deposito_id, cliente_id, cliente_titular, colaborador_nome, conta_montante, posto_designacao, conta_titular, conta_titularnif, conta_numerofatura, deposito_documento, conta_data, conta_id, tserie_id, deposito_montantefinal, deposito_data}) => {
                     $(`[body-report-list-faturas]`).append(`<ul data-conta_numerofatura="${conta_numerofatura}" data-currency_code="${currency_code}" data-cambio_taxa="${cambio_taxa}" data-conta_id="${conta_id}" data-tserie_id="${tserie_id}" data-date="${conta_data || deposito_data}" data-deposito="${deposito_id}" data-client="${cliente_id}">

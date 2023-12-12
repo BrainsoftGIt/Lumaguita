@@ -416,6 +416,7 @@ var report = {
         }
 
 
+        let listIReport = $(" [listIReport] ").empty().removeClass("empty");
         let {value: year} = $("#financa_report_yaer li.active").data();
         let {value: month} = $("#financa_report_month li.active").data();
 
@@ -432,7 +433,6 @@ var report = {
                 $("body,  [load-report-imposto]").removeClass("loading");
                 report.iOrdenList = ordenList;
                 let sumatorio = 0;
-                let listIReport = $(" [listIReport] ").empty().removeClass("empty");
                 let list =  Object.keys(ordenList);
 
                 if(!list.length){

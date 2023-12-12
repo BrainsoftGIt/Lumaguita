@@ -154,7 +154,8 @@ var faturaAdmin = {
         });
     },
     loadData : () => {
-        let modal = window.xModalGeral || ""
+        let modal = window.xModalGeral || "";
+        $("body").addClass("loading")
         $.ajax({
             url: "/api/load/doc/to/nota",
             method: "POST",
@@ -169,6 +170,7 @@ var faturaAdmin = {
                 let docType = (FATURA === serieOperation.tipo.notaCredito ? "Nota de crédito" : "Nota de debito");
                 let { conta_titular, conta_vendas, conta_data, conta_cliente_id} = fatura;
                 faturaAdmin.fatura = fatura;
+                $("body").removeClass("loading")
 
                 $(`${modal} [tableDocumentArticles]`).empty();
                 if(!conta_vendas){
@@ -284,7 +286,6 @@ $("#finalizar_fatura").on("click", function () {
 $("[documento_origem]").on("keyup", function ({keyCode}){
     let docType = (FATURA === serieOperation.tipo.notaCredito ? "Nota de crédito" : "Nota de debito");
     let { loadData } = faturaAdmin;
-    console.log({keyCode})
     if(keyCode === 13 && $(this).val()){
         loadData();
         return
