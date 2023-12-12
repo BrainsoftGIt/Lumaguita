@@ -121,7 +121,7 @@ var articlesDocuments = {
     },
     resetFieldsArticle(){
         let modal = window.xModalGeral || ""
-        $(`${modal} [description_article], ${modal} [amount_article], ${modal} [price_article], ${modal} [lote_article], ${modal} [date_expiration_article], ${modal} [amount_packaging], ${modal} [imposto], ${modal} [codigo_imposto_article]`).val("");
+        $(`${modal} [description_article], ${modal} [artigodetahe], ${modal} [amount_article], ${modal} [price_article], ${modal} [lote_article], ${modal} [date_expiration_article], ${modal} [amount_packaging], ${modal} [imposto], ${modal} [codigo_imposto_article]`).val("");
     },
     add_articles_purchase(){
         let modal = window.xModalGeral || ""

@@ -4,6 +4,7 @@ import {dbRes} from "../../../service/database.service/kitres/res";
 import {Result} from "kitres";
 import {functLoadContaData} from "../db/call-function-pos";
 import {functLoadDepositoData} from "../db/call-function-contacorrrente";
+import {functLoadDadosEmpresa} from "../db/call-function-settings";
 app.post( "/api/load/doc/to/nota", (req, res, next) => {
     let _session = getUserSession( req );
 
@@ -111,4 +112,17 @@ app.post( "/api/get/number/document", (req, res, next) => {
             })
         })
     }
+});
+
+
+app.get( "/api/has/permition/show/artigo/dethais", (req, res, next) => {
+    const {functLoadDadosEmpresa} = require("../db/call-function-settings");
+    req.body.arg_espaco_auth = req?.session?.auth_data?.auth?.armazem_atual || null;
+    req.body.arg_colaborador_id = req?.session?.auth_data?.auth?.colaborador_id || null;
+    functLoadDadosEmpresa(req.body).then(({rows}) => {
+        let {0: {funct_load_espaco_configuracao: {espaco: {espaco_configuracao: {mostrarDetalhesArtigoNatatura}}}}} = rows || {0: {}};
+        res.json({
+            mostrarDetalhesArtigoNatatura
+        })
+    });
 });

@@ -957,14 +957,17 @@ input[type=number] {
 .xform .w100 {
   width: 100%;
 }
-.xform .w80 {
-  width: 78%;
+.xform .w95 {
+  width: 94%;
 }
 .xform .w90 {
-  width: 88%;
+  width: 89%;
+}
+.xform .w80 {
+  width: 79%;
 }
 .xform .w50 {
-  width: 48%;
+  width: 49%;
 }
 .xform .w33 {
   width: 32%;
@@ -980,6 +983,9 @@ input[type=number] {
 }
 .xform .w30 {
   width: 29%;
+}
+.xform .w10 {
+  width: 9%;
 }
 .xform .w8 {
   width: 7%;

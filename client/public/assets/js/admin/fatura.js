@@ -5,6 +5,7 @@ var faturaAdmin = {
     key: null,
     init(){
         serieOperation.loadSerieOperation([serieOperation.tipo.fatura]);
+        faturaAdmin.showArtigoDethais();
     },
     loadAccountKey(){
         return new Promise((resolve, reject) =>{
@@ -20,6 +21,18 @@ var faturaAdmin = {
                     reject(error);
                 }
             });
+        });
+    },
+    showArtigoDethais: () => {
+        $.ajax({
+            url: "/api/has/permition/show/artigo/dethais",
+            method: "GET",
+            contentType: "application/json",
+            success: ({mostrarDetalhesArtigoNatatura}) => {
+                if (mostrarDetalhesArtigoNatatura) {
+                    $(`[artigodetahe]`).closest(".xinput").removeClass("hide")
+                }
+            }
         });
     },
     loadArticlesAccount(){

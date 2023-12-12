@@ -23,6 +23,15 @@
     .xinput, .xselect {
         margin: 4px 0 4px!important;
     }
+
+    .xcheck{
+        display: inline-block;
+        position: relative;
+    }
+
+    .hide{
+        display: none;
+    }
 </style>
 <div class="__included__ fatura inpage">
     <div class="_head flex h-sb v-ct">
@@ -80,57 +89,61 @@
                 <textarea placeholder="_" _noObrigatory="true" id="observacao_fatura" ></textarea>
                 <label for="observacao_fatura">Termos</label>
             </div>
-            <div class="xinput w20">
-                <input type="text" search_article list="faturaArtigos" placeholder="_">
-                <label>Pesquisar artigo (nome ou código)</label>
-            </div>
-            <div class="xinput w15">
-                <input type="text" placeholder="Descrição" description_article>
-                <label>Descrição</label>
-            </div>
-            <div class="xinput w8">
-                <input type="text" placeholder="Quantidade" class="double" amount_article>
-                <label>Qtd</label>
-            </div>
-            <div class="xinput w15">
-                <input type="text" placeholder="Valor unitário" class="double formatNumber" price_article>
-                <label>Valor unitário</label>
-            </div>
-            <div class="xinput w12">
-                <input type="text" placeholder="Código Imposto" class="integer" codigo_imposto_article>
-                <label>Código Imposto</label>
-            </div>
-            <div class="xinput w15" style="display: none">
-                <input type="text" placeholder="Lote" lote_article _noObrigatory="true">
-                <label>Lote</label>
-            </div>
-            <div class="xinput w15" style="display: none">
-                <input type="text" placeholder="Data de validade" data-inputmask-alias="dd-mm-yyyy" data-val="true"
-                       date_expiration_article _noObrigatory="true">
-                <label>Data de validade</label>
-            </div>
-            <div class="flex v-ct h-sa w30">
-                <div class="xinput w50">
-                    <input type="text" placeholder="Imposto" imposto _noObrigatory="true" disabled>
-                    <label>Imposto</label>
+            <div class="flex w100 v-ct h-sb">
+                <div class=" w95">
+                    <div class="xinput w20">
+                        <input type="text" search_article list="faturaArtigos" placeholder="_">
+                        <label>Pesquisar artigo (nome ou código)</label>
+                    </div>
+                    <div class="xinput w15">
+                        <input type="text" placeholder="Descrição" description_article>
+                        <label>Descrição</label>
+                    </div>
+                    <div class="xinput w8">
+                        <input type="text" placeholder="Quantidade" class="double" amount_article>
+                        <label>Qtd</label>
+                    </div>
+                    <div class="xinput w15">
+                        <input type="text" placeholder="Valor unitário" class="double formatNumber" price_article>
+                        <label>Valor unitário</label>
+                    </div>
+                    <div class="xinput w12">
+                        <input type="text" placeholder="Código Imposto" class="integer" codigo_imposto_article>
+                        <label>Código Imposto</label>
+                    </div>
+                    <div class="xinput w15" style="display: none">
+                        <input type="text" placeholder="Lote" lote_article _noObrigatory="true">
+                        <label>Lote</label>
+                    </div>
+                    <div class="xinput w15" style="display: none">
+                        <input type="text" placeholder="Data de validade" data-inputmask-alias="dd-mm-yyyy" data-val="true"
+                               date_expiration_article _noObrigatory="true">
+                        <label>Data de validade</label>
+                    </div>
+                    <div class="xinput w15">
+                        <input type="text" placeholder="Imposto" imposto _noObrigatory="true" disabled>
+                        <label>Imposto</label>
+                    </div>
+                    <div class="xcheck w100" style="padding-left: 0.7rem; display: none">
+                        <ul>
+                            <li class="stgl" isencaoImposto>Isenção de imposto</li>
+                        </ul>
+                    </div>
+                    <div class="xcheck w15" style="padding-left: 0.7rem;">
+                        <ul>
+                            <li class="stgl" imprimirGuiaSaida>Imprimir guia de saída</li>
+                        </ul>
+                    </div>
+                    <div class="xinput w95 hide">
+                        <input type="text" placeholder="Detalhe do artigo" artigoDetahe _noObrigatory="true">
+                        <label>Detalhe do artigo</label>
+                    </div>
                 </div>
-                <div class="xcheck w100" style="padding-left: 0.7rem; display: none">
-                    <ul>
-                        <li class="stgl" isencaoImposto>Isenção de imposto</li>
-                    </ul>
+                <div>
+                    <div>
+                        <button class="xbtn" addArticleTable>Lançar</button>
+                    </div>
                 </div>
-                <div class="xcheck w100" style="padding-left: 0.7rem;">
-                    <ul>
-                        <li class="stgl" imprimirGuiaSaida>Imprimir guia de saída</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="xinput w50">
-                <input type="text" placeholder="Detalhe do artigo" artigoDetahe _noObrigatory="true">
-                <label>Detalhe do artigo</label>
-            </div>
-            <div class="flex h-sb v-ct" style="float: right;">
-                <button class="xbtn" addArticleTable>Lançar</button>
             </div>
         </div>
         <div class="x-table hovered grow-1">

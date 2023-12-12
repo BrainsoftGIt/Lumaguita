@@ -137,6 +137,9 @@ var settings = {
                         if(emp?.removerLinhaDoCabecalho){
                             $("#removerLinhaDoCabecalho").addClass("active");
                         }
+                        if(emp?.mostrarDetalhesArtigoNatatura){
+                            $("#mostrarDetalhesArtigoNatatura").addClass("active");
+                        }
                         else $("[logo_talao]").text("Nao");
 
                         $("#empresa_cabecalho_nome").text((emp?.cabecalho_nome || ""));
@@ -413,6 +416,7 @@ var settings = {
         dados.logo_nome = this.empresa?.logo_nome || null;
         dados.logo_talao = $("#mostrarLogoTalao").hasClass("active");
         dados.removerLinhaDoCabecalho = $("#removerLinhaDoCabecalho").hasClass("active");
+        dados.mostrarDetalhesArtigoNatatura = $("#mostrarDetalhesArtigoNatatura").hasClass("active");
         if($("#remove_header").hasClass("active")){
             $("#empresa_cabecalho").val("");
             dados.cabecalho_nome = null;
