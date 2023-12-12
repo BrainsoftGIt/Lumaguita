@@ -271,10 +271,17 @@ var faturaAdmin = {
                 if(e.result){
                     xAlert("Fatura", "Fatura emitida com sucesso!");
                     articlesDocuments.customer_id = null;
-                    Documents.open({
-                        data: "/api/print/fatura/"+JSON.stringify({type: "pdf", conta_id: dados.conta_id, date: new Date().getTimeStampPt(), admin: true}),
-                        name: "Fatura"
-                    });
+                    if(cambio_taxa === 1) {
+                        Documents.open({
+                            data: "/api/print/fatura/" + JSON.stringify({
+                                type: "pdf",
+                                conta_id: dados.conta_id,
+                                date: new Date().getTimeStampPt(),
+                                admin: true
+                            }),
+                            name: "Fatura"
+                        });
+                    }
 
                     if(cambio_taxa !== 1){
                         Documents.open({
@@ -283,17 +290,16 @@ var faturaAdmin = {
                         });
                     }
 
-                    if(cambio_taxa === 1) {
-                        if ($(`${modal} [imprimirGuiaSaida]`).hasClass("active")) {
-                            Documents.open({
-                                data: "/api/print/guia_saida/" + JSON.stringify({
-                                    date: new Date().getTimeStampPt(),
-                                    guia_uuid: e.data,
-                                    conta_id: dados.conta_id
-                                }),
-                                name: "Guia de Saida"
-                            });
-                        }
+
+                    if ($(`${modal} [imprimirGuiaSaida]`).hasClass("active")) {
+                        Documents.open({
+                            data: "/api/print/guia_saida/" + JSON.stringify({
+                                date: new Date().getTimeStampPt(),
+                                guia_uuid: e.data,
+                                conta_id: dados.conta_id
+                            }),
+                            name: "Guia de Saida"
+                        });
                     }
                     $(` ${modal} [imprimirGuiaSaida]`).removeClass("active");
                     observacao_fatura.val("");
