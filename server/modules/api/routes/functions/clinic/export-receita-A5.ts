@@ -217,7 +217,7 @@ export let create = async (instituition, res, user, client, utente, tratamento) 
         const pdfBuffer = Buffer.from(buffer);
         // Set response headers
         res.setHeader('Content-Type', 'application/pdf');
-        res.setHeader('Content-Disposition', 'inline; filename=file.pdf');
+        res.setHeader('Content-Disposition', `inline; filename=Receita${utente.patient_name}.pdf`);
         // Send the PDF file in the response
         res.send(pdfBuffer);
     });

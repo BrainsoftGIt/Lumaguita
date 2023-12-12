@@ -428,7 +428,7 @@ export let create = async (instituition, deposito, cliente, res, user, date, num
         const pdfBuffer = Buffer.from(buffer);
         // Set response headers
         res.setHeader('Content-Type', 'application/pdf');
-        res.setHeader('Content-Disposition', 'inline; filename=file.pdf');
+        res.setHeader('Content-Disposition', `inline; filename=Recibo-${deposito[0]?.data?.deposito_documento || ""}.pdf`);
         // Send the PDF file in the response
         res.send(pdfBuffer);
     });

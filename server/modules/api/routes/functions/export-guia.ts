@@ -427,7 +427,7 @@ export let create = async (instituition, fornecedor, guia, artigos, res, user, c
         const pdfBuffer = Buffer.from(buffer);
         // Set response headers
         res.setHeader('Content-Type', 'application/pdf');
-        res.setHeader('Content-Disposition', 'inline; filename=file.pdf');
+        res.setHeader('Content-Disposition', `inline; filename=GuiaEntrada-${guia.guia_numero}.pdf`);
         // Send the PDF file in the response
         res.send(pdfBuffer);
     });

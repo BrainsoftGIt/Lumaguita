@@ -461,7 +461,7 @@ export let create = async (instituition, account, account_content, res, user, da
         const pdfBuffer = Buffer.from(buffer);
         // Set response headers
         res.setHeader('Content-Type', 'application/pdf');
-        res.setHeader('Content-Disposition', 'inline; filename=file.pdf');
+        res.setHeader('Content-Disposition', `inline; filename=ProForma-${account_content?.main?.conta_numero}.pdf`);
         // Send the PDF file in the response
         res.send(pdfBuffer);
     });
