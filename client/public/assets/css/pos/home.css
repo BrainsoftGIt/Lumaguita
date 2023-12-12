@@ -6,6 +6,12 @@
   font-size: 1rem;
 }
 
+body.dark .inn .waves-effect {
+  background: #2d2448;
+}
+body.dark .inn .waves-effect svg {
+  fill: #FFF;
+}
 body.dark svg[relatorio-vendas] path {
   fill: #FFF;
 }

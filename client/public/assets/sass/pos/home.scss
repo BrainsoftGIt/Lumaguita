@@ -10,6 +10,14 @@
 }
 
 body.dark{
+	.inn{
+		.waves-effect{
+			background: lighten($dark-background, 7%);
+			svg{
+				fill: #FFF;
+			}
+		}
+	}
 	svg[relatorio-vendas]{
 		path{
 			fill: #FFF;
@@ -145,7 +153,6 @@ body.dark{
 			}
 		}
 	}
-
 }
 .is-money-text {
 	cursor: pointer;

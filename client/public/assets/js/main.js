@@ -185,6 +185,7 @@ let Documents = {
 
         $("[listDocuments] li:last").trigger("click");
         $("#xModalOpenDocument").addClass("show");
+        $(".minimized-modal-bar").addClass("hide");
     },
     getDocumentNumber: (key) => {
         let urlData = Documents.list[key];
@@ -234,4 +235,18 @@ $("[closeDocuments]").on("click", function (){
     }
 
     $("[listDocuments] li:first").trigger("click");
+})
+
+$(".minimized-modal-bar").on("click", function (e){
+    $(this).closest(".minimized-modal-bar").addClass("hide");
+})
+$("[close-mini-modal]").on("click", function (e){
+    Documents.list = {};
+    $("[listDocuments]").empty()
+    $(this).closest(".minimized-modal-bar").addClass("hide");
+    e.stopPropagation()
+})
+
+$("[hideDocuments]").on("click", function (){
+    $(".minimized-modal-bar").removeClass("hide");
 })
