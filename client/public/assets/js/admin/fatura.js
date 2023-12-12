@@ -283,11 +283,17 @@ var faturaAdmin = {
                         });
                     }
 
-                    if($(`${modal} [imprimirGuiaSaida]`).hasClass("active")){
-                        Documents.open({
-                            data: "/api/print/guia_saida/"+JSON.stringify({date: new Date().getTimeStampPt(), guia_uuid: e.data, conta_id: dados.conta_id }),
-                            name: "Guia de Saida"
-                        });
+                    if(cambio_taxa === 1) {
+                        if ($(`${modal} [imprimirGuiaSaida]`).hasClass("active")) {
+                            Documents.open({
+                                data: "/api/print/guia_saida/" + JSON.stringify({
+                                    date: new Date().getTimeStampPt(),
+                                    guia_uuid: e.data,
+                                    conta_id: dados.conta_id
+                                }),
+                                name: "Guia de Saida"
+                            });
+                        }
                     }
                     $(` ${modal} [imprimirGuiaSaida]`).removeClass("active");
                     observacao_fatura.val("");
