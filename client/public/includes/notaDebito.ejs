@@ -167,4 +167,10 @@
     serieOperation.loadSerieOperation([serieOperation.tipo.notaDebito]);
     articlesDocuments.loadSerieDistribuicao(serieOperation.tipo.notaDebito);
     FATURA = serieOperation.tipo.notaDebito;
+    if(serieOperation.fatura.debito){
+        var e = $.Event('keyup');
+        e.keyCode= 13; // enter
+        $("[documento_origem]").val(serieOperation.fatura.debito).trigger(e);
+        delete serieOperation.fatura.debito;
+    }
 </script>

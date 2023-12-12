@@ -167,4 +167,10 @@
     serieOperation.loadSerieOperation([serieOperation.tipo.notaCredito]);
     articlesDocuments.loadSerieDistribuicao(serieOperation.tipo.notaCredito);
     FATURA = serieOperation.tipo.notaCredito;
+    if(serieOperation.fatura.credito){
+        var e = $.Event('keyup');
+        e.keyCode= 13; // enter
+        $("[documento_origem]").val(serieOperation.fatura.credito).trigger(e);
+        delete serieOperation.fatura.credito;
+    }
 </script>

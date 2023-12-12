@@ -1,4 +1,5 @@
 var serieOperation = {
+    fatura: {},
     tipo: {
         fatura: 1,
         fatura_recibo: 2,

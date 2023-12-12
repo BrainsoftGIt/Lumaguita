@@ -284,6 +284,7 @@ $("#finalizar_fatura").on("click", function () {
 $("[documento_origem]").on("keyup", function ({keyCode}){
     let docType = (FATURA === serieOperation.tipo.notaCredito ? "Nota de crédito" : "Nota de debito");
     let { loadData } = faturaAdmin;
+    console.log({keyCode})
     if(keyCode === 13 && $(this).val()){
         loadData();
         return
