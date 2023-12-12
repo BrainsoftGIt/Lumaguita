@@ -76,6 +76,7 @@ var documents = {
     editFunc: (menuCode, fatura) => {
         let menu = $(`[code='${menuCode}']`);
         if(!menu.length){
+            xAlert("", "Sem privilégio para realizar esta operação.!", "error");
             return
         }
 
