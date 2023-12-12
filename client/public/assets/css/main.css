@@ -678,6 +678,9 @@ ul {
   cursor: pointer;
   /* border-radius: 50%;*/
 }
+.m-pdf-visualize .controllers svg path {
+  fill: #FFF;
+}
 
 .minimized-modal-bar {
   position: fixed;

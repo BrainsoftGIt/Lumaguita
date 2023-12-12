@@ -697,7 +697,6 @@ ul {
 				width: 100%;
 				height: 100vh;
 			}
-
 		}
 	}
 	.controllers{
@@ -713,6 +712,9 @@ ul {
 			/* box-shadow: 0 2px 0 #666; */
 			cursor: pointer;
 			/* border-radius: 50%;*/
+		}
+		svg path{
+			fill: #FFF;
 		}
 	}
 }
