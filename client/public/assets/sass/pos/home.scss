@@ -10,6 +10,18 @@
 }
 
 body.dark{
+	svg{
+		path{
+			fill: #FFF;
+		}
+	}
+	.goForward {
+		svg {
+			path {
+				fill: blue;
+			}
+		}
+	}
 	.x-table{
 		.xheader ul li{
 			color: lighten($dark-background, 70%);
@@ -112,7 +124,7 @@ body.dark{
 		}
 		.make-payment {
 			border-color: lighten($dark-background, 20%);
-			
+
 		}
 		.calculate{
 			.is-money-text{
@@ -162,7 +174,7 @@ body.dark{
 			content: " XAF";
 		}
 	}
-	
+
 }
 .is-money-field {
 	position: relative;

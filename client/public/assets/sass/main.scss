@@ -716,3 +716,48 @@ ul {
 		}
 	}
 }
+.minimized-modal-bar{
+	position: fixed;
+	right: 0;
+	bottom: 0;
+	width: calc(100% - 195px);
+	height: auto;
+	display: flex;
+	flex-direction: row-reverse;
+	z-index: 150;
+	.m-modal{
+		background: #eee;
+		width: 180px;
+		background: #eee;
+		padding:  5px;
+		border: 1px #ccc solid;
+		cursor: pointer;
+		margin-left: 15px;
+		&:hover {
+			background: #FFF;
+			i{
+				color: #222;
+				opacity: 1;
+			}
+			span{
+				color: #222;
+			}
+		}
+		span{
+			color: #444;
+			font-size: .9rem;
+			font-weight: 400;
+			white-space: nowrap;
+			text-overflow: ellipsis;
+			overflow: hidden;
+		}
+		i{
+			font-size: 1.05rem;
+			font-weight: bold;
+			cursor: pointer;
+			color: #777;
+			opacity: 0;
+
+		}
+	}
+}

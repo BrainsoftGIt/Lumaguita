@@ -1,4 +1,93 @@
 @charset "UTF-8";
+/*icone de avançar*/
+@-webkit-keyframes indeterminateAnimation {
+  0% {
+    -webkit-transform: translateX(0) scaleX(0);
+    transform: translateX(0) scaleX(0);
+  }
+  40% {
+    -webkit-transform: translateX(0) scaleX(0.4);
+    transform: translateX(0) scaleX(0.4);
+  }
+  100% {
+    -webkit-transform: translateX(100%) scaleX(0.5);
+    transform: translateX(100%) scaleX(0.5);
+  }
+}
+@keyframes indeterminateAnimation {
+  0% {
+    -webkit-transform: translateX(0) scaleX(0);
+    transform: translateX(0) scaleX(0);
+  }
+  40% {
+    -webkit-transform: translateX(0) scaleX(0.4);
+    transform: translateX(0) scaleX(0.4);
+  }
+  100% {
+    -webkit-transform: translateX(100%) scaleX(0.5);
+    transform: translateX(100%) scaleX(0.5);
+  }
+}
+@-webkit-keyframes pulse-animation-green {
+  0% {
+    -webkit-box-shadow: 0 0 0 0px rgba(39, 174, 96, 0.5);
+    box-shadow: 0 0 0 0px rgba(39, 174, 96, 0.5);
+  }
+  100% {
+    -webkit-box-shadow: 0 0 0 20px rgba(0, 0, 0, 0);
+    box-shadow: 0 0 0 20px rgba(0, 0, 0, 0);
+  }
+}
+@keyframes pulse-animation-green {
+  0% {
+    -webkit-box-shadow: 0 0 0 0px rgba(39, 174, 96, 0.5);
+    box-shadow: 0 0 0 0px rgba(39, 174, 96, 0.5);
+  }
+  100% {
+    -webkit-box-shadow: 0 0 0 20px rgba(0, 0, 0, 0);
+    box-shadow: 0 0 0 20px rgba(0, 0, 0, 0);
+  }
+}
+@-webkit-keyframes pulse-animation-orange {
+  0% {
+    -webkit-box-shadow: 0 0 0 0px rgba(255, 165, 0, 0.5);
+    box-shadow: 0 0 0 0px rgba(255, 165, 0, 0.5);
+  }
+  100% {
+    -webkit-box-shadow: 0 0 0 20px rgba(0, 0, 0, 0);
+    box-shadow: 0 0 0 20px rgba(0, 0, 0, 0);
+  }
+}
+@keyframes pulse-animation-orange {
+  0% {
+    -webkit-box-shadow: 0 0 0 0px rgba(255, 165, 0, 0.5);
+    box-shadow: 0 0 0 0px rgba(255, 165, 0, 0.5);
+  }
+  100% {
+    -webkit-box-shadow: 0 0 0 20px rgba(0, 0, 0, 0);
+    box-shadow: 0 0 0 20px rgba(0, 0, 0, 0);
+  }
+}
+@-webkit-keyframes pulse-animation-red {
+  0% {
+    -webkit-box-shadow: 0 0 0 0px rgba(255, 0, 0, 0.4);
+    box-shadow: 0 0 0 0px rgba(255, 0, 0, 0.4);
+  }
+  100% {
+    -webkit-box-shadow: 0 0 0 20px rgba(0, 0, 0, 0);
+    box-shadow: 0 0 0 20px rgba(0, 0, 0, 0);
+  }
+}
+@keyframes pulse-animation-red {
+  0% {
+    -webkit-box-shadow: 0 0 0 0px rgba(255, 0, 0, 0.4);
+    box-shadow: 0 0 0 0px rgba(255, 0, 0, 0.4);
+  }
+  100% {
+    -webkit-box-shadow: 0 0 0 20px rgba(0, 0, 0, 0);
+    box-shadow: 0 0 0 20px rgba(0, 0, 0, 0);
+  }
+}
 .ctrlLightdarkMode {
   margin-right: 2rem;
 }
@@ -14,14 +103,16 @@ body {
   -o-transition: all 0.25s;
   transition: all 0.25s;
 }
+
 body.loading .xLoadingBar {
   opacity: 1;
   visibility: visible;
 }
+
 body.dark .listAllAccounts .accnt {
   background: #2d2448;
   -webkit-box-shadow: 0 15px 45px -10px #13101f;
-          box-shadow: 0 15px 45px -10px #13101f;
+  box-shadow: 0 15px 45px -10px #13101f;
 }
 body.dark .listAllAccounts .accnt .number {
   color: #fff;
@@ -42,7 +133,11 @@ body.dark ._fkPG .head .goBack svg {
 body.dark ._fkPG .head h1 {
   color: #c1b8dc !important;
 }
-body.dark ._fkPG.salesOfDay .ppriodd span, body.dark ._fkPG.salesOfDay .ppriodd svg {
+body.dark ._fkPG.salesOfDay .ppriodd span {
+  color: #fff;
+  fill: #fff;
+}
+body.dark ._fkPG.salesOfDay .ppriodd svg {
   color: #fff;
   fill: #fff;
 }
@@ -57,7 +152,7 @@ body.dark .masterPage {
 }
 body.dark .masterPage .mainHeader {
   -webkit-box-shadow: none;
-          box-shadow: none;
+  box-shadow: none;
   background: #241d3a;
   color: #fff;
 }
@@ -67,7 +162,7 @@ body.dark .masterPage .mainHeader .inRight .xdropdown {
 }
 body.dark .masterPage .rt-menus .o-opts {
   -webkit-box-shadow: 0 15px 45px -10px #0b0911;
-          box-shadow: 0 15px 45px -10px #0b0911;
+  box-shadow: 0 15px 45px -10px #0b0911;
 }
 body.dark .masterPage .rt-menus .o-opts ul {
   background: #2f264b;
@@ -87,11 +182,11 @@ body.dark .credentialPIN {
 body.dark .credentialPIN .list-users li {
   position: relative;
 }
-body.dark .credentialPIN .list-users li.active {
-  background: #332952;
-}
 body.dark .credentialPIN .list-users li * {
   color: #d0c9e4;
+}
+body.dark .credentialPIN .list-users li.active {
+  background: #332952;
 }
 body.dark .credentialPIN article {
   background: #241d3a;
@@ -122,7 +217,7 @@ body.dark .credentialPIN article .tries {
 }
 body.dark .credentialPIN article .exit {
   -webkit-box-shadow: 0 15px 45px -10px #0b0911;
-          box-shadow: 0 15px 45px -10px #0b0911;
+  box-shadow: 0 15px 45px -10px #0b0911;
   background: #3e3263;
 }
 
@@ -148,7 +243,7 @@ body.dark .credentialPIN article .exit {
   padding: 2rem;
   border-radius: 20px;
   -webkit-box-shadow: 0 15px 45px -10px #d2e9ff;
-          box-shadow: 0 15px 45px -10px #d2e9ff;
+  box-shadow: 0 15px 45px -10px #d2e9ff;
 }
 .listAllAccounts .accnt .number {
   font-weight: 700;
@@ -181,7 +276,7 @@ body.dark .credentialPIN article .exit {
   padding: 0 2rem;
   background: #fff;
   -webkit-box-shadow: 0 15px 45px -10px #c3e1ff;
-          box-shadow: 0 15px 45px -10px #c3e1ff;
+  box-shadow: 0 15px 45px -10px #c3e1ff;
   position: relative;
   z-index: 20;
 }
@@ -200,8 +295,8 @@ body.dark .credentialPIN article .exit {
   margin-left: 12px;
   margin-right: 40px;
   -webkit-transform: translateY(-2px);
-      -ms-transform: translateY(-2px);
-          transform: translateY(-2px);
+  -ms-transform: translateY(-2px);
+  transform: translateY(-2px);
 }
 .masterPage .mainHeader .inLeft .systatus span {
   position: relative;
@@ -313,11 +408,6 @@ body.dark .credentialPIN article .exit {
   -o-transition: all 0.3s;
   transition: all 0.3s;
 }
-.masterPage .dBody ._fkPG.show {
-  opacity: 1;
-  visibility: visible;
-  top: 0;
-}
 .masterPage .dBody ._fkPG .head {
   height: 80px;
   padding: 1rem 2rem;
@@ -347,6 +437,11 @@ body.dark .credentialPIN article .exit {
   height: calc(100% - 80px);
   padding: 1rem 2rem;
 }
+.masterPage .dBody ._fkPG.show {
+  opacity: 1;
+  visibility: visible;
+  top: 0;
+}
 .masterPage .dBody ._fkPG.salesOfDay .head {
   position: relative;
   z-index: 10;
@@ -366,12 +461,12 @@ body.dark .credentialPIN article .exit {
 }
 .masterPage .dBody ._fkPG.salesOfDay .head .period .ppriodd svg {
   -webkit-transform: rotate(-90deg);
-      -ms-transform: rotate(-90deg);
-          transform: rotate(-90deg);
+  -ms-transform: rotate(-90deg);
+  transform: rotate(-90deg);
   margin-left: 8px;
   width: 12px;
   -ms-flex-negative: 0;
-      flex-shrink: 0;
+  flex-shrink: 0;
 }
 .masterPage .dBody ._fkPG.salesOfDay .inBottom .x-table {
   height: 100%;
@@ -410,35 +505,15 @@ body.dark .credentialPIN article .exit {
   -o-transition: all 0.25s;
   transition: all 0.25s;
 }
-.credentialPIN.show {
-  visibility: visible;
-  opacity: 1;
-  top: 0;
-}
-.credentialPIN.changingPIN.actualPINApproved .tries {
-  display: none;
-}
-.credentialPIN.changingPIN .pin-terminal .txtChangingPIN {
-  display: block;
-}
-.credentialPIN.changingPIN .pin-terminal .table {
-  display: none;
-}
 .credentialPIN aside {
   height: 100vh;
   overflow: auto;
   -ms-flex-negative: 0;
-      flex-shrink: 0;
+  flex-shrink: 0;
   min-width: 340px;
 }
 .credentialPIN aside .list-users ul li {
   padding: 1rem 2rem;
-}
-.credentialPIN aside .list-users ul li.active {
-  background-color: #1A73E8;
-}
-.credentialPIN aside .list-users ul li.active * {
-  color: #fff;
 }
 .credentialPIN aside .list-users ul li .img-container {
   width: 60px;
@@ -457,6 +532,12 @@ body.dark .credentialPIN article .exit {
 }
 .credentialPIN aside .list-users ul li p {
   line-height: 1.5;
+}
+.credentialPIN aside .list-users ul li.active {
+  background-color: #1A73E8;
+}
+.credentialPIN aside .list-users ul li.active * {
+  color: #fff;
 }
 .credentialPIN article {
   background-color: #e8f4fe;
@@ -493,9 +574,6 @@ body.dark .credentialPIN article .exit {
   padding: 0 2rem;
   border-bottom: 1px solid #b7ddfc;
 }
-.credentialPIN article .pin-terminal .fkinputs .table.tb2, .credentialPIN article .pin-terminal .fkinputs .table.tb2 input {
-  cursor: pointer;
-}
 .credentialPIN article .pin-terminal .fkinputs .table label {
   font-size: 1rem;
   font-weight: 500;
@@ -506,12 +584,18 @@ body.dark .credentialPIN article .exit {
   margin: 0;
   border: none;
   -webkit-box-shadow: none;
-          box-shadow: none;
+  box-shadow: none;
   text-align: right;
   height: 60px;
   line-height: 70px;
   font-size: 1.2rem;
   font-weight: 500;
+}
+.credentialPIN article .pin-terminal .fkinputs .table.tb2 {
+  cursor: pointer;
+}
+.credentialPIN article .pin-terminal .fkinputs .table.tb2 input {
+  cursor: pointer;
 }
 .credentialPIN article .pin-terminal .fkinputs .pinput {
   width: 100%;
@@ -541,22 +625,31 @@ body.dark .credentialPIN article .exit {
   display: inline-block;
   margin-top: 35px;
 }
-.credentialPIN article .tries,
+.credentialPIN article .tries {
+  position: absolute;
+  top: 2rem;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  font-weight: 500;
+  display: none;
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  font-weight: 500;
+  display: none;
+}
+.credentialPIN article .tries span {
+  font-weight: 600;
+  font-weight: 600;
+}
 .credentialPIN article .exit {
   position: absolute;
   top: 2rem;
   font-size: 1.1rem;
   text-transform: uppercase;
   font-weight: 500;
-}
-.credentialPIN article .tries span,
-.credentialPIN article .exit span {
-  font-weight: 600;
-}
-.credentialPIN article .tries {
-  display: none;
-}
-.credentialPIN article .exit {
   top: initial;
   color: tomato;
   background-color: #fff;
@@ -565,15 +658,14 @@ body.dark .credentialPIN article .exit {
   right: 15rem;
   padding-right: 2.2rem;
 }
+.credentialPIN article .exit span {
+  font-weight: 600;
+}
 .credentialPIN article .exit svg {
   width: 18px;
   fill: tomato;
   margin-right: 2rem;
 }
-
-/*icone de avançar*/
-
-.credentialPIN article .tries,
 .credentialPIN article .goForward {
   position: absolute;
   top: 2rem;
@@ -581,25 +673,36 @@ body.dark .credentialPIN article .exit {
   font-size: 1.1rem;
   text-transform: uppercase;
   font-weight: 500;
-}
-.credentialPIN article .tries span,
-.credentialPIN article .goForward span {
-  font-weight: 600;
-}
-.credentialPIN article .tries {
-  display: none;
-}
-.credentialPIN article .goForward {
   top: initial;
   color: blue;
   background-color: #fff;
   padding: 1rem 2rem;
   bottom: 2rem;
 }
+.credentialPIN article .goForward span {
+  font-weight: 600;
+}
 .credentialPIN article .goForward svg {
   width: 18px;
   fill: blue;
   margin-right: 1rem;
+}
+
+.credentialPIN.show {
+  visibility: visible;
+  opacity: 1;
+  top: 0;
+}
+
+.credentialPIN.changingPIN.actualPINApproved .tries {
+  display: none;
+}
+
+.credentialPIN.changingPIN .pin-terminal .txtChangingPIN {
+  display: block;
+}
+.credentialPIN.changingPIN .pin-terminal .table {
+  display: none;
 }
 
 .xLoadingBar {
@@ -623,129 +726,41 @@ body.dark .credentialPIN article .exit {
   height: 100%;
   background-color: #1A73E8;
   -webkit-animation: indeterminateAnimation 1s infinite linear;
-          animation: indeterminateAnimation 1s infinite linear;
+  animation: indeterminateAnimation 1s infinite linear;
   -webkit-transform-origin: 0% 50%;
-      -ms-transform-origin: 0% 50%;
-          transform-origin: 0% 50%;
+  -ms-transform-origin: 0% 50%;
+  transform-origin: 0% 50%;
 }
 
-@-webkit-keyframes indeterminateAnimation {
-  0% {
-    -webkit-transform: translateX(0) scaleX(0);
-            transform: translateX(0) scaleX(0);
-  }
-  40% {
-    -webkit-transform: translateX(0) scaleX(0.4);
-            transform: translateX(0) scaleX(0.4);
-  }
-  100% {
-    -webkit-transform: translateX(100%) scaleX(0.5);
-            transform: translateX(100%) scaleX(0.5);
-  }
-}
-
-@keyframes indeterminateAnimation {
-  0% {
-    -webkit-transform: translateX(0) scaleX(0);
-            transform: translateX(0) scaleX(0);
-  }
-  40% {
-    -webkit-transform: translateX(0) scaleX(0.4);
-            transform: translateX(0) scaleX(0.4);
-  }
-  100% {
-    -webkit-transform: translateX(100%) scaleX(0.5);
-            transform: translateX(100%) scaleX(0.5);
-  }
-}
 .pulse {
   display: inline-block;
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  -webkit-box-shadow: 0px 0px 1px 1px #0000001a;
-          box-shadow: 0px 0px 1px 1px #0000001a;
+  -webkit-box-shadow: 0px 0px 1px 1px rgba(0, 0, 0, 0.1019607843);
+  box-shadow: 0px 0px 1px 1px rgba(0, 0, 0, 0.1019607843);
 }
+
 .pulse.on {
   background: #27AE60;
   -webkit-animation: pulse-animation-green 1.5s infinite;
-          animation: pulse-animation-green 1.5s infinite;
+  animation: pulse-animation-green 1.5s infinite;
 }
+
 .pulse.off {
   background: red;
   -webkit-animation: pulse-animation-red 1.5s infinite;
-          animation: pulse-animation-red 1.5s infinite;
+  animation: pulse-animation-red 1.5s infinite;
 }
 
-@-webkit-keyframes pulse-animation-green {
-  0% {
-    -webkit-box-shadow: 0 0 0 0px rgba(39, 174, 96, 0.5);
-            box-shadow: 0 0 0 0px rgba(39, 174, 96, 0.5);
-  }
-  100% {
-    -webkit-box-shadow: 0 0 0 20px rgba(0, 0, 0, 0);
-            box-shadow: 0 0 0 20px rgba(0, 0, 0, 0);
-  }
-}
-
-@keyframes pulse-animation-green {
-  0% {
-    -webkit-box-shadow: 0 0 0 0px rgba(39, 174, 96, 0.5);
-            box-shadow: 0 0 0 0px rgba(39, 174, 96, 0.5);
-  }
-  100% {
-    -webkit-box-shadow: 0 0 0 20px rgba(0, 0, 0, 0);
-            box-shadow: 0 0 0 20px rgba(0, 0, 0, 0);
-  }
-}
-@-webkit-keyframes pulse-animation-orange {
-  0% {
-    -webkit-box-shadow: 0 0 0 0px rgba(255, 165, 0, 0.5);
-            box-shadow: 0 0 0 0px rgba(255, 165, 0, 0.5);
-  }
-  100% {
-    -webkit-box-shadow: 0 0 0 20px rgba(0, 0, 0, 0);
-            box-shadow: 0 0 0 20px rgba(0, 0, 0, 0);
-  }
-}
-@keyframes pulse-animation-orange {
-  0% {
-    -webkit-box-shadow: 0 0 0 0px rgba(255, 165, 0, 0.5);
-            box-shadow: 0 0 0 0px rgba(255, 165, 0, 0.5);
-  }
-  100% {
-    -webkit-box-shadow: 0 0 0 20px rgba(0, 0, 0, 0);
-            box-shadow: 0 0 0 20px rgba(0, 0, 0, 0);
-  }
-}
-@-webkit-keyframes pulse-animation-red {
-  0% {
-    -webkit-box-shadow: 0 0 0 0px rgba(255, 0, 0, 0.4);
-            box-shadow: 0 0 0 0px rgba(255, 0, 0, 0.4);
-  }
-  100% {
-    -webkit-box-shadow: 0 0 0 20px rgba(0, 0, 0, 0);
-            box-shadow: 0 0 0 20px rgba(0, 0, 0, 0);
-  }
-}
-@keyframes pulse-animation-red {
-  0% {
-    -webkit-box-shadow: 0 0 0 0px rgba(255, 0, 0, 0.4);
-            box-shadow: 0 0 0 0px rgba(255, 0, 0, 0.4);
-  }
-  100% {
-    -webkit-box-shadow: 0 0 0 20px rgba(0, 0, 0, 0);
-            box-shadow: 0 0 0 20px rgba(0, 0, 0, 0);
-  }
-}
 @media only screen and (max-width: 1540px) {
   .masterPage .mainHeader {
     height: 60px;
   }
   .masterPage .mainHeader .inRight .ctrlLightdarkMode {
     -webkit-transform: scale(0.9);
-        -ms-transform: scale(0.9);
-            transform: scale(0.9);
+    -ms-transform: scale(0.9);
+    transform: scale(0.9);
   }
   .masterPage .mainHeader .inRight .xdropdown {
     width: 42px;
@@ -766,7 +781,6 @@ body.dark .credentialPIN article .exit {
   .masterPage .dBody {
     height: calc(100vh - 60px);
   }
-
   .listAllAccounts {
     grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
   }
@@ -776,18 +790,19 @@ body.dark .credentialPIN article .exit {
   .listAllAccounts .accnt p {
     font-size: 0.9rem;
   }
-
   .credentialPIN .list-users li {
     -webkit-transform: scale(0.88);
-        -ms-transform: scale(0.88);
-            transform: scale(0.88);
+    -ms-transform: scale(0.88);
+    transform: scale(0.88);
   }
   .credentialPIN article .pin-terminal {
     -webkit-transform: scale(0.86);
-        -ms-transform: scale(0.86);
-            transform: scale(0.86);
+    -ms-transform: scale(0.86);
+    transform: scale(0.86);
   }
   .credentialPIN article .pin-terminal .pinkey ul li {
     font-size: 1.4rem;
   }
 }
+
+/*# sourceMappingURL=pos.css.map */
