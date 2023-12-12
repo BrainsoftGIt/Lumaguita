@@ -31,7 +31,6 @@ export let create = async (instituition, account_content, res, user, date, num_a
     (account_content.main.conta_vendas || []).forEach((cont, index) => {
         let hasDescricao = cont?.venda_metadata?.artigoDetahe || "";
         preco_artigo = cont.venda_montantesemimposto / cont.venda_quantidade;
-        for(let i = 0; i < 23; i++)
         artigosConta.push([
             {
                 index,
