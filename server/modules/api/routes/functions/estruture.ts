@@ -53,8 +53,10 @@ export let structure = (user, num_autorization, num_certification, imageCabecalh
                 ]
             }
 
+            // @ts-ignore
             if(!!rotape?.table?.body?.[0]?.[0]?.rowSpan){
                 certificacao.margin = [35, 30, 35, 5]
+                // @ts-ignore
                 rotape.table.body[0][0].stack = [
                     certificacao
                 ]
@@ -62,6 +64,7 @@ export let structure = (user, num_autorization, num_certification, imageCabecalh
 
             return [
                 (currentPage === pageCount) ? rotape : {},
+                // @ts-ignore
                 !rotape?.table?.body?.[0]?.[0]?.rowSpan ? certificacao : {}
             ]
         },
