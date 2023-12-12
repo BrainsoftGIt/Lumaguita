@@ -90,7 +90,7 @@ app.post("/api/report/export", async (req, res) =>{
     listReport.rows.forEach((report) =>{
         object = {};
         Object.entries(report.data).forEach(([key, value]) => {
-            if(value) object[formatKey(key)] = typeof value === "string" ? value : Number(value).toFixed(2);
+            if(value !== null && value !== "") object[formatKey(key)] = typeof value === "string" ? value : value;
             else object[formatKey(key)] = "";
         });
         workSheet.addRow(object);
@@ -151,7 +151,7 @@ function formatColumn(headers, worksheet){
         column.eachCell(function(cell, rowNumber) {
             if(rowNumber > 1){
                 if(header.format === "money"){
-                    cell.numFmt = '"£"#,##0.00;[Red]\-"£"#,##0.00';
+                    cell.numFmt = '#,##0.00;[Red]\-"#,##0.00';
                 }
             }
         });
