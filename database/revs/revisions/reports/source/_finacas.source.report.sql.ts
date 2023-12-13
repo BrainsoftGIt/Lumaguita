@@ -29,7 +29,7 @@ begin
   return query
     with __declaracao as (
       select
-         se.serie_sequencia as documento_numero,
+          right( ct.conta_numerofatura, ts.tserie_seqlimit )::int as documento_numero,
          se.serie_numero as documento_serie,
          ct.conta_data as documento_data,
          coalesce( lib.str_normalize(ct.conta_titularnif), lib.str_normalize( cli.cliente_nif ), '999999999' ) as nif_consumidor,
