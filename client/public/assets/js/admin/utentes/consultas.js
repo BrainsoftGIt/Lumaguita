@@ -248,14 +248,14 @@ var consulta = {
             let {cliente_titular} = client.list.find(({cliente_id}) => {
                 return cliente_id === untente.patient_client_id;
             });
-            $("[search_article]").val("consulta").keyup();
+            $("[search_article]").val("Consulta").keyup();
             let inter = setInterval(() => {
                 if(articlesDocuments.customers.length && articlesDocuments.artigoLoaded){
-                    clearInterval(inter);
-                    $("[search_customer]").val(cliente_titular).keyup();
-                   setTimeout(() => {
-                       $("[description_article]").val(consultaType);
-                   })
+                clearInterval(inter);
+                $("[search_customer]").val(cliente_titular).keyup();
+                    setTimeout(() => {
+                        $("[description_article]").val(consultaType);
+                    })
                 }
             }, 500);
 
