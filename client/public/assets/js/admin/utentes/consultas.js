@@ -264,11 +264,9 @@ var consulta = {
                 marginTop: "50px",
                 marginRight: "20px"
             })
-            $('[hideModal], [hideModal]:active, [hideModal]:hover').show().css({
-                marginTop: "50px",
-                color: "#f30f0f",
-                backgroundColor: "#fff",
-            }).on("click", () => {
+
+            $('[hideModal]').show()
+                .on("click", () => {
                 setTimeout(() => {
                     $("[loadFatutaPage]").empty();
                 }, 10)
