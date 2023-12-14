@@ -52,6 +52,7 @@ begin
           ts.tserie_numlimit,
           ts.tserie_seqlimit
         from tweeks.serie s
+          
           inner join tweeks.autorizacao a on s.serie_autorizacao_uid = a.autorizacao_uid
           inner join tweeks.tserie ts on s.serie_tserie_id = ts.tserie_id
       where s.serie_autorizacao_uid = a.autorizacao_uid
