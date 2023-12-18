@@ -26,6 +26,7 @@ export let create = async (instituition, account_content, res, user, date, num_a
     let removerLinhaDoCabecalho = !instituition?.espaco_configuracao.removerLinhaDoCabecalho;
 
     let hasPersonalizadoHarder = (instituition?.espaco_configuracao?.cabecalho_referencia === null ? "" : clusterServer.res.resolve(instituition?.espaco_configuracao?.cabecalho_referencia));
+    let ajustarDadosDeFaturaAEsquerda = instituition?.espaco_configuracao.ajustarDadosDeFaturaAEsquerda ? "left" : "right";
 
     let {cambio_taxa, currency_code, currency_symbol} = account_content?.main;
     (account_content.main.conta_vendas || []).forEach((cont, index) => {
@@ -450,7 +451,7 @@ export let create = async (instituition, account_content, res, user, date, num_a
                                 ]
                             },
                             {
-                                alignment: "right",
+                                alignment: ajustarDadosDeFaturaAEsquerda,
                                 fontSize: 8,
                                 border: [removerLinhaDoCabecalho, false, false, false],
                                 borderColor: ['#000000', '#000000', '#000000', '#000000'],
