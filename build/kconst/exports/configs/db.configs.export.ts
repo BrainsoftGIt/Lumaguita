@@ -152,7 +152,7 @@ kconst.declares( (exports, override, SELF_NAME, props) => {
             userClone: "maguita_test_clone", //user name database connection
             password: "1234", // password database connection
             host: "localhost", //host database connection
-            port: 5432, // port database connection
+            port: 5434, // port database connection
             portDatabaseApp: 54433, // port database connection
             superuser:"postgres",
             passwordClone:"1234",
