@@ -90,7 +90,7 @@ app.post("/api/report/export", async (req, res) =>{
     listReport.rows.forEach((report) =>{
         object = {};
         Object.entries(report.data).forEach(([key, value]) => {
-            if(value !== null && value !== "") object[formatKey(key)] = typeof value === "string" ? value : value;
+            if(value !== null && value !== "") object[formatKey(key)] = !isStringInteger(value) ? value : +value;
             else object[formatKey(key)] = "";
         });
         workSheet.addRow(object);
@@ -102,6 +102,15 @@ app.post("/api/report/export", async (req, res) =>{
         res.json({file: filename})
     });
 });
+
+
+function isStringInteger(str) {
+    // Use parseInt to check if the string represents an integer
+    // Check if parseInt returns a number and the conversion from string to number is equal
+    return /^\d+$/.test(str) && parseInt(str, 10).toString() === str;
+}
+
+
 app.post("/api/report/export/imposto", async (req, res) =>{
     const {functReportFinanca} = require("../db/call-function-report");
     req.body.arg_colaborador_id = req?.session?.auth_data?.auth?.colaborador_id || null;
@@ -151,7 +160,7 @@ function formatColumn(headers, worksheet){
         column.eachCell(function(cell, rowNumber) {
             if(rowNumber > 1){
                 if(header.format === "money"){
-                    cell.numFmt = '#,##0.00;[Red]\-"#,##0.00';
+                    cell.numFmt = '#,###.######';
                 }
             }
         });
