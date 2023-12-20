@@ -1044,6 +1044,13 @@ begin
               cli.cliente_id,
               cli.cliente_titular,
               cli.cliente_nif,
+              cli.cliente_metadata,
+              cli.cliente_mail,
+              cli.cliente_contactos,
+              cli.cliente_code,
+              cli.cliente_documento,
+              tdoc.tdocumento_id,
+              tdoc.tdocumento_nome,
               col.colaborador_id,
               col.colaborador_nome,
               col.colaborador_apelido,
@@ -1059,10 +1066,12 @@ begin
             from tweeks.deposito de
               inner join geoinfo.currency cu on de.deposito_currency_id = cu.currency_id
               inner join tweeks.cliente cli on cli.cliente_id = de.deposito_cliente_id
+              
               inner join auth.colaborador col on col.colaborador_id = de.deposito_colaborador_id
               inner join tweeks.tpaga tp on de.deposito_tpaga_id = tp.tpaga_id
               inner join tweeks.serie se on de.deposito_serie_id = se.serie_id
               inner join tweeks.tserie ts on se.serie_tserie_id = ts.tserie_id
+              left join tweeks.tdocuemto tdoc on cli.cliente_tdocument_id = tdoc.tdocumento_id
               left join tweeks.caixa cx on de.deposito_caixa_id = cx.caixa_id
               left join tweeks.posto po on de.deposito_posto_id = po.posto_id
 

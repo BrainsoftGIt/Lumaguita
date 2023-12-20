@@ -18,9 +18,17 @@ var documents = {
                 name : "Guia de Saida"
             });
         },
-        [serieOperation.tipo.recibo] : ({deposito, date, client}) => {
+        [serieOperation.tipo.recibo] : ({deposito, date, cliente_metadata, cliente_mail, cliente_contactos, cliente_nif, cliente_titular}) => {
+            console.log({cliente_metadata, cliente_contactos})
+            if(typeof cliente_metadata !== "object"){
+                cliente_metadata = cliente_metadata.replaceAll("'", "\"")
+                cliente_metadata = JSON.parse(cliente_metadata || "{}");
+            }
+            cliente_contactos = (cliente_contactos+"").split(";");
             Documents.open({
-                data: "/api/print/recibo/" + JSON.stringify({deposito, client, date, admin: true}),
+                data: "/api/print/recibo/" + JSON.stringify({deposito, client : {
+                        cliente_metadata, cliente_mail, cliente_contactos, cliente_nif, cliente_titular
+                    }, date, admin: true}),
                 name: "Recibo"
             });
         },
@@ -166,12 +174,12 @@ var documents = {
                 $(`[body-report-list-faturas]`).addClass("empty").empty();
                 let hide = (!!documents.edit[_tserie_id]) ? "" : "hide";
 
-                lista.forEach(({currency_code, cambio_taxa, cliente_nif, deposito_id, cliente_id, cliente_titular, colaborador_nome, conta_montante, posto_designacao, conta_titular, conta_titularnif, conta_numerofatura, deposito_documento, conta_data, conta_id, tserie_id, deposito_montantefinal, deposito_data}) => {
-                    $(`[body-report-list-faturas]`).append(`<ul data-conta_numerofatura="${conta_numerofatura}" data-currency_code="${currency_code}" data-cambio_taxa="${cambio_taxa}" data-conta_id="${conta_id}" data-tserie_id="${tserie_id}" data-date="${conta_data || deposito_data}" data-deposito="${deposito_id}" data-client="${cliente_id}">
+                lista.forEach(({cliente_metadata, cliente_mail, cliente_contactos, cliente_nif, cliente_titular, currency_code, cambio_taxa, deposito_id, cliente_id, colaborador_nome, conta_montante, posto_designacao, conta_titular, conta_titularnif, conta_numerofatura, deposito_documento, conta_data, conta_id, tserie_id, deposito_montantefinal, deposito_data}) => {
+                    $(`[body-report-list-faturas]`).append(`<ul data-cliente_metadata="${JSON.stringify(cliente_metadata || "{}").replaceAll("\"", "'")}" data-cliente_mail="${cliente_mail}" data-cliente_contactos="${(cliente_contactos || []).join(";")}" data-cliente_nif="${cliente_nif}" data-cliente_titular="${cliente_titular}" data-conta_numerofatura="${conta_numerofatura}" data-currency_code="${currency_code}" data-cambio_taxa="${cambio_taxa}" data-conta_id="${conta_id}" data-tserie_id="${tserie_id}" data-date="${conta_data || deposito_data}" data-deposito="${deposito_id}" data-client="${cliente_id}">
                                             <li>${conta_numerofatura || deposito_documento}</li>
                                             <li>${cliente_titular || conta_titular}</li>
                                             <li>${cliente_nif || conta_titularnif || "---------"}</li>
-                                            <li>${(conta_montante || deposito_montantefinal).formatter()} STN</li>
+                                            <li>${(conta_montante || deposito_montantefinal).dc().formatter()} STN</li>
                                             <li>${colaborador_nome || "---------"}</li>
                                             <li>${posto_designacao || "---------"}</li>
                                             <li>${(conta_data || deposito_data).stringToDateEn().getDatePt()}</li>
@@ -262,9 +270,9 @@ $("#loadDocuments").on("click", function (){
 })
 
 $(`[body-report-list-faturas]`).on("click", ".imprimir",function (){
-    let {conta_id, date, deposito, client, cambio_taxa, currency_code} = $(this).closest("ul").data();
+    let {conta_id, date, deposito, client, cambio_taxa, currency_code, cliente_metadata, cliente_mail, cliente_contactos, cliente_nif, cliente_titular} = $(this).closest("ul").data();
     let {_tserie_id: tserie_id} = $("[list='_tserie_id'] li.active").data() || {};
-    documents.reprint[tserie_id]({conta_id, date, deposito, client, cambio_taxa, currency_code})
+    documents.reprint[tserie_id]({conta_id, date, deposito, client, cambio_taxa, currency_code, cliente_metadata, cliente_mail, cliente_contactos, cliente_nif, cliente_titular})
 }).on("click", "[operationEdit]", function (){
     let {_tserie_id} = $("[list='_tserie_id'] li.active").data() || {};
     let {conta_numerofatura} = $(this).closest("ul").data();
