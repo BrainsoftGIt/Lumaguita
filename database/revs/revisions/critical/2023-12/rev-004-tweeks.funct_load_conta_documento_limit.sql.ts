@@ -9,7 +9,9 @@ declare
   _offset int8 default args->>'offset';
 begin
   return query 
-    select e.document
+    select e.document || jsonb_build_object(
+        '_rowcounts', count( e.document ) over ()
+      )
       from tweeks.funct_load_conta_documento( args ) e( document )
       limit _limit
       offset _offset
