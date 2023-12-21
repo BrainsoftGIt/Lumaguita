@@ -126,7 +126,11 @@ begin
             p.posto_designacao,
             e.espaco_id,
             e.espaco_nome,
-            ct.conta_tserie_id as tserie_id
+            ct.conta_tserie_id as tserie_id,
+            cur.currency_id,
+            cur.currency_name,
+            cur.currency_code,
+            cur.currency_symbol
             
           from tweeks.conta ct
             inner join tweeks.venda ve on ct.conta_id = ve.venda_conta_id
@@ -136,6 +140,7 @@ begin
             left join tweeks.espaco e on ct.conta_espaco_auth = e.espaco_id
             left join tweeks.cliente c on ct.conta_cliente_id = c.cliente_id
             left join tweeks.conta ctorg on ct.conta_conta_docorigin = ctorg.conta_id
+            left join geoinfo.currency cur on ct.conta_currency_id = cur.currency_id
           where ct._branch_uid = ___branch
             and ct.conta_tserie_id = _tserie_id
             and ct.conta_data >= coalesce( _date_start, ct.conta_data )
@@ -151,7 +156,8 @@ begin
             c.cliente_id,
             ctorg.conta_id,
             p.posto_id,
-            e.espaco_id
+            e.espaco_id,
+            cur.currency_id
           having count( * ) filter ( where ve.venda_artigo_id = coalesce( _artigo_id, ve.venda_artigo_id ) ) > 0
       ) select  to_jsonb( _cd )
           from __conta_documentos _cd
@@ -304,6 +310,7 @@ begin
               cu.currency_id,
               cu.currency_code,
               cu.currency_name,
+              cu.currency_symbol,
               cli.cliente_id,
               cli.cliente_titular,
               cli.cliente_nif,
