@@ -250,3 +250,21 @@ $("[close-mini-modal]").on("click", function (e){
 $("[hideDocuments]").on("click", function (){
     $(".minimized-modal-bar").removeClass("hide");
 })
+
+
+// Check if the browser is Microsoft Edge
+const isEdge = window.navigator.userAgent.indexOf("Edg") > -1;
+
+// Check if dark mode is enabled
+const darkModeEnabled = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+console.log("dhdhhdhdh");
+console.log({isEdge, darkModeEnabled})
+if (isEdge && !darkModeEnabled) {
+    // Get a reference to the <body> element
+    const body = document.body;
+
+    // Add a class to the <body> element
+    body.classList.add("noDark");
+
+}

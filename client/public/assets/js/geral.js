@@ -1,4 +1,4 @@
-let arrayMes = [];
+var arrayMes = [];
 arrayMes[0] = "Janeiro";
 arrayMes[1] = "Fevereiro";
 arrayMes[2] = "Março";
@@ -651,78 +651,7 @@ var geralObj = {
             }
         });
         return existe;
-    },
-    create_pagination: function (key) {
-        let total_no_arendodado = Math.trunc(this.totaldata[key] / this.step[key]);
-        let total_arendodado = this.totaldata[key] / this.step[key];
-        let total = ((total_arendodado !== total_no_arendodado) ? (total_no_arendodado + 1) : total_no_arendodado);
-
-        if (this.totaldata[key] === 0) {
-            geralObj.get_quantidade_item_por_pganiga[key].load(key);
-        }
-
-        let begin = 0;
-        let end = this.step[key];
-        this.page_total[key] = total;
-        let div_pagination = $("[ref='"+key+"'].pagination_master");
-        div_pagination.find(".page-k").remove();
-
-        for (let i = 0; i < total; i++) {
-            let is_end = i + 1 === total;
-            let _start = ((i === 0) ? "-start" : "");
-            let _end = ((is_end) ? "-end" : "");
-            let page = `<li begin="$begin" end="$end" _i="$i" class="page-item ${((i === 0) ? "active" : "")}  page-k page$start$end"><a class="page-link" href="#">$i</a></li>`;
-            page = page.replace("$begin", begin);
-            page = page.replace("$end", ((!is_end) ? end : this.totaldata[key]));
-            page = page.replace("$i", (i + 1));
-            page = page.replace("$i", (i + 1));
-            page = page.replace("$start", _start);
-            page = page.replace("$end", _end);
-            div_pagination.find(".pagination-add").before(page);
-            begin = end;
-            end += this.step[key];
-        }
-        div_pagination.find(".active").click();
-    },
-    alter_pages_vist : function (number, key) {
-        let pages = $("[ref='"+key+"'].pagination_master");
-        let totalpage = pages.find("li").length;
-        let value_por_lado = geralObj.get_quantidade_item_por_pganiga[key].value_por_lado;
-        let mais5Value = value_por_lado + number;
-        let menos5Value = number - value_por_lado;
-        let inicial_view_page = ((menos5Value < 1) ? 1 : menos5Value);
-        let final_view_page = mais5Value;
-        final_view_page += inicial_view_page - number + value_por_lado;
-
-        if(final_view_page > totalpage){
-            inicial_view_page -= (final_view_page-totalpage);
-            final_view_page = totalpage;
-        }
-
-        pages.find("li.page").hide();
-        for( let i = inicial_view_page ; i <= final_view_page ; i++){
-            pages.find("li.page[_i='"+i+"']").show();
-        }
-    },
-    test_pagination_status : function (key) {
-        let pagination = $("[ref='"+key+"'].pagination_master");
-        if (this.page_selected[key] === 1 && this.page_total[key] === 1) {
-            pagination.find(".forward, .backward, .page-k").addClass("disabled");
-            pagination.hide();
-        } else if (this.page_selected[key] === this.page_total[key]) {
-            pagination.find(".forward").addClass("disabled",);
-            pagination.find(".backward").removeClass("disabled");
-            pagination.show();
-        } else if (this.page_selected[key] === 1) {
-            pagination.find(".backward").addClass("disabled");
-            pagination.find(".forward").removeClass("disabled");
-            pagination.show();
-        } else {
-            pagination.find(".forward, .backward").removeClass("disabled");
-            pagination.show();
-        }
-    },
-    get_quantidade_item_por_pganiga : {}
+    }
 };
 
 String.prototype.replaceAll = function(search, replacement) {
