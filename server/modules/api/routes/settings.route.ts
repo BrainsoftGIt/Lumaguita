@@ -47,30 +47,40 @@ app.post("/api/cambio", async (req, res) => {
     const {functRegCambio} = require("../db/call-function-settings");
     let before =  await clusterServer.service.loadLocalCluster();
     let cambios = [];
-    cambios.push({
-        arg_colaborador_id: req?.session?.auth_data?.auth?.colaborador_id || null,
-        arg_currency_id: req.body.euro_currency,
-        arg_espaco_auth: req?.session?.auth_data?.auth?.armazem_atual || null,
-        arg_cambio_taxa: req.body.euro,
-        arg_cambio_data: req.body.data,
-        arg_branch_uid: req?.session?.auth_data?.auth?.branch_uuid || null
-    });
-    cambios.push({
-        arg_colaborador_id: req?.session?.auth_data?.auth?.colaborador_id || null,
-        arg_currency_id: req.body.usd_currency,
-        arg_espaco_auth: req?.session?.auth_data?.auth?.armazem_atual || null,
-        arg_cambio_taxa: req.body.usd,
-        arg_cambio_data: req.body.data,
-        arg_branch_uid: req?.session?.auth_data?.auth?.branch_uuid || null
-    });
-    cambios.push({
-        arg_colaborador_id: req?.session?.auth_data?.auth?.colaborador_id || null,
-        arg_currency_id: req.body.xaf_currency,
-        arg_espaco_auth: req?.session?.auth_data?.auth?.armazem_atual || null,
-        arg_cambio_taxa: req.body.xaf,
-        arg_cambio_data: req.body.data,
-        arg_branch_uid: req?.session?.auth_data?.auth?.branch_uuid || null
-    });
+
+    if(req.body.euro) {
+        cambios.push({
+            arg_colaborador_id: req?.session?.auth_data?.auth?.colaborador_id || null,
+            arg_currency_id: req.body.euro_currency,
+            arg_espaco_auth: req?.session?.auth_data?.auth?.armazem_atual || null,
+            arg_cambio_taxa: req.body.euro,
+            arg_cambio_data: req.body.data,
+            arg_branch_uid: req?.session?.auth_data?.auth?.branch_uuid || null
+        });
+    }
+
+    if(req.body.usd) {
+        cambios.push({
+            arg_colaborador_id: req?.session?.auth_data?.auth?.colaborador_id || null,
+            arg_currency_id: req.body.usd_currency,
+            arg_espaco_auth: req?.session?.auth_data?.auth?.armazem_atual || null,
+            arg_cambio_taxa: req.body.usd,
+            arg_cambio_data: req.body.data,
+            arg_branch_uid: req?.session?.auth_data?.auth?.branch_uuid || null
+        });
+    }
+
+    if(req.body.xaf) {
+        cambios.push({
+            arg_colaborador_id: req?.session?.auth_data?.auth?.colaborador_id || null,
+            arg_currency_id: req.body.xaf_currency,
+            arg_espaco_auth: req?.session?.auth_data?.auth?.armazem_atual || null,
+            arg_cambio_taxa: req.body.xaf,
+            arg_cambio_data: req.body.data,
+            arg_branch_uid: req?.session?.auth_data?.auth?.branch_uuid || null
+        });
+    }
+
     let response = null;
      for (const cam of cambios) {
         response = await functRegCambio(cam);

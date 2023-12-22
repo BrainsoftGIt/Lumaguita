@@ -486,15 +486,61 @@ var settings = {
             }
         });
     },
-    atualizarCambio(){
+    atualizarCambio: () => {
+
+        let cambio_euro = $("#cambio_euro");
+        let euro = cambio_euro.val().unFormatter();
+        let euro_currency = cambio_euro.attr("currency");
+
+        let cambio_xaf = $("#cambio_xaf");
+        let xaf = cambio_xaf.val().unFormatter();
+        let xaf_currency = cambio_xaf.attr("currency");
+
+        let cambio_usd = $("#cambio_usd");
+        let usd = cambio_usd.val().unFormatter();
+        let usd_currency = cambio_usd.attr("currency");
+
+        let data =  new Date().getDateEn();
+
+        let contNoValue = 0;
+        if(!cambio_xaf.val()){
+            xaf = undefined;
+            xaf_currency = undefined;
+            contNoValue++;
+        }
+
+        if(!cambio_usd.val()){
+            usd = undefined;
+            usd_currency = undefined;
+            contNoValue++;
+        }
+
+        if(!cambio_euro.val()){
+            euro = undefined;
+            euro_currency = undefined;
+            contNoValue++;
+        }
+
+        if(contNoValue === 3){
+            xAlert("Câmbio", "Defina pelo menos um câmbio!", "warning");
+            return
+        }
+
         $("[bt_cambio]").attr("disabled", true).addClass("loading");
         $.ajax({
             url: "/api/cambio",
             method: "POST",
             contentType: "application/json",
             error(){$("[bt_cambio]").attr("disabled", false).removeClass("loading")},
-            data: JSON.stringify({euro: $("#cambio_euro").val().unFormatter(), usd: $("#cambio_usd").val().unFormatter(), euro_currency: $("#cambio_euro").attr("currency"),
-                usd_currency: $("#cambio_usd").attr("currency"), xaf_currency: $("#cambio_xaf").attr("currency"), data: new Date().getDateEn(), xaf: $("#cambio_xaf").val().unFormatter()}),
+            data: JSON.stringify({
+                euro,
+                usd,
+                xaf,
+                euro_currency,
+                usd_currency,
+                xaf_currency,
+                data
+            }),
             success(e) {
                 $("[bt_cambio]").attr("disabled", false).removeClass("loading");
                 if(e.result){
@@ -799,9 +845,7 @@ $("[bt_empresa]").on("click", function () {
     settings.configurarDadosEmpresa();
 });
 $("[bt_cambio]").on("click", function () {
-    if(validation1($("#xModalCtrlCambio").find("input:text"))){
-        settings.atualizarCambio();
-    }
+    settings.atualizarCambio();
 });
 $("#editarCambio").on("click", function () {
     let cambiosData = $("[cambios]");
