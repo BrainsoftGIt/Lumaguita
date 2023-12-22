@@ -509,7 +509,7 @@ declare
 $$;
 `;
 
-export const funct_load_conta_data = sql`
+export const funct_load_conta_data_v2 = sql`
 create or replace function tweeks.funct_pos_load_conta_data(filter jsonb) returns SETOF jsonb
   language plpgsql
 as
