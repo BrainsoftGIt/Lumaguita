@@ -766,3 +766,11 @@ ul {
 .hide{
 	display: none!important;
 }
+
+body.noDark{
+	.controllers{
+		svg path{
+			fill: #000000;
+		}
+	}
+}

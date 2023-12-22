@@ -51,6 +51,7 @@ var documents = {
             });
         },
         [serieOperation.tipo.fatura] : ({conta_id, date, cambio_taxa, currency_code}) => {
+            console.log(cambio_taxa, currency_code)
             if(!cambio_taxa || cambio_taxa === 1) {
                 Documents.open({
                     data: "/api/print/fatura/" + JSON.stringify({type: "pdf", conta_id, date, admin: true}),

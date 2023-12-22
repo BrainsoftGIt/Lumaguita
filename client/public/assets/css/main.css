@@ -731,4 +731,8 @@ ul {
   display: none !important;
 }
 
+body.noDark .controllers svg path {
+  fill: #000000;
+}
+
 /*# sourceMappingURL=main.css.map */
