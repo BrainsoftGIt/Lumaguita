@@ -549,8 +549,6 @@ $("#tipo_relatorios").on("click", "li", function () {
     colunas_relatorio.empty();
     $("[listFiterData]").empty();
     $("#totalEntriesReport").text($(this).text());
-    report.limit = 100;
-    report.offset = 1;
     report.groups = [];
     report.selectedReport = report.config.filter(conf => conf.report_source === $(this).attr("source"));
     report.selectedReport[0].configs.forEach((filt) =>{
@@ -681,7 +679,7 @@ $("#filterReport").on("click", async function () {
             value_por_lado: 4,
             load: report.filtrar
         }
-        await pagination.create_pagination("body-report-list", report.offset, report.limit);
+        await pagination.create_pagination("body-report-list", pagination.page, pagination.limit);
     }
 });
 $("[bt_config]").on("click", function () {
@@ -750,7 +748,7 @@ $("[bt_footer_table]").on("click", async function () {
              value_por_lado: 4,
              load: report.filtrar
          }
-         await pagination.create_pagination("body-report-list", report.offset, report.limit);
+         await pagination.create_pagination("body-report-list", pagination.page, pagination.limit);
      }
      else{
         $(".pagination_master").find(".page-k.active").click();

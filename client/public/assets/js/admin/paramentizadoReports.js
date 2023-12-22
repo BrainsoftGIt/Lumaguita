@@ -371,7 +371,7 @@ $("#loadReport").on("click", function (){
             load: report.filtrar
         }
 
-        pagination.create_pagination("body-report-list", report.offset, report.limit).then(() => {
+        pagination.create_pagination("body-report-list", pagination.page, pagination.limit).then(() => {
             $("#xModalLoadReport").removeClass("show");
         })
             .catch();

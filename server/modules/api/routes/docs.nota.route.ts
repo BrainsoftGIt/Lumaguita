@@ -68,7 +68,7 @@ app.post( "/api/load/documents", (req, res, next) => {
     args.arg_colaborador_id = _session.user_id;
     args.arg_espaco_auth = _session.workspace;
 
-    dbRes.call.tweeks.funct_load_conta_documento({ args }, {
+    dbRes.call.tweeks.funct_load_conta_documento_limit({ args }, {
         onResult(error: Error, result?: Result<any, any>): any {
             if( error ){
                 res.json({

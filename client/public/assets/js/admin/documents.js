@@ -135,7 +135,7 @@ var documents = {
             }
         });
     },
-    load : () => {
+    load : (limit, pageNumber) => {
         let {_tserie_id} = $("[list='_tserie_id'] li.active").data() || {};
         let _date_start = ($("#_date_start").val().stringToDate() || "").getDateEn() || null;
         let _date_end = ($("#_date_end").val().stringToDate() || "").getDateEn() || null;
@@ -145,37 +145,43 @@ var documents = {
         let _artigo_id = documents.article_id || null;
         let _documento = $("#_documento").val() || null;
         let _client_nif = $("#_client_nif").val() || null;
+        let offset = pageNumber * limit - limit;
 
         if(!_tserie_id){
             xAlert("", "Por favor, selecione uma serie de fatura!", "error");
             return
         }
 
-        $("body").addClass("loading")
-        $.ajax({
-            url: "/api/load/documents",
-            method: "POST",
-            contentType: "application/json",
-            data: JSON.stringify({
-                _tserie_id,
-                _date_start,
-                _date_end,
-                _colaborator_id,
-                _posto_id,
-                _artigo_id,
-                _documento,
-                _client_nif,
-                _client_id
-            }),
-            error() {},
-            success(lista) {
+        return new Promise((resolve) => {
+            $("body").addClass("loading")
+            $.ajax({
+                url: "/api/load/documents",
+                method: "POST",
+                contentType: "application/json",
+                data: JSON.stringify({
+                    _tserie_id,
+                    _date_start,
+                    _date_end,
+                    _colaborator_id,
+                    _posto_id,
+                    _artigo_id,
+                    _documento,
+                    _client_nif,
+                    _client_id,
+                    offset,
+                    limit
+                }),
+                error() {},
+                success(lista) {
 
-                $("body").removeClass("loading")
-                $(`[body-report-list-faturas]`).addClass("empty").empty();
-                let hide = (!!documents.edit[_tserie_id]) ? "" : "hide";
+                    $("body").removeClass("loading")
+                    $(`[body-report-list-faturas]`).addClass("empty").empty();
+                    let hide = (!!documents.edit[_tserie_id]) ? "" : "hide";
 
-                lista.forEach(({cliente_metadata, cliente_mail, cliente_contactos, cliente_nif, cliente_titular, currency_code, cambio_taxa, deposito_id, cliente_id, colaborador_nome, conta_montante, posto_designacao, conta_titular, conta_titularnif, conta_numerofatura, deposito_documento, conta_data, conta_id, tserie_id, deposito_montantefinal, deposito_data}) => {
-                    $(`[body-report-list-faturas]`).append(`<ul data-cliente_metadata="${JSON.stringify(cliente_metadata || "{}").replaceAll("\"", "'")}" data-cliente_mail="${cliente_mail}" data-cliente_contactos="${(cliente_contactos || []).join(";")}" data-cliente_nif="${cliente_nif}" data-cliente_titular="${cliente_titular}" data-conta_numerofatura="${conta_numerofatura}" data-currency_code="${currency_code}" data-cambio_taxa="${cambio_taxa}" data-conta_id="${conta_id}" data-tserie_id="${tserie_id}" data-date="${conta_data || deposito_data}" data-deposito="${deposito_id}" data-client="${cliente_id}">
+                    resolve(lista?.[0]?._rowcounts || 0);
+
+                    lista.forEach(({cliente_metadata, cliente_mail, cliente_contactos, cliente_nif, cliente_titular, currency_code, cambio_taxa, deposito_id, cliente_id, colaborador_nome, conta_montante, posto_designacao, conta_titular, conta_titularnif, conta_numerofatura, deposito_documento, conta_data, conta_id, tserie_id, deposito_montantefinal, deposito_data}) => {
+                        $(`[body-report-list-faturas]`).append(`<ul data-cliente_metadata="${JSON.stringify(cliente_metadata || "{}").replaceAll("\"", "'")}" data-cliente_mail="${cliente_mail}" data-cliente_contactos="${(cliente_contactos || []).join(";")}" data-cliente_nif="${cliente_nif}" data-cliente_titular="${cliente_titular}" data-conta_numerofatura="${conta_numerofatura}" data-currency_code="${currency_code}" data-cambio_taxa="${cambio_taxa}" data-conta_id="${conta_id}" data-tserie_id="${tserie_id}" data-date="${conta_data || deposito_data}" data-deposito="${deposito_id}" data-client="${cliente_id}">
                                             <li>${conta_numerofatura || deposito_documento}</li>
                                             <li>${cliente_titular || conta_titular}</li>
                                             <li>${cliente_nif || conta_titularnif || "---------"}</li>
@@ -209,13 +215,14 @@ var documents = {
                                              </span>
                                             </li>
                                         </ul>`);
-                })
+                    })
 
-                $(` [body-report-list-faturas] `).removeClass("empty");
-                $("#xModalFindDocuments").removeClass("show")
-                xTableGenerate();
-            }
-        });
+                    $(` [body-report-list-faturas] `).removeClass("empty");
+                    $("#xModalFindDocuments").removeClass("show")
+                    xTableGenerate();
+                }
+            });
+        })
     },
     loadPostos(){
         $.ajax({
@@ -266,7 +273,15 @@ $("#_artigo_id").on("keyup", function (){
 })
 
 $("#loadDocuments").on("click", function (){
-    documents.load();
+    pagination.get_amount_item_page["body-report-list"] = {
+        value_por_lado: 4,
+        load: documents.load
+    }
+
+    pagination.create_pagination("body-report-list", pagination.page, pagination.limit).then(() => {
+        $("#xModalLoadReport").removeClass("show");
+    })
+        .catch();
 })
 
 $(`[body-report-list-faturas]`).on("click", ".imprimir",function (){

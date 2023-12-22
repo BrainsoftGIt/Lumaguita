@@ -1,7 +1,9 @@
 var pagination = {
-    get_amount_item_page: [],
-    page_selected : [],
+    page : 1,
+    limit : 100,
     page_total : [],
+    page_selected : [],
+    get_amount_item_page: [],
     get_quantidade_item_por_pagina_by_id: {},
     create_pagination: async function (key, pageNumber, limite = 100) {
         let totaldata = await pagination.get_amount_item_page[key].load(limite, pageNumber);
@@ -79,7 +81,7 @@ $("*").on("click", ".pagination_master .page-k", async function (e) {
     pagination.page_selected[key] = Number($(this).text());
     let pageNumber = pagination.page_selected[key]
 
-    await pagination.create_pagination(key, pageNumber, report.limit);
+    await pagination.create_pagination(key, pageNumber, pagination.limit);
 }).on("click", ".pagination_master .forward", function (e) {
     if(!$(this).hasClass("disabled")) {
         let key = $(this).parents(".pagination_master").attr("ref");
