@@ -723,7 +723,7 @@ end
 $$;
 `
 
-export const funct_load_conta_documento = sql`
+export const funct_load_conta_documento_v2 = sql`
 create or replace function tweeks.funct_load_conta_documento( args jsonb ) returns SETOF jsonb
   language plpgsql
 as
