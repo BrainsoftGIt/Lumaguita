@@ -177,6 +177,21 @@
 			<svg close-mini-modal width="24px" height="17px" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path fill="#ff0000" d="M195.2 195.2a64 64 0 0 1 90.496 0L512 421.504 738.304 195.2a64 64 0 0 1 90.496 90.496L602.496 512 828.8 738.304a64 64 0 0 1-90.496 90.496L512 602.496 285.696 828.8a64 64 0 0 1-90.496-90.496L421.504 512 195.2 285.696a64 64 0 0 1 0-90.496z"></path></g></svg>
 		</div>
 	</div>
+	<div id="xModalConfirm" class="x-mobdal XM-resetColabPass flex v-ct h-ct" target="xModalConfirm">
+		<div class="modal-frame">
+			<h3 targetTitle></h3>
+			<p>Tem certeza de que pretende executar esta operação?</p>
+			<div class="master-btn-right flex">
+				<span class="hideTarget" target="xModalConfirm">NÃO</span>
+				<span class="flex v-ct" xModalConfirm>
+					SIM
+					<svg class="spinner" viewBox="0 0 50 50">
+						<circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
+					</svg>
+				</span>
+			</div>
+		</div>
+	</div>
 </body>
 
 <script type="module" src="../assets/js/version.js?v=<%=VERSION.TAG%>"></script>

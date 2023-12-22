@@ -95,36 +95,39 @@ $("[codigo_armazens]").on("keyup", function (e) {
 });
 
 $("#finalizar_transferencia").on("click", function () {
-    let modal = window.xModalGeral || ""
-    spaceConfig.loadConfig().then(value => {
-        if(spaceConfig.isConfigured({object: value.config[0]})){
-            if($(` ${modal} #armazem_saida `).find("li.active").length === 0){
-                xAlert("Transferir artigos", "Selecione o armazém de saída", "info");
-                return;
-            }
-            if($(`${modal} #armazem_entrada`).find("li.active").length === 0){
-                xAlert("Transferir artigos", "Selecione o armazém de entrada", "info");
-                return;
-            }
-            if($(`${modal} #armazem_saida`).find("li.active").attr("armazem_id") === $(`${modal} #armazem_entrada `).find("li.active").attr("armazem_id")) {
-                xAlert("Transferir artigos", "Armazém de origem e destino devem ser diferentes", "error");
-                return;
-            }
-            let regExp = /[a-zA-Z]/g;
-            let dataTransferencia = $(` ${modal} #transferencia_data `).val();
-            if(dataTransferencia === "") dataTransferencia = null;
-            else{
-                if(regExp.test(dataTransferencia)){
-                    xAlert("Transferir artigos", "Digite a data de transferência!", "info");
-                    $(`${modal} #transferencia_data`).focus();
+    xModalConfirm.funcs = () => {
+        let modal = window.xModalGeral || "";
+        $("#xModalConfirm").removeClass("show");
+        spaceConfig.loadConfig().then(value => {
+            if(spaceConfig.isConfigured({object: value.config[0]})){
+                if($(` ${modal} #armazem_saida `).find("li.active").length === 0){
+                    xAlert("Transferir artigos", "Selecione o armazém de saída", "info");
                     return;
                 }
+                if($(`${modal} #armazem_entrada`).find("li.active").length === 0){
+                    xAlert("Transferir artigos", "Selecione o armazém de entrada", "info");
+                    return;
+                }
+                if($(`${modal} #armazem_saida`).find("li.active").attr("armazem_id") === $(`${modal} #armazem_entrada `).find("li.active").attr("armazem_id")) {
+                    xAlert("Transferir artigos", "Armazém de origem e destino devem ser diferentes", "error");
+                    return;
+                }
+                let regExp = /[a-zA-Z]/g;
+                let dataTransferencia = $(` ${modal} #transferencia_data `).val();
+                if(dataTransferencia === "") dataTransferencia = null;
+                else{
+                    if(regExp.test(dataTransferencia)){
+                        xAlert("Transferir artigos", "Digite a data de transferência!", "info");
+                        $(`${modal} #transferencia_data`).focus();
+                        return;
+                    }
+                }
+                if($(`${modal} [tableDocumentArticles]`).find(`ul`).length === 0){
+                    xAlert("Transferir artigos", "Adicione artigos na tabela!", "info");
+                    return;
+                }
+                transference.transferir();
             }
-            if($(`${modal} [tableDocumentArticles]`).find(`ul`).length === 0){
-                xAlert("Transferir artigos", "Adicione artigos na tabela!", "info");
-                return;
-            }
-            transference.transferir();
-        }
-    });
+        });
+    }
 });

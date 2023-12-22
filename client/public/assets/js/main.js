@@ -258,7 +258,6 @@ const isEdge = window.navigator.userAgent.indexOf("Edg") > -1;
 // Check if dark mode is enabled
 const darkModeEnabled = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
 
-console.log("dhdhhdhdh");
 console.log({isEdge, darkModeEnabled})
 if (isEdge && !darkModeEnabled) {
     // Get a reference to the <body> element
@@ -268,3 +267,10 @@ if (isEdge && !darkModeEnabled) {
     body.classList.add("noDark");
 
 }
+
+var xModalConfirm = {}
+$("[xModalConfirm]").on("click", function (){
+    if(xModalConfirm.funcs){
+        xModalConfirm.funcs();
+    }
+})

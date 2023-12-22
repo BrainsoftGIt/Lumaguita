@@ -133,31 +133,34 @@ var guiaSaida = {
     },
 };
 $("#finalizar_guia_saida").on("click", function () {
-    let modal = window.xModalGeral || ""
-    spaceConfig.loadConfig().then(value => {
-        if(spaceConfig.isConfigured({object: value.config[0]})){
-            if($("#colaborador_logado_armazens").find("li.active").attr("posto_admin") === "null"){
-                xAlert("Guia de Saída", "Selecione o posto para estar associado ao armazém "+ $("[currentUserSpace]").text()+", em definições!", "error");
-                return;
-            }
-            if(articlesDocuments.customer_id === null){
-                xAlert("Guia de Saída", "Pesquise um cliente!", "info");
-                $(`${modal} [search_customer]`).focus();
-                return;
-            }
-            if($(`${modal} [tableDocumentArticles]`).find(`ul`).length === 0){
-                xAlert("Guia de Saída", "Adicione artigos na tabela!", "info");
-                return;
-            }
+    xModalConfirm.funcs = () => {
+        let modal = window.xModalGeral || "";
+        $("#xModalConfirm").removeClass("show");
+        spaceConfig.loadConfig().then(value => {
+            if(spaceConfig.isConfigured({object: value.config[0]})){
+                if($("#colaborador_logado_armazens").find("li.active").attr("posto_admin") === "null"){
+                    xAlert("Guia de Saída", "Selecione o posto para estar associado ao armazém "+ $("[currentUserSpace]").text()+", em definições!", "error");
+                    return;
+                }
+                if(articlesDocuments.customer_id === null){
+                    xAlert("Guia de Saída", "Pesquise um cliente!", "info");
+                    $(`${modal} [search_customer]`).focus();
+                    return;
+                }
+                if($(`${modal} [tableDocumentArticles]`).find(`ul`).length === 0){
+                    xAlert("Guia de Saída", "Adicione artigos na tabela!", "info");
+                    return;
+                }
 
-            guiaSaida.loadAccountKey().then(value =>{
-                guiaSaida.key = value.accountKey;
-                guiaSaida.addAccount();
-            }).catch(err =>{
-                $("#finalizar_fatura").attr("disabled", false).removeClass("loading");
-            });
-        }
-    });
+                guiaSaida.loadAccountKey().then(value =>{
+                    guiaSaida.key = value.accountKey;
+                    guiaSaida.addAccount();
+                }).catch(err =>{
+                    $("#finalizar_fatura").attr("disabled", false).removeClass("loading");
+                });
+            }
+        });
+    }
 });
 
 
