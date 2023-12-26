@@ -62,7 +62,6 @@ app.post("/api/cambio", async (req, res) => {
             arg_cambio_data,
         });
 
-        console.log({message, result})
         if(!result){
             res.json({result, message});
         }
