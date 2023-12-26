@@ -488,40 +488,24 @@ var settings = {
     },
     atualizarCambio: () => {
 
-        let cambio_euro = $("#cambio_euro");
-        let euro = cambio_euro.val().unFormatter();
-        let euro_currency = cambio_euro.attr("currency");
+        let cambios = [];
+        $("#xModalCtrlCambio input[code]").each(function (){
+            let value = $(this).val();
+            let currency = $(this).attr("currency");
+            let code = $(this).attr("code");
 
-        let cambio_xaf = $("#cambio_xaf");
-        let xaf = cambio_xaf.val().unFormatter();
-        let xaf_currency = cambio_xaf.attr("currency");
-
-        let cambio_usd = $("#cambio_usd");
-        let usd = cambio_usd.val().unFormatter();
-        let usd_currency = cambio_usd.attr("currency");
+            if(value && !$(this).attr("readonly")){
+                value = value.unFormatter();
+                cambios.push({
+                    value,
+                    currency,
+                    code
+                })
+            }
+        })
 
         let data =  new Date().getDateEn();
-
-        let contNoValue = 0;
-        if(!cambio_xaf.val()){
-            xaf = undefined;
-            xaf_currency = undefined;
-            contNoValue++;
-        }
-
-        if(!cambio_usd.val()){
-            usd = undefined;
-            usd_currency = undefined;
-            contNoValue++;
-        }
-
-        if(!cambio_euro.val()){
-            euro = undefined;
-            euro_currency = undefined;
-            contNoValue++;
-        }
-
-        if(contNoValue === 3){
+        if(cambios.length === 0){
             xAlert("Câmbio", "Defina pelo menos um câmbio!", "warning");
             return
         }
@@ -533,12 +517,7 @@ var settings = {
             contentType: "application/json",
             error(){$("[bt_cambio]").attr("disabled", false).removeClass("loading")},
             data: JSON.stringify({
-                euro,
-                usd,
-                xaf,
-                euro_currency,
-                usd_currency,
-                xaf_currency,
+                cambios,
                 data
             }),
             success(e) {
@@ -848,11 +827,14 @@ $("[bt_cambio]").on("click", function () {
     settings.atualizarCambio();
 });
 $("#editarCambio").on("click", function () {
-    let cambiosData = $("[cambios]");
-    $("#cambio_stn").val(cambiosData.find("span[code=stn]").attr("value")).attr("currency", cambiosData.find("span[code=stn]").attr("currency"));
-    $("#cambio_euro").val(cambiosData.find("span[code=eur]").attr("value")).attr("currency", cambiosData.find("span[code=eur]").attr("currency"));
-    $("#cambio_usd").val( cambiosData.find("span[code=usd]").attr("value")).attr("currency", cambiosData.find("span[code=usd]").attr("currency"));
-    $("#cambio_xaf").val(cambiosData.find("span[code=xaf]").attr("value")).attr("currency", cambiosData.find("span[code=xaf]").attr("currency"));
+    let cambiosData = $("[cambios] span[code]");
+    $.each(cambiosData, function (){
+        let code = $(this).attr("code");
+        console.log({code})
+        let currency = $(this).attr("currency");
+        let value = $(this).attr("value")
+        $(`#cambio_${code}`).val(value).attr("currency", currency);
+    })
     showTarget("xModalCtrlCambio", "Atualizar câmbio");
 });
 $("[bt_posto]").on("click", function () {
