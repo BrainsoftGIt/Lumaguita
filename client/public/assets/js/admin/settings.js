@@ -830,7 +830,6 @@ $("#editarCambio").on("click", function () {
     let cambiosData = $("[cambios] span[code]");
     $.each(cambiosData, function (){
         let code = $(this).attr("code");
-        console.log({code})
         let currency = $(this).attr("currency");
         let value = $(this).attr("value")
         $(`#cambio_${code}`).val(value).attr("currency", currency);
