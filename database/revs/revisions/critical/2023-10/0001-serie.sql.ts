@@ -300,6 +300,15 @@ begin
     _autorizacao.autorizacao_colaborador_atualizacao := arg_colaborador_id;
     _autorizacao.autorizacao_dataatualizacao := now();
   end if;
+
+  if exists(
+    select *
+      from jsonb_array_elements( args->'serie' ) e( doc )
+        inner join jsonb_populate_record( null::tweeks.serie, e.doc ) s on true
+      where right( s.serie_numero, 2 ) = to_char( current_date, 'yy' )
+  ) then
+    return lib.res_false('Numero de serie invalido para o ano em curso!' );
+  end if;
   
   if _autorizacao_continue.autorizacao_uid is null and exists(
     select *
@@ -341,7 +350,11 @@ begin
   ) loop
     select * into _next
       from tweeks.funct_sets_serie( _data.document_serie ) e;
-  
+
+    if not _next.result then
+      raise exception '%', _next.message;
+    end if;
+
     _res_serie := _res_serie || jsonb_build_object(
       'serie', _data.document_serie,
       'result', _next
