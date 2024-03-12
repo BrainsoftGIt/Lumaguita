@@ -237,50 +237,53 @@ var faturaAdmin = {
 };
 
 $("#finalizar_fatura").on("click", function () {
-    let docType = (FATURA === serieOperation.tipo.notaCredito ? "Nota de crédito" : "Nota de debito");
-    let modal = window.xModalGeral || ""
-    spaceConfig.loadConfig().then(value => {
-        if(spaceConfig.isConfigured({object: value.config[0]})){
-            if(serieOperation.missing.includes(FATURA)){
-                xAlert(docType, "Nenhuma série de fatura encontrada para este armazém. Defina-a em definições!","error");
-                return;
-            }
-            if($("#colaborador_logado_armazens").find("li.active").attr("posto_admin") === "null"){
-                xAlert(docType, "Selecione o posto para estar associado ao armazém "+ $("[currentUserSpace]").text()+", em definições!", "error");
-                return;
-            }
-            if(articlesDocuments.customer_id === null){
-                xAlert(docType, "Pesquise um cliente!", "info");
-                $(`${modal} [search_customer]`).focus();
-                return;
-            }
-            if($(`${modal} [tableDocumentArticles]`).find(`ul`).length === 0){
-                xAlert(docType, "Adicione artigos na tabela!", "info");
-                return;
-            }
+    xModalConfirm.funcs = () => {
+        $("#xModalConfirm").removeClass("show");
+        let docType = (FATURA === serieOperation.tipo.notaCredito ? "Nota de crédito" : "Nota de debito");
+        let modal = window.xModalGeral || ""
+        spaceConfig.loadConfig().then(value => {
+            if(spaceConfig.isConfigured({object: value.config[0]})){
+                if(serieOperation.missing.includes(FATURA)){
+                    xAlert(docType, "Nenhuma série de fatura encontrada para este armazém. Defina-a em definições!","error");
+                    return;
+                }
+                if($("#colaborador_logado_armazens").find("li.active").attr("posto_admin") === "null"){
+                    xAlert(docType, "Selecione o posto para estar associado ao armazém "+ $("[currentUserSpace]").text()+", em definições!", "error");
+                    return;
+                }
+                if(articlesDocuments.customer_id === null){
+                    xAlert(docType, "Pesquise um cliente!", "info");
+                    $(`${modal} [search_customer]`).focus();
+                    return;
+                }
+                if($(`${modal} [tableDocumentArticles]`).find(`ul`).length === 0){
+                    xAlert(docType, "Adicione artigos na tabela!", "info");
+                    return;
+                }
 
-            let listfatura = $(`${modal} [listfatura]`);
-            if(!!listfatura.length && !listfatura.find("li.active").length){
-                xAlert(docType, "Por favor, selecione uma serie de fatura!", "error");
-                return
-            }
+                let listfatura = $(`${modal} [listfatura]`);
+                if(!!listfatura.length && !listfatura.find("li.active").length){
+                    xAlert(docType, "Por favor, selecione uma serie de fatura!", "error");
+                    return
+                }
 
-            let observacao_fatura = $("#observacao_fatura")
-            if(!observacao_fatura.val()){
-                xAlert(docType, "Por favor, adicione uma observação!", "error");
-                observacao_fatura.focus()
-                return;
-            }
+                let observacao_fatura = $("#observacao_fatura")
+                if(!observacao_fatura.val()){
+                    xAlert(docType, "Por favor, adicione uma observação!", "error");
+                    observacao_fatura.focus()
+                    return;
+                }
 
-            faturaAdmin.loadAccountKey().then(value =>{
-                faturaAdmin.key = value.accountKey;
-                faturaAdmin.register_invoice();
-            }).catch(err =>{
-                console.error(err)
-                $("#finalizar_fatura").attr("disabled", false).removeClass("loading");
-            });
-        }
-    });
+                faturaAdmin.loadAccountKey().then(value =>{
+                    faturaAdmin.key = value.accountKey;
+                    faturaAdmin.register_invoice();
+                }).catch(err =>{
+                    console.error(err)
+                    $("#finalizar_fatura").attr("disabled", false).removeClass("loading");
+                });
+            }
+        });
+    }
 });
 
 $("[documento_origem]").on("keyup", function ({keyCode}){

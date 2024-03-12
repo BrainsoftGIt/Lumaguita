@@ -113,33 +113,36 @@ $("#entrada_fornecedor").on("keyup", function(){
     }
 });
 $("#finalizar_guia_entrada").on("click",function (e) {
-    let modal = window.xModalGeral || ""
-    if($(`${modal} #entrada_fornecedor`).val().trim() === ""){
-        guiaEntrada.fornecedor_id = null;
-    }
-    spaceConfig.loadConfig().then(value => {
-        if(spaceConfig.isConfigured({object: value.config[0]})){
-            if(guiaEntrada.fornecedor_id === null){
-                xAlert("Guia de Entrada", "Pesquise um fornecedor!", "info");
-                $(`${modal} #codigo_fornecedor`).focus();
-                return;
-            }
-            if($(`${modal} #armazens_entrada`).find("li.active").length === 0){
-                xAlert("Guia de Entrada", "Selecione o armazém de destino", "info");
-                return;
-            }
-            if(!validation1($(`${modal} #entrada_data_compra`))) return;
-            let regExp = /[a-zA-Z]/g;
-            if (regExp.test($(` ${modal} #entrada_data_compra `).val())) {
-                xAlert("Guia de Entrada", "Digite a data de compra!", "info");
-                $(`${modal} [entrada_data_compra]`).focus();
-                return;
-            }
-            if($(`${modal} [tableDocumentArticles]`).find(`ul`).length === 0){
-                xAlert("Guia de Entrada", "Adicione artigos na tabela!", "info");
-                return;
-            }
-            guiaEntrada.registar_entrada();
+    xModalConfirm.funcs = () => {
+        let modal = window.xModalGeral || ""
+        $("#xModalConfirm").removeClass("show");
+        if($(`${modal} #entrada_fornecedor`).val().trim() === ""){
+            guiaEntrada.fornecedor_id = null;
         }
-    });
+        spaceConfig.loadConfig().then(value => {
+            if(spaceConfig.isConfigured({object: value.config[0]})){
+                if(guiaEntrada.fornecedor_id === null){
+                    xAlert("Guia de Entrada", "Pesquise um fornecedor!", "info");
+                    $(`${modal} #codigo_fornecedor`).focus();
+                    return;
+                }
+                if($(`${modal} #armazens_entrada`).find("li.active").length === 0){
+                    xAlert("Guia de Entrada", "Selecione o armazém de destino", "info");
+                    return;
+                }
+                if(!validation1($(`${modal} #entrada_data_compra`))) return;
+                let regExp = /[a-zA-Z]/g;
+                if (regExp.test($(` ${modal} #entrada_data_compra `).val())) {
+                    xAlert("Guia de Entrada", "Digite a data de compra!", "info");
+                    $(`${modal} [entrada_data_compra]`).focus();
+                    return;
+                }
+                if($(`${modal} [tableDocumentArticles]`).find(`ul`).length === 0){
+                    xAlert("Guia de Entrada", "Adicione artigos na tabela!", "info");
+                    return;
+                }
+                guiaEntrada.registar_entrada();
+            }
+        });
+    }
 });

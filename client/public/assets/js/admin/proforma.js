@@ -120,29 +120,32 @@ var proformaAdmin = {
 };
 
 $("#finalizar_proforma").on("click", function () {
-    let modal = window.xModalGeral || "";
-    spaceConfig.loadConfig().then(value => {
-        if(spaceConfig.isConfigured({object: value.config[0]})){
-            if($("#colaborador_logado_armazens").find("li.active").attr("posto_admin") === "null"){
-                xAlert("Proforma", "Selecione o posto para estar associado ao armazém "+ $("[currentUserSpace]").text()+", em definições!", "error");
-                return;
+    xModalConfirm.funcs = () => {
+        let modal = window.xModalGeral || "";
+        $("#xModalConfirm").removeClass("show");
+        spaceConfig.loadConfig().then(value => {
+            if(spaceConfig.isConfigured({object: value.config[0]})){
+                if($("#colaborador_logado_armazens").find("li.active").attr("posto_admin") === "null"){
+                    xAlert("Proforma", "Selecione o posto para estar associado ao armazém "+ $("[currentUserSpace]").text()+", em definições!", "error");
+                    return;
+                }
+                if(articlesDocuments.customer_id === null){
+                    xAlert("Fatura proforma", "Pesquise um cliente!", "info");
+                    $(`${modal} [search_customer]`).focus();
+                    return;
+                }
+                if($(` ${modal}  [tableDocumentArticles]`).find(`ul`).length === 0){
+                    xAlert("Fatura proforma", "Adicione artigos na tabela!", "info");
+                    return;
+                }
+                $(`${modal}  #finalizar_proforma`).attr("disabled", true).addClass("loading");
+                proformaAdmin.loadAccountKey().then(value1 => {
+                    proformaAdmin.key = value1.accountKey;
+                    proformaAdmin.add_account();
+                }).catch(err =>{
+                    $(`${modal} #finalizar_proforma`).attr("disabled", false).removeClass("loading");
+                });
             }
-            if(articlesDocuments.customer_id === null){
-                xAlert("Fatura proforma", "Pesquise um cliente!", "info");
-                $(`${modal} [search_customer]`).focus();
-                return;
-            }
-            if($(` ${modal}  [tableDocumentArticles]`).find(`ul`).length === 0){
-                xAlert("Fatura proforma", "Adicione artigos na tabela!", "info");
-                return;
-            }
-            $(`${modal}  #finalizar_proforma`).attr("disabled", true).addClass("loading");
-            proformaAdmin.loadAccountKey().then(value1 => {
-                proformaAdmin.key = value1.accountKey;
-                proformaAdmin.add_account();
-            }).catch(err =>{
-                $(`${modal} #finalizar_proforma`).attr("disabled", false).removeClass("loading");
-            });
-        }
-    });
+        });
+    }
 });

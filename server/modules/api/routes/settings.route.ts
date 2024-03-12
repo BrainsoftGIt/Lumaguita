@@ -46,38 +46,31 @@ app.post("/api/armazem/edit", async (req, res) => {
 app.post("/api/cambio", async (req, res) => {
     const {functRegCambio} = require("../db/call-function-settings");
     let before =  await clusterServer.service.loadLocalCluster();
-    let cambios = [];
-    cambios.push({
-        arg_colaborador_id: req?.session?.auth_data?.auth?.colaborador_id || null,
-        arg_currency_id: req.body.euro_currency,
-        arg_espaco_auth: req?.session?.auth_data?.auth?.armazem_atual || null,
-        arg_cambio_taxa: req.body.euro,
-        arg_cambio_data: req.body.data,
-        arg_branch_uid: req?.session?.auth_data?.auth?.branch_uuid || null
-    });
-    cambios.push({
-        arg_colaborador_id: req?.session?.auth_data?.auth?.colaborador_id || null,
-        arg_currency_id: req.body.usd_currency,
-        arg_espaco_auth: req?.session?.auth_data?.auth?.armazem_atual || null,
-        arg_cambio_taxa: req.body.usd,
-        arg_cambio_data: req.body.data,
-        arg_branch_uid: req?.session?.auth_data?.auth?.branch_uuid || null
-    });
-    cambios.push({
-        arg_colaborador_id: req?.session?.auth_data?.auth?.colaborador_id || null,
-        arg_currency_id: req.body.xaf_currency,
-        arg_espaco_auth: req?.session?.auth_data?.auth?.armazem_atual || null,
-        arg_cambio_taxa: req.body.xaf,
-        arg_cambio_data: req.body.data,
-        arg_branch_uid: req?.session?.auth_data?.auth?.branch_uuid || null
-    });
-    let response = null;
-     for (const cam of cambios) {
-        response = await functRegCambio(cam);
+
+    let arg_colaborador_id = req?.session?.auth_data?.auth?.colaborador_id || null;
+    let arg_espaco_auth = req?.session?.auth_data?.auth?.armazem_atual || null;
+    let arg_branch_uid = req?.session?.auth_data?.auth?.branch_uuid || null;
+    let {cambios, data: arg_cambio_data} = req.body;
+    for (const {currency: arg_currency_id, value: arg_cambio_taxa} of cambios) {
+
+        let {row: {message : { text : message}, result}} = await functRegCambio({
+            arg_colaborador_id,
+            arg_currency_id,
+            arg_branch_uid,
+            arg_espaco_auth,
+            arg_cambio_taxa,
+            arg_cambio_data,
+        });
+
+        if(!result){
+            res.json({result, message});
+        }
+
     }
+
     let after = await clusterServer.service.loadLocalCluster();
-    res.json({result: response.row.result, message: response.row.message.text});
-    if(response.row.result && before.cluster_version < after.cluster_version){
+    res.json({result: true});
+    if (before.cluster_version < after.cluster_version){
         clusterServer.notifyLocalChange({
             event: "COIN",
             extras: null,

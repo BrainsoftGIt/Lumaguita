@@ -344,47 +344,50 @@ $("#ver_proformas").on("click", function () {
     faturaAdmin.loadProformas();
 });
 $("#finalizar_fatura").on("click", function () {
-    let modal = window.xModalGeral || ""
-    spaceConfig.loadConfig().then(value => {
-        if(spaceConfig.isConfigured({object: value.config[0]})){
-            if(serieOperation.missing.includes(FATURA)){
-                xAlert("Série de fatura", "Nenhuma série de fatura encontrada para este armazém. Defina-a em definições!","error");
-                return;
-            }
-            if($("#colaborador_logado_armazens").find("li.active").attr("posto_admin") === "null"){
-                xAlert("Fatura", "Selecione o posto para estar associado ao armazém "+ $("[currentUserSpace]").text()+", em definições!", "error");
-                return;
-            }
-            if(articlesDocuments.customer_id === null){
-                xAlert("Fatura ", "Pesquise um cliente!", "info");
-                $(`${modal} [search_customer]`).focus();
-                return;
-            }
-            if($(`${modal} [tableDocumentArticles]`).find(`ul`).length === 0){
-                xAlert("Fatura", "Adicione artigos na tabela!", "info");
-                return;
-            }
+    xModalConfirm.funcs = () => {
+        let modal = window.xModalGeral || "";
+        $("#xModalConfirm").removeClass("show");
+        spaceConfig.loadConfig().then(value => {
+            if(spaceConfig.isConfigured({object: value.config[0]})){
+                if(serieOperation.missing.includes(FATURA)){
+                    xAlert("Série de fatura", "Nenhuma série de fatura encontrada para este armazém. Defina-a em definições!","error");
+                    return;
+                }
+                if($("#colaborador_logado_armazens").find("li.active").attr("posto_admin") === "null"){
+                    xAlert("Fatura", "Selecione o posto para estar associado ao armazém "+ $("[currentUserSpace]").text()+", em definições!", "error");
+                    return;
+                }
+                if(articlesDocuments.customer_id === null){
+                    xAlert("Fatura ", "Pesquise um cliente!", "info");
+                    $(`${modal} [search_customer]`).focus();
+                    return;
+                }
+                if($(`${modal} [tableDocumentArticles]`).find(`ul`).length === 0){
+                    xAlert("Fatura", "Adicione artigos na tabela!", "info");
+                    return;
+                }
 
-            let listfatura = $(`${modal} [listfatura]`);
-            if(!!listfatura.length && !listfatura.find("li.active").length){
-                xAlert("", "Por favor, selecione uma serie de fatura!", "error");
-                return
-            }
+                let listfatura = $(`${modal} [listfatura]`);
+                if(!!listfatura.length && !listfatura.find("li.active").length){
+                    xAlert("", "Por favor, selecione uma serie de fatura!", "error");
+                    return
+                }
 
-            if($("#factura_moeda li.active").length === 0){
-                xAlert("", "Por favor, selecione uma moeda!", "error");
-                return;
-            }
+                if($("#factura_moeda li.active").length === 0){
+                    xAlert("", "Por favor, selecione uma moeda!", "error");
+                    return;
+                }
 
-            $("#finalizar_fatura").attr("disabled", true).addClass("loading");
-            faturaAdmin.loadAccountKey().then(value =>{
-                faturaAdmin.key = value.accountKey;
-                faturaAdmin.add_account();
-            }).catch(err =>{
-                $("#finalizar_fatura").attr("disabled", false).removeClass("loading");
-            });
-        }
-    });
+                $("#finalizar_fatura").attr("disabled", true).addClass("loading");
+                faturaAdmin.loadAccountKey().then(value =>{
+                    faturaAdmin.key = value.accountKey;
+                    faturaAdmin.add_account();
+                }).catch(err =>{
+                    $("#finalizar_fatura").attr("disabled", false).removeClass("loading");
+                });
+            }
+        });
+    }
 });
 
 articlesDocuments.loadSerieDistribuicao(serieOperation.tipo.fatura)

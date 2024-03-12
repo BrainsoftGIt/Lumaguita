@@ -486,15 +486,40 @@ var settings = {
             }
         });
     },
-    atualizarCambio(){
+    atualizarCambio: () => {
+
+        let cambios = [];
+        $("#xModalCtrlCambio input[code]").each(function (){
+            let value = $(this).val();
+            let currency = $(this).attr("currency");
+            let code = $(this).attr("code");
+
+            if(value && !$(this).attr("readonly")){
+                value = value.unFormatter();
+                cambios.push({
+                    value,
+                    currency,
+                    code
+                })
+            }
+        })
+
+        let data =  new Date().getDateEn();
+        if(cambios.length === 0){
+            xAlert("Câmbio", "Defina pelo menos um câmbio!", "warning");
+            return
+        }
+
         $("[bt_cambio]").attr("disabled", true).addClass("loading");
         $.ajax({
             url: "/api/cambio",
             method: "POST",
             contentType: "application/json",
             error(){$("[bt_cambio]").attr("disabled", false).removeClass("loading")},
-            data: JSON.stringify({euro: $("#cambio_euro").val().unFormatter(), usd: $("#cambio_usd").val().unFormatter(), euro_currency: $("#cambio_euro").attr("currency"),
-                usd_currency: $("#cambio_usd").attr("currency"), xaf_currency: $("#cambio_xaf").attr("currency"), data: new Date().getDateEn(), xaf: $("#cambio_xaf").val().unFormatter()}),
+            data: JSON.stringify({
+                cambios,
+                data
+            }),
             success(e) {
                 $("[bt_cambio]").attr("disabled", false).removeClass("loading");
                 if(e.result){
@@ -799,16 +824,16 @@ $("[bt_empresa]").on("click", function () {
     settings.configurarDadosEmpresa();
 });
 $("[bt_cambio]").on("click", function () {
-    if(validation1($("#xModalCtrlCambio").find("input:text"))){
-        settings.atualizarCambio();
-    }
+    settings.atualizarCambio();
 });
 $("#editarCambio").on("click", function () {
-    let cambiosData = $("[cambios]");
-    $("#cambio_stn").val(cambiosData.find("span[code=stn]").attr("value")).attr("currency", cambiosData.find("span[code=stn]").attr("currency"));
-    $("#cambio_euro").val(cambiosData.find("span[code=eur]").attr("value")).attr("currency", cambiosData.find("span[code=eur]").attr("currency"));
-    $("#cambio_usd").val( cambiosData.find("span[code=usd]").attr("value")).attr("currency", cambiosData.find("span[code=usd]").attr("currency"));
-    $("#cambio_xaf").val(cambiosData.find("span[code=xaf]").attr("value")).attr("currency", cambiosData.find("span[code=xaf]").attr("currency"));
+    let cambiosData = $("[cambios] span[code]");
+    $.each(cambiosData, function (){
+        let code = $(this).attr("code");
+        let currency = $(this).attr("currency");
+        let value = $(this).attr("value")
+        $(`#cambio_${code}`).val(value).attr("currency", currency);
+    })
     showTarget("xModalCtrlCambio", "Atualizar câmbio");
 });
 $("[bt_posto]").on("click", function () {
