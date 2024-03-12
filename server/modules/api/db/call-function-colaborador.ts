@@ -61,12 +61,6 @@ export function functChangePIN(args) {
         sql `select * from auth.funct_change_colaborador_pin( ${ args })`
     );
 }
-export function functRestorePassword(args) {
-    const {sql} = factory.create(Templates.PARAMETERIZED);
-    return catchLast(
-        sql `select * from tweeks.func_restore_user_password( ${ args })`
-    );
-}
 export function functLoadArmazensColaboradorAlocar(args) {
     const {sql} = factory.create(Templates.PARAMETERIZED);
     return catchAll(
