@@ -27,7 +27,6 @@
     "tsc -w": "tsc -w",
     "nodemon:flocoto": "nodemon --config build/nodemon/flocopo.json",
     "nodemon:flocoto-isolated": "nodemon --config build/nodemon/flocopo.isolated.json",
-
     "tsc": "tsc",
     "compile:bin": "node build/launcher/bin.js",
     "compile:build": "node build/compile start --plataform win32 --mode public --user public & tsc.cmd",
