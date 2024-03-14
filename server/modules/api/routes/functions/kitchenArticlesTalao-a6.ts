@@ -1,7 +1,7 @@
 import path from "path";
 import fs from "fs";
 import {getFonts, structure} from "./estruture-talao-a6";
-import {folders} from "../../../../global/project";
+import {Folders} from "../../../../global/project";
 import * as print from "./printer";
 import {clusterServer} from "../../../../service/cluster.service";
 import {sys} from "../../../../global/sys";
@@ -143,11 +143,11 @@ export let create = async (instituition, articles, res, date, table, obs, user, 
     pdfDocGenerator.getBuffer((buffer) => {
         let filename = "Kitchen"+(new Date().getTime()+Math.random())+".pdf";
         const printerName = instituition.espaco_configuracao.impressoras_cozinha.nome;
-        fs.mkdirSync(path.join(folders.temp, 'multer'), {recursive: true});
-        fs.writeFile(path.join(folders.temp, 'multer/'+filename), buffer, function (err) {
+        fs.mkdirSync(path.join(Folders.temp, 'multer'), {recursive: true});
+        fs.writeFile(path.join(Folders.temp, 'multer/'+filename), buffer, function (err) {
             let paper = "A6";
             if(!onlyOpen) {
-                print[versionPrinter](printerName, path.resolve(path.join(folders.temp, 'multer/' + filename)), paper);
+                print[versionPrinter](printerName, path.resolve(path.join(Folders.temp, 'multer/' + filename)), paper);
             }
             res.json("done");
         });

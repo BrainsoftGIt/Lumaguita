@@ -3,7 +3,7 @@ import {clusterServer} from "../../../service/cluster.service";
 import path from "path";
 import fs from "fs";
 import {ClusterEvent} from "../../../lib/cluster/enuns";
-import {folders} from "../../../global/project";
+import {Folders} from "../../../global/project";
 import {factory} from "../../../service/database.service";
 import {Templates, Types} from "zoo.pg";
 
@@ -61,7 +61,7 @@ app.get("/api/cluster/license/:cluster_uuid", async (req, res) =>{
     const {generateEncryptionKey} = require("../../../lib/crypto/cryptoFile");
     let encryptor = require('simple-encryptor')(generateEncryptionKey());
 
-    fs.mkdirSync(path.join(folders.temp, 'multer'), {recursive: true});
+    fs.mkdirSync(path.join(Folders.temp, 'multer'), {recursive: true});
     let clusterRemoto = response.rows.find(value => value.data.cluster_uid === req.params.cluster_uuid);
     if(clusterRemoto){
         let licenseIdentifier = "Luma_"+clusterRemoto.data.cluster_name+"_"+clusterRemoto.data.cluster_identifier+".lic";
@@ -76,9 +76,9 @@ app.get("/api/cluster/license/:cluster_uuid", async (req, res) =>{
             cluster_licenselife: clusterRemoto.data.cluster_licenselife,
             cluster_tperiod_id: clusterRemoto.data.tperiod_id
         }
-        fs.writeFile(path.join(folders.temp, 'multer/'+licenseIdentifier), encryptor.encrypt(dados_registo), (err) => {
+        fs.writeFile(path.join(Folders.temp, 'multer/'+licenseIdentifier), encryptor.encrypt(dados_registo), (err) => {
             if(err) return console.log(err);
-            else res.download(path.join(folders.temp, 'multer')+"/"+licenseIdentifier, licenseIdentifier);
+            else res.download(path.join(Folders.temp, 'multer')+"/"+licenseIdentifier, licenseIdentifier);
         });
     }
 });

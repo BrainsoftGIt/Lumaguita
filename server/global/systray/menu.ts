@@ -8,7 +8,7 @@ import {nwAppStatus} from "../../../client/app/status";
 import {args} from "../args";
 import {nanoid} from "nanoid";
 import moment from "moment/moment";
-import {folders} from "../project";
+import {Folders} from "../project";
 import {AppendBackup} from "../../service/database.service/dumps";
 
 const nets: NodeJS.Dict<os.NetworkInterfaceInfo[]> = os.networkInterfaces();
@@ -86,7 +86,7 @@ async function  __createBackup( withCluster:boolean, complete:boolean ) {
 
         let appends:AppendBackup[] = [];
         if( complete ){
-            appends.push({folder:  folders.storage, dest: "/storage"})
+            appends.push({folder:  Folders.storage, dest: "/storage"})
         }
 
         let result = await saveBackup( {

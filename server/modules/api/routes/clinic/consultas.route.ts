@@ -2,7 +2,7 @@ import {app, storage} from '../../../../service/storage.service';
 import {load_space_configuration} from "../print.route";
 import fs from "fs";
 import path from "path";
-import {folders} from "../../../../global/project";
+import {Folders} from "../../../../global/project";
 
 app.post("/api/clinica/consulta/set", async (req, res) =>{
     const {functSetConsulta} = require("../../db/clinic/call-function-consulta");
@@ -44,7 +44,7 @@ app.post("/api/clinica/consulta/load/data", async (req, res) =>{
 
 async function createPDFReceita(req, file, res){
     let data = JSON.parse(req.params.data);
-    let fileData = fs.readFileSync(path.join(folders.temp, data.file));
+    let fileData = fs.readFileSync(path.join(Folders.temp, data.file));
     let {client, tratamento, utente} = JSON.parse(fileData.toString());
     let {0: {funct_load_espaco_configuracao: {espaco}}} = await load_space_configuration(req, true);
     let user = req?.session?.auth_data?.auth.colaborador_nome + " " + (req?.session?.auth_data?.auth.colaborador_apelido === null ? "" : req?.session?.auth_data?.auth.colaborador_apelido.split(" ").pop());
@@ -56,7 +56,7 @@ app.post("/api/clinica/consulta/export/receita/data", async (req, res) =>{
     let random = (Math.random() + 1).toString(36).substring(7);
     let data = new Date();
     let file = `${random}-${data.getSeconds()}.json`
-    fs.writeFile(path.join(folders.temp, file), JSON.stringify(req.body), function (err) {
+    fs.writeFile(path.join(Folders.temp, file), JSON.stringify(req.body), function (err) {
         if (err) return console.log(err);
         res.json(file)
     });

@@ -1,10 +1,10 @@
 import {registerTools, tools, toolsName} from "../../../service/tools.service";
-import {folders} from "../../../global/project";
+import {Folders} from "../../../global/project";
 import {execBlock} from "../../../lib/utils/process/win32";
 
 registerTools( "terminal",  {
     line: (command, line, args1) => {
-        execBlock( [], { cwd:folders.snapshot, vars:{} }, "" )
+        execBlock( [], { cwd:Folders.snapshot, vars:{} }, "" )
     }
 })
 // registerTools( "psql",  {

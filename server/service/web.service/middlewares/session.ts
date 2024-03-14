@@ -1,5 +1,5 @@
  import {app } from "../index";
-import {folders} from "../../../global/project";
+import {Folders} from "../../../global/project";
 import {srv} from "../../../global/autogen/config/srv";
 import {Pool} from "pg";
 import { factory } from "../../database.service";
@@ -45,7 +45,7 @@ export const sessionsType = {
         const FileStore = require('session-file-store')(session);
 
         app.use( session({
-            store: new FileStore( { path: folders.sessions } ),
+            store: new FileStore( { path: Folders.sessions } ),
             secret: srv.SERVER.SESSION.SECRETE,
             resave: true,
             saveUninitialized: true,

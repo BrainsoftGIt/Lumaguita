@@ -1,15 +1,15 @@
 import {app} from "../index";
 import express from "express";
-import {folders} from "../../../global/project";
+import {Folders} from "../../../global/project";
 import fs from "fs";
 import Path from "path";
 
 let eTags:{[p:string]:string} = {};
-fs.watch( folders.public, { recursive: true }, (event, source) => {
-    delete eTags[ Path.join( folders.public, source ) ];
+fs.watch( Folders.public, { recursive: true }, (event, source) => {
+    delete eTags[ Path.join( Folders.public, source ) ];
 });
 
-let localStaticResource = express.static( folders.public, {
+let localStaticResource = express.static( Folders.public, {
     cacheControl:true,
     immutable: true,
     maxAge: 1000 * 60 /*segundos*/ * 60 /*minitos*/ * 24 /*horas*/ * 30 /*dias*/ * 12 /*meses*/ * 10 /*anos*/,

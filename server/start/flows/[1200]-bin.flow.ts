@@ -1,7 +1,7 @@
 import {Flow, FlowResponse, OutFlow, SteepFlow} from "kitres/src/core/util/work-flow";
 import {StarSteeps, StartContext, StartResponse} from "../index";
 import {System} from "kitres/src/core/system";
-import {folders} from "../../global/project";
+import {Folders} from "../../global/project";
 
 class S101000SysAppPathFlow extends Flow<StartContext, StartResponse, StarSteeps>{
 
@@ -13,7 +13,7 @@ class S101000SysAppPathFlow extends Flow<StartContext, StartResponse, StarSteeps
     }
 
     flow(steep: StarSteeps, context: StartContext, steepFlow: SteepFlow<StartContext, StartResponse, StarSteeps>, preview: Flow<StartContext, any, StarSteeps>): FlowResponse<StartContext, StartResponse, StarSteeps> {
-        System.toPath( folders.bin )
+        System.toPath( Folders.bin )
         return {
             flow: OutFlow.CONTINUE,
             response: {

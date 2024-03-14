@@ -1,7 +1,7 @@
 import path from "path";
 import fs from "fs";
 import {getFonts, structure, photoResize, getImage} from "./estruture-A5";
-import {folders} from "../../../../../global/project";
+import {Folders} from "../../../../../global/project";
 import {clusterServer} from "../../../../../service/cluster.service";
 
 export let create = async (instituition, res, user, client, utente, tratamento) => {

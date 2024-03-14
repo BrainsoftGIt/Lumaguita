@@ -2,7 +2,7 @@ import {app} from '../../../service/web.service';
 import fs from "fs";
 import path from "path";
 import {clusterServer} from "../../../service/cluster.service";
-import {folders} from "../../../global/project";
+import {Folders} from "../../../global/project";
 import {functLoadArticlesExport} from "../db/call-function-article";
 
 app.get("/api/categorias", async (req, res) => {
@@ -234,7 +234,7 @@ app.post("/api/artigos/transferir", async (req, res) => {
         let rand = (Math.random() + 1).toString(36).substring(7);
         let data = new Date();
         let file = `${rand}-${data.getSeconds()}.json`
-        fs.writeFile(path.join(folders.temp, file), JSON.stringify(req.body), function (err) {
+        fs.writeFile(path.join(Folders.temp, file), JSON.stringify(req.body), function (err) {
             if (err) return console.log(err);
             res.json({result: response.row.result, message: response.row.message, file});
         });
@@ -308,10 +308,10 @@ app.post("/api/artigo/stocks", async (req, res) => {
 app.get("/api/exportar/modelo/artigos/:dados", async (req, res) => {
     let {workBook} = GetModel(req);
     let file_name = "Luma - modelo de importação de artigos.xlsx";
-    fs.mkdirSync(path.join(folders.temp, 'multer'), {recursive: true});
-    await workBook.xlsx.writeFile(path.join(folders.temp, 'multer/' + file_name)).then(() => {
-        res.download(path.join(folders.temp, 'multer') + "/" + file_name, file_name, function () {
-            fs.unlinkSync(path.join(folders.temp, 'multer') + "/" + file_name);
+    fs.mkdirSync(path.join(Folders.temp, 'multer'), {recursive: true});
+    await workBook.xlsx.writeFile(path.join(Folders.temp, 'multer/' + file_name)).then(() => {
+        res.download(path.join(Folders.temp, 'multer') + "/" + file_name, file_name, function () {
+            fs.unlinkSync(path.join(Folders.temp, 'multer') + "/" + file_name);
         });
     });
 });
@@ -320,7 +320,7 @@ app.post("/api/importacao/artigo/data", async (req, res) => {
     let random = (Math.random() + 1).toString(36).substring(7);
     let data = new Date();
     let file = `${random}-${data.getSeconds()}.json`
-    fs.writeFile(path.join(folders.temp, file), JSON.stringify(req.body), function (err) {
+    fs.writeFile(path.join(Folders.temp, file), JSON.stringify(req.body), function (err) {
         if (err) return console.log(err);
         res.json(file)
     });
@@ -358,7 +358,7 @@ app.post("/api/load/futuras/setting", async (req, res) => {
 
 let GetModel = (req) => {
     let data = JSON.parse(req.params.dados);
-    let fileData = fs.readFileSync(path.join(folders.temp, data.file));
+    let fileData = fs.readFileSync(path.join(Folders.temp, data.file));
 
     let dados = JSON.parse(fileData.toString());
 
@@ -528,10 +528,10 @@ app.get("/api/exportar/artigos/:dados", async (req, res) => {
     });
 
     let file_name = "Luma - exportação de artigos.xlsx";
-    fs.mkdirSync(path.join(folders.temp, 'multer'), {recursive: true});
-    await workBook.xlsx.writeFile(path.join(folders.temp, 'multer/' + file_name)).then(() => {
-        res.download(path.join(folders.temp, 'multer') + "/" + file_name, file_name, function () {
-            fs.unlinkSync(path.join(folders.temp, 'multer') + "/" + file_name);
+    fs.mkdirSync(path.join(Folders.temp, 'multer'), {recursive: true});
+    await workBook.xlsx.writeFile(path.join(Folders.temp, 'multer/' + file_name)).then(() => {
+        res.download(path.join(Folders.temp, 'multer') + "/" + file_name, file_name, function () {
+            fs.unlinkSync(path.join(Folders.temp, 'multer') + "/" + file_name);
         });
     });
 });

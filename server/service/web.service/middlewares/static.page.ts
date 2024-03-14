@@ -1,6 +1,6 @@
 import {app} from "../index";
 import Path from "path";
-import {folders} from "../../../global/project";
+import {Folders} from "../../../global/project";
 import fs from "fs";
 app.use( "/", (req, res, next)=>{
     if( req.method !== "GET" ) return next();
@@ -11,8 +11,8 @@ app.use( "/", (req, res, next)=>{
     })();
 
     let paths = [
-        Path.join( folders.public, `${path}.html` ),
-        Path.join( folders.public, path, "index.html" ),
+        Path.join( Folders.public, `${path}.html` ),
+        Path.join( Folders.public, path, "index.html" ),
     ]
     let source = paths.find( value => {
         return fs.existsSync( value );

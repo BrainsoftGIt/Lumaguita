@@ -1,7 +1,7 @@
 
 import path from "path";
 import fs from "fs";
-import {folders} from "../../global/project";
+import {Folders} from "../../global/project";
 import {registerLine} from "../ioline.service";
 import * as readline from "readline";
 import {sys} from "../../global/sys";
@@ -19,7 +19,7 @@ const logReadyStatus = {
     next(){
         return this.lines[ this.nextLine++ ];
     }, reload(){
-        let _logpath = path.join( folders.logs, this.ref );
+        let _logpath = path.join( Folders.logs, this.ref );
         if( !fs.existsSync( _logpath  ) ) return [];
         let raw = fs.readFileSync( _logpath ).toString( "utf-8" );
         this.lines =  raw.split("\n" );
@@ -101,7 +101,7 @@ export function launch( opts?:LogArgs ){
 export function snapshotView(){
     const status = {
         nextLine:0,
-        pid:fs.readFileSync( path.join( folders.home, "current.pid" ) ).toString("utf8" )
+        pid:fs.readFileSync( path.join( Folders.home, "current.pid" ) ).toString("utf8" )
     }
 
     const restart = ( currentPid )=>{
@@ -111,7 +111,7 @@ export function snapshotView(){
     }
 
     const reader = ()=>{
-        let text = fs.readFileSync( path.join( folders.logs, "snapshot.log" )).toString("utf-8").split("\n" )
+        let text = fs.readFileSync( path.join( Folders.logs, "snapshot.log" )).toString("utf-8").split("\n" )
             .filter( (value, index) => index >= status.nextLine );
         text.forEach( line => {
             console.log( line );
@@ -119,14 +119,14 @@ export function snapshotView(){
         });
     }
 
-    fs.watchFile( path.join( folders.logs, "snapshot.log" ), (curr, prev) => {
-        let nextPid = fs.readFileSync( path.join( folders.home, "current.pid" ) ).toString("utf8" );
+    fs.watchFile( path.join( Folders.logs, "snapshot.log" ), (curr, prev) => {
+        let nextPid = fs.readFileSync( path.join( Folders.home, "current.pid" ) ).toString("utf8" );
         if( nextPid !== status.pid ) restart( nextPid );
         reader();
     })
 
-    fs.watchFile( path.join( folders.home, "current.pid" ), (curr, prev) => {
-        let nextPid = fs.readFileSync( path.join( folders.home, "current.pid" ) ).toString("utf8" );
+    fs.watchFile( path.join( Folders.home, "current.pid" ), (curr, prev) => {
+        let nextPid = fs.readFileSync( path.join( Folders.home, "current.pid" ) ).toString("utf8" );
         console.log( "change pid from ", status.pid, {nextPid} );
         if( nextPid !== status.pid ) restart( nextPid );
         reader();

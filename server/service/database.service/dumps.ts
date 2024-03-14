@@ -5,7 +5,7 @@ require("source-map-support").install();
 import {pg_dump, pg_dump_sync, PostgresDumpArgs} from "../../lib/postgres/tools/pg_dump";
 import {args} from "../../global/args";
 import path from "path";
-import {folders} from "../../global/project";
+import {Folders} from "../../global/project";
 import moment from "moment";
 import {cronManager, CronService, interval, intervalNames} from "../cron.service";
 import fs from "fs";
@@ -38,7 +38,7 @@ export function dumpNow( instant?: moment.Moment, opts?:Options ):Promise<string
             .filter( value => acceptsInterval.includes( value.intervalName ) );
 
 
-        let lastFile =path.join( folders.dumps, `last-${Math.random()}.base.db` );
+        let lastFile =path.join( Folders.dumps, `last-${Math.random()}.base.db` );
 
         const out = create_dump( lastFile );
         let data = "";
@@ -64,7 +64,7 @@ export function dumpNow( instant?: moment.Moment, opts?:Options ):Promise<string
             dumps.forEach( (next, index) => {
                     // setTimeout(()=>{
                     let dumpFile = instant.format( next.format ).toLowerCase();
-                    let copyFile = path.join( folders.dumps, dumpFile );
+                    let copyFile = path.join( Folders.dumps, dumpFile );
                     files.push( copyFile );
                 serverNotify.log( `copy dump database backup into = "${new URL(`file://${ copyFile }`).href}"` );
                     if( !fs.existsSync( Path.dirname( copyFile ) ) ) {
@@ -73,8 +73,8 @@ export function dumpNow( instant?: moment.Moment, opts?:Options ):Promise<string
                     fs.writeFileSync( copyFile, content );
                 });
 
-                serverNotify.log( `copy dump base database backup into = "${new URL(`file://${ folders.base_dump }`).href}"` );
-                fs.writeFileSync( folders.base_dump, content );
+                serverNotify.log( `copy dump base database backup into = "${new URL(`file://${ Folders.base_dump }`).href}"` );
+                fs.writeFileSync( Folders.base_dump, content );
                 fs.unlinkSync( lastFile );
             resolve( files );
         });
@@ -189,7 +189,7 @@ export function saveBackup( opts:SaveBackupOptions ):Promise<BackupSave>{
                 let time = moment().format("yyyyMMDD-HHmmss");
 
                 let backupName = `backup-lumaguita-${VERSION.TAG}-${ username }-${ time }-upgrade.zip`;
-                let backupFileName = Path.join( folders.backups, backupName);
+                let backupFileName = Path.join( Folders.backups, backupName);
 
                 let output = fs.createWriteStream( backupFileName  );
                 let zip = archiver('zip', {
@@ -233,8 +233,8 @@ export function saveBackup( opts:SaveBackupOptions ):Promise<BackupSave>{
                         go();
                         return;
                     }
-                    serverNotify.log( `add base dir  to backup ${ new URL(`file://${Path.join(folders.pgHome, "base")}`).href }` );
-                    zip.directory( Path.join(folders.pgHome, "base" ), "cluster" );
+                    serverNotify.log( `add base dir  to backup ${ new URL(`file://${Path.join(Folders.pgHome, "base")}`).href }` );
+                    zip.directory( Path.join(Folders.pgHome, "base" ), "cluster" );
                     pgContext.elevator.connected( ( error ) => {
                         if( error ){
                             console.log( error );

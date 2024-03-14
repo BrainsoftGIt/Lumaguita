@@ -3,7 +3,7 @@ import {functLoadContaData} from "../db/call-function-pos";
 import {functReportVendaPOS} from "../db/call-function-report";
 import {getUserSession, getUserSessionPOS} from "./functions/get-session";
 import Path from "path";
-import {folders} from "../../../global/project";
+import {Folders} from "../../../global/project";
 import fs from "fs";
 import path from "path";
 
@@ -94,7 +94,7 @@ app.get("/api/print/transference/:dados", async (req, res) =>{
     let dados = JSON.parse(req.params.dados);
     console.log(dados)
 
-    let fileData = fs.readFileSync(path.join(folders.temp, dados.file));
+    let fileData = fs.readFileSync(path.join(Folders.temp, dados.file));
 
     let dadosFile = JSON.parse(fileData.toString());
 
@@ -386,6 +386,6 @@ app.post("/api/print/kitchen", async (req, res) =>{
 
 app.get( "/fr/:futura", (req, res) => {
     let filename = req.params.futura;
-    res.sendFile( Path.join( folders.temp, 'multer/'+filename ))
+    res.sendFile( Path.join( Folders.temp, 'multer/'+filename ))
 });
 

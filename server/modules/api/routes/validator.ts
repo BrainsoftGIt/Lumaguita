@@ -2,7 +2,7 @@ import { NextFunction, Response, Request } from "express";
 import moment from "moment";
 import fs from "fs";
 import path from "path";
-import {folders} from "../../../global/project";
+import {Folders} from "../../../global/project";
 import {args} from "../../../global/args";
 const licenseFile = "License.txt";
 const { generateEncryptionKey } = require("../../../lib/crypto/cryptoFile");
@@ -35,11 +35,11 @@ let checker = {
     },
     get isValidClock():boolean{
         // Pela primeira vez
-        if( !fs.existsSync( path.join( folders.files, 'license', licenseFile ) ) ) {
-            fs.mkdirSync( path.join( folders.files, 'license' ), {recursive: true} );
+        if( !fs.existsSync( path.join( Folders.files, 'license', licenseFile ) ) ) {
+            fs.mkdirSync( path.join( Folders.files, 'license' ), {recursive: true} );
             saveDateTimeLicense({ data:  new Date().getTime() } );
         }
-        let data = fs.readFileSync(path.join(folders.files, 'license', licenseFile), 'utf8');
+        let data = fs.readFileSync(path.join(Folders.files, 'license', licenseFile), 'utf8');
         const lastCheckTime = encryptor.decrypt( data );
         let _isValidClock =  ( new Date().getTime()) >= lastCheckTime;
         if( _isValidClock )  saveDateTimeLicense({ data:  new Date().getTime() } );
@@ -91,5 +91,5 @@ export function checkLicenseValida( req:Request, res:Response, next:NextFunction
 }
 
 function saveDateTimeLicense({data}){
-     fs.writeFileSync( path.join(folders.files, "license", licenseFile), encryptor.encrypt(data) );
+     fs.writeFileSync( path.join(Folders.files, "license", licenseFile), encryptor.encrypt(data) );
 }

@@ -24,7 +24,7 @@ export function folder( ...pathParts:string[] ){
     return _path
 }
 
-export const folders = {
+export const Folders = {
 
     get mountPoint() {
         return (`/BrainsoftSTP.com/${ DEFAULTS.APP_PACKAGE }/${args.appMode??"default"}`);

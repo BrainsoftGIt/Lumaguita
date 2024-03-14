@@ -9,7 +9,7 @@ import {colors} from "../../lib/cluster/colors";
 import * as path from "path";
 import {app} from "../web.service";
 import * as fs from "fs";
-import {folders} from "../../global/project";
+import {Folders} from "../../global/project";
 import {args} from "../../global/args";
 import {pgClusterService} from "./pg-cluster-service";
 
@@ -22,11 +22,11 @@ export const clusterServer = new ClusterContext( pgClusterService, io, {
     namespace: "/cluster",
     namespaceChecker: "/cluster/checker",
     masterDomain: args.appSelfMaster,
-    resource: folders.share,
+    resource: Folders.share,
     revisionsLimit: 1000,
     //language=file-reference
     resource_404: path.join( __dirname, "../../resources/000-404.png" ),
-    resourceMountPoint: folders.mnt,
+    resourceMountPoint: Folders.mnt,
     path: "/MGT"
 });
 

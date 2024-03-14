@@ -1,12 +1,12 @@
 import { StorageManager }  from 'zoo.util/lib/storage-manager';
-import { folders } from "../../global/project";
+import { Folders } from "../../global/project";
 import { app } from '../web.service';
 
 // POST     $storage/path.../type
 // GET      $storage/folder/path.../file.type
 // PUT      $storage/folder/path.../file.type
 // DELETE   $storage/folder/path.../file.type
-export const storage:StorageManager = new StorageManager( folders.cloud, {
+export const storage:StorageManager = new StorageManager( Folders.cloud, {
     defaultPath: "global"
 });
 

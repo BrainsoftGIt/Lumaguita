@@ -1,4 +1,4 @@
-import {folder, folders} from "../../global/project";
+import {folder, Folders} from "../../global/project";
 import path from "path";
 import fs, {WriteStream} from "fs";
 import JSON5 from "json5";
@@ -35,18 +35,18 @@ export type LogServiceEntry = { [ p in typeof interval[number]]?:number };
 export function startLogService(){
 
     const streams = {
-        "snapshot": fs.createWriteStream( path.join( folders.logs, "snapshot.log" ) ),
-        "LOGFILE": fs.createWriteStream( path.join( folders.logs, "logfile.log" ) )
+        "snapshot": fs.createWriteStream( path.join( Folders.logs, "snapshot.log" ) ),
+        "LOGFILE": fs.createWriteStream( path.join( Folders.logs, "logfile.log" ) )
     }
     let streamsMap:{[p:string]:WriteStream} = {};
 
-    fs.writeFileSync(path.join( folders.logs, "snapshot.log" ), "" );
+    fs.writeFileSync(path.join( Folders.logs, "snapshot.log" ), "" );
 
 
 
     let doc;
-    if( fs.existsSync( path.join( folders.logs, "status.jsons5" ) ) )
-        doc = fs.readFileSync( path.join( folders.logs, "status.json5" )).toString( "utf-8" );
+    if( fs.existsSync( path.join( Folders.logs, "status.jsons5" ) ) )
+        doc = fs.readFileSync( path.join( Folders.logs, "status.json5" )).toString( "utf-8" );
 
     const status:LogServiceStatus =  doc? JSON5.parse( doc ): new Proxy({}, {
         get(root: {}, level: PropertyKey, receiver: any): any {
@@ -61,7 +61,7 @@ export function startLogService(){
     });
 
     function saveStatus(){
-        fs.writeFileSync( path.join( folders.logs, "status.json5"), JSON5.stringify( status, null, 2 ) );
+        fs.writeFileSync( path.join( Folders.logs, "status.json5"), JSON5.stringify( status, null, 2 ) );
     }
 
     capture.register( new console.Console( streams.LOGFILE ) );
@@ -73,7 +73,7 @@ export function startLogService(){
         let streams:fs.WriteStream[] = [];
 
         if( levelCatch.includes( opts.level ) ){
-            let levelFolder = folder( folders.logs, String( opts.level ) );
+            let levelFolder = folder( Folders.logs, String( opts.level ) );
 
             intervalNames( opts.moment, { prefix:"LOGFILE.", suffix: ".log" } ).forEach( next => {
                 let streamOptions:StreamOptions =  { encoding: "utf-8" };

@@ -1,7 +1,7 @@
 import {PostgresContext, InstallationLocation} from "kitres";
 import {args} from "../../../global/args";
 import Path from "path";
-import {folders} from "../../../global/project";
+import {Folders} from "../../../global/project";
 import {serverNotify} from "../../../snotify";
 import {System} from "kitres/src/core/system";
 import fs from "fs";
@@ -13,7 +13,7 @@ process.env[ System.pathName()] = [
     ... process.env[ System.pathName() ].split( Path.delimiter )
 ].join( Path.delimiter );
 
-let isNewCluster = !fs.existsSync( folders.base_dump );
+let isNewCluster = !fs.existsSync( Folders.base_dump );
 
 let baseDump:string;
 let setups:({user:string,filename:string})[]=[];
@@ -26,7 +26,7 @@ if( isNewCluster ){
         filename: Path.join( __dirname, "../../../../database/bases/clean.sql")
     })
 } else {
-    baseDump = folders.base_dump
+    baseDump = Folders.base_dump
 }
 
 let locale:InstallationLocation = InstallationLocation.REMOTE;
@@ -68,7 +68,7 @@ export const pgContext = new PostgresContext({
         username: args.dbSupperUser,
         password: args.dbPasswordSuperUser,
         superuser: true,
-    }, cluster: folders.pgHome,
+    }, cluster: Folders.pgHome,
     init: {
         auth: "md5",
         encoding: "utf8",

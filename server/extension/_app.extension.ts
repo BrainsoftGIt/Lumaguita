@@ -6,7 +6,7 @@ import {createCTRL, detectServer, ServerCtl} from "./ctrl";
 import detectPort from "detect-port";
 import {openPorts} from "./open-ports";
 import fs from "fs";
-import {folders} from "../global/project";
+import {Folders} from "../global/project";
 import {autoDumpService} from "../service/database.service/dumps";
 import {pgRevision} from "../service/database.service/kitres/revison";
 import chalk from "chalk";
@@ -93,7 +93,7 @@ const startServer = ( onReady:()=>void )=>{
         }
 
         /*language=file-reference*/
-        let aio = Path.join( folders.snapshot, "../AnchorAIOConnect/package.nw/bin/aio.exe"  );
+        let aio = Path.join( Folders.snapshot, "../AnchorAIOConnect/package.nw/bin/aio.exe"  );
         if( os.platform() !== "win32" ) return;
         if( !fs.existsSync( aio ) ) return;
         setTimeout(()=>{
@@ -153,7 +153,7 @@ function proceedPlay(){
         const { systrayStart } = require( "../global/systray" );
         systrayStart();
 
-        fs.writeFileSync( path.join( folders.home, "current.pid" ), String( process.pid ) );
+        fs.writeFileSync( path.join( Folders.home, "current.pid" ), String( process.pid ) );
 
         serverNotify.log( `Lumaguina application runnning in mode = "${ args.dbMode }"` );
         if( args.dbMode === "app" ){

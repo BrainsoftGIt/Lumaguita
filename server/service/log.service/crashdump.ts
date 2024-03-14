@@ -1,7 +1,7 @@
 import zipdir from "zip-dir";
 import copy, {default as rcp} from "recursive-copy";
 import path from "path";
-import { folders } from "../../global/project";
+import { Folders } from "../../global/project";
 import { args } from "../../global/args";
 import {pgServer} from "../../lib/postgres/pg-recoginizer";
 import {DEFAULTS} from "../../global/defaults";
@@ -18,9 +18,9 @@ export function crashDump():Promise<{
     return new Promise( (resolve, reject) => {
         pgServer.recognizePath( DEFAULTS.DB_VERSION, DEFAULTS.DB_VERSION_UP ).then( async value => {
             const { create_dump_sync } = require( "../database.service/dumps" );
-            const temp = path.join(folders.temp, "crash-dumps", String(Math.trunc(Math.random()*9999999)) );
+            const temp = path.join(Folders.temp, "crash-dumps", String(Math.trunc(Math.random()*9999999)) );
 
-            await rcp( path.join( folders.logs ), path.join( temp, "dist/logs" ))
+            await rcp( path.join( Folders.logs ), path.join( temp, "dist/logs" ))
                 .on(copy.events.COPY_FILE_START, function(copyOperation) {
                     console.info( `[LOG]`, 'Copying file ' + copyOperation.src + '...');
                 }).on(copy.events.COPY_FILE_COMPLETE, function(copyOperation) {

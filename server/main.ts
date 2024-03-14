@@ -9,7 +9,7 @@ import * as path from "path";
 import {FileUtil} from "zoo.util/lib/file-util";
 import {launcherStatus} from "./launcher/status";
 import {serverNotify} from "./snotify";
-import {folders} from "./global/project";
+import {Folders} from "./global/project";
 import {args, lineArgs} from "./global/args";
 
 serverNotify.loading( "A configurar ambiente", { notifier: false } );
@@ -27,15 +27,15 @@ console.log( "[MAGUITA]", "DIR      :", __dirname );
 console.log( "[MAGUITA]", "FILE     :", __filename );
 console.log( "[MAGUITA]", "LAUNCHER :", launcherStatus.launcherName );
 console.log( "[MAGUITA]", "APP MODE :", args.appMode  );
-console.log( "[MAGUITA]", "FOLDER   :", folders.home )
+console.log( "[MAGUITA]", "FOLDER   :", Folders.home )
 
 
 serverNotify.loadingBlockItem( "Ajustando paths..." );
 let _path = (process.env[ "PATH" ] || process.env["PATH"]).split( path.delimiter  );
 _path = _path.filter( value => value.length
-    && value !== folders.bin
+    && value !== Folders.bin
 );
-_path.unshift( folders.bin );
+_path.unshift( Folders.bin );
 process.env[ "PATH" ] = _path.join( path.delimiter );
 
 //Apply os correction

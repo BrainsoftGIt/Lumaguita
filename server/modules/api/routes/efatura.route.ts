@@ -3,7 +3,7 @@ import {clusterServer} from "../../../service/cluster.service";
 import {functLoadSeriesAvailable} from "../db/call-function-efatura";
 import fs from "fs";
 import path from "path";
-import {folders} from "../../../global/project";
+import {Folders} from "../../../global/project";
 
 
 app.post("/api/efatura", async (req, res) => {
@@ -109,7 +109,7 @@ app.post("/api/efatura/report/excel/data", async (req, res) => {
     let random = (Math.random() + 1).toString(36).substring(7);
     let data = new Date();
     let file = `${random}-${data.getSeconds()}.json`
-    fs.writeFile(path.join(folders.temp, file), JSON.stringify(req.body), function (err) {
+    fs.writeFile(path.join(Folders.temp, file), JSON.stringify(req.body), function (err) {
         if (err) return console.log(err);
         res.json(file)
     });
@@ -119,9 +119,9 @@ app.get("/api/efatura/report/excel/:data", async (req, res) => {
 
     const moment = require('moment');
     let data = JSON.parse(req.params.data);
-    let fileData = fs.readFileSync(path.join(folders.temp, data.file));
+    let fileData = fs.readFileSync(path.join(Folders.temp, data.file));
     let args = JSON.parse(fileData.toString());
-    fs.unlinkSync(path.join(folders.temp, data.file))
+    fs.unlinkSync(path.join(Folders.temp, data.file))
 
     const {functReportFinanca} = require("../db/call-function-report");
     args.arg_colaborador_id = req?.session?.auth_data?.auth?.colaborador_id || null;
@@ -237,10 +237,10 @@ app.get("/api/efatura/report/excel/:data", async (req, res) => {
         })
     });
 
-    fs.mkdirSync(path.join(folders.temp, 'multer'), {recursive: true});
-    await workBook.xlsx.writeFile(path.join(folders.temp, 'multer/' + filename)).then(() => {
-        res.download(path.join(folders.temp, 'multer') + "/" + filename, filename, function () {
-            fs.unlinkSync(path.join(folders.temp, 'multer') + "/" + filename);
+    fs.mkdirSync(path.join(Folders.temp, 'multer'), {recursive: true});
+    await workBook.xlsx.writeFile(path.join(Folders.temp, 'multer/' + filename)).then(() => {
+        res.download(path.join(Folders.temp, 'multer') + "/" + filename, filename, function () {
+            fs.unlinkSync(path.join(Folders.temp, 'multer') + "/" + filename);
         });
     });
 });

@@ -1,4 +1,4 @@
-import {folders, project } from "../../global/project";
+import {Folders, project } from "../../global/project";
 import {args} from "../../global/args";
 import {compileDatabase } from "../../../build/db/install";
 import {ListenerEvent, PostgresCluster, DebugCallback, PGStatus} from "../../lib/postgres/pg-ctl";
@@ -24,13 +24,13 @@ export const pgCtl = new (class Service {
 
     get dataDirname():string {
         let currentDirname = this._currentDataDirname;
-        if( !currentDirname && fs.existsSync( path.join( folders.pgHome, "current.json5" ) ) ) {
-            let current:CurrentConfigs = JSON5.parse(  fs.readFileSync( path.join( folders.pgHome, "current.json5" ) ).toString( "utf-8" ) );
+        if( !currentDirname && fs.existsSync( path.join( Folders.pgHome, "current.json5" ) ) ) {
+            let current:CurrentConfigs = JSON5.parse(  fs.readFileSync( path.join( Folders.pgHome, "current.json5" ) ).toString( "utf-8" ) );
             currentDirname = current?.dataDirname;
         }
 
-        if( !currentDirname && fs.existsSync( path.join( folders.pgHome, "base" ) ) ){
-            currentDirname = path.join( folders.pgHome, "base" );
+        if( !currentDirname && fs.existsSync( path.join( Folders.pgHome, "base" ) ) ){
+            currentDirname = path.join( Folders.pgHome, "base" );
         }
         return  currentDirname;
     }
@@ -38,7 +38,7 @@ export const pgCtl = new (class Service {
     private start (){
         const selfPgCtl = this;
         console.log( "check database server app support status..." )
-        if( !this.__instance ) this.__instance = new PostgresCluster( DEFAULTS.DB_VERSION, DEFAULTS.DB_VERSION_UP, folders.pgHome, "base", {
+        if( !this.__instance ) this.__instance = new PostgresCluster( DEFAULTS.DB_VERSION, DEFAULTS.DB_VERSION_UP, Folders.pgHome, "base", {
             superuserPassword: args.dbPasswordSuperUser,
             detached: true,
             configs: {
@@ -57,7 +57,7 @@ export const pgCtl = new (class Service {
                     versionName: version.versionName,
                     versionDetection: version
                 }
-                fs.writeFileSync( path.join( folders.pgHome, "current.json5" ), JSON5.stringify( currentConfigs, null, 2 ));
+                fs.writeFileSync( path.join( Folders.pgHome, "current.json5" ), JSON5.stringify( currentConfigs, null, 2 ));
 
                 console.log( "check database server app support status... [ok]" );
 

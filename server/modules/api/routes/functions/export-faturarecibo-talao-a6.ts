@@ -1,7 +1,7 @@
 import path from "path";
 import fs from "fs";
 import {getFonts, structure} from "./estruture-talao-a6";
-import {folders} from "../../../../global/project";
+import {Folders} from "../../../../global/project";
 import {clusterServer} from "../../../../service/cluster.service";
 import * as print from "./printer";
 import {sys} from "../../../../global/sys";
@@ -261,11 +261,11 @@ export let create = async (instituition, account_content, res, user, date, print
     const pdfDocGenerator = pdfMake.createPdf(docDefinition);
     pdfDocGenerator.getBuffer((buffer) => {
         let filename = "FaturaReciboTalao_"+(new Date().getTime()+Math.random())+".pdf";
-        fs.mkdirSync(path.join(folders.temp, 'multer'), {recursive: true});
-        fs.writeFile(path.join(folders.temp, 'multer/'+filename), buffer, function (err) {
+        fs.mkdirSync(path.join(Folders.temp, 'multer'), {recursive: true});
+        fs.writeFile(path.join(Folders.temp, 'multer/'+filename), buffer, function (err) {
             let paper = "A6";
             if(!onlyOpen) {
-                print[versionPrinter](printer_name, path.resolve(path.join(folders.temp, 'multer/' + filename)), paper);
+                print[versionPrinter](printer_name, path.resolve(path.join(Folders.temp, 'multer/' + filename)), paper);
             }
             res.json("done");
         });

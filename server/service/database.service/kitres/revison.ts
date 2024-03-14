@@ -1,6 +1,6 @@
 import {PostgresContextSteep, RevisionCore, RevisionsChecks} from "kitres";
 import {pgCore} from "./index";
-import {folders} from "../../../global/project";
+import {Folders} from "../../../global/project";
 import {VERSION} from "../../../version";
 import chalk from "chalk";
 import {args} from "../../../global/args";
@@ -10,16 +10,16 @@ import {preventiveBackup, saveBackup} from "../dumps";
 import {serverNotify} from "../../../snotify";
 import {scriptUtil} from "kitres";
 
-let resolvedRevisions = folders.databaseRevisionResolved;
+let resolvedRevisions = Folders.databaseRevisionResolved;
 let history = true;
 
 if( args.appMode === "dev" ){
-    resolvedRevisions = Path.join( folders.databaseRevision, "resolved" );
+    resolvedRevisions = Path.join( Folders.databaseRevision, "resolved" );
     history = false;
 }
 export const pgRevision = new RevisionCore( pgCore, {
     schema: "kitres",
-    dirname: folders.databaseRevision,
+    dirname: Folders.databaseRevision,
     VERSION: VERSION,
     resolvedDirectory: resolvedRevisions,
     history: history,

@@ -4,17 +4,18 @@ import fs from "fs";
 import {app} from "../index";
 import e from "express";
 import {isRemote, remotePage} from "./remote";
-
 import ejs from "ejs";
+
 
 import jsdom from "jsdom";
 import {flocoto} from "kitres";
-import {folders} from "../../../global/project";
+import {Folders} from "../../../global/project";
+
 const { JSDOM } = jsdom;
 
 
 app.locals.VERSION = VERSION;
-app.set( 'views', [ folders.public, folders.views ] );
+app.set( 'views', [ Folders.public, Folders.views ] );
 app.set( 'view engine', 'ejs' );
 
 
@@ -44,15 +45,15 @@ export function resolveEjs( req:e.Request, res:e.Response){
     let source:string = res.locals.page_source;
     let dirRef:boolean = res.locals.page_source_dirRef;
     let contentType:{ type:keyof typeof contentLoad, file:string };
-    if( fs.existsSync( Path.join( folders.contents, `${source}.json`)) ) contentType  = {
+    if( fs.existsSync( Path.join( Folders.contents, `${source}.json`)) ) contentType  = {
         type: "json",
-        file: Path.join( folders.contents, `${source}.json`)
-    }; else if( fs.existsSync( Path.join( folders.contents, `${source}.json5` ) ) ) contentType = {
+        file: Path.join( Folders.contents, `${source}.json`)
+    }; else if( fs.existsSync( Path.join( Folders.contents, `${source}.json5` ) ) ) contentType = {
         type:"json",
-        file: Path.join( folders.contents, `${source}.json5`)
-    }; else if( fs.existsSync( Path.join( folders.contents, `${source}.js` ) ) ) contentType = {
+        file: Path.join( Folders.contents, `${source}.json5`)
+    }; else if( fs.existsSync( Path.join( Folders.contents, `${source}.js` ) ) ) contentType = {
         type:"js",
-        file: Path.join( folders.contents, `${source}.js`)
+        file: Path.join( Folders.contents, `${source}.js`)
     };
     let content = {};
     if( contentType ) {
@@ -69,10 +70,7 @@ export function resolveEjs( req:e.Request, res:e.Response){
     if( res.locals.REMOTE_REQUEST ) {
         remote.isRemote = true
         remote.VERSION = `?v=${VERSION.TAG}`
-
     }
-
-    console.log( req.headers.referer, path );
 
     ejs.renderFile( source, {
         content,
@@ -101,8 +99,7 @@ export function resolveEjs( req:e.Request, res:e.Response){
         ].forEach( value => {
             let elements = dom.window.document.getElementsByTagName( value.tag );
             Array.from( elements).forEach( element => {
-                let original = element[ value.attrSource ];
-                let src = original;
+                let src = element[value.attrSource];
                 if( !src ) return;
                 if( Path.isAbsolute( src ) ) return;
                 if( isUrl( src ) ) return;
@@ -129,10 +126,10 @@ app.use( "/", (req, res, next)=>{
     })();
 
     let paths = [
-        { source: Path.join( folders.views, `${path}.ejs` ), dirRef: false },
-        { source: Path.join( folders.public, `${path}.ejs` ), dirRef: false },
-        { source: Path.join( folders.views, path, "index.ejs" ), dirRef:true},
-        { source: Path.join( folders.public, path, "index.ejs" ), dirRef:true},
+        { source: Path.join( Folders.views, `${path}.ejs` ), dirRef: false },
+        { source: Path.join( Folders.public, `${path}.ejs` ), dirRef: false },
+        { source: Path.join( Folders.views, path, "index.ejs" ), dirRef:true},
+        { source: Path.join( Folders.public, path, "index.ejs" ), dirRef:true},
     ];
 
     let source = paths.find( value => {

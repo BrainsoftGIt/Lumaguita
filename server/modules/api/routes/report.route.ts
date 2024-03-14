@@ -3,7 +3,7 @@ import {factory} from "../../../service/database.service";
 import { Templates, Types} from "zoo.pg";
 import fs from "fs";
 import path from "path";
-import {folders} from "../../../global/project";
+import {Folders} from "../../../global/project";
 import moment from "moment";
 import {dbRes} from "../../../service/database.service/kitres/res";
 import {getUserSession, getUserSessionPOS} from "./functions/get-session";
@@ -96,8 +96,8 @@ app.post("/api/report/export", async (req, res) =>{
         workSheet.addRow(object);
     });
     formatColumn(headers, workSheet);
-    fs.mkdirSync(path.join(folders.temp, 'multer'), {recursive: true});
-    let reportPath = path.join( folders.temp, 'multer', filename );
+    fs.mkdirSync(path.join(Folders.temp, 'multer'), {recursive: true});
+    let reportPath = path.join( Folders.temp, 'multer', filename );
     await workBook.xlsx.writeFile(reportPath).then(() =>{
         res.json({file: filename})
     });
@@ -129,9 +129,9 @@ app.post("/api/report/export/imposto", async (req, res) =>{
 });
 app.get("/api/report/download/:report_name", async (req, res) =>{
     let filename = req.params.report_name;
-    let reportPath = path.join(folders.temp, 'multer', filename );
+    let reportPath = path.join(Folders.temp, 'multer', filename );
     res.download( reportPath, function () {
-        fs.unlinkSync(path.join(folders.temp, 'multer', req.params.report_name ));
+        fs.unlinkSync(path.join(Folders.temp, 'multer', req.params.report_name ));
     });
 });
 
