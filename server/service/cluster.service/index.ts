@@ -119,9 +119,9 @@ registerLine( "cluster:/message", ( command, line, ...args )=>{
 });
 
 
-registerLine( "cluster:/routes", ()=> clusterServer.navigator.route.describe() );
-registerLine( "cluster:/direct", ()=> table( `DIRECT JUMP OF ${ clusterServer.id }`, clusterServer.navigator.route.jumps.filter(value => value.linkType === "DIRECT")));
-registerLine( "cluster:/remote", ()=> table( `REMOTES JUMP OF ${ clusterServer.id }`, clusterServer.navigator.route.jumps.filter(value => value.linkType === "REMOTE")));
+registerLine( "cluster:/routes", ( )=> clusterServer.navigator.route.describe() );
+registerLine( "cluster:/direct", ( )=> table( `DIRECT JUMP OF ${ clusterServer.id }`, clusterServer.navigator.route.jumps.filter(value => value.linkType === "DIRECT")));
+registerLine( "cluster:/remote", ( )=> table( `REMOTES JUMP OF ${ clusterServer.id }`, clusterServer.navigator.route.jumps.filter(value => value.linkType === "REMOTE")));
 
 
 registerLine( "cluster:/test-file", ( command, line, ...args )=>{

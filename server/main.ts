@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import {FlocotoListener} from "kitres/src/core/util/flocoto";
+
 console.log("NODE VERSION:", process.version )
 require( 'source-map-support' ).install();
 require('./global/pid').showUncaughtError();
@@ -50,4 +52,3 @@ FileUtil.scanFiles( path.join( __dirname, 'extension' ), /.*.extension.js$/, ext
 });
 
 lineArgs.execute();
-

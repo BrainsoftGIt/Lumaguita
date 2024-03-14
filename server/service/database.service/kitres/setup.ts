@@ -1,4 +1,4 @@
-import {PostgresContext, ServerLocation} from "kitres";
+import {PostgresContext, InstallationLocation} from "kitres";
 import {args} from "../../../global/args";
 import Path from "path";
 import {folders} from "../../../global/project";
@@ -29,14 +29,15 @@ if( isNewCluster ){
     baseDump = folders.base_dump
 }
 
-let locale:ServerLocation = ServerLocation.REMOTE;
+let locale:InstallationLocation = InstallationLocation.REMOTE;
 if( os.platform() === "win32" && args.dbMode === "app" && args.appMode === "public" ){
-    locale = ServerLocation.LOCAL;
+    locale = InstallationLocation.LOCAL;
 }
 
 
 export const pgContext = new PostgresContext({
-    serverLocation: locale,
+    installerLocation: locale,
+    clusterLocation: locale,
     serverHost: args.dbHost,
     service: args.dbServiceName,
     configs:{

@@ -13,6 +13,7 @@ import chalk from "chalk";
 import os from "os";
 import {spawn} from "child_process";
 import Path from "path";
+import { FlocotoListener } from "kitres/src/core/util/flocoto";
 
 export function getSys(){
     return require("../global/sys").sys;
@@ -35,6 +36,15 @@ let dbPatch = ():Promise<boolean>=>{
 
 
         pgRevision.setup( (error, block) => {
+            //Quando a nova versão de revisão do banco de dados for menor que a atual versão então abortart
+            if( error && error.message.startsWith( "The current database version is higher than the new database version!") ){
+                serverNotify.loading( "WARING!" );
+                serverNotify.loadingBlock( "Database patches applies skipped[dbPatch|WARING]" );
+                serverNotify.loadingBlockItem( "Não aplicou a revisão no banco de dados, porque a versão do novo core é inferior a versão do utimo core aplicado no banco de dados[dbPatch|WARING]." );
+                console.warn( chalk.yellowBright.bold.italic.underline( "SALTOU O PROCESSO DE APLICAÇÃO DE REVISÃO...! A REVISIÃO ATUAL É INFERIRO A ULTIMA REVISÃO APLICADA" ) );
+                return resolve( true );
+            }
+
             if( error ){
                 console.error( error )
                 serverNotify.loading( "FAILED!" );
@@ -72,6 +82,13 @@ const startServer = ( onReady:()=>void )=>{
         }
 
         if( typeof onReady === "function" ){
+            const flocotoListener = new FlocotoListener( process );
+            flocotoListener.emmiter.notify( "ready",
+                require("../../package.json").name,
+                true, {
+                    port: args.appPort,
+                    protocol: args.webProtocol as "http"
+                });
             onReady();
         }
 
@@ -85,6 +102,7 @@ const startServer = ( onReady:()=>void )=>{
                 console.log( `AnchorAioConnect error = "${ err.message }"`)
             })
         }, 1000 * 5 );
+
     });
 }
 
@@ -206,3 +224,5 @@ lineArgs.defineCommand( receiver => {
     if( lineArgs.command.command && lineArgs.command.command.length > 0  ) return;
     play();
 });
+
+

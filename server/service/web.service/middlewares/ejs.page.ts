@@ -1,10 +1,17 @@
 //Load ejs files
 import Path from "path";
-import {folders} from "../../../global/project";
 import fs from "fs";
 import {app} from "../index";
 import e from "express";
 import {isRemote, remotePage} from "./remote";
+
+import ejs from "ejs";
+
+import jsdom from "jsdom";
+import {flocoto} from "kitres";
+import {folders} from "../../../global/project";
+const { JSDOM } = jsdom;
+
 
 app.locals.VERSION = VERSION;
 app.set( 'views', [ folders.public, folders.views ] );
@@ -22,10 +29,20 @@ const contentLoad = {
     }
 }
 
+const isUrl = ( url:string) => {
+    try {
+        new URL(url);
+        return true;
+    } catch (err) {
+        return false;
+    }
+};
+
 export function resolveEjs( req:e.Request, res:e.Response){
     res.locals.page_engni = "EJS";
     let path:string = res.locals.page_path;
     let source:string = res.locals.page_source;
+    let dirRef:boolean = res.locals.page_source_dirRef;
     let contentType:{ type:keyof typeof contentLoad, file:string };
     if( fs.existsSync( Path.join( folders.contents, `${source}.json`)) ) contentType  = {
         type: "json",
@@ -42,10 +59,7 @@ export function resolveEjs( req:e.Request, res:e.Response){
         content = contentLoad[ contentType.type ]( contentType.file );
     }
 
-    if ( req.query.v  && req.query.v === VERSION.TAG ){
-        res.setHeader( "ETag", VERSION.TAG );
-        res.setHeader( "Cache-Control", `public, max-age=31536000, immutable` );
-    }
+
 
     let remote = {
         VERSION:"",
@@ -58,40 +72,79 @@ export function resolveEjs( req:e.Request, res:e.Response){
 
     }
 
-    res.render( path, {
+    console.log( req.headers.referer, path );
+
+    ejs.renderFile( source, {
         content,
         request: req,
         response: res,
-        REMOTE: remote
+        REMOTE: remote,
+        VERSION: VERSION
+    }, (err, html) => {
+        if ( err ) {
+            console.error( err );
+            return res.send( err.message );
+        }
+        if ( req.query.v  && req.query.v === VERSION.TAG ){
+            res.setHeader( "ETag", VERSION.TAG );
+            res.setHeader( "Cache-Control", `public, max-age=31536000, immutable` );
+        }
+
+
+        const dom = new JSDOM( html );
+
+        [
+            {tag:"script", attrSource:"src"},
+            {tag:"link", attrSource:"href"},
+            {tag:"a", attrSource:"href"},
+            {tag:"iframe", attrSource:"src"},
+        ].forEach( value => {
+            let elements = dom.window.document.getElementsByTagName( value.tag );
+            Array.from( elements).forEach( element => {
+                let original = element[ value.attrSource ];
+                let src = original;
+                if( !src ) return;
+                if( Path.isAbsolute( src ) ) return;
+                if( isUrl( src ) ) return;
+
+                if( dirRef ) src = Path.posix.join( path, src );
+                else src = Path.posix.join( Path.dirname(path), src );
+
+                if( flocoto.isFlocotoModule ){
+                    src = Path.posix.join( flocoto.flocotoInfo.referer, src );
+                }
+                element[ value.attrSource ] = [src];
+            })
+        });
+        res.send( dom.window.document.documentElement.outerHTML );
     });
 }
-
-
 
 app.use( "/", (req, res, next)=>{
     if( req.method !== "GET" ) return next();
     let path = (()=>{
         let _part = req.path.split("/");
-        _part.shift();
+        // _part.shift();
         return _part.join( "/" )
     })();
 
     let paths = [
-        Path.join( folders.views, `${path}.ejs` ),
-        Path.join( folders.public, `${path}.ejs` ),
-        Path.join( folders.views, path, "index.ejs" ),
-        Path.join( folders.public, path, "index.ejs" ),
+        { source: Path.join( folders.views, `${path}.ejs` ), dirRef: false },
+        { source: Path.join( folders.public, `${path}.ejs` ), dirRef: false },
+        { source: Path.join( folders.views, path, "index.ejs" ), dirRef:true},
+        { source: Path.join( folders.public, path, "index.ejs" ), dirRef:true},
     ];
 
     let source = paths.find( value => {
-        return fs.existsSync( value );
+        return fs.existsSync( value.source );
     });
 
     if( !source ) return next();
 
     res.locals.page_engni = "EJS";
     res.locals.page_path = path;
-    res.locals.page_source = source;
+    res.locals.page_source = source.source;
+    res.locals.page_source_dirRef = source.dirRef;
     return next();
 });
 
