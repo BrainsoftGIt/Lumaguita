@@ -15,15 +15,15 @@ import '../../modules/api/routes/check-static';
 //////////////////// MIDDLEWARES ////////////////////
 require( './middlewares/head' );
 
-//Body Parser
-require( './middlewares/body-parser' );
-
 
 // Cookie Parser
 require( './middlewares/cookie' );
 
 // Session Express
 require( './middlewares/session' );
+
+//Body Parser
+require( './middlewares/body-parser' );
 
 //Remote
 require( "./middlewares/remote" );
