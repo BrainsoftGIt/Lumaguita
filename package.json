@@ -24,12 +24,15 @@
   },
   "bin": {},
   "scripts": {
+    "tsc -w": "tsc -w",
+    "nodemon:flocoto": "nodemon --config build/nodemon/flocopo.json",
+    "nodemon:flocoto-isolated": "nodemon --config build/nodemon/flocopo.isolated.json",
+
     "tsc": "tsc",
     "compile:bin": "node build/launcher/bin.js",
     "compile:build": "node build/compile start --plataform win32 --mode public --user public & tsc.cmd",
     "compile:win_x64:realese": "node build/compile release",
     "build:tsc": "tsc",
-    "build:tsc-w": "tsc -w",
     "build:nodemon": "nodemon --config etc/nodemon/build.nodemon.json",
     "test": "tsc; node build/const; node server/launcher -- --mode dev",
     "test:nodemon:server": "nodemon --config etc/nodemon/server.nodemon.json",
