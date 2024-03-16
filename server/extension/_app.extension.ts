@@ -19,6 +19,8 @@ export function getSys(){
     return require("../global/sys").sys;
 }
 
+import manifest from "../../package.json"
+
 let dbPatch = ():Promise<boolean>=>{
     return new Promise( resolve => {
         serverNotify.loadingBlock( "Database upgrade patches..." );
@@ -83,8 +85,8 @@ const startServer = ( onReady:()=>void )=>{
 
         if( typeof onReady === "function" ){
             const flocotoListener = new FlocotoListener( process );
-            flocotoListener.emmiter.notify( "ready",
-                require("../../package.json").name,
+            flocotoListener.emitter.notify( "ready",
+                manifest.name,
                 true, {
                     port: args.appPort,
                     protocol: args.webProtocol as "http"
