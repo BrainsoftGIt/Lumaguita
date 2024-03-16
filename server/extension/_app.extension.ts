@@ -91,6 +91,8 @@ const startServer = ( onReady:()=>void )=>{
                     port: args.appPort,
                     protocol: args.webProtocol as "http"
                 });
+
+            process.on( "message", message => console.log( message));
             onReady();
         }
 
