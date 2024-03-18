@@ -1,9 +1,5 @@
 import {app} from "../index";
 
-app.use( (req, res, next) => {
-    console.log(`[maguita] new request from ${req.headers.host} | ${req.method}${req.path}`);
-    next();
-});
 app.get([ "/VERSION", "/VER", "/ver", "/version" ], (req, res, next) => {
     res.send( VERSION.NUMBER );
 });

@@ -13,14 +13,20 @@ export const app:Express = express();
 import '../../modules/api/routes/check-static';
 
 //////////////////// MIDDLEWARES ////////////////////
-require( './middlewares/head' );
 
+//Welcome
+require( './middlewares/welcome' );
 
 // Cookie Parser
 require( './middlewares/cookie' );
 
 // Session Express
 require( './middlewares/session' );
+
+require( './middlewares/head' );
+
+//Head
+require( './middlewares/head' );
 
 //Body Parser
 require( './middlewares/body-parser' );

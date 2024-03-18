@@ -84,7 +84,11 @@ const startServer = ( onReady:()=>void )=>{
         }
 
         if( typeof onReady === "function" ){
-            const flocotoListener = new FlocotoListener( process );
+            const flocotoListener = new FlocotoListener( process, {
+                manifest: Path.join( __dirname, /*language=file-reference*/ "../../package.json"),
+                side:"flocopo",
+                label: "LumaguitaAppication"
+            } );
             flocotoListener.emitter.notify( "ready",
                 manifest.name,
                 true, {

@@ -6,7 +6,7 @@
   "license": "Apache-2.0",
   "main": "client/app/page/launcher.html",
   "flocoto": {
-    "active": true,
+    "active": false,
     "modular": true,
     "cwd": "./",
     "fork": "server/launcher",
@@ -117,6 +117,7 @@
     "@types/open": "^6.2.1",
     "@types/pg": "^8.10.2",
     "@types/pg-escape": "^0.2.1",
+    "@types/session-file-store": "^1.2.5",
     "@types/socket.io": "^3.0.2",
     "@types/socket.io-client": "^3.0.0",
     "@types/terminal-kit": "^1.28.4",

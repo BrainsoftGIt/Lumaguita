@@ -40,6 +40,10 @@ const isUrl = ( url:string) => {
 };
 
 export function resolveEjs( req:e.Request, res:e.Response){
+    let xFlocoto = req.headers["x-flocoto"];
+    let xFlocotoViewport = req.headers["x-flocoto-viewport"];
+    let xFlocotoSession = req.headers["x-flocoto-session"];
+
     res.locals.page_engni = "EJS";
     let path:string = res.locals.page_path;
     let source:string = res.locals.page_source;
@@ -59,8 +63,6 @@ export function resolveEjs( req:e.Request, res:e.Response){
     if( contentType ) {
         content = contentLoad[ contentType.type ]( contentType.file );
     }
-
-
 
     let remote = {
         VERSION:"",
@@ -108,7 +110,7 @@ export function resolveEjs( req:e.Request, res:e.Response){
                 else src = Path.posix.join( Path.dirname(path), src );
 
                 if( flocoto.isFlocotoModule ){
-                    src = Path.posix.join( flocoto.flocotoInfo.referer, src );
+                    src = Path.posix.join( flocoto.flocotoInfo.referer( xFlocotoViewport as string ), src );
                 }
                 element[ value.attrSource ] = [src];
             })
