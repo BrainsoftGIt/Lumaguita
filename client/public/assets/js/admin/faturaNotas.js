@@ -52,16 +52,16 @@ var faturaAdmin = {
                 venda_lote: null,
                 venda_validade: null,
                 venda_editado: false,
-                venda_codigoimposto: venda_codigoimposto || $(this).attr("codigoimposto"),
+                venda_codigoimposto: venda_codigoimposto ?? $(this).attr("codigoimposto"),
                 venda_isencao: false,
-                venda_montante: montanteQuantidade || undefined,
+                venda_montante: montanteQuantidade ?? undefined,
                 venda_montanteagregado: 0,
-                venda_montantetotal: montanteQuantidade || undefined,
-                venda_imposto: result?.total_taxa || undefined,
-                venda_montantesemimposto: result?.subtotal || undefined,
-                venda_montantecomimposto: result?.total || undefined,
-                venda_impostoadicionar: result?.valor_imposto_adicionar || undefined,
-                venda_impostoretirar: result?.valor_imposto_retirar || undefined,
+                venda_montantetotal: montanteQuantidade ?? undefined,
+                venda_imposto: result?.total_taxa ?? undefined,
+                venda_montantesemimposto: result?.subtotal ?? undefined,
+                venda_montantecomimposto: result?.total ?? undefined,
+                venda_impostoadicionar: result?.valor_imposto_adicionar ?? undefined,
+                venda_impostoretirar: result?.valor_imposto_retirar ?? undefined,
                 arg_itens: [],
                 venda_taxas: taxasArtigos.getImpostos($(this).attr("article_id"))
             });
@@ -206,7 +206,7 @@ var faturaAdmin = {
                         <li>${artigo_codigo}</li>
                         <li>${artigo_nome}</li>
                         <li venda_quantidade="${venda_quantidade}" venda_quantidaderemanescente="${venda_quantidaderemanescente}" contenteditable="true">${Math.abs(venda_quantidaderemanescente)}</li>
-                        <li>${(!taxa_percentagem) ? taxa_taxa || "" : `${taxa_percentagem}%` }</li>
+                        <li>${(!taxa_percentagem) ? taxa_taxa ?? "" : `${taxa_percentagem}%` }</li>
                         <li placeholder="add código" contenteditable="true">${artigo_codigoimposto?.[imposto] || ""}</li>
                         <li>${venda_custounitario.dc().formatter()+" STN"}</li>
                         <li venda_montantecomimposto="${venda_montantecomimposto}">${Math.abs(new_venda_montantecomimposto).dc().formatter()+" STN"}</li>
