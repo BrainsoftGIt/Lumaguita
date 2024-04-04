@@ -1,6 +1,6 @@
 import {sql} from "kitres";
 
-export const funct_reg_conta_docs_financa = sql`
+export const funct_reg_conta_docs_financa_v2 = sql`
 create or replace function tweeks.funct_reg_conta_docs_financa(args jsonb) returns lib.res
   language plpgsql
 as
