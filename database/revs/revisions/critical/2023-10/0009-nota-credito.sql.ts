@@ -357,7 +357,7 @@ begin
    */
 
 
-  if _conta.conta_cliente_id is null or _conta.conta_cliente_id = _const.maguita_cliente_final and not exists(
+  if ( _conta.conta_cliente_id is null or _conta.conta_cliente_id = _const.maguita_cliente_final ) and not exists(
       select *
       from tweeks.cliente c
       where c.cliente_id = _const.maguita_cliente_finalnotacredito
