@@ -41,7 +41,7 @@ AllowNoIcons=yes
 ; Uncomment the following line to run in non administrative install mode (install for current user only.)
 ;PrivilegesRequired=lowest
 PrivilegesRequiredOverridesAllowed=dialog
-OutputDir={#MyAppDir}\\..\\release
+OutputDir={#MyAppDir}\\..\\LumaguitaBuild\\release
 OutputBaseFilename=LumaGuitaWinSetup_v${VERSION.NUMBER}_${date}_x64
 SetupIconFile={#MyAppDir}\\server\\resources\\fav\\fav.ico
 SolidCompression=yes
