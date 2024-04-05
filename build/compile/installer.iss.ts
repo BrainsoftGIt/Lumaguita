@@ -14,7 +14,7 @@ export const installerDirective = `
 #define PublisherNameSpace "BrainsoftSTP"
 #define LumaAbout "https://brainsoftstp.com/luma"
 #define LumaAppUrl "http://127.0.0.1:3210"
-#define MyAppDir "..\\..\\..\\maguita_win32"
+#define MyAppDir "..\\..\\..\\LumaguitaBuild\\maguita_win32"
 #define MyAppExeName "bin\\mg-app.exe"
 #define MyShellName "bin\\mg-cli.exe"
 #define MyServerName "bin\\mg-server.exe"
