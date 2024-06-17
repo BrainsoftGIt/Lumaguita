@@ -1,0 +1,17 @@
+<Project DefaultTargets="Compile" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="Current">
+    <PropertyGroup>
+        <appname>Android</appname>
+    </PropertyGroup>
+    <ItemGroup>
+        <CSFile Include="./Android.cs"/>
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="../../../server/resources/icons/android.ico"/>
+    </ItemGroup>
+    <Target Name="Compile">
+        <CSC Sources="@(CSFile)" OutputAssembly="../../../bin/Android.exe" TargetType="WinExe" Win32Icon="../../../server/resources/icons/android.ico">
+           <Output TaskParameter="OutputAssembly" ItemName="EXEFile"/>
+        </CSC>
+        <Message Text="The output file is @(EXEFile)"/>
+    </Target>
+</Project>
