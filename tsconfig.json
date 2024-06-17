@@ -64,7 +64,7 @@
 
     /* Advanced Options */
     "skipLibCheck": true,                     /* Skip type checking of declaration files. */
-    "forceConsistentCasingInFileNames": true  /* Disallow inconsistently-cased references to the same file. */
+    "forceConsistentCasingInFileNames": true,  /* Disallow inconsistently-cased references to the same file. */
 
 
 //    "allowJs": true,
@@ -74,7 +74,7 @@
 //    "strict": true,
 //    "forceConsistentCasingInFileNames": true,
 //    "moduleResolution": "node",
-//    "resolveJsonModule": true,
+    "resolveJsonModule": true,
 //    "isolatedModules": true
   }
 }
