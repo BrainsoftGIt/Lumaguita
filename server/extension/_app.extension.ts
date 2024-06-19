@@ -8,7 +8,7 @@ import {openPorts} from "./open-ports";
 import fs from "fs";
 import {folders} from "../global/project";
 import {autoDumpService} from "../service/database.service/dumps";
-import {pgRevision} from "../service/database.service/kitres/revison";
+import {pgRevision} from "../service/database.service/core";
 import chalk from "chalk";
 import os from "os";
 import {spawn} from "child_process";
@@ -141,7 +141,7 @@ function proceedPlay(){
         if( args.dbMode === "app" ){
             args.dbPort = args.dbPortDatabaseApp;
             serverNotify.loadingBlock( "A Recuperar base de dados..." );
-            const { pgContext } =  require("../service/database.service/kitres/setup");
+            const { pgContext } =  require("../service/database.service/setup");
             pgContext.setup( (error, result) => {
                 if( error || !result.status ){
                     return;

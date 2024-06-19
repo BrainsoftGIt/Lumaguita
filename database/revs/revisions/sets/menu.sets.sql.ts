@@ -1,5 +1,5 @@
 import {patchSQL} from "kitres";
-import {SQL} from "kitres/src/core/pg-core/scape";
+import {SQL} from "kitres";
 import {importsMenus} from "../../../exports/exports-menus";
 import {VERSION} from "../../../../server/version";
 

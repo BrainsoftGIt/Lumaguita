@@ -5,9 +5,9 @@ import fs from "fs";
 import path from "path";
 import {folders} from "../../../global/project";
 import moment from "moment";
-import {dbRes} from "../../../service/database.service/kitres/res";
+import {dbRes} from "../../../service/database.service/core";
 import {getUserSession, getUserSessionPOS} from "./functions/get-session";
-import {SQL} from "kitres/src/core/pg-core/scape";
+import {SQL} from "kitres";
 import { Result } from 'kitres';
 
 app.get("/api/report/type/data", async (req, res) => {
@@ -173,7 +173,7 @@ app.post( "/api/report/parametrized/sets", (req, res, next) => {
     args._user_id = _session.user_id;
     args._espaco_auth = _session.workspace;
     args._branch = _session.branch_uid;
-    dbRes.call.report.sets_parametrized_report({
+    dbRes.call({ returnVersion: "v1"}).report.sets_parametrized_report({
         args: SQL.jsonb( args )
     }, {
         onResult(error: Error, result?: Result<any, any>): any {
@@ -212,7 +212,7 @@ app.post( "/api/report/parametrized/load", (req, res, next) => {
         })
     }
 
-    dbRes.call.report.funct_load_report_parametrized( {
+    dbRes.call({ returnVersion: "v1"}).report.funct_load_report_parametrized( {
         args : args
     }, {
         onResult(error: Error, result?: Result<any,any>): any {
@@ -236,7 +236,7 @@ app.post( "/api/report/parametrized/load", (req, res, next) => {
 
 app.post( "/api/report/parametrized/load/filter", (req, res, next) => {
     let _session = (!req.body._grants) ? getUserSession( req ) : getUserSessionPOS( req );
-    dbRes.call.report.funct_load_report_parametrized_filter( {
+    dbRes.call({ returnVersion: "v1"}).report.funct_load_report_parametrized_filter( {
         args :{
             _branch: _session.branch_uid,
             _user_id: _session.user_id,

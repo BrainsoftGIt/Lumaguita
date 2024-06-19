@@ -1,32 +1,11 @@
-import {PostgresContextSteep, RevisionCore, RevisionsChecks} from "kitres";
-import {pgCore} from "./index";
-import {folders} from "../../../global/project";
-import {VERSION} from "../../../version";
-import chalk from "chalk";
-import {args} from "../../../global/args";
-import {eventsListener} from "../../notify.service/notify";
-import Path from "path";
-import {preventiveBackup, saveBackup} from "../dumps";
-import {serverNotify} from "../../../snotify";
 import {scriptUtil} from "kitres";
+import {serverNotify} from "../../../snotify";
+import chalk from "chalk";
+import {eventsListener} from "../../notify.service/notify";
+import {args} from "../../../global/args";
+import {preventiveBackup, saveBackup} from "../dumps";
+import {pgRevision} from "../core";
 
-let resolvedRevisions = folders.databaseRevisionResolved;
-let history = true;
-
-if( args.appMode === "dev" ){
-    resolvedRevisions = Path.join( folders.databaseRevision, "resolved" );
-    history = false;
-}
-export const pgRevision = new RevisionCore( pgCore, {
-    schema: "kitres",
-    dirname: folders.databaseRevision,
-    VERSION: VERSION,
-    resolvedDirectory: resolvedRevisions,
-    history: history,
-    props: {
-        DATA_VERSION: VERSION.TAG
-    }
-});
 
 
 pgRevision.on("log", (level, message) => {
@@ -73,8 +52,6 @@ pgRevision.on( "revision", (error, blocks) => {
     }
 });
 
-
-
 pgRevision.on("news", blocks => {
     return new Promise( (resolve) => {
         preventiveBackup().then( dumps => {
@@ -89,5 +66,3 @@ pgRevision.on("news", blocks => {
         }).catch( reason => resolve({ error: reason } ));
     });
 });
-
-

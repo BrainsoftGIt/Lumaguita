@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import {context} from "./global/context";
+
 console.log("NODE VERSION:", process.version )
 require( 'source-map-support' ).install();
 require('./global/pid').showUncaughtError();
@@ -9,6 +11,9 @@ import {launcherStatus} from "./launcher/status";
 import {serverNotify} from "./snotify";
 import {folders} from "./global/project";
 import {args, lineArgs} from "./global/args";
+
+context.define( args );
+
 
 serverNotify.loading( "A configurar ambiente", { notifier: false } );
 serverNotify.loadingBlock( "Aplicando ajustes" );
@@ -48,6 +53,5 @@ if( args.dbMode === "app" ){
 FileUtil.scanFiles( path.join( __dirname, 'extension' ), /.*.extension.js$/, extension => {
     require( extension.path );
 });
-
 lineArgs.execute();
 

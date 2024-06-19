@@ -1,5 +1,5 @@
 import {patchSQL, sql} from "kitres";
-import {SQL} from "kitres/src/core/pg-core/scape";
+import {SQL} from "kitres";
 
 export const createTserieNotaDebito =  patchSQL({ unique: true }).sql`
     insert into tweeks.tserie( tserie_id, tserie_desc, tserie_code, tserie_seqlimit, tserie_numlimit ) values ( 8, 'Nota de debito', 'ND', 6, 7 );

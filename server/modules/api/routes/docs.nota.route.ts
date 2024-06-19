@@ -1,6 +1,6 @@
 import {app, storage} from '../../../service/storage.service';
 import {getUserSession, getUserSessionPOS} from "./functions/get-session";
-import {dbRes} from "../../../service/database.service/kitres/res";
+import {dbRes} from "../../../service/database.service/core";
 import {Result} from "kitres";
 import {functLoadContaData} from "../db/call-function-pos";
 import {functLoadDepositoData} from "../db/call-function-contacorrrente";
@@ -12,7 +12,7 @@ app.post( "/api/load/doc/to/nota", (req, res, next) => {
     args.arg_colaborador_id = _session.user_id;
     args.arg_espaco_auth = _session.workspace;
     console.log( "console.log( args )", args )
-    dbRes.call.tweeks.funct_load_conta_docs_financa({ args }, (error, result) => {
+    dbRes.call({ returnVersion: "v1"}).tweeks.funct_load_conta_docs_financa({ args }, (error, result) => {
         if( error ){
             res.json({
                 result:false,
@@ -36,10 +36,7 @@ app.post( "/api/reg/credito/nota", (req, res, next) => {
     args.arg_colaborador_id = _session.user_id;
     args.arg_espaco_auth = _session.workspace;
 
-
-    console.log( args )
-
-    dbRes.call.tweeks.funct_reg_conta_docs_financa({ args }, {
+    dbRes.call({ returnVersion: "v1"}).tweeks.funct_reg_conta_docs_financa({ args }, {
         onResult(error: Error, result?: Result<any, any>): any {
             if( error ){
                 res.json({
@@ -68,7 +65,7 @@ app.post( "/api/load/documents", (req, res, next) => {
     args.arg_colaborador_id = _session.user_id;
     args.arg_espaco_auth = _session.workspace;
 
-    dbRes.call.tweeks.funct_load_conta_documento_limit({ args }, {
+    dbRes.call({ returnVersion: "v1"}).tweeks.funct_load_conta_documento_limit({ args }, {
         onResult(error: Error, result?: Result<any, any>): any {
             if( error ){
                 res.json({

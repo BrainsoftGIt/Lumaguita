@@ -1,5 +1,5 @@
 import {patchSQL, sql} from "kitres";
-import {SQL} from "kitres/src/core/pg-core/scape";
+import {SQL} from "kitres";
 
 
 export const alter_serie_add_numlimin_v2 = patchSQL({ unique: true }).sql`

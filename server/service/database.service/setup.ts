@@ -1,15 +1,15 @@
 import {PostgresContext,  InstallationLocation} from "kitres";
-import {args} from "../../../global/args";
+import {args} from "../../global/args";
 import Path from "path";
-import {folders} from "../../../global/project";
-import {serverNotify} from "../../../snotify";
+import {folders} from "../../global/project";
+import {serverNotify} from "../../snotify";
 import {System} from "kitres/src/core/system";
 import fs from "fs";
 import os from "os";
 
 process.env[ System.pathName()] = [
     //language=file-reference
-    Path.join(__dirname,"../../../../bin"),
+    Path.join(__dirname,"../../../bin"),
     ... process.env[ System.pathName() ].split( Path.delimiter )
 ].join( Path.delimiter );
 
@@ -19,11 +19,11 @@ let baseDump:string;
 let setups:({user:string,filename:string})[]=[];
 if( isNewCluster ){
     //language=file-reference
-    baseDump = baseDump = Path.join( __dirname, "../../../../database/bases/maguita.base" );
+    baseDump = baseDump = Path.join( __dirname, "../../../database/bases/maguita.base" );
     setups.push({
         user: args.dbUser,
         //language=file-reference
-        filename: Path.join( __dirname, "../../../../database/bases/clean.sql")
+        filename: Path.join( __dirname, "../../../database/bases/clean.sql")
     })
 } else {
     baseDump = folders.base_dump
