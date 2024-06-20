@@ -12,6 +12,9 @@ import {serverNotify} from "./snotify";
 import {folders} from "./global/project";
 import {args, lineArgs} from "./global/args";
 
+if( args.dbMode === "app" ){
+    args.dbPort = args.dbPortDatabaseApp;
+}
 context.define( args );
 
 
@@ -45,9 +48,6 @@ process.env[ "PATH" ] = _path.join( path.delimiter );
 serverNotify.loadingBlockItem( "Aplicando patches...", { notifier:false});
 require( "./patches" ).patchesInstall();
 
-if( args.dbMode === "app" ){
-    args.dbPort = args.dbPortDatabaseApp;
-}
 
 //language=file-reference
 FileUtil.scanFiles( path.join( __dirname, 'extension' ), /.*.extension.js$/, extension => {
