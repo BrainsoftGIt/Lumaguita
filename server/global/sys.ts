@@ -5,11 +5,9 @@ import op from "open";
 import { SpawnOptions } from "child_process";
 import * as path from "path";
 import {execFilePain} from "../lib/utils/process/win32";
-import {pgCtl} from "../service/pgcluster.service";
 import {PostgresCluster} from "../lib/postgres/pg-ctl";
 import {processListen} from "../lib/utils/process/listen";
 import {launcherStatus} from "../launcher/status";
-// import {nwAppStatus} from "../../client/app/status";
 
 
 const { spawn }  = require('child_process')
@@ -139,3 +137,7 @@ export const sys = new (class Sys{
         });
     }
 });
+
+export function getSys(){
+    return require("../global/sys").sys;
+}

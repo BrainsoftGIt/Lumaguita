@@ -1,3 +1,4 @@
+
 import {args, describeArgs, lineArgs} from "../global/args";
 import path from "path";
 import {sys} from "../global/sys";
@@ -13,10 +14,6 @@ import chalk from "chalk";
 import os from "os";
 import {spawn} from "child_process";
 import Path from "path";
-
-export function getSys(){
-    return require("../global/sys").sys;
-}
 
 let dbPatch = ():Promise<boolean>=>{
     return new Promise( resolve => {

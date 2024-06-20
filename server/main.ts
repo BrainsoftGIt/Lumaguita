@@ -21,16 +21,17 @@ serverNotify.loadingBlock( "Aplicando ajustes" );
 serverNotify.loadingBlockItem( "Ajustando cwd..." );
 if( !launcherStatus.launcherName ) launcherStatus.launcherName = require.main.filename;
 if( !launcherStatus.launcher ) launcherStatus.launcher = path.basename( require.main.filename );
-console.log( "[MAGUITA]", "CWD     :", process.cwd() );
+console.log( context.tag, "CWD     :", process.cwd() );
 
 //language=file-reference
 if( process.cwd() !== path.join( __dirname, ".." ) ) process.chdir( path.join( __dirname, ".." ) );
-console.log( "[MAGUITA]", "CWD      :", process.cwd() );
-console.log( "[MAGUITA]", "DIR      :", __dirname );
-console.log( "[MAGUITA]", "FILE     :", __filename );
-console.log( "[MAGUITA]", "LAUNCHER :", launcherStatus.launcherName );
-console.log( "[MAGUITA]", "APP MODE :", args.appMode  );
-console.log( "[MAGUITA]", "FOLDER   :", folders.home )
+console.log( context.tag, "CWD      :", process.cwd() );
+console.log( context.tag, "DIR      :", __dirname );
+console.log( context.tag, "FILE     :", __filename );
+console.log( context.tag, "LAUNCHER :", launcherStatus.launcherName );
+console.log( context.tag, "APP MODE :", args.appMode  );
+console.log( context.tag, "FOLDER   :", folders.home )
+console.log( context.tag, "DATABASE :", folders.database )
 
 
 serverNotify.loadingBlockItem( "Ajustando paths..." );

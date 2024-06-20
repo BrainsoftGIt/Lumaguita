@@ -28,6 +28,8 @@ if( cluster.isPrimary ){
 export const pgCore:PgCore = new PgCore( () => new Pool( configs ), {
     schema: "kitres"
 });
+
+console.log(configs)
 pgCore.sync( args.dbPassword );
 
 

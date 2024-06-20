@@ -1,4 +1,4 @@
-import {PostgresContext,  InstallationLocation} from "kitres";
+import {db} from "kitres";
 import {args} from "../../global/args";
 import Path from "path";
 import {folders} from "../../global/project";
@@ -6,6 +6,7 @@ import {serverNotify} from "../../snotify";
 import {System} from "kitres/src/core/system";
 import fs from "fs";
 import os from "os";
+import {manifest} from "../../global/context";
 
 process.env[ System.pathName()] = [
     //language=file-reference
@@ -29,17 +30,16 @@ if( isNewCluster ){
     baseDump = folders.base_dump
 }
 
-let locale:InstallationLocation = InstallationLocation.REMOTE;
+let locale:db.InstallationLocation = db.InstallationLocation.REMOTE;
 if( os.platform() === "win32" && args.dbMode === "app" && args.appMode === "public" ){
-    locale = InstallationLocation.LOCAL;
+    locale = db.InstallationLocation.LOCAL;
 }
 
-
-export const pgContext = new PostgresContext({
+let opts:db.PostgresInstanceOptions = {
     clusterLocation: locale,
     installerLocation: locale,
     serverHost: args.dbHost,
-    service: args.dbServiceName,
+    service: manifest.properties.databaseService,
     configs:{
         port: args.dbPort,
         listenAddress: "*",
@@ -68,13 +68,18 @@ export const pgContext = new PostgresContext({
         username: args.dbSupperUser,
         password: args.dbPasswordSuperUser,
         superuser: true,
-    }, cluster: folders.pgHome,
+    },
+    cluster: folders.cluster,
     init: {
         auth: "md5",
         encoding: "utf8",
         noLocale: true
-    }
-});
+    },
+    minVersion: manifest.properties.databaseTarget
+};
+
+console.log( opts.configs.users )
+export const pgContext = new db.PostgresContext( opts );
 
 pgContext.on( "log", (level, message) => {
     serverNotify.log( `database setup log ${level} > ${ message.trim() }`);

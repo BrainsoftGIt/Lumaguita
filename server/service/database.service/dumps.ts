@@ -1,3 +1,4 @@
+
 import { pgServer} from "../../lib/postgres/pg-recoginizer";
 
 require("source-map-support").install();
@@ -15,8 +16,7 @@ import {serverNotify} from "../../snotify";
 import Path from "path";
 import chalk from "chalk";
 import {PostgresContextSteep, SQL, sql} from "kitres";
-import {dbRes, pgCore} from "./core";
-import {MaguitaTableOf} from "../../../database/cataloger/lumaguita";
+import { pgCore} from "./core";
 import os from "os";
 import {VERSION} from "../../version";
 import archiver from "archiver";

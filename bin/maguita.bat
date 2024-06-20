@@ -1,4 +1,5 @@
 @echo off
 cd %~dp0
+set PATH=%PATH%;"%~dp0"
 cd ..
-.\bin\node.exe bin\maguita.exe.js %*
+node bin\maguita.exe.js %*

@@ -1,6 +1,9 @@
+import {getSys} from "./global/sys";
+
+console.trace("d ds ssfss")
+
 import { nwAppStatus } from "../client/app/status";
 import path from "path";
-import { getSys } from "./extension/_app.extension";
 import {appToaster} from "./lib/toaster";
 
 function asOptions( opts ):{notifier?:boolean, nw?:boolean}{

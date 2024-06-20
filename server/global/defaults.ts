@@ -12,7 +12,6 @@ export const DEFAULTS = new Proxy({
     APP_PORT: 49278,
     APP_HOME : path.join( __dirname, /*language=file-reference*/ '../../' ),
     APP_HOME_LOCATION : "system",
-    APP_PACKAGE : "com.brainsoftstp.maguita",
     APP_USER: os.userInfo().username,
     APP_LAUNCHER: "index.ts",
     APP_MODE: "dev",

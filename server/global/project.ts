@@ -3,6 +3,7 @@ import fs  from "fs";
 import {args} from "./args";
 import {DEFAULTS} from "./defaults";
 import Path from "path";
+import {manifest} from "./context";
 const path = require( 'path' );
 
 
@@ -25,11 +26,6 @@ export function folder( ...pathParts:string[] ){
 }
 
 export const folders = {
-
-    get mountPoint() {
-        return (`/BrainsoftSTP.com/${ DEFAULTS.APP_PACKAGE }/${args.appMode??"default"}`);
-    },
-
     get root () {
         if( args.appRoot ) return path.join( DEFAULTS.APP_HOME, args.appMode??"default" );
 
@@ -53,10 +49,10 @@ export const folders = {
             _home =process.env["HOME"];
         }
 
-        return folder( _home,  this.mountPoint  );
+        return folder( _home, "/BrainsoftSTP.com");
 
     }, get home():string {
-        let home = path.join( this.root, 'var/home' );
+        let home = path.join( this.root, "apps", manifest.properties.package, args.appMode||"dev" );
         if( !fs.existsSync( home) ) fs.mkdirSync( home, { recursive: true });
         return folder( home );
 
@@ -116,7 +112,7 @@ export const folders = {
     get private () { return folder( path.join( this.home, '/storage/private' ) ); },
 
     //Destined for temporary and volatile resources
-    get temp () { return folder( path.join( this.volatile, this.mountPoint ) ); },
+    get temp () { return folder( this.volatile, manifest.properties.package, args.appMode||"dev" ); },
 
     //Destined for resource mount point [ChunksResources]
     get mnt () { return folder( path.join( this.home, '/storage/mnt' ) ); },
@@ -125,16 +121,14 @@ export const folders = {
 
     get logs () { return  folder( this.home,  '/logs' ) ; },
 
-    //Destined for permanent database resource
-    get database () { return folder( this.home,  '/database' ); },
+    //Database
+    get database(){ return folder( this.root, "databases", manifest.properties.databaseService, args.appMode||"dev" ) },
+    get cluster(){ return folder( this.database, "home" ) },
 
     //language=file-reference
     get databaseRevision () { return folder( __dirname, "../../database/revs" ); },
 
     get databaseRevisionResolved () { return folder( this.database, "/revisions/resolved" ); },
-
-    //Destined for postgres mount point [PostgresCluster|PG_HOME's]
-    get pgHome () { return folder( this.database,  '/postgres' ); },
 
     get base_dump(){
         return Path.join( this.database, "lumaguita.base.db" );
