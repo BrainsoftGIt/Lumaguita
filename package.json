@@ -1,10 +1,16 @@
 {
-  "name": "com.brainsoftstp.maguita",
+  "name": "lumaguita",
   "version": "1.0.0",
   "author": "@brainsoft",
   "description": "",
   "license": "Apache-2.0",
   "main": "client/app/page/launcher.html",
+  "properties": {
+    "package": "com.brainsoftstp.maguita",
+    "database": "postgres",
+    "databaseTarget": 14,
+    "databaseService": "brainsoft-postgres-luma-flocoto-15x64-service"
+  },
   "window": {
     "icon": "/server/resources/fav/fav.png",
     "width": 800,
@@ -54,6 +60,7 @@
     "express": "^4.17.1",
     "express-fileupload": "^1.2.0",
     "express-session": "^1.17.3",
+    "flocoto.integration": "file:flocoto.integration-1.0.6.tgz",
     "ini": "^3.0.0",
     "java-caller": "^3.1.1",
     "json5": "^2.1.3",
