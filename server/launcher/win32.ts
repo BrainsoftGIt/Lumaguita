@@ -14,6 +14,6 @@ if( args.appWithNodeWebKit ){
 
 args.appMode = "public";
 args.app = "LUMA";
-if( !args.dbMode ) args.dbMode = "app";
+args.dbPort = args.dbPortDatabaseApp;
 
 require( '../main' );

@@ -1244,3 +1244,82 @@
   border-radius: 5px;
   margin-bottom: 1rem;
 }
+.mstHead{
+  margin-bottom: 1.4rem;
+}
+.stepbystep{
+  width: 100%;
+  margin: 0 2rem;
+}
+.progressoBar{
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  counter-reset: step;
+}
+.progressoBar::before, .progress{
+  content: "";
+  position: absolute;
+  top: 50%;
+  height: 4px;
+  width: 100%;
+  transform: translateY(-50%);
+  background-color: #ddd;
+  z-index: -1;
+}
+.progress{
+  background-color: #1A73E8;
+  width: 0%;
+}
+.progressoBar .progresso-item{
+  width: 2rem;
+  height: 2rem;
+  background-color: #ddd;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 3rem;
+}
+.progressoBar .progresso-item::before{
+  counter-increment: step;
+  content: counter(step);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.progressoBar .progresso-item::after{
+  content: attr(data-title);
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  font-size: 0.8rem;
+  /* white-space: nowrap; */
+}
+.progressoBar .progresso-item.progresso-item-Active{
+  background-color: #1A73E8;
+  color: #ccc;
+}
+@keyframes animate {
+  from{
+    transform: scale(1, 0);
+    opacity: 0;
+  }
+ to{
+  transform: scale(1, 1);
+  opacity: 1;
+ }   
+}
+.form-step{
+  display: none;
+}
+.form-step-active{
+  display: block;
+}
+.cardCategoria{
+  background: #44a1ff;
+  padding: 1rem;
+  border-radius: 6px;
+  color: #fff;
+  margin: .6rem 0;
+}
