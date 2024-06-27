@@ -306,7 +306,7 @@
 
 	<div id="xModalCtrlArtigo" class="x-mobdal XM-ctrlArtigo flex v-ct h-ct" target="xModalCtrlArtigo">
 		<div class="modal-frame j-stp">
-			<div class="flex h-sb mstHead">
+			<div class=" mstHead">
 				<h3 targetTitle style="white-space: nowrap;">Adicionar Artigo</h3>
 				<div class="stepbystep">
 					<div class="progressoBar">
@@ -317,6 +317,7 @@
 						<div class="progresso-item" data-title="Artigo composto"></div>
 					</div>
 				</div>
+				<br>
 			</div>
 			<div class="theCtn">
 				<div class="form-step show Informacoes-basicas form-step-active" target="article01" id="article01">
@@ -377,49 +378,56 @@
 					</div>
 				</div>
 				<div class="form-step categoria">
-					<h5>Categorias</h5>
+					<div id="allCategoriesViewx" class="allCatsViewx"  cat_id="18ea4ef9-b6bf-4bde-8d0f-cf6b1047827a">
+						<h5>Categorias</h5>
+						<br>
+						<span class="btn-add xbtn" style="width: 20%; font-size: 1rem;">+</span>
+						<br>
 						<p class="txtChoice">Escolha uma categoria abaixo.</p>
-						<div class="listCats">
-							<!-- <div class="flex inList tgl active">
-								<div class="img-container empty-artigo"></div>
-								<div class="minDet grow-1">
-									<p>Name comes here</p>
-									<small>24 artigos</small>
+						<div class="flex">
+							<div class="listCats">
+								<div class="flex inList tgl">
+									<div class="img-container empty-artigo"></div>
+									<div class="minDet grow-1">
+										<p>ALIMENTAÇÃO HÚMIDA</p>
+										<small>Sem artigos</small>
+									</div>
 								</div>
-							</div> -->
+							</div>
+							<div class="options">
+								<br>
+								<div class="cardCategoria">
+									<p>
+										<b>Classe:</b>
+										<small>Nome da classe</small>
+									</p>
+								</div>
+								<div class="cardCategoria">
+									<p>
+										<b>Familia:</b>
+										<small>Nome da classe</small>
+									</p>
+								</div>
+								<div class="cardCategoria">
+									<p>
+										<b>SubClasse:</b>
+										<small>Nome da classe</small>
+									</p>
+								</div>
+							</div>
 						</div>
-						<div class="">
-							<span class="btn-add xbtn" style="width: 20%; font-size: 1rem;">+</span>
-							<br>
-							<div class="cardCategoria">
-								<p>
-									<b>Classe:</b>
-									<small>Nome da classe</small>
-								</p>
-							</div>
-							<div class="cardCategoria">
-								<p>
-									<b>Familia:</b>
-									<small>Nome da classe</small>
-								</p>
-							</div>
-							<div class="cardCategoria">
-								<p>
-									<b>SubClasse:</b>
-									<small>Nome da classe</small>
-								</p>
-							</div>
+						<div class="master-btn-right flex">
+							<span class="btn-prev">VOLTAR</span>
+							<span class="flex v-ct btn-next">
+								SEGUINTE
+								<svg class="spinner" viewBox="0 0 50 50">
+									<circle class="path" cx="25" cy="25" r="20" fill="none"></circle>
+								</svg>
+							</span>
 						</div>
-					<div class="master-btn-right flex">
-						<span class="btn-prev">VOLTAR</span>
-						<span class="flex v-ct btn-next">
-							SEGUINTE
-							<svg class="spinner" viewBox="0 0 50 50">
-								<circle class="path" cx="25" cy="25" r="20" fill="none"></circle>
-							</svg>
-						</span>
 					</div>
 				</div>
+				
 				<div class="form-step imposto">
 					<div class="item-all xform">
 						<div class="xselect flutuate w100">
@@ -430,29 +438,36 @@
 							<div class="fakearrow flex"><span></span><span></span></div>
 						</div>
 						<div class="xselect flutuate w100">
-							<input type="text" readonly _noObrigatory="true" id="aplicacao_impostos_desc" placeholder="_">
+							<input type="text" readonly _noObrigatory="true" id="aplicacao_impostos_desc"
+								placeholder="_">
 							<label for="aplicacao_impostos_desc">Forma de aplicação de imposto</label>
 							<ul id="artigo_aplicacao_imposto">
 							</ul>
 							<div class="fakearrow flex"><span></span><span></span></div>
 						</div>
 						<div class="xselect flutuate w100">
-							<input type="text" readonly _noObrigatory="true" id="artigo_codigoimpostoFaturacaoDesc" placeholder="_">
-							<label for="artigo_codigoimpostoFaturacaoDesc">Código de Inclusão/exclusão de faturação</label>
+							<input type="text" readonly _noObrigatory="true" id="artigo_codigoimpostoFaturacaoDesc"
+								placeholder="_">
+							<label for="artigo_codigoimpostoFaturacaoDesc">Código de Inclusão/exclusão de
+								faturação</label>
 							<ul id="artigo_codigoimpostoFaturacao">
 							</ul>
 							<div class="fakearrow flex"><span></span><span></span></div>
 						</div>
 						<div class="xselect flutuate w100">
-							<input type="text" readonly _noObrigatory="true" id="artigo_codigoimpostoNotaDebitoDesc" placeholder="_">
-							<label for="artigo_codigoimpostoNotaDebitoDesc">Código de Inclusão/exclusão de nota de débito</label>
+							<input type="text" readonly _noObrigatory="true" id="artigo_codigoimpostoNotaDebitoDesc"
+								placeholder="_">
+							<label for="artigo_codigoimpostoNotaDebitoDesc">Código de Inclusão/exclusão de nota de
+								débito</label>
 							<ul id="artigo_codigoimpostoNotaDebito">
 							</ul>
 							<div class="fakearrow flex"><span></span><span></span></div>
 						</div>
 						<div class="xselect flutuate w100">
-							<input type="text" readonly _noObrigatory="true" id="artigo_codigoimpostoNotaCreditoDesc" placeholder="_">
-							<label for="artigo_codigoimpostoNotaCreditoDesc">Código de Inclusão/exclusão de nota de crédito</label>
+							<input type="text" readonly _noObrigatory="true" id="artigo_codigoimpostoNotaCreditoDesc"
+								placeholder="_">
+							<label for="artigo_codigoimpostoNotaCreditoDesc">Código de Inclusão/exclusão de nota de
+								crédito</label>
 							<ul id="artigo_codigoimpostoNotaCredito">
 							</ul>
 							<div class="fakearrow flex"><span></span><span></span></div>
