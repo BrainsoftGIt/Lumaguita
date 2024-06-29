@@ -1330,6 +1330,19 @@
 .cardCategoria p small{
   margin-left: .5rem;
 }
+.gridCard{
+    display: grid;
+    grid-gap: 14px;
+    grid-template-columns: repeat(auto-fill, minmax(268px, 1fr)) !important;
+    overflow: auto !important;
+    /* height: calc(100% - 61px); */
+    align-content: flex-start !important;
+    /* width: 100%; */
+    height: auto !important;
+}
+.cardCategoria p{
+  white-space: nowrap;
+}
 .form-step .listCats {
   display: -ms-grid;
   display: grid;

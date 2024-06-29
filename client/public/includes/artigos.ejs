@@ -305,7 +305,7 @@
 	<!-- Add Artigo  -->
 
 	<div id="xModalCtrlArtigo" class="x-mobdal XM-ctrlArtigo flex v-ct h-ct" target="xModalCtrlArtigo">
-		<div class="modal-frame j-stp">
+		<div class="modal-frame j-stp" style="min-width: 900px !important;">
 			<div class=" mstHead">
 				<h3 targetTitle style="white-space: nowrap;">Adicionar Artigo</h3>
 				<div class="stepbystep">
@@ -385,12 +385,14 @@
 						<br>
 						<p class="txtChoice">Escolha uma categoria abaixo.</p>
 						<div class="flex">
-							<div class="listCats">
-								<div class="flex inList tgl">
-									<div class="img-container empty-artigo"></div>
-									<div class="minDet grow-1">
-										<p>ALIMENTAÇÃO HÚMIDA</p>
-										<small>Sem artigos</small>
+							<div class="Category" style="width: 900px;">
+								<div class="listCats gridCard">
+									<div class="flex inList tgl">
+										<div class="img-container empty-artigo"></div>
+										<div class="minDet grow-1">
+											<p>ALIMENTAÇÃO HÚMIDA</p>
+											<small>Sem artigos</small>
+										</div>
 									</div>
 								</div>
 							</div>
@@ -429,7 +431,7 @@
 				</div>
 				
 				<div class="form-step imposto">
-					<div class="item-all xform">
+					<div class="item-all xform" style="max-width: 100% !important;">
 						<div class="xselect flutuate w100">
 							<input type="text" readonly _noObrigatory="true" id="artigo_impostos_desc" placeholder="_">
 							<label for="artigo_impostos_desc">Impostos</label>
@@ -485,7 +487,7 @@
 				</div>
 				<div class="form-step artigoComposto">
 					<b class="bTit">Definições do artigo composto</b>
-					<div class="xform">
+					<div class="xform" style="max-width: 100% !important; flex-wrap: nowrap !important;">
 						<div class="xselect flutuate w100">
 							<input type="text" readonly id="artigoBaseDescricao">
 							<label>Artigo base</label>
