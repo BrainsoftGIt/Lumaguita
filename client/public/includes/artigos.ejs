@@ -305,22 +305,26 @@
 	<!-- Add Artigo  -->
 
 	<div id="xModalCtrlArtigo" class="x-mobdal XM-ctrlArtigo flex v-ct h-ct" target="xModalCtrlArtigo">
-		<div class="modal-frame j-stp" style="min-width: 900px !important;">
-			<div class=" mstHead">
-				<h3 targetTitle style="white-space: nowrap;">Adicionar Artigo</h3>
-				<div class="stepbystep">
-					<div class="progressoBar">
-						<div class="progress" id="progress"></div>
-						<div class="progresso-item progresso-item-Active" data-title="Informações básicas"></div>
-						<div class="progresso-item" data-title="Categoria"></div>
-						<div class="progresso-item" data-title="Imposto"></div>
-						<div class="progresso-item" data-title="Artigo composto"></div>
-					</div>
+		<div class="modal-frame j-stp">
+			<div class="flex h-sb mstHead">
+				<h3 targetTitle>Adicionar Artigo</h3>
+				<div class="flex catSlct">
+					<b id="categoria_artigo"></b>
+					<a tooltip="Editar" flow="top" class="showTarget" target="allCategoriesView"
+						title="Escolher a categoria">
+						<svg class="edit showTarget" viewBox="0 0 512 512">
+							<path
+								d="m368 511.957031h-309.332031c-32.363281 0-58.667969-26.304687-58.667969-58.667969v-309.332031c0-32.363281 26.304688-58.667969 58.667969-58.667969h181.332031c8.832031 0 16 7.167969 16 16 0 8.832032-7.167969 16-16 16h-181.332031c-14.699219 0-26.667969 11.96875-26.667969 26.667969v309.332031c0 14.699219 11.96875 26.667969 26.667969 26.667969h309.332031c14.699219 0 26.667969-11.96875 26.667969-26.667969v-181.332031c0-8.832031 7.167969-16 16-16s16 7.148438 16 16v181.332031c0 32.363282-26.304688 58.667969-58.667969 58.667969zm0 0" />
+							<path
+								d="m187.136719 340.820312c-4.203125 0-8.300781-1.664062-11.308594-4.691406-3.796875-3.777344-5.417969-9.21875-4.371094-14.445312l15.082031-75.433594c.617188-3.113281 2.152344-5.953125 4.371094-8.171875l220.953125-220.925781c22.867188-22.871094 60.074219-22.871094 82.964844 0 11.070313 11.070312 17.171875 25.792968 17.171875 41.472656s-6.101562 30.398438-17.195312 41.472656l-220.925782 220.949219c-2.21875 2.238281-5.078125 3.753906-8.171875 4.371094l-75.414062 15.082031c-1.046875.214844-2.113281.320312-3.15625.320312zm75.433593-31.082031h.214844zm-45.609374-52.457031-9.410157 47.144531 47.125-9.429687 217.515625-217.511719c5.035156-5.058594 7.808594-11.734375 7.808594-18.859375s-2.773438-13.804688-7.808594-18.859375c-10.367187-10.390625-27.285156-10.390625-37.714844 0zm0 0" />
+							<path
+								d="m453.332031 134.976562c-4.09375 0-8.191406-1.558593-11.304687-4.695312l-60.332032-60.351562c-6.25-6.25-6.25-16.382813 0-22.632813s16.382813-6.25 22.636719 0l60.328125 60.351563c6.25 6.25 6.25 16.382812 0 22.632812-3.136718 3.117188-7.230468 4.695312-11.328125 4.695312zm0 0" />
+						</svg>
+					</a>
 				</div>
-				<br>
 			</div>
 			<div class="theCtn">
-				<div class="form-step show Informacoes-basicas form-step-active" target="article01" id="article01">
+				<div class="block show" target="article01" id="article01">
 					<div class="flex">
 						<div class="theArtg">
 							<!--					 <p class="info" selectedCategory>Este artigo será adicionado à categoria <span>Cat here</span></p>-->
@@ -353,6 +357,58 @@
 									</ul>
 									<div class="fakearrow flex"><span></span><span></span></div>
 								</div>
+								<div class="xselect flutuate w100">
+									<input type="text" readonly id="artigo_impostos_desc" placeholder="_">
+									<label for="artigo_impostos_desc">Impostos</label>
+									<ul id="artigo_impostos">
+									</ul>
+									<div class="fakearrow flex"><span></span><span></span></div>
+								</div>
+								<div class="xselect flutuate w100">
+									<input type="text" readonly id="aplicacao_impostos_desc" placeholder="_">
+									<label for="aplicacao_impostos_desc">Forma de aplicação de imposto</label>
+									<ul id="artigo_aplicacao_imposto">
+									</ul>
+									<div class="fakearrow flex"><span></span><span></span></div>
+								</div>
+								<div class="xselect flutuate w100">
+									<input type="text" readonly _noObrigatory="true" id="artigo_codigoimpostoFaturacaoDesc" placeholder="_">
+									<label for="artigo_codigoimpostoFaturacaoDesc">Código de Inclusão/exclusão de faturação</label>
+									<ul id="artigo_codigoimpostoFaturacao">
+									</ul>
+									<div class="fakearrow flex"><span></span><span></span></div>
+								</div>
+								<div class="xselect flutuate w100">
+									<input type="text" readonly _noObrigatory="true" id="artigo_codigoimpostoNotaDebitoDesc" placeholder="_">
+									<label for="artigo_codigoimpostoNotaDebitoDesc">Código de Inclusão/exclusão de nota de débito</label>
+									<ul id="artigo_codigoimpostoNotaDebito">
+									</ul>
+									<div class="fakearrow flex"><span></span><span></span></div>
+								</div>
+								<div class="xselect flutuate w100">
+									<input type="text" readonly _noObrigatory="true" id="artigo_codigoimpostoNotaCreditoDesc" placeholder="_">
+									<label for="artigo_codigoimpostoNotaCreditoDesc">Código de Inclusão/exclusão de nota de crédito</label>
+									<ul id="artigo_codigoimpostoNotaCredito">
+									</ul>
+									<div class="fakearrow flex"><span></span><span></span></div>
+								</div>
+								<div class="xinput grow-1 w100">
+									<textarea id="artigo_observacao" _noObrigatory="true" placeholder="_"></textarea>
+									<label for="artigo_observacao">Observação</label>
+								</div>
+								<div class="armzenes xcheck multiple w100">
+									<b>Preços</b>
+									<ul id="armazens_artigos">
+										<div class="flex h-sb">
+											<li class="stgl">Armazém Y</li>
+											<span class="flex v-ct">
+												<b>STN</b>
+												<input type="text" title="Stock preço" placeholder="Preço">
+												<input type="text" title="Stock mínimo" placeholder="Stock mín.">
+											</span>
+										</div>
+									</ul>
+								</div>
 							</div>
 						</div>
 						<div class="options" id="modalArticleOptions">
@@ -366,128 +422,39 @@
 								</ul>
 							</div>
 						</div>
+						<div id="allCategoriesView" class="allCatsView">
+							<h5>Categorias</h5>
+							<p class="txtChoice">Escolha uma categoria abaixo.</p>
+							<div class="listCats">
+								<!--<div class="flex inList tgl active">
+									<div class="img-container empty-artigo"></div>
+									<div class="minDet grow-1">
+										<p>Name comes here</p>
+										<small>24 artigos</small>
+									</div>
+								</div>-->
+							</div>
+							<div class="master-btn-right flex">
+								<span class="hideTarget" target="allCategoriesView">VOLTAR</span>
+								<span class="flex v-ct hideTarget" target="allCategoriesView">
+									Continuar
+								</span>
+							</div>
+						</div>
 					</div>
 					<div class="master-btn-right flex">
 						<span class="hideTarget" target="xModalCtrlArtigo">CANCELAR</span>
-						<span class="flex v-ct btn-next">
-							SEGUINTE
+						<span class="flex v-ct" bt_artigo>
+							CONCLUIR
 							<svg class="spinner" viewBox="0 0 50 50">
 								<circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
 							</svg>
 						</span>
 					</div>
 				</div>
-				<div class="form-step categoria">
-					<div id="allCategoriesViewx" class="allCatsViewx"  cat_id="18ea4ef9-b6bf-4bde-8d0f-cf6b1047827a">
-						<h5>Categorias</h5>
-						<br>
-						<span class="btn-add xbtn" style="width: 20%; font-size: 1rem;">+</span>
-						<br>
-						<p class="txtChoice">Escolha uma categoria abaixo.</p>
-						<div class="flex">
-							<div class="Category" style="width: 900px;">
-								<div class="listCats gridCard">
-									<div class="flex inList tgl">
-										<div class="img-container empty-artigo"></div>
-										<div class="minDet grow-1">
-											<p>ALIMENTAÇÃO HÚMIDA</p>
-											<small>Sem artigos</small>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="options">
-								<br>
-								<div class="cardCategoria">
-									<p>
-										<b>Classe:</b>
-										<small>Nome da classe</small>
-									</p>
-								</div>
-								<div class="cardCategoria">
-									<p>
-										<b>Familia:</b>
-										<small>Nome da classe</small>
-									</p>
-								</div>
-								<div class="cardCategoria">
-									<p>
-										<b>SubClasse:</b>
-										<small>Nome da classe</small>
-									</p>
-								</div>
-							</div>
-						</div>
-						<div class="master-btn-right flex">
-							<span class="btn-prev">VOLTAR</span>
-							<span class="flex v-ct btn-next">
-								SEGUINTE
-								<svg class="spinner" viewBox="0 0 50 50">
-									<circle class="path" cx="25" cy="25" r="20" fill="none"></circle>
-								</svg>
-							</span>
-						</div>
-					</div>
-				</div>
-				
-				<div class="form-step imposto">
-					<div class="item-all xform" style="max-width: 100% !important;">
-						<div class="xselect flutuate w100">
-							<input type="text" readonly _noObrigatory="true" id="artigo_impostos_desc" placeholder="_">
-							<label for="artigo_impostos_desc">Impostos</label>
-							<ul id="artigo_impostos">
-							</ul>
-							<div class="fakearrow flex"><span></span><span></span></div>
-						</div>
-						<div class="xselect flutuate w100">
-							<input type="text" readonly _noObrigatory="true" id="aplicacao_impostos_desc"
-								placeholder="_">
-							<label for="aplicacao_impostos_desc">Forma de aplicação de imposto</label>
-							<ul id="artigo_aplicacao_imposto">
-							</ul>
-							<div class="fakearrow flex"><span></span><span></span></div>
-						</div>
-						<div class="xselect flutuate w100">
-							<input type="text" readonly _noObrigatory="true" id="artigo_codigoimpostoFaturacaoDesc"
-								placeholder="_">
-							<label for="artigo_codigoimpostoFaturacaoDesc">Código de Inclusão/exclusão de
-								faturação</label>
-							<ul id="artigo_codigoimpostoFaturacao">
-							</ul>
-							<div class="fakearrow flex"><span></span><span></span></div>
-						</div>
-						<div class="xselect flutuate w100">
-							<input type="text" readonly _noObrigatory="true" id="artigo_codigoimpostoNotaDebitoDesc"
-								placeholder="_">
-							<label for="artigo_codigoimpostoNotaDebitoDesc">Código de Inclusão/exclusão de nota de
-								débito</label>
-							<ul id="artigo_codigoimpostoNotaDebito">
-							</ul>
-							<div class="fakearrow flex"><span></span><span></span></div>
-						</div>
-						<div class="xselect flutuate w100">
-							<input type="text" readonly _noObrigatory="true" id="artigo_codigoimpostoNotaCreditoDesc"
-								placeholder="_">
-							<label for="artigo_codigoimpostoNotaCreditoDesc">Código de Inclusão/exclusão de nota de
-								crédito</label>
-							<ul id="artigo_codigoimpostoNotaCredito">
-							</ul>
-							<div class="fakearrow flex"><span></span><span></span></div>
-						</div>
-					</div>
-					<div class="master-btn-right flex">
-						<span class="btn-prev">VOLTAR</span>
-						<span class="flex v-ct btn-next">
-							SEGUINTE
-							<svg class="spinner" viewBox="0 0 50 50">
-								<circle class="path" cx="25" cy="25" r="20" fill="none"></circle>
-							</svg>
-						</span>
-					</div>
-				</div>
-				<div class="form-step artigoComposto">
+				<div class="block artigoComposto" target="article02" id="article02">
 					<b class="bTit">Definições do artigo composto</b>
-					<div class="xform" style="max-width: 100% !important; flex-wrap: nowrap !important;">
+					<div class="xform">
 						<div class="xselect flutuate w100">
 							<input type="text" readonly id="artigoBaseDescricao">
 							<label>Artigo base</label>
@@ -500,16 +467,104 @@
 						</div>
 					</div>
 					<div class="master-btn-right flex">
-						<span class="btn-prev">VOLTAR</span>
 						<span class="hideTarget" target="xModalCtrlArtigo">CANCELAR</span>
+						<span class="showTarget" target="article01" tab="true">VOLTAR</span>
 						<span class="flex v-ct" bt_artigo>
 							CONCLUIR
 							<svg class="spinner" viewBox="0 0 50 50">
-								<circle class="path" cx="25" cy="25" r="20" fill="none"></circle>
+								<circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
 							</svg>
 						</span>
 					</div>
 				</div>
+				<div class="block extrasItems" target="article03" id="article03">
+					<div class="xtraHead flex h-sb v-ct">
+						<h5>Itens extra</h5>
+						<b class="showTarget" target="addEditExtraItem" tTitle="Adicionar item extra">Adicionar</b>
+					</div>
+					<div class="searcher">
+						<input type="text" placeholder="Procure aqui..." id="searchExtraItems">
+						<svg x="0px" y="0px" viewBox="0 0 118.783 118.783"
+							style="enable-background:new 0 0 118.783 118.783;" xml:space="preserve">
+							<g>
+								<path d="M115.97,101.597L88.661,74.286c4.64-7.387,7.333-16.118,7.333-25.488c0-26.509-21.49-47.996-47.998-47.996
+						S0,22.289,0,48.798c0,26.51,21.487,47.995,47.996,47.995c10.197,0,19.642-3.188,27.414-8.605l26.984,26.986
+						c1.875,1.873,4.333,2.806,6.788,2.806c2.458,0,4.913-0.933,6.791-2.806C119.72,111.423,119.72,105.347,115.97,101.597z
+						 M47.996,81.243c-17.917,0-32.443-14.525-32.443-32.443s14.526-32.444,32.443-32.444c17.918,0,32.443,14.526,32.443,32.444
+						S65.914,81.243,47.996,81.243z"></path>
+							</g>
+						</svg>
+					</div>
+					<div class="listExtras">
+						<ul id="extraItemsArticle">
+							<li class="flex h-sb v-ct stgl active">
+								<p>Extra name</p>
+								<div class="flex v-ct">
+									<b class="is-money-text">50,00</b>
+									<a tooltip="Editar" flow="top" class="showTarget" target="addEditExtraItem"
+										tTitle="Editar item extra">
+										<svg class="edit showTarget" viewBox="0 0 512 512">
+											<path
+												d="m368 511.957031h-309.332031c-32.363281 0-58.667969-26.304687-58.667969-58.667969v-309.332031c0-32.363281 26.304688-58.667969 58.667969-58.667969h181.332031c8.832031 0 16 7.167969 16 16 0 8.832032-7.167969 16-16 16h-181.332031c-14.699219 0-26.667969 11.96875-26.667969 26.667969v309.332031c0 14.699219 11.96875 26.667969 26.667969 26.667969h309.332031c14.699219 0 26.667969-11.96875 26.667969-26.667969v-181.332031c0-8.832031 7.167969-16 16-16s16 7.148438 16 16v181.332031c0 32.363282-26.304688 58.667969-58.667969 58.667969zm0 0" />
+											<path
+												d="m187.136719 340.820312c-4.203125 0-8.300781-1.664062-11.308594-4.691406-3.796875-3.777344-5.417969-9.21875-4.371094-14.445312l15.082031-75.433594c.617188-3.113281 2.152344-5.953125 4.371094-8.171875l220.953125-220.925781c22.867188-22.871094 60.074219-22.871094 82.964844 0 11.070313 11.070312 17.171875 25.792968 17.171875 41.472656s-6.101562 30.398438-17.195312 41.472656l-220.925782 220.949219c-2.21875 2.238281-5.078125 3.753906-8.171875 4.371094l-75.414062 15.082031c-1.046875.214844-2.113281.320312-3.15625.320312zm75.433593-31.082031h.214844zm-45.609374-52.457031-9.410157 47.144531 47.125-9.429687 217.515625-217.511719c5.035156-5.058594 7.808594-11.734375 7.808594-18.859375s-2.773438-13.804688-7.808594-18.859375c-10.367187-10.390625-27.285156-10.390625-37.714844 0zm0 0" />
+											<path
+												d="m453.332031 134.976562c-4.09375 0-8.191406-1.558593-11.304687-4.695312l-60.332032-60.351562c-6.25-6.25-6.25-16.382813 0-22.632813s16.382813-6.25 22.636719 0l60.328125 60.351563c6.25 6.25 6.25 16.382812 0 22.632812-3.136718 3.117188-7.230468 4.695312-11.328125 4.695312zm0 0" />
+										</svg>
+									</a>
+									<a tooltip="Eliminar" flow="top">
+										<svg class="delete" viewBox="-40 0 427 427.00131">
+											<path
+												d="m232.398438 154.703125c-5.523438 0-10 4.476563-10 10v189c0 5.519531 4.476562 10 10 10 5.523437 0 10-4.480469 10-10v-189c0-5.523437-4.476563-10-10-10zm0 0" />
+											<path
+												d="m114.398438 154.703125c-5.523438 0-10 4.476563-10 10v189c0 5.519531 4.476562 10 10 10 5.523437 0 10-4.480469 10-10v-189c0-5.523437-4.476563-10-10-10zm0 0" />
+											<path
+												d="m28.398438 127.121094v246.378906c0 14.5625 5.339843 28.238281 14.667968 38.050781 9.285156 9.839844 22.207032 15.425781 35.730469 15.449219h189.203125c13.527344-.023438 26.449219-5.609375 35.730469-15.449219 9.328125-9.8125 14.667969-23.488281 14.667969-38.050781v-246.378906c18.542968-4.921875 30.558593-22.835938 28.078124-41.863282-2.484374-19.023437-18.691406-33.253906-37.878906-33.257812h-51.199218v-12.5c.058593-10.511719-4.097657-20.605469-11.539063-28.03125-7.441406-7.421875-17.550781-11.5546875-28.0625-11.46875h-88.796875c-10.511719-.0859375-20.621094 4.046875-28.0625 11.46875-7.441406 7.425781-11.597656 17.519531-11.539062 28.03125v12.5h-51.199219c-19.1875.003906-35.394531 14.234375-37.878907 33.257812-2.480468 19.027344 9.535157 36.941407 28.078126 41.863282zm239.601562 279.878906h-189.203125c-17.097656 0-30.398437-14.6875-30.398437-33.5v-245.5h250v245.5c0 18.8125-13.300782 33.5-30.398438 33.5zm-158.601562-367.5c-.066407-5.207031 1.980468-10.21875 5.675781-13.894531 3.691406-3.675781 8.714843-5.695313 13.925781-5.605469h88.796875c5.210937-.089844 10.234375 1.929688 13.925781 5.605469 3.695313 3.671875 5.742188 8.6875 5.675782 13.894531v12.5h-128zm-71.199219 32.5h270.398437c9.941406 0 18 8.058594 18 18s-8.058594 18-18 18h-270.398437c-9.941407 0-18-8.058594-18-18s8.058593-18 18-18zm0 0" />
+											<path
+												d="m173.398438 154.703125c-5.523438 0-10 4.476563-10 10v189c0 5.519531 4.476562 10 10 10 5.523437 0 10-4.480469 10-10v-189c0-5.523437-4.476563-10-10-10zm0 0" />
+										</svg>
+									</a>
+								</div>
+							</li>
+						</ul>
+					</div>
+					<div id="addEditExtraItem" class="addEditExtraItem">
+						<div class="head">
+							<span class="goBack flex v-ct hideTarget" target="addEditExtraItem">
+								<svg x="0px" y="0px" viewBox="0 0 240.823 240.823"
+									style="enable-background:new 0 0 240.823 240.823;" xml:space="preserve">
+									<path
+										d="M57.633,129.007L165.93,237.268c4.752,4.74,12.451,4.74,17.215,0c4.752-4.74,4.752-12.439,0-17.179 l-99.707-99.671l99.695-99.671c4.752-4.74,4.752-12.439,0-17.191c-4.752-4.74-12.463-4.74-17.215,0L57.621,111.816 C52.942,116.507,52.942,124.327,57.633,129.007z" />
+								</svg>
+								<h5>Voltar</h5>
+							</span>
+						</div>
+						<b targetTitle>Adicionar item extra</b>
+						<div class="xform">
+							<div class="xinput grow-1 w100">
+								<input type="text" id="extraName">
+								<label for="extraName">Nome</label>
+							</div>
+							<div class="xinput grow-1 w100">
+								<input type="text" class="double formatNumber" id="extraPrice">
+								<label for="extraPrice">Preço</label>
+							</div>
+
+						</div>
+						<button class="xbtn" id="btExtra">Adicionar</button>
+					</div>
+					<div class="master-btn-right flex">
+						<span class="hideTarget" target="xModalCtrlArtigo">CANCELAR</span>
+						<span voltarItemExtra>VOLTAR</span>
+						<span class="flex v-ct" bt_artigo>
+							CONCLUIR
+							<svg class="spinner" viewBox="0 0 50 50">
+								<circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
+							</svg>
+						</span>
+					</div>
+				</div>
+
 			</div>
 		</div>
 	</div>
@@ -603,7 +658,7 @@
 	</div>
 	<div id="xModalArmazensImportarArtigos" class="x-mobdal flex v-ct h-ct" target="xModalArmazensImportarArtigos">
 		<div class="modal-frame j-stp">
-			<!--			<h3 targetTitle>Adicionar Armazém</h3>-->
+<!--			<h3 targetTitle>Adicionar Armazém</h3>-->
 			<div class="xform">
 				<p>Selecione os armazéns nos quais os artigos estarão alocados!</p>
 				<div class="xcheck multiple">
@@ -767,59 +822,6 @@
 		</div>
 	</div>
 </div>
-<script>
-	const prevBtns = document.querySelectorAll(".btn-prev");
-	const nextBtns = document.querySelectorAll(".btn-next");
-	const progress = document.getElementById("progress");
-	const formSteps = document.querySelectorAll(".form-step");
-	const progressoItem = document.querySelectorAll(".progresso-item");
-
-	let formStepsNum = 0;
-
-	nextBtns.forEach((btn) => {
-		btn.addEventListener("click", () => {
-			formStepsNum++;
-			updateformSteps();
-			updateProgressBar();
-		});
-	});
-
-	prevBtns.forEach((btn) => {
-		btn.addEventListener("click", () => {
-			formStepsNum--;
-			updateformSteps();
-			updateProgressBar();
-		});
-	});
-
-	function updateformSteps() {
-
-		formSteps.forEach((formStepy) => {
-			formStepy.classList.contains("form-step-active") &&
-				formStepy.classList.remove("form-step-active");
-		});
-
-		formSteps[formStepsNum].classList.add("form-step-active");
-	}
-
-	function updateProgressBar() {
-		progressoItem.forEach((progressoItem, idx) => {
-			if (idx < formStepsNum + 1) {
-				progressoItem.classList.add('progresso-item-Active')
-			} else {
-				progressoItem.classList.remove('progresso-item-Active')
-			}
-		});
-
-		const progressActive = document.querySelectorAll(".progresso-item-Active");
-
-		progress.style.width = ((progressActive.length - 1) / (progressoItem.length - 1)) * 100 + "%";
-
-	}
-
-
-
-</script>
 <script src="../assets/js/admin/articles.js?v=<%=VERSION.TAG%>"></script>
 <script src="../assets/js/admin/categories.js?v=<%=VERSION.TAG%>"></script>
 <script src="../assets/js/admin/provider.js?v=<%=VERSION.TAG%>"></script>

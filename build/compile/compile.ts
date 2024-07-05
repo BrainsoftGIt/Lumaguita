@@ -218,6 +218,7 @@ async function build( args:CompileArgs  ){
 
     if( args.fast ) return;
     if( !args.fast ) installDependency()
+
 }
 
 line.defineCommand( { name: "destroy", callback: receiver => {

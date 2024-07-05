@@ -1,5 +1,5 @@
 import {patchSQL, sql} from "kitres";
-import {SQL} from "kitres";
+import {SQL} from "kitres/src/core/pg-core/scape";
 
 
 export const alter_conta_add_origem = patchSQL({ unique: true }).sql`

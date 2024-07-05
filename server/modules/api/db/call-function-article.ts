@@ -1,7 +1,7 @@
 import { catchAll, catchLast, Templates } from "zoo.pg";
 import {  factory } from "../../../service/database.service";
 import {args} from "../../../global/args";
-import {dbRes} from "../../../service/database.service/core";
+import {dbRes} from "../../../service/database.service/kitres/res";
 import {Result} from "kitres";
 
 
@@ -136,7 +136,7 @@ export function funct_load_imposto_simple(paramn) {
 
 export function functLoadSerieDistribuicao(args) {
     return new Promise((resolve) => {
-        dbRes.call({ returnVersion: "v1"}).tweeks.funct_load_serie_distribuicao({ args }, {
+        dbRes.call.tweeks.funct_load_serie_distribuicao({ args }, {
             onResult(error: Error, result?: Result<any, any>): any {
                 if( error ){
                     resolve({
@@ -158,7 +158,7 @@ export function functLoadSerieDistribuicao(args) {
 }
 export function functLoadSeriesDistribuicao(args) {
     return new Promise((resolve) => {
-        dbRes.call({ returnVersion: "v1"}).tweeks.funct_load_serie_distribuicao_pos({ args }, {
+        dbRes.call.tweeks.funct_load_serie_distribuicao_pos({ args }, {
             onResult(error: Error, result?: Result<any, any>): any {
                 if( error ){
                     resolve({

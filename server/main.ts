@@ -1,22 +1,17 @@
 #!/usr/bin/env node
-import {context} from "./global/context";
-
 console.log("NODE VERSION:", process.version )
 require( 'source-map-support' ).install();
 require('./global/pid').showUncaughtError();
 import "./version";
 import * as path from "path";
 import {FileUtil} from "zoo.util/lib/file-util";
+
 import {launcherStatus} from "./launcher/status";
+
 import {serverNotify} from "./snotify";
+
 import {folders} from "./global/project";
 import {args, lineArgs} from "./global/args";
-
-if( args.dbMode === "app" ){
-    args.dbPort = args.dbPortDatabaseApp;
-}
-context.define( args );
-
 
 serverNotify.loading( "A configurar ambiente", { notifier: false } );
 serverNotify.loadingBlock( "Aplicando ajustes" );
@@ -48,10 +43,14 @@ process.env[ "PATH" ] = _path.join( path.delimiter );
 serverNotify.loadingBlockItem( "Aplicando patches...", { notifier:false});
 require( "./patches" ).patchesInstall();
 
+if( args.dbMode === "app" ){
+    args.dbPort = args.dbPortDatabaseApp;
+}
 
 //language=file-reference
 FileUtil.scanFiles( path.join( __dirname, 'extension' ), /.*.extension.js$/, extension => {
     require( extension.path );
 });
+
 lineArgs.execute();
 

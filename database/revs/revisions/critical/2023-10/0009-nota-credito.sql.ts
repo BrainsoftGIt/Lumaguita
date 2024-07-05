@@ -1,6 +1,6 @@
 import {sql} from "kitres";
 
-export const funct_reg_conta_docs_financa = sql`
+export const funct_reg_conta_docs_financa_v2 = sql`
 create or replace function tweeks.funct_reg_conta_docs_financa(args jsonb) returns lib.res
   language plpgsql
 as
@@ -64,6 +64,7 @@ begin
   if _tserie_id = _const.maguita_tserie_notacredito then __signal := -1; 
   else __signal := 1;
   end if;
+
   
   if arg_conta_id is not null and _conta.conta_id is null then 
       return lib.res_false( 'Não foi encontrado nenhuma conta interna com essa ID!' );
@@ -357,7 +358,16 @@ begin
    */
 
 
-  if _conta.conta_cliente_id is null or _conta.conta_cliente_id = _const.maguita_cliente_final and not exists(
+  _conta_args.conta_cliente_id := coalesce( _conta.conta_cliente_id, _conta_args.conta_cliente_id );
+  _conta_args.conta_docorigin := coalesce( _conta.conta_numerofatura, _conta_args.conta_docorigin );
+  _conta_args.conta_datedocorigin := coalesce( _conta.conta_data, _conta_args.conta_datedocorigin );
+  _conta_args.conta_data := coalesce( _conta_args.conta_data, current_date );
+  
+  if _conta_args.conta_cliente_id is null or _conta_args.conta_cliente_id = _const.maguita_cliente_final then
+      _conta_args.conta_cliente_id := _const.maguita_cliente_finalnotacredito;
+  end if;
+  
+  if ( _conta_args.conta_cliente_id is null or _conta_args.conta_cliente_id = _const.maguita_cliente_final ) and not exists(
       select *
       from tweeks.cliente c
       where c.cliente_id = _const.maguita_cliente_finalnotacredito
@@ -380,12 +390,6 @@ begin
            __branch._branch_uid,
            'NDC100010'
        );
-  end if;
-  
-  _conta_args.conta_cliente_id := _conta.conta_cliente_id;
-  _conta_args.conta_data := coalesce( _conta_args.conta_data, current_date );
-  if _conta_args.conta_cliente_id is null or _conta_args.conta_cliente_id = _const.maguita_cliente_final then
-      _conta_args.conta_cliente_id := _const.maguita_cliente_finalnotacredito;
   end if;
   
 

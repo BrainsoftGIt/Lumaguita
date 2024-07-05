@@ -1,5 +1,5 @@
 import path from "path";
-import {compileArgs, CompileArgs} from "./compile";
+import {compileArgs} from "./compile";
 import fs from "fs";
 import * as Path from "path";
 import {spawnSync} from "child_process";
@@ -109,7 +109,7 @@ export function res():CompileRes{
     //language=file-reference
     const _package = path.join( __dirname, '../../package.json' );
     const root = path.dirname( _package );
-    const distRoot = path.join( root, `../maguita_${ compileArgs.platform }` );
+    const distRoot = path.join( root, `../LumaguitaBuild/maguita_${ compileArgs.platform }` );
     fs.mkdirSync( distRoot, { recursive: true } );
 
     //language=file-reference

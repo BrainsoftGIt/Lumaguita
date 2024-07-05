@@ -75,12 +75,10 @@ var article = {
                 let artigo_impostos = $("#artigo_impostos");
                 let artigo_aplicacao_imposto = $("#artigo_aplicacao_imposto");
                 artigo_impostos.empty();
-                artigo_aplicacao_imposto.append(`<li class="tgl">(Sem imposto)</li>`);
                 article.imposto_lista_tipo_aplicacao = [];
                 article.imposto_lista_tipo_aplicacao = e.taplicar_data;
                 article.impostos = [];
                 article.impostos = e.impostos;
-                artigo_impostos.append(`<li class="tgl">(Sem imposto)</li>`);
                 let acrescimo_imposto;
                 article.impostos.forEach((imp) =>{
                     imp = imp.data;
@@ -100,9 +98,9 @@ var article = {
             method: "GET",
             contentType: "application/json",
             success({taxCodes}) {
-                let artigo_codigoimpostoFaturacao = $("#artigo_codigoimpostoFaturacao").html(`<li class="tgl">(Sem imposto)</li>`);
-                let artigo_codigoimpostoNotaCredito = $("#artigo_codigoimpostoNotaCredito").html(`<li class="tgl">(Sem imposto)</li>`);
-                let artigo_codigoimpostoNotaDebito = $("#artigo_codigoimpostoNotaDebito").html(`<li class="tgl">(Sem imposto)</li>`);
+                let artigo_codigoimpostoFaturacao = $("#artigo_codigoimpostoFaturacao").empty();
+                let artigo_codigoimpostoNotaCredito = $("#artigo_codigoimpostoNotaCredito").empty();
+                let artigo_codigoimpostoNotaDebito = $("#artigo_codigoimpostoNotaDebito").empty();
                 article.taxCodes = taxCodes;
                 taxCodes.forEach(({codigoimposto_codigo, codigoimposto_descricao}) =>{
                     artigo_codigoimpostoFaturacao.append(`<li style="line-height: 1.7rem" class="tgl" codigoimposto_id="${codigoimposto_codigo}"><text style="font-weight: bold; font-size: 12px">${codigoimposto_codigo}</text> - ${codigoimposto_descricao}</li>`);
@@ -778,7 +776,7 @@ $("[bt_artigo]").on("click", function () {
     let target = $("#xModalCtrlArtigo").find(".block.show").attr("target");
 
     if(target === "article01"){
-        if(!validation1($("#artigo_nome"))) return;
+        if(!validation1($("#artigo_nome, #artigo_impostos_desc, #aplicacao_impostos_desc, #artigo_unidade_desc"))) return;
         if($(".listCats").find("div.active").length === 0){
             xAlert("Artigo", "Escolha a categoria do artigo", "info");
             showTarget("allCategoriesView");

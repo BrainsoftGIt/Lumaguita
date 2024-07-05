@@ -134,7 +134,7 @@ export const folders = {
     get databaseRevisionResolved () { return folder( this.database, "/revisions/resolved" ); },
 
     //Destined for postgres mount point [PostgresCluster|PG_HOME's]
-    get pgHome () { return folder( this.database,  '/postgres/base' ); },
+    get pgHome () { return folder( this.database,  '/postgres' ); },
 
     get base_dump(){
         return Path.join( this.database, "lumaguita.base.db" );

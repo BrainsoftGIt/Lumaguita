@@ -1,7 +1,7 @@
 import { catchAll, catchLast, Templates } from "zoo.pg";
 import {  factory } from "../../../service/database.service";
 import {args} from "../../../global/args";
-import {dbRes} from "../../../service/database.service/core";
+import {dbRes} from "../../../service/database.service/kitres/res";
 import {Result} from "kitres";
 import moment from "moment-timezone";
 
@@ -156,7 +156,7 @@ export function functUnits(paramn) {
 
 export function functRegSetting(args) {
     return new Promise((resolve) => {
-        dbRes.call({ returnVersion: "v1"}).tweeks.sets_parametrizacao({ args }, {
+        dbRes.call.tweeks.sets_parametrizacao({ args }, {
             onResult(error: Error, result?: Result<any, any>): any {
                 if( error ){
                     resolve({
@@ -179,7 +179,7 @@ export function functRegSetting(args) {
 
 export function functLoadSetting(args) {
     return new Promise((resolve) => {
-        dbRes.call({ returnVersion: "v1"}).tweeks.funct_load_parametrizacao({ args }, {
+        dbRes.call.tweeks.funct_load_parametrizacao({ args }, {
             onResult(error: Error, result?: Result<any, any>): any {
                 if( error ){
                     resolve({
@@ -203,7 +203,7 @@ export function functLoadSetting(args) {
 export function functLoadDataCluster() {
     moment.locale('pt-br');
     return new Promise((resolve) => {
-        dbRes.call({ returnVersion: "v1"}).cluster.licence_status({}, {
+        dbRes.call.cluster.licence_status({}, {
             onResult(error: Error, result?: Result<any, any>): any {
                 if( error ){
                     resolve({

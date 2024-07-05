@@ -1,5 +1,5 @@
 import {patchSQL, sql} from "kitres";
-import {SQL} from "kitres";
+import {SQL} from "kitres/src/core/pg-core/scape";
 import fs from "fs";
 import JSON5 from "json5";
 import Path from "path";

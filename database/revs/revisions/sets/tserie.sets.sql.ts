@@ -3,7 +3,7 @@ import Path from "path";
 import JSON5 from "json5";
 import {VERSION} from "../../../../server/version";
 import {patchSQL, sql} from "kitres";
-import {SQL} from "kitres";
+import {SQL} from "kitres/src/core/pg-core/scape";
 
 /*language=file-reference*/
 let content = fs.readFileSync( Path.join( __dirname, "tserie.sets.json" ) ).toString();

@@ -11,7 +11,7 @@ export function stopDatabaseApplication(){
 lineArgs.defineCommand( { name: "database",  callback: ( receiver )=>{
     let next = receiver.params.shift();
     if( next === "start" ){
-        const { pgContext } =  require("../service/database.service/setup");
+        const { pgContext } =  require("../service/database.service/kitres/setup");
         pgContext.setup( (error, result) => {
             if( error || !result.status ){
                 return;

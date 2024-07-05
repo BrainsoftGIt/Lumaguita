@@ -1,4 +1,4 @@
-import {dbRes} from "../../server/service/database.service/core";
+import {dbRes} from "../../server/service/database.service/kitres/res";
 import JSON5 from "json5";
 import fs from "fs";
 import Path from "path";
