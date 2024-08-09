@@ -478,7 +478,7 @@ begin
 
 
   with __final_amount as (
-    select sum( ve.venda_montantecomimposto ) as conta_montante
+    select sum( ve.venda_montantecomimposto ) as conta_montantepagar
       from tweeks.venda ve
       where ve.venda_conta_id = arg_conta_id
         and ve.venda_venda_id is null
@@ -488,12 +488,16 @@ begin
         )
   ), __sync_conta as (
     update tweeks.conta _c set
-        conta_montantepagar = _ve.conta_montante
+        conta_montantepagar = _ve.conta_montantepagar
       from __final_amount _ve
       where _c.conta_id = arg_conta_id
-        and _c.conta_montantepagar != _ve.conta_montante
+        and ( _c.conta_montantepagar is null or _c.conta_montantepagar != _ve.conta_montantepagar)
       returning *
   ) select * into _conta from __sync_conta;
+
+  if _conta.conta_montantepagar is null then 
+    raise exception 'Não pode determinar o montante a ser pago!';
+  end if;
 
   return jsonb_build_object(
     'conta', _conta
