@@ -230,6 +230,7 @@ declare
     _conta := jsonb_populate_record( _conta, args );
     _conta.conta_data := coalesce( _conta.conta_data, current_date );
     _conta.conta_desconto := coalesce( _conta.conta_desconto, 0.0 );
+    _conta.conta_montante := _conta.conta_montantepagar - _conta.conta_desconto;
     _deposito := jsonb_populate_record( _deposito, args->'deposito' );
 
     _message := tweeks.__check_conta_data(
