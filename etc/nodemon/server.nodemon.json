@@ -2,5 +2,5 @@
   "watch": [ "server/" ],
   "ext": "js",
   "ignore": [ "./*.spec.js" ],
-  "exec": "node server/launcher start --mode test"
+  "exec": "node server/launcher --appMode public"
 }

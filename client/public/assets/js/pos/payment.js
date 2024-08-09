@@ -47,12 +47,14 @@ var payment = {
         tiposPagamento.find("li").eq(0).addClass("active");
         tiposPagamento.find("li.active").click();
         customers.find("li").removeClass("active");
-        $("#montante_entregue, #nif_titular_compra").val("");
+        $("#montante_entregue, #nif_titular_compra, #montante_desconto").val("");
         $("#valorTotalTroco").text("0,00");
+        $("#valorTotalDesconto").text("0,00");
     },
     calcularTroco:function () {
         let valorPagamento = $("#valorTotalPagamento").text().unFormatter();
-        let montanteEntregue = $("#montante_entregue").val().unFormatter() * Number(payment.cambio_taxa);
+        let montanteDesconto = $("#montante_desconto")?.val?.()?.unFormatter?.() || 0;
+        let montanteEntregue = ($("#montante_entregue")?.val?.()?.unFormatter?.() || 0) * Number(payment.cambio_taxa) + montanteDesconto;
         if(montanteEntregue >= valorPagamento) {
             this.valorTroco = montanteEntregue - valorPagamento;
             this.valorTroco =  this.valorTroco > 0 ? this.valorTroco.toFixed(2) : 0;
@@ -84,6 +86,7 @@ var payment = {
     hasValidData:function(){
         let valorCambio;
         let montanteEntregue;
+        let montanteDesconto;
         if($("#artigosRacharConta").find("li.active").length === 0){
             xAlert("Rachar conta", "Tem que selecionar, pelo menos, um artigo!", "error");
             if(!$(".break-account").hasClass("active")){
@@ -102,8 +105,9 @@ var payment = {
         }
         else{
             if(!validation1($("#montante_entregue"))) return false;
+            montanteDesconto = $("#montante_desconto")?.val?.()?.unFormatter?.() || 0;
             montanteEntregue = $("#montante_entregue").val().unFormatter();
-            valorCambio = Number(montanteEntregue) * Number(payment.cambio_taxa);
+            valorCambio = Number(montanteEntregue) * Number(payment.cambio_taxa) + montanteEntregue;
             if(Number(valorCambio) < $("#valorTotalPagamento").text().unFormatter()){
                 xAlert("Efetuar pagamento", "Montante entregue não cobre a despesa.", "error");
                 $("#montante_entregue").focus();
@@ -360,7 +364,7 @@ var payment = {
             numero: (numeroMesa.text().trim() === "" || numeroMesa.text().trim() === "N/D" ? null : numeroMesa.text().trim()),
             descricao: null, lotacao: null
         };
-        dados.conta_desconto = null;
+        dados.conta_desconto = $("#montante_desconto")?.val?.()?.unFormatter?.() || null;
         dados.conta_titular = $("#titular_compra").val().trim();
         dados.conta_titularnif = $("#nif_titular_compra").val() || null;
         dados.conta_data = null;
@@ -587,6 +591,8 @@ $("body").on("keyup", "#montante_entregue",function () {
         payment.valorTroco = 0;
         $("#valorTotalTroco").text("0,00");
     }
+}).on("keyup", "#montante_desconto",function () {
+    payment.calcularTroco();
 });
 $("#artigosRacharConta").on("click", "li", function () {
     $(this).toggleClass("active");
