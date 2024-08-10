@@ -30,7 +30,6 @@ export let create = async (instituition, account_content, res, user, date, num_a
     let removerLinhaDoCabecalho = !instituition?.espaco_configuracao.removerLinhaDoCabecalho;
 
     let imageCabecalho = (instituition?.espaco_configuracao?.cabecalho_referencia === null ? "" : clusterServer.res.resolve(instituition?.espaco_configuracao?.cabecalho_referencia));
-    console.log("account_content[0]?.main", account_content[0]?.main);
 
     (account_content[0]?.main?.conta_vendas || []).forEach((cont) => {
 

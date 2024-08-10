@@ -47,7 +47,7 @@ var payment = {
         tiposPagamento.find("li").eq(0).addClass("active");
         tiposPagamento.find("li.active").click();
         customers.find("li").removeClass("active");
-        $("#montante_entregue, #nif_titular_compra, #montante_desconto").val("");
+        $("#montante_entregue, #nif_titular_compra, #montante_desconto, #montante_desconto_per").val("");
         $("#valorTotalTroco").text("0,00");
         $("#valorTotalDesconto").text("0,00");
     },
