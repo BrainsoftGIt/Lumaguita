@@ -16,6 +16,6 @@ alter table tweeks.conta enable trigger  sync_branch_map_before_update_on_tweeks
 alter table tweeks.conta enable trigger  tg_conta_after_close;
 `;
 
-export const conta_descotopercent = patchSQL({ unique: true }).sql`
+export const conta_descotopercent_v1 = patchSQL({ unique: true }).sql`
 alter table tweeks.conta add if not exists conta_descontopercent double precision not null default 0.0;
 `;
