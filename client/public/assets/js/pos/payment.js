@@ -598,7 +598,7 @@ $("body").on("keyup", "#montante_entregue",function () {
         let valorPagamento = $("#valorTotalPagamento").text().unFormatter();
         console.log({per: desconto / valorPagamento, desconto, valorPagamento
     })
-        $("#montante_desconto_per").val((desconto / valorPagamento * 100).toFixed())
+        $("#montante_desconto_per").val((desconto / valorPagamento * 100.0).toFixed())
         payment.calcularTroco();
         return
     }
@@ -612,7 +612,7 @@ $("body").on("keyup", "#montante_entregue",function () {
     }
 
     let valorPagamento = $("#valorTotalPagamento").text().unFormatter();
-    $("#montante_desconto").val((valorPagamento * per / 100).formatter())
+    $("#montante_desconto").val((valorPagamento * per / 100.0).formatter())
 
     payment.calcularTroco();
 });
