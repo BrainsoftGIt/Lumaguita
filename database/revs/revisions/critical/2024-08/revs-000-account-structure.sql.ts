@@ -19,3 +19,6 @@ alter table tweeks.conta enable trigger  tg_conta_after_close;
 export const conta_descotopercent_v1 = patchSQL({ unique: true }).sql`
 alter table tweeks.conta add if not exists conta_descontopercent double precision not null default 0.0;
 `;
+export const __drop_conta_descotopercent = patchSQL({ unique: true }).sql`
+alter table tweeks.conta drop column if exists conta_descotopercent ;
+`;
