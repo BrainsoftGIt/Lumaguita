@@ -17,5 +17,5 @@ alter table tweeks.conta enable trigger  tg_conta_after_close;
 `;
 
 export const conta_descotopercent = patchSQL({ unique: true }).sql`
-alter table tweeks.conta add conta_descotopercent double precision default null;
+alter table tweeks.conta add conta_descotopercent double precision not null default 0.0;
 `;
