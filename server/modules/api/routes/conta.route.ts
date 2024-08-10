@@ -1,5 +1,6 @@
 import {app, storage} from '../../../service/storage.service';
 import {functLoadAccountkey, functLoadProformas} from "../db/call-function-conta";
+import {validate_user_space} from "./functions/userDefaultSpace";
 
 app.post("/api/users/post/load", async (req, res) =>{
     const {functLoadUserPOS} = require("../db/call-function-conta");
@@ -20,7 +21,14 @@ app.post("/api/post/login", async (req, res) =>{
         res.json({result: false, message: "PIN incorreto."});
     } else {
         let acesso = response.rows[0].data.auth.colaborador_accesso;
-        if (acesso === 2) res.json({result: true, acesso: acesso});
+        if (acesso === 2){
+            let userSpace = validate_user_space(response.rows[0].data.espaco_trabalha.filter(esp => esp.espaco_vender !== null), req.session.posto.spaces);
+            res.json({
+                result: true,
+                acesso: acesso,
+                armazens: userSpace.spaces
+            });
+        }
         else {
             let userSpace = validate_user_space(response.rows[0].data.espaco_trabalha.filter(esp => esp.espaco_vender !== null), req.session.posto.spaces);
             if (!userSpace.result) res.json({result: false, message: userSpace.message});
@@ -31,7 +39,9 @@ app.post("/api/post/login", async (req, res) =>{
 
                 req.session.save(() => {
                     res.json({
-                        result: true, acesso: acesso, armazens: userSpace.spaces,
+                        result: true,
+                        acesso: acesso,
+                        armazens: userSpace.spaces,
                         defaultSpace: req?.session?.user_pos?.auth?.armazem_atual,
                         user_uuid: req?.session?.user_pos?.auth?.colaborador_id
                     });
