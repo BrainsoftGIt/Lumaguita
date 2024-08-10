@@ -37,7 +37,7 @@ var account = {
                                                 <p class="artigos">${(co.conta_vendas === 1 ? "1 artigo ": co.conta_vendas+" artigos")}</p>
                                                 <p class="who">Criada por <span>${co.colaborador_nome}</span></p>
                                             </div>
-                                            <p class="price">${co.conta_montante.dc().formatter()+" STN"}</p>
+                                            <p class="price">${(co.conta_montante ?? 0).dc().formatter()+" STN"}</p>
                                         </div>`);
                 });
             }
