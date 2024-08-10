@@ -365,6 +365,7 @@ var payment = {
             descricao: null, lotacao: null
         };
         dados.conta_desconto = $("#montante_desconto")?.val?.()?.unFormatter?.() || null;
+        dados.conta_descontopercent = $("#montante_desconto_per")?.val?.()?.unFormatter?.() || null;
         dados.conta_titular = $("#titular_compra").val().trim();
         dados.conta_titularnif = $("#nif_titular_compra").val() || null;
         dados.conta_data = null;
@@ -592,6 +593,27 @@ $("body").on("keyup", "#montante_entregue",function () {
         $("#valorTotalTroco").text("0,00");
     }
 }).on("keyup", "#montante_desconto",function () {
+    let desconto = +($(this)?.val?.()?.unFormatter?.() || 0);
+    if(!!desconto){
+        let valorPagamento = $("#valorTotalPagamento").text().unFormatter();
+        console.log({per: desconto / valorPagamento, desconto, valorPagamento
+    })
+        $("#montante_desconto_per").val((desconto / valorPagamento * 100).toFixed())
+        payment.calcularTroco();
+        return
+    }
+
+    $(" #montante_desconto_per ").val("0,00");
+}).on("keyup", "#montante_desconto_per", function (){
+    let per = +($(this)?.val?.()?.unFormatter?.() || 0);
+    if(per > 100 || per < 0){
+        $("#montante_desconto").val("0,00");
+        return
+    }
+
+    let valorPagamento = $("#valorTotalPagamento").text().unFormatter();
+    $("#montante_desconto").val((valorPagamento * per / 100).formatter())
+
     payment.calcularTroco();
 });
 $("#artigosRacharConta").on("click", "li", function () {
