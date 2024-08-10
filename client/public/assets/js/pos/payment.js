@@ -137,6 +137,11 @@ var payment = {
         }
         else tiposPagamento.find("li[corrente]").remove();
 
+        $(" [montante_desconto] ").hide();
+        if(pos.haveAccessGranted("maguita.pos.desconto", true)){
+            $("[montante_desconto]").show()
+        }
+
         showTarget("xModalMakePayment");
     },
     addCustomer(){
