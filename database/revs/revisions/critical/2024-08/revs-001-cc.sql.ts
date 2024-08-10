@@ -630,6 +630,7 @@ begin
           c.conta_montante,
           c.conta_montantepagar,
           c.conta_desconto,
+          c.conta_descontopercent,
           c.conta_mesa,
           c.conta_estado,
           c.conta_serie,
