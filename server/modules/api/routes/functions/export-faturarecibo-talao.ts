@@ -8,6 +8,7 @@ import {app} from "../../../../service/web.service";
 import Path from "path";
 import {sys} from "../../../../global/sys";
 import {args} from "../../../../global/args";
+import {formattedString} from "./formatValue";
 
 function getTypePayment(tipo_id){
     if(tipo_id === 1) return "Cash";
@@ -237,6 +238,17 @@ export let create = async (instituition, account_content, res, user, date, print
                             },
                             {
                                 text : formattedString(subtotal.toFixed(2)+"")+" STN",
+                                alignment : "right"
+                            }
+                        ],
+                    },
+                    {
+                        columns : [
+                            {
+                                text : `Desconto (${(account_content[0]?.main?.conta_descontopercent || 0).toFixed(2)}%)`,
+                            },
+                            {
+                                text : formattedString((account_content[0]?.main?.conta_desconto || 0).toFixed(2)+"")+" STN",
                                 alignment : "right"
                             }
                         ],

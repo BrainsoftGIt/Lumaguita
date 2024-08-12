@@ -1,7 +1,10 @@
 import { nwAppStatus } from "../client/app/status";
 import path from "path";
+
 import { getSys } from "./extension/_app.extension";
+
 import {appToaster} from "./lib/toaster";
+
 
 function asOptions( opts ):{notifier?:boolean, nw?:boolean}{
     if( !opts ) opts = {};

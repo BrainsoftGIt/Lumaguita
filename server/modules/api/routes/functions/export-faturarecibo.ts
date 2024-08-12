@@ -1,6 +1,7 @@
 import fs from "fs";
 import {getFonts, structure, getImage} from "./estruture";
 import {clusterServer} from "../../../../service/cluster.service";
+import {formattedString} from "./formatValue";
 
 function getTypePayment(tipo_id) {
     if (tipo_id === 1) return "Cash";
@@ -131,6 +132,29 @@ export let create = async (instituition, account_content, res, user, date, num_a
                         border: [false, false, false, false],
                         margin: [0, 0.5, 0, 0.5],
                         text: formattedString(subtotal.toFixed(2) + ""),
+                        alignment: "right"
+                    },
+                ],
+                [
+                    {
+                        border: [false, false, false, false],
+                        text: "", colSpan: 5, fillColor: "#ffffff"
+                    },
+                    {text: ""},
+                    {text: ""},
+                    {text: ""},
+                    {text: ""},
+                    {
+                        fontSize: 6.5,
+                        border: [false, false, false, false],
+                        margin: [0, 0.5, 0, 0.5],
+                        text: `Desconto (${(account_content[0]?.main?.conta_descontopercent || 0).toFixed(2)}%)`
+                    },
+                    {
+                        fontSize: 6.5,
+                        border: [false, false, false, false],
+                        margin: [0, 0.5, 0, 0.5],
+                        text: formattedString((account_content[0]?.main?.conta_desconto || 0).toFixed(2) + ""),
                         alignment: "right"
                     },
                 ],

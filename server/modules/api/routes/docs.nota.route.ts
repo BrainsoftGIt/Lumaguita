@@ -4,7 +4,6 @@ import {dbRes} from "../../../service/database.service/kitres/res";
 import {Result} from "kitres";
 import {functLoadContaData} from "../db/call-function-pos";
 import {functLoadDepositoData} from "../db/call-function-contacorrrente";
-import {functLoadDadosEmpresa} from "../db/call-function-settings";
 app.post( "/api/load/doc/to/nota", (req, res, next) => {
     let _session = getUserSession( req );
 
@@ -35,9 +34,6 @@ app.post( "/api/reg/credito/nota", (req, res, next) => {
     let args = req.body;
     args.arg_colaborador_id = _session.user_id;
     args.arg_espaco_auth = _session.workspace;
-
-
-    console.log( args )
 
     dbRes.call.tweeks.funct_reg_conta_docs_financa({ args }, {
         onResult(error: Error, result?: Result<any, any>): any {

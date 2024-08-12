@@ -5,8 +5,11 @@ require('./global/pid').showUncaughtError();
 import "./version";
 import * as path from "path";
 import {FileUtil} from "zoo.util/lib/file-util";
+
 import {launcherStatus} from "./launcher/status";
+
 import {serverNotify} from "./snotify";
+
 import {folders} from "./global/project";
 import {args, lineArgs} from "./global/args";
 

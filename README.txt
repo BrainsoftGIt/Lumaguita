@@ -1,3 +1,8 @@
+[COMPILACAO-LINUX]
+tsc
+node build/kconst --mod public
+node build/db/cli -NLYy
+
 [COMPILE:FIRST]
 tsc
 node build/kconst --mode [dev|test|prod|public]

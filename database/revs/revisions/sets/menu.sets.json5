@@ -336,6 +336,22 @@
     date: '2023-11-10T19:00:31.068Z',
   },
   {
+    menu_id: 120,
+    menu_menu_id: 71,
+    menu_codigo: 'maguita.pos.desconto',
+    menu_raiz: '71',
+    menu_nivel: 1,
+    menu_icon: null,
+    menu_nome: 'Desconto',
+    menu_link: null,
+    menu_estado: 1,
+    menu_children: 0,
+    menu_maxnode: 0,
+    menu_directchildern: 0,
+    menu_position: 0,
+    date: '2023-11-10T19:00:31.068Z'
+  },
+  {
     menu_id: 106,
     menu_menu_id: null,
     menu_codigo: 'maguita.transferencia.artigos',
@@ -479,4 +495,5 @@
     menu_position: -1,
     date: '2023-11-10T19:00:31.068Z',
   },
+
 ]
