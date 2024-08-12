@@ -103,15 +103,19 @@ function installDependency(){
                 stdout( chunk ) { console.log( `[install:build] ${ chunk.toString() }` ) },
                 stderr( chunk ) { console.log( `[install:build] ${ chunk.toString() }` ) },
             });
-        },
-        ()=> processListen( spawn(npm, ["install", "--only", "production"], {
-            cwd: _res.distRoot,
-            stdio: "inherit"
-        }), {
-            stdout(chunk) {console.log(`[dependency:install|prod] ${chunk.toString()}`)},
-            stderr(chunk) {console.log(`[dependency:install|prod] ${chunk.toString()}`)}
-        }),
-        ()=> {
+        }, ()=> {
+            console.log( "DESTINATION", _res.distRoot, fs.existsSync( _res.distRoot ))
+            console.log( npm, "install", "--only", "production")
+
+            return processListen( spawn(npm, ["install", "--only", "production"], {
+                cwd: _res.distRoot,
+                stdio: "inherit",
+                shell: true
+            }), {
+                stdout(chunk) {console.log(`[dependency:install|prod] ${chunk.toString()}`)},
+                stderr(chunk) {console.log(`[dependency:install|prod] ${chunk.toString()}`)}
+            });
+        }, ()=> {
             console.log( "Installing kitres file")
             let kitres = require("../../package.json" );
             let parts = kitres.dependencies["kitres"].split(":");
@@ -121,28 +125,42 @@ function installDependency(){
             }
             return processListen( spawn(npm, ["install", kitResPack ], {
                 cwd: _res.distRoot,
-                stdio: "inherit"
+                stdio: "inherit",
+                shell: true
             }), {
                 stdout(chunk) {console.log(`[dependency:install|prod] ${chunk.toString()}`)},
                 stderr(chunk) {console.log(`[dependency:install|prod] ${chunk.toString()}`)}
             })
-        }, ()=> processListen( spawn( npm, [ "audit", "fix", "--force" ], {
-            cwd: _res.distRoot,
-            stdio: "inherit"
-        }), {
-            stdout(chunk) { console.log(`[dependency:install|fix-prod] ${ chunk.toString() }` ) },
-            stderr(chunk) { console.log(`[dependency:install|fix-prod] ${ chunk.toString() }` ) }
-        }),
-        ()=> processListen( spawn( npm, [ "install", "kconst", "terminal-kit", "--dev"], {
-            cwd: _res.distRoot,
-            stdio:"inherit"
-        }), {
-            stdout(chunk) { console.log(`[dependency:install|dev] ${ chunk.toString() }` ) },
-            stderr(chunk) { console.log(`[dependency:install|dev] ${ chunk.toString() }` ) }
-        }),
-        ()=>{
-            return new Promise( (resolve, reject) => {
+        }, ()=> {
+            return processListen(spawn(npm, ["audit", "fix", "--force"], {
+                cwd: _res.distRoot,
+                stdio: "inherit",
+                shell: true
 
+            }), {
+                stdout(chunk) {
+                    console.log(`[dependency:install|fix-prod] ${chunk.toString()}`)
+                },
+                stderr(chunk) {
+                    console.log(`[dependency:install|fix-prod] ${chunk.toString()}`)
+                }
+            })
+        }, ()=> {
+            return processListen(spawn(npm, ["install", "kconst", "terminal-kit", "--dev"], {
+                cwd: _res.distRoot,
+                stdio: "inherit",
+                shell: true
+
+            }), {
+                stdout(chunk) {
+                    console.log(`[dependency:install|dev] ${chunk.toString()}`)
+                },
+                stderr(chunk) {
+                    console.log(`[dependency:install|dev] ${chunk.toString()}`)
+                }
+            })
+        }, ()=>{
+            return new Promise( (resolve, reject) => {
                 console.log( "building kconst configs..." )
                 require( path.join( _res.distRoot, "build/kconst" ) )
                     //.kconstBulder( path.join( _res.distRoot, "build/kconst" ), "public", "public" );
