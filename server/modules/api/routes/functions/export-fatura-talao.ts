@@ -27,6 +27,7 @@ export let create = async (instituition, account_content, res, user, date, print
     let logoTipo = clusterServer.res.resolve(instituition?.espaco_configuracao?.logo_referencia);
 
     let sumImpost = {};
+    let percentagemDiminuir = instituition?.espaco_configuracao?.pos_percentagemDiminuir;
 
     let docDefinition = {
         compress: true,
@@ -265,7 +266,7 @@ export let create = async (instituition, account_content, res, user, date, print
                 ]
             }
         ],
-        ...structure({margin})
+        ...structure({margin, percentagemDiminuir})
     };
 
     const pdfDocGenerator = pdfMake.createPdf(docDefinition);
