@@ -528,12 +528,30 @@ $("#anularConta").on("click", function () {
     }
 });
 $("#getBackPos").on("click", function () {
-    $("#theIDOfSlctAccWoutLgn").find(".hideTarget").click();
-    account.loadPost();
-    $("#asideCarrinho").removeClass("isProforma");
-    payment.clients = [];
-    location.hash = "";
+    pos.exitCarinho = () => {
+        $("#theIDOfSlctAccWoutLgn").find(".hideTarget").click();
+        account.loadPost();
+        $("#asideCarrinho").removeClass("isProforma");
+        payment.clients = [];
+        location.hash = "";
+    };
+
+    let dataCarrinho = pos.updateLastConfirmation(false);
+    if (dataCarrinho !== pos.lastConfirmation) {
+        showTarget("xModalConfirmPOS");
+        return
+    }
+
+    pos.exitCarinho()
 });
+
+$('[bt="xModalConfirmPOS"]').on("click",function (e){
+    e.stopPropagation()
+    setTimeout(() => {
+        pos.exitCarinho();
+    }, 80)
+    $("#xModalConfirmPOS").removeClass("show")
+})
 
 $("#confirmarAnularConta").on("click", function () {
     if(pos.haveAccessGranted("maquita.pos.anularconta", true)){
