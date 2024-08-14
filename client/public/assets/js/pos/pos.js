@@ -56,6 +56,7 @@ var pos = {
             });
         });
           pos.determinateTotalValues();
+          pos.updateLastConfirmation();
     },
     get articlesForKitchen(){
       return pos.contas.filter(con => con.venda_estadopreparacao === 1);
@@ -401,6 +402,8 @@ var pos = {
                         $("#kitchen_obs").val("");
                         showTarget("xModalKuchenObservation", "");
                     }
+
+                    pos.updateLastConfirmation();
                     return
                 }
 
@@ -459,6 +462,21 @@ var pos = {
             data: JSON.stringify({arg_vendas: vendas, arg_conta_id: pos.conta_id}),
             success(e) {}
         });
+    },
+    updateLastConfirmation: (update = true) => {
+        let lastConfirmation = JSON.stringify($("#artigos_carrinho li").map(function (){
+            let artigo_id = $(this).attr("artigo_id");
+            let quantidade = $(this).find(".amount").text();
+            return {
+                artigo_id,
+                quantidade
+            }
+        }).get())
+        if(update){
+            pos.lastConfirmation = lastConfirmation;
+        }
+
+        return lastConfirmation;
     }
 };
 
