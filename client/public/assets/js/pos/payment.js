@@ -607,18 +607,26 @@ $("body").on("keyup", "#montante_entregue",function () {
     let desconto = +($(this)?.val?.()?.unFormatter?.() || 0);
     if(!!desconto){
         let valorPagamento = $("#valorTotalPagamento").text().unFormatter();
-        console.log({per: desconto / valorPagamento, desconto, valorPagamento
-    })
-        $("#montante_desconto_per").val((desconto / valorPagamento * 100).toFixed(2))
+
+        if(desconto > valorPagamento){
+            $(" #montante_desconto_per ").val("")
+            $(this).val("")
+            payment.calcularTroco();
+            return;
+        }
+
+        $(" #montante_desconto_per").val((desconto / valorPagamento * 100).toFixed(2))
         payment.calcularTroco();
         return
     }
 
-    $(" #montante_desconto_per ").val("0,00");
+    $(" #montante_desconto_per ").val("");
 }).on("keyup", "#montante_desconto_per", function (){
     let per = +($(this)?.val?.()?.unFormatter?.() || 0);
-    if(per > 100 || per < 0){
-        $("#montante_desconto").val("0,00");
+    if(per > 100 || per < 0 || !per){
+        $(" #montante_desconto ").val("");
+        $(this).val("");
+        payment.calcularTroco();
         return
     }
 
