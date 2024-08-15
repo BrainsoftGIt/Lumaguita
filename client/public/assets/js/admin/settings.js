@@ -159,6 +159,7 @@ var settings = {
                         $("#empresa_gerente").val(emp.empresa_gerente);
                         $("#empresa_textcolor").val(emp?.empresa_textcolor || "#ffffff");
                         $("#empresa_basecolor").val(emp?.empresa_basecolor || "#000000");
+                        $("#pos_percentagemDiminuir").val(emp?.pos_percentagemDiminuir);
                         if(settings.empresa?.configuracao_impressoras === undefined){
                             settings.empresa["configuracao_impressoras"] = [];
                         }
@@ -416,6 +417,7 @@ var settings = {
         dados.empresa_gerente = $("#empresa_gerente").val().trim() || null;
         dados.empresa_basecolor = $("#empresa_basecolor").val().trim() || null;
         dados.empresa_textcolor = $("#empresa_textcolor").val().trim() || null;
+        dados.pos_percentagemDiminuir = $("#pos_percentagemDiminuir").val().trim() || null;
         dados.logo_nome = this.empresa?.logo_nome || null;
         dados.logo_talao = $("#mostrarLogoTalao").hasClass("active");
         dados.removerLinhaDoCabecalho = $("#removerLinhaDoCabecalho").hasClass("active");
@@ -994,3 +996,10 @@ $("[armazens_posto_edit], [armazens_posto]").on("click", "li",function (){
         armazens_posto_faturas.find("li").removeClass("active")
     }
 });
+
+$(" #pos_percentagemDiminuir ").on("keyup", function (){
+    let valor = $(this).val() || 0;
+    if(valor > 100 || valor < 0){
+        $(this).val("")
+    }
+})

@@ -1,39 +1,40 @@
-export let structure = ({margin}) => {
-    let { marginLeft: left, marginRight : right } = margin || {};
+export let structure = ({margin, percentagemDiminuir = 0}) => {
+    percentagemDiminuir = percentagemDiminuir ?? 0;
+    let {marginLeft: left, marginRight: right} = margin || {};
     return {
         styles: {
             pequena: {
-                fontSize: 8.8,
-                alignment : "center",
+                fontSize: 8.8 - (8.8 * percentagemDiminuir / 100),
+                alignment: "center",
                 lineHeight: 1.2
             },
             media: {
-                fontSize: 9
+                fontSize: 9 - (9 * percentagemDiminuir / 100)
             },
             normal: {
-                fontSize: 10
+                fontSize: 10 - (10 * percentagemDiminuir / 100)
             },
             grande: {
-                fontSize: 10.5,
+                fontSize: 10.5 - (10.5 * percentagemDiminuir / 100),
                 bold: true,
             },
             bold: {
-                fontSize: 10,
+                fontSize: 10 - (10 * percentagemDiminuir / 100),
                 bold: true,
             },
         },
-        pageMargins: [ (+left || 5), 0, (+right || 5), 0 ],
+        pageMargins: [(+left || 5), 0, (+right || 5), 0],
         pageSize: {
-            width : 204.0944881889764,
+            width: 204.0944881889764,
             height: 841.8897637795277
         },
         background: function (page) {
             return []
         },
-        header: function(currentPage, pageCount, pageSize) {
+        header: function (currentPage, pageCount, pageSize) {
             return []
         },
-        footer: function(currentPage, pageCount) {
+        footer: function (currentPage, pageCount) {
             return []
         },
     }
@@ -68,7 +69,7 @@ export let getFonts = () => {
         Times: {
             normal: 'times.ttf',
             bold: 'timesbd.ttf',
-            italics:  'timesbi.ttf',
+            italics: 'timesbi.ttf',
             bolditalics: 'timesi.ttf'
         }
     }

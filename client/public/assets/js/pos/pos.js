@@ -56,6 +56,7 @@ var pos = {
             });
         });
           pos.determinateTotalValues();
+          pos.updateLastConfirmation();
     },
     get articlesForKitchen(){
       return pos.contas.filter(con => con.venda_estadopreparacao === 1);
@@ -401,6 +402,8 @@ var pos = {
                         $("#kitchen_obs").val("");
                         showTarget("xModalKuchenObservation", "");
                     }
+
+                    pos.updateLastConfirmation();
                     return
                 }
 
@@ -459,6 +462,21 @@ var pos = {
             data: JSON.stringify({arg_vendas: vendas, arg_conta_id: pos.conta_id}),
             success(e) {}
         });
+    },
+    updateLastConfirmation: (update = true) => {
+        let lastConfirmation = JSON.stringify($("#artigos_carrinho li").map(function (){
+            let artigo_id = $(this).attr("artigo_id");
+            let quantidade = $(this).find(".amount").text();
+            return {
+                artigo_id,
+                quantidade
+            }
+        }).get())
+        if(update){
+            pos.lastConfirmation = lastConfirmation;
+        }
+
+        return lastConfirmation;
     }
 };
 
@@ -510,12 +528,30 @@ $("#anularConta").on("click", function () {
     }
 });
 $("#getBackPos").on("click", function () {
-    $("#theIDOfSlctAccWoutLgn").find(".hideTarget").click();
-    account.loadPost();
-    $("#asideCarrinho").removeClass("isProforma");
-    payment.clients = [];
-    location.hash = "";
+    pos.exitCarinho = () => {
+        $("#theIDOfSlctAccWoutLgn").find(".hideTarget").click();
+        account.loadPost();
+        $("#asideCarrinho").removeClass("isProforma");
+        payment.clients = [];
+        location.hash = "";
+    };
+
+    let dataCarrinho = pos.updateLastConfirmation(false);
+    if (dataCarrinho !== pos.lastConfirmation) {
+        showTarget("xModalConfirmPOS");
+        return
+    }
+
+    pos.exitCarinho()
 });
+
+$('[bt="xModalConfirmPOS"]').on("click",function (e){
+    e.stopPropagation()
+    setTimeout(() => {
+        pos.exitCarinho();
+    }, 80)
+    $("#xModalConfirmPOS").removeClass("show")
+})
 
 $("#confirmarAnularConta").on("click", function () {
     if(pos.haveAccessGranted("maquita.pos.anularconta", true)){

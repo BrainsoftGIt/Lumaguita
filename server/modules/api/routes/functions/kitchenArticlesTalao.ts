@@ -11,6 +11,8 @@ export let create = async (instituition, articles, res, date, table, obs, margin
     pdfMake.vfs = pdfFonts.pdfMake.vfs;
     pdfMake.fonts = getFonts();
 
+    let percentagemDiminuir = instituition?.espaco_configuracao?.pos_percentagemDiminuir;
+
     let docDefinition = {
         compress: true,
         info: {
@@ -157,7 +159,7 @@ export let create = async (instituition, articles, res, date, table, obs, margin
                 ]
             } : {})
         ],
-        ...structure({margin})
+        ...structure({margin, percentagemDiminuir})
     };
 
     const pdfDocGenerator = pdfMake.createPdf(docDefinition);

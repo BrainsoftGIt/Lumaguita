@@ -4,6 +4,12 @@ var fatura = {
 };
 
 $("#pos_fatura").on("click", async function () {
+    let dataCarrinho = pos.updateLastConfirmation(false);
+    if (dataCarrinho !== pos.lastConfirmation) {
+        M.toast({html: 'Confirme artigos no carrinho!', classes: 'rounded'});
+        return
+    }
+
     spaceConfig.loadConfig().then(value => {
         if (spaceConfig.isConfigured({object: value.config[0]})) {
             if ($("#artigos_carrinho").find("li.sended").length > 0) {

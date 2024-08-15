@@ -27,6 +27,7 @@ export let create = async (instituition, account_content, res, user, date, print
     let logoTipo = clusterServer.res.resolve(instituition?.espaco_configuracao?.logo_referencia);
 
     let sumImpost = {};
+    let percentagemDiminuir = instituition?.espaco_configuracao?.pos_percentagemDiminuir;
 
     let docDefinition = {
         compress: true,
@@ -116,7 +117,7 @@ export let create = async (instituition, account_content, res, user, date, print
                     {
                         stack: [
                             {
-                                text: `NIF: ${(account_content?.main?.cliente_nif || "---------------")}`
+                                text: `NIF: ${(account_content?.main?.conta_titularnif || account_content?.main?.cliente_nif || "---------------")}`
                             },
                             {
                                 text: `Nome: ${account_content?.main?.cliente_titular}`
@@ -232,6 +233,17 @@ export let create = async (instituition, account_content, res, user, date, print
                             ],
                         }
                     }),
+                    (!!account_content?.main?.conta_descontopercent) ? {
+                        columns: [
+                            {
+                                text: `Desconto (${(account_content?.main?.conta_descontopercent || 0).toFixed(2)}%)`,
+                            },
+                            {
+                                text: formattedString((account_content?.main?.conta_desconto || 0).toFixed(2) + "") + " STN",
+                                alignment: "right",
+                            }
+                        ],
+                    } : {},
                     {
                         style : "bold",
                         columns : [
@@ -265,7 +277,7 @@ export let create = async (instituition, account_content, res, user, date, print
                 ]
             }
         ],
-        ...structure({margin})
+        ...structure({margin, percentagemDiminuir})
     };
 
     const pdfDocGenerator = pdfMake.createPdf(docDefinition);

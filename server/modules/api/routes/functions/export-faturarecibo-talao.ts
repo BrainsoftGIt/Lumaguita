@@ -37,6 +37,7 @@ export let create = async (instituition, account_content, res, user, date, print
         footerSystem = "Documento emitido por sistema informático com o nº de autorização "+num_autorization;
 
     let sumImpost = {};
+    let percentagemDiminuir = instituition?.espaco_configuracao?.pos_percentagemDiminuir;
 
     let docDefinition = {
         compress: true,
@@ -139,7 +140,7 @@ export let create = async (instituition, account_content, res, user, date, print
                     {
                         stack: [
                             {
-                                text: `NIF: ${(account_content[0]?.main?.cliente_nif || "---------------")}`
+                                text: `NIF: ${(account_content[0]?.main?.conta_titularnif || account_content[0]?.main?.cliente_nif || "---------------")}`
                             },
                             {
                                 text: `Nome: ${account_content[0]?.main?.cliente_titular}`
@@ -321,7 +322,7 @@ export let create = async (instituition, account_content, res, user, date, print
                 ]
             }
         ],
-        ...structure({margin})
+        ...structure({margin, percentagemDiminuir})
     };
     const pdfDocGenerator = pdfMake.createPdf(docDefinition);
     pdfDocGenerator.getBuffer((buffer) => {

@@ -339,8 +339,9 @@ var payment = {
         let currentFunction = this.pay;
         this.pay = function () {}
         let dados = {};
-        let cliente_nome = $(".listCustomers ul").find("li.active").length !== 0 ? $(".listCustomers ul").find("li.active").text() : null;
-        let cliente_id =$(".listCustomers ul").find("li.active").length !== 0 ? $(".listCustomers ul").find("li.active").attr("cliente_id") : null;
+        let clienteAtivo = $(".listCustomers ul li.active");
+        let cliente_nome = clienteAtivo.length ? clienteAtivo.text() : null;
+        let cliente_id = clienteAtivo.length ? clienteAtivo.attr("cliente_id") : null;
         let artigosRacharConta = $("#artigosRacharConta");
         let numeroMesa = $("#numeroMesa");
         let tiposPagamento = $("#tiposPagamento");
@@ -495,6 +496,11 @@ $("[selectedCustomer]").on("click", function () {
     $(".cancelSlctClient").click();
 });
 $("#efetuar_pagamento").on("click", function () {
+    let dataCarrinho = pos.updateLastConfirmation(false);
+    if (dataCarrinho !== pos.lastConfirmation) {
+        M.toast({html: 'Confirme artigos no carrinho!', classes: 'rounded'});
+        return
+    }
     spaceConfig.loadConfig().then(value => {
         if(spaceConfig.isConfigured({object: value.config[0]})){
             if(account.post.posto_tposto_id === account.POSTO_VENDA){

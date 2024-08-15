@@ -14,6 +14,7 @@ var categoriasArtigosPOS = {
         $("#total_articles_cart").text("0");
         $("#histBackCategories").empty().append("<span>Todas</span>");
         $("#artigos_carrinho").empty();
+        pos.lastConfirmation = "[]";
         this.load();
         serieOperation.loadSerieOperation([serieOperation.tipo.fatura_recibo, serieOperation.tipo.fatura, serieOperation.tipo.faturaSimplificada], "pos");
     },

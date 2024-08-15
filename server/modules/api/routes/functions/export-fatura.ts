@@ -181,6 +181,30 @@ export let create = async (instituition, account_content, res, user, date, num_a
                         }
                     ]
                 }),
+                ...(!!account_content?.main?.conta_descontopercent) ?
+                    [[
+                        {
+                            border: [false, false, false, false],
+                            text: "", colSpan: 5, fillColor: "#ffffff"
+                        },
+                        {text: ""},
+                        {text: ""},
+                        {text: ""},
+                        {text: ""},
+                        {
+                            fontSize: 6.5,
+                            border: [false, false, false, false],
+                            margin: [0, 0.5, 0, 0.5],
+                            text: `Desconto (${(account_content?.main?.conta_descontopercent || 0).toFixed(2)}%)`
+                        },
+                        {
+                            fontSize: 6.5,
+                            border: [false, false, false, false],
+                            margin: [0, 0.5, 0, 0.5],
+                            text: formattedString((account_content?.main?.conta_desconto || 0).toFixed(2) + ""),
+                            alignment: "right"
+                        },
+                    ]] : [],
                 [
                     {
                         border: [false, false, false, false],
@@ -322,7 +346,7 @@ export let create = async (instituition, account_content, res, user, date, num_a
                                                 color: '#000000',
                                                 text: `NIF: `
                                             },
-                                            (account_content.main.cliente_nif || "---------------")
+                                            (account_content?.main?.conta_titularnif || account_content.main.cliente_nif || "---------------")
                                         ]
                                     },
                                     {
@@ -344,7 +368,7 @@ export let create = async (instituition, account_content, res, user, date, num_a
                                             },
                                             (account_content?.main?.cliente_metadata?.morada || "---------------")
                                         ]
-                                    }
+                                    },
                                 ]
                             },
                             {
