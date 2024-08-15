@@ -936,11 +936,6 @@
 							<input type="text" id="nif_titular_compra" maxlength="9" class="integer">
 							<label for="nif_titular_compra">NIF do Cliente</label>
 						</div>
-						<div class="input-field is-money-field" coin="STN" id="moeda_pagamento">
-							<input type="text" id="montante_entregue" class="double formatNumber">
-							<label for="montante_entregue">Montante entregue</label>
-							<span id="changeCoin"></span>
-						</div>
 						<div montante_desconto class="input-field is-money-field w10" coin="STN">
 							<input type="text" id="montante_desconto" class="double formatNumber">
 							<label for="montante_desconto">Montante Desconto</label>
@@ -948,8 +943,13 @@
 						</div>
 						<div montante_desconto class="input-field is-money-field w10">
 							<input type="text" id="montante_desconto_per" class="double">
-							<label for="montante_desconto_per">Percentegem Desconto</label>
+							<label for="montante_desconto_per">Percentagem Desconto</label>
 							<span>%&nbsp;&nbsp;&nbsp;&nbsp;</span>
+						</div>
+						<div class="input-field is-money-field" coin="STN" id="moeda_pagamento">
+							<input type="text" id="montante_entregue" class="double formatNumber">
+							<label for="montante_entregue">Montante entregue</label>
+							<span id="changeCoin"></span>
 						</div>
 					</div>
 				</div>
@@ -967,6 +967,10 @@
 							<li class="flex h-sb">
 								<b>Total</b>
 								<span class="is-money-text" coin="STN" id="valorTotalPagamento"></span>
+							</li>
+							<li valorTotalPagamentoDesconto class="flex h-sb">
+								<b>T. Desconto</b>
+								<span class="is-money-text" coin="STN" id="valorTotalPagamentoDesconto"></span>
 							</li>
 							<li class="flex h-sb">
 								<b>Troco</b>
