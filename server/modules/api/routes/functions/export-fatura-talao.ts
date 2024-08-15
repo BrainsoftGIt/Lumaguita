@@ -6,7 +6,6 @@ import * as print from "./printer";
 import {clusterServer} from "../../../../service/cluster.service";
 import {sys} from "../../../../global/sys";
 import {args} from "../../../../global/args";
-import {formattedString} from "./formatValue";
 
 export let create = async (instituition, account_content, res, user, date, printer_name, num_autorization, margin, onlyOpen, versionPrinter="printV2") => {
     const pdfMake = require("../../../../../libs/js/pdfmake/pdfmake");
