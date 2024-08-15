@@ -104,7 +104,7 @@ export let create = async (instituition, account_content, res, user, date, print
                     {
                         stack: [
                             {
-                                text: `NIF: ${(account_content[0]?.main?.cliente_nif || "---------------")}`
+                                text: `NIF: ${( account_content[0]?.main?.conta_titularnif || account_content[0]?.main?.cliente_nif || "---------------")}`
                             },
                             {
                                 text: `Nome: ${account_content[0]?.main?.cliente_titular}`

@@ -44,6 +44,9 @@ var account = {
         });
     },
     resetModalAuthentication(){
+        $(".listCustomers ul li").removeClass("active");
+        $("#titular_compra").val("Cliente Final");
+        $("#nif_titular_compra").val("").prop("disabled", false);
         $("#pos_valorSubtotal, #pos_valorTotal").text("0,00");
         $('.credentialPIN').find(".pinkey li").css("pointer-events", "auto");
         $(".credentialPIN .user-selected").text("");

@@ -339,8 +339,9 @@ var payment = {
         let currentFunction = this.pay;
         this.pay = function () {}
         let dados = {};
-        let cliente_nome = $(".listCustomers ul").find("li.active").length !== 0 ? $(".listCustomers ul").find("li.active").text() : null;
-        let cliente_id =$(".listCustomers ul").find("li.active").length !== 0 ? $(".listCustomers ul").find("li.active").attr("cliente_id") : null;
+        let clienteAtivo = $(".listCustomers ul li.active");
+        let cliente_nome = clienteAtivo.length ? clienteAtivo.text() : null;
+        let cliente_id = clienteAtivo.length ? clienteAtivo.attr("cliente_id") : null;
         let artigosRacharConta = $("#artigosRacharConta");
         let numeroMesa = $("#numeroMesa");
         let tiposPagamento = $("#tiposPagamento");
