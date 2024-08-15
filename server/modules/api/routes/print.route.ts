@@ -149,6 +149,8 @@ app.get("/api/print/fatura/:dados", async (req, res) =>{
     let instituition = await load_space_configuration(req, conta.admin);
     let dadosConta;
     let user;
+
+    console.log(conta)
     instituition = instituition[0].funct_load_espaco_configuracao.espaco;
     if(conta.admin){
         dadosConta = await functLoadContaData({arg_conta_id: conta.conta_id,

@@ -6,6 +6,7 @@ import * as print from "./printer";
 import {clusterServer} from "../../../../service/cluster.service";
 import {sys} from "../../../../global/sys";
 import {args} from "../../../../global/args";
+import {formattedString} from "./formatValue";
 
 export let create = async (instituition, account_content, res, user, date, printer_name, num_autorization, onlyOpen, versionPrinter="printV2") => {
     const pdfMake = require("../../../../../libs/js/pdfmake/pdfmake");
@@ -187,6 +188,17 @@ export let create = async (instituition, account_content, res, user, date, print
                             }
                         ]
                     },
+                    (!!account_content?.main?.conta_descontopercent) ? {
+                        columns: [
+                            {
+                                text: `Desconto (${(account_content?.main?.conta_descontopercent || 0).toFixed(2)}%)`,
+                            },
+                            {
+                                text: formattedString((account_content?.main?.conta_desconto || 0).toFixed(2) + "") + " STN",
+                                alignment: "right",
+                            }
+                        ],
+                    } : {},
                     ...Object.keys(sumImpost).map((key) => {
                         return {
                             columns : [
