@@ -50,11 +50,13 @@ var payment = {
         $("#montante_entregue, #nif_titular_compra, #montante_desconto, #montante_desconto_per").val("");
         $("#valorTotalTroco").text("0,00");
         $("#valorTotalDesconto").text("0,00");
+        $("#valorTotalPagamentoDesconto").text("0,00");
     },
     calcularTroco:function () {
         let valorPagamento = $("#valorTotalPagamento").text().unFormatter();
         let montanteDesconto = $("#montante_desconto")?.val?.()?.unFormatter?.() || 0;
         let montanteEntregue = ($("#montante_entregue")?.val?.()?.unFormatter?.() || 0) * Number(payment.cambio_taxa) + montanteDesconto;
+        $("#valorTotalPagamentoDesconto").text((valorPagamento - montanteDesconto).formatter())
         if(montanteEntregue >= valorPagamento) {
             this.valorTroco = montanteEntregue - valorPagamento;
             this.valorTroco =  this.valorTroco > 0 ? this.valorTroco.toFixed(2) : 0;
@@ -86,7 +88,6 @@ var payment = {
     hasValidData:function(){
         let valorCambio;
         let montanteEntregue;
-        let montanteDesconto;
         if($("#artigosRacharConta").find("li.active").length === 0){
             xAlert("Rachar conta", "Tem que selecionar, pelo menos, um artigo!", "error");
             if(!$(".break-account").hasClass("active")){
@@ -105,7 +106,6 @@ var payment = {
         }
         else{
             if(!validation1($("#montante_entregue"))) return false;
-            montanteDesconto = $("#montante_desconto")?.val?.()?.unFormatter?.() || 0;
             montanteEntregue = $("#montante_entregue").val().unFormatter();
             valorCambio = Number(montanteEntregue) * Number(payment.cambio_taxa) + montanteEntregue;
             if(Number(valorCambio) < $("#valorTotalPagamento").text().unFormatter()){
@@ -137,9 +137,9 @@ var payment = {
         }
         else tiposPagamento.find("li[corrente]").remove();
 
-        $(" [montante_desconto] ").hide();
+        $(" [montante_desconto], [valorTotalPagamentoDesconto] ").hide();
         if(pos.haveAccessGranted("maguita.pos.desconto", true)){
-            $("[montante_desconto]").show()
+            $("[montante_desconto], [valorTotalPagamentoDesconto]").show()
         }
 
         showTarget("xModalMakePayment");
@@ -607,18 +607,26 @@ $("body").on("keyup", "#montante_entregue",function () {
     let desconto = +($(this)?.val?.()?.unFormatter?.() || 0);
     if(!!desconto){
         let valorPagamento = $("#valorTotalPagamento").text().unFormatter();
-        console.log({per: desconto / valorPagamento, desconto, valorPagamento
-    })
-        $("#montante_desconto_per").val((desconto / valorPagamento * 100).toFixed(2))
+
+        if(desconto > valorPagamento){
+            $(" #montante_desconto_per ").val("")
+            $(this).val("")
+            payment.calcularTroco();
+            return;
+        }
+
+        $(" #montante_desconto_per").val((desconto / valorPagamento * 100).toFixed(2))
         payment.calcularTroco();
         return
     }
 
-    $(" #montante_desconto_per ").val("0,00");
+    $(" #montante_desconto_per ").val("");
 }).on("keyup", "#montante_desconto_per", function (){
     let per = +($(this)?.val?.()?.unFormatter?.() || 0);
-    if(per > 100 || per < 0){
-        $("#montante_desconto").val("0,00");
+    if(per > 100 || per < 0 || !per){
+        $(" #montante_desconto ").val("");
+        $(this).val("");
+        payment.calcularTroco();
         return
     }
 
