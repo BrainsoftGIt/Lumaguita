@@ -21,6 +21,8 @@ export let create = async (instituition, account_content, res, user, date, print
     let sumImpost = {};
     let percentagemDiminuir = instituition?.espaco_configuracao?.pos_percentagemDiminuir;
 
+    console.log(account_content?.main)
+
     let docDefinition = {
         compress: true,
         info: {
@@ -77,7 +79,7 @@ export let create = async (instituition, account_content, res, user, date, print
                                     },
                                     {
                                         width: "50%",
-                                        text : account_content.main.conta_numerofatura,
+                                        text : account_content.main.conta_numero,
                                         alignment : "right"
                                     }
                                 ],
@@ -96,6 +98,20 @@ export let create = async (instituition, account_content, res, user, date, print
                                     }
                                 ],
                             },
+                            (!!account_content?.main?.conta_mesa?.numero) ? {
+                                columns: [
+                                    {
+                                        width: "50%",
+                                        bold: false,
+                                        text : "Mesa"
+                                    },
+                                    {
+                                        width: "50%",
+                                        text : account_content.main.conta_mesa.numero || "",
+                                        alignment : "right"
+                                    }
+                                ],
+                            } : {}
                         ]
                     },
                 ]
