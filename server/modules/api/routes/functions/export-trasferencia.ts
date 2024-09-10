@@ -70,7 +70,7 @@ export let create = async (instituition, artigos_transferencia:any, armazens, re
                                         margin : [0, 0, 10, 0],
                                         text: `${instituition?.espaco_configuracao?.empresa_nif} `
                                     },
-                                    getImage("nif.png", 9)
+                                    getImage("nif.png", 9, baseColor)
                                 ]
                             },
                             {
@@ -79,7 +79,7 @@ export let create = async (instituition, artigos_transferencia:any, armazens, re
                                         margin : [0, 0, 10, 0],
                                         text: `${instituition?.espaco_configuracao?.empresa_endereco}`
                                     },
-                                    getImage("point.png", 9)
+                                    getImage("point.png", 9, baseColor)
                                 ]
                             },
                             {
@@ -88,7 +88,7 @@ export let create = async (instituition, artigos_transferencia:any, armazens, re
                                         margin : [0, 0, 10, 0],
                                         text: `${instituition?.espaco_configuracao?.empresa_telef}`
                                     },
-                                    getImage("phone.png", 9)
+                                    getImage("phone.png", 9, baseColor)
                                 ]
                             },
                             {
@@ -97,7 +97,7 @@ export let create = async (instituition, artigos_transferencia:any, armazens, re
                                         margin : [0, 0, 10, 0],
                                         text: `${instituition?.espaco_configuracao?.empresa_email}`
                                     },
-                                    getImage("mail.png", 9)
+                                    getImage("mail.png", 9, baseColor)
                                 ]
                             }
                         ]
