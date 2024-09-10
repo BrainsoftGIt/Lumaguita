@@ -39,7 +39,6 @@ export let create = async (instituition, account_content, res, user, date, print
     let sumImpost = {};
     let percentagemDiminuir = instituition?.espaco_configuracao?.pos_percentagemDiminuir;
 
-    console.log(account_content?.[0]?.main)
 
     let docDefinition = {
         compress: true,
