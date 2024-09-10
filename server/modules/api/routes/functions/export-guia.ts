@@ -183,6 +183,7 @@ export let create = async (instituition, fornecedor, guia, artigos, res, user, c
                         alignment: "right",
                         stack: [
                             {
+                                color: baseColor,
                                 text: `${instituition?.espaco_configuracao?.empresa_nome}`,
                                 bold: true,
                                 fontSize: 9,
@@ -294,8 +295,8 @@ export let create = async (instituition, fornecedor, guia, artigos, res, user, c
                                 stack: [
                                     {
                                         bold: true,
-                                        color: '#000000',
-                                        text: "Guia de Entrada"
+                                        color: baseColor,
+                                        text: "Guia de Entrada".toUpperCase()
                                     },
                                     {
                                         margin: [0, 0, 0, 15],

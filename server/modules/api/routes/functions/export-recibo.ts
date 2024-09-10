@@ -184,6 +184,7 @@ export let create = async (instituition, deposito, cliente, res, user, date, num
                         alignment: "right",
                         stack: [
                             {
+                                color: baseColor,
                                 text: `${instituition?.espaco_configuracao?.empresa_nome}`,
                                 bold: true,
                                 fontSize: 9,
@@ -249,7 +250,8 @@ export let create = async (instituition, deposito, cliente, res, user, date, num
                                 borderColor: ['#000000', '#000000', '#000000', '#000000'],
                                 stack: [
                                     {
-                                        text: `Cliente`,
+                                        color: baseColor,
+                                        text: `RECIBO`,
                                         bold: true,
                                     },
                                     {

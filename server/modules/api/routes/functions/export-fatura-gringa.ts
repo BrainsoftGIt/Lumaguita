@@ -339,6 +339,7 @@ export let create = async (instituition, account_content, res, user, date, num_a
                         alignment: "right",
                         stack: [
                             {
+                                color: baseColor,
                                 text: `${instituition?.espaco_configuracao?.empresa_nome}`,
                                 bold: true,
                                 fontSize: 9,
@@ -404,7 +405,7 @@ export let create = async (instituition, account_content, res, user, date, num_a
                                 borderColor: ['#000000', '#000000', '#000000', '#000000'],
                                 stack: [
                                     {
-                                        color: '#000000',
+                                        color: baseColor,
                                         text: account_content.main.serie_designacao.toUpperCase(),
                                         bold: true,
                                     },

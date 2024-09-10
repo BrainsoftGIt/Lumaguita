@@ -75,6 +75,7 @@ export let create = async (instituition, account_content, res, user, num_autoriz
                         alignment: "right",
                         stack: [
                             {
+                                color: baseColor,
                                 text: `${instituition?.espaco_configuracao?.empresa_nome}`,
                                 bold: true,
                                 fontSize: 9,
@@ -141,7 +142,7 @@ export let create = async (instituition, account_content, res, user, num_autoriz
                                 stack: [
                                     {
                                         margin: [0, 0, 0, 10],
-                                        color: '#000000',
+                                        color: baseColor,
                                         text: `GUIA DE SAÍDA`,
                                         bold: true,
                                     },

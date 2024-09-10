@@ -60,6 +60,7 @@ export let create = async (instituition, artigos_transferencia:any, armazens, re
                         alignment : "right",
                         stack: [
                             {
+                                color: baseColor,
                                 text: `${instituition?.espaco_configuracao?.empresa_nome}`,
                                 bold: true,
                                 fontSize : 9,
@@ -125,7 +126,7 @@ export let create = async (instituition, artigos_transferencia:any, armazens, re
                                 borderColor: ['#000000', '#000000', '#000000', '#000000'],
                                 stack: [
                                     {
-                                        color: '#000000',
+                                        color: baseColor,
                                         text: `TRANSFERÊNCIA DE ARTIGOS`,
                                         bold: true,
                                     }

@@ -203,6 +203,7 @@ export let create = async (instituition, account_content, res, user, date, num_a
                         alignment: "right",
                         stack: [
                             {
+                                color: baseColor,
                                 text: `${instituition?.espaco_configuracao?.empresa_nome}`,
                                 bold: true,
                                 fontSize: 9,
@@ -270,7 +271,7 @@ export let create = async (instituition, account_content, res, user, date, num_a
                                     {
                                         bold: true,
                                         text: "CONTA",
-                                        color: "#000000"
+                                        color: baseColor,
                                     },
                                     {
                                         columns: [
