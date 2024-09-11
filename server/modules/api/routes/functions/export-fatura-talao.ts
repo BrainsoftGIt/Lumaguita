@@ -105,6 +105,20 @@ export let create = async (instituition, account_content, res, user, date, print
                                     }
                                 ],
                             },
+                            (!!account_content?.main?.conta_mesa?.numero) ? {
+                                columns: [
+                                    {
+                                        width: "50%",
+                                        bold: false,
+                                        text : "Mesa"
+                                    },
+                                    {
+                                        width: "50%",
+                                        text : account_content.main.conta_mesa.numero || "",
+                                        alignment : "right"
+                                    }
+                                ],
+                            } : {}
                         ]
                     },
                 ]

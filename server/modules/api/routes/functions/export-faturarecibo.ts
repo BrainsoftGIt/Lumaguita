@@ -31,8 +31,6 @@ export let create = async (instituition, account_content, res, user, date, num_a
 
     let imageCabecalho = (instituition?.espaco_configuracao?.cabecalho_referencia === null ? "" : clusterServer.res.resolve(instituition?.espaco_configuracao?.cabecalho_referencia));
 
-    console.log(JSON.stringify(account_content[0]));
-
     (account_content[0]?.main?.conta_vendas || []).forEach((cont) => {
 
         if (!!cont.tipoimposto_id) {
@@ -286,6 +284,7 @@ export let create = async (instituition, account_content, res, user, date, num_a
                         alignment: "right",
                         stack: [
                             {
+                                color: baseColor,
                                 text: `${instituition?.espaco_configuracao?.empresa_nome}`,
                                 bold: true,
                                 fontSize: 9,
@@ -296,7 +295,7 @@ export let create = async (instituition, account_content, res, user, date, num_a
                                         margin: [0, 0, 10, 0],
                                         text: `${instituition?.espaco_configuracao?.empresa_nif} `
                                     },
-                                    getImage("nif.png", 9)
+                                    getImage("nif.png", 9, baseColor)
                                 ]
                             },
                             {
@@ -305,7 +304,7 @@ export let create = async (instituition, account_content, res, user, date, num_a
                                         margin: [0, 0, 10, 0],
                                         text: `${instituition?.espaco_configuracao?.empresa_endereco}`
                                     },
-                                    getImage("point.png", 9)
+                                    getImage("point.png", 9, baseColor)
                                 ]
                             },
                             {
@@ -314,7 +313,7 @@ export let create = async (instituition, account_content, res, user, date, num_a
                                         margin: [0, 0, 10, 0],
                                         text: `${instituition?.espaco_configuracao?.empresa_telef}`
                                     },
-                                    getImage("phone.png", 9)
+                                    getImage("phone.png", 9, baseColor)
                                 ]
                             },
                             {
@@ -323,7 +322,7 @@ export let create = async (instituition, account_content, res, user, date, num_a
                                         margin: [0, 0, 10, 0],
                                         text: `${instituition?.espaco_configuracao?.empresa_email}`
                                     },
-                                    getImage("mail.png", 9)
+                                    getImage("mail.png", 9, baseColor)
                                 ]
                             }
                         ]
@@ -351,7 +350,7 @@ export let create = async (instituition, account_content, res, user, date, num_a
                                 borderColor: ['#000000', '#000000', '#000000', '#000000'],
                                 stack: [
                                     {
-                                        color: '#000000',
+                                        color: baseColor,
                                         text: account_content[0].main.serie_designacao.toUpperCase(),
                                         bold: true,
                                     },

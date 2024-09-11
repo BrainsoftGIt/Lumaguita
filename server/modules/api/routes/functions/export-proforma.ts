@@ -202,6 +202,7 @@ export let create = async (instituition, account, account_content, res, user, da
                         alignment: "right",
                         stack: [
                             {
+                                color: baseColor,
                                 text: `${instituition?.espaco_configuracao?.empresa_nome}`,
                                 bold: true,
                                 fontSize: 9,
@@ -212,7 +213,7 @@ export let create = async (instituition, account, account_content, res, user, da
                                         margin: [0, 0, 10, 0],
                                         text: `${instituition?.espaco_configuracao?.empresa_nif} `
                                     },
-                                    getImage("nif.png", 9)
+                                    getImage("nif.png", 9, baseColor)
                                 ]
                             },
                             {
@@ -221,7 +222,7 @@ export let create = async (instituition, account, account_content, res, user, da
                                         margin: [0, 0, 10, 0],
                                         text: `${instituition?.espaco_configuracao?.empresa_endereco}`
                                     },
-                                    getImage("point.png", 9)
+                                    getImage("point.png", 9, baseColor)
                                 ]
                             },
                             {
@@ -230,7 +231,7 @@ export let create = async (instituition, account, account_content, res, user, da
                                         margin: [0, 0, 10, 0],
                                         text: `${instituition?.espaco_configuracao?.empresa_telef}`
                                     },
-                                    getImage("phone.png", 9)
+                                    getImage("phone.png", 9, baseColor)
                                 ]
                             },
                             {
@@ -239,7 +240,7 @@ export let create = async (instituition, account, account_content, res, user, da
                                         margin: [0, 0, 10, 0],
                                         text: `${instituition?.espaco_configuracao?.empresa_email}`
                                     },
-                                    getImage("mail.png", 9)
+                                    getImage("mail.png", 9, baseColor)
                                 ]
                             }
                         ]
@@ -260,7 +261,7 @@ export let create = async (instituition, account, account_content, res, user, da
                                 borderColor: ['#000000', '#000000', '#000000', '#000000'],
                                 stack: [
                                     {
-                                        color: '#000000',
+                                        color: baseColor,
                                         text: `FATURA PROFORMA`,
                                         bold: true,
                                     },
