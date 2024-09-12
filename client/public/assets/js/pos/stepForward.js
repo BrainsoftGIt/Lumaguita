@@ -37,6 +37,9 @@ var setStep = {
                         account.loadAccountKey().then(value => {
                             account.key = value.accountKey;
                             $("#numeroMesa").text(($("#iptTable").val().trim() || "N/D"));
+                            payment.cambio_taxa = 1;
+                            $("#moeda_pagamento").attr('coin', 'STN');
+                            $("#montante_entregue").val("").trigger('keyup');
                             account.structureDataAfterLoginAccount(defaultSpace);
                         });
                     }
@@ -189,6 +192,10 @@ var setStep = {
                         account.definirNovoPIN();
                     }
                     else{
+                        payment.cambio_taxa = 1;
+                        $("#moeda_pagamento").attr('coin', 'STN');
+                        $("#montante_entregue").val("").trigger('keyup');
+
                         if($("#armazens_pos").find("div.account").length > 0)
                             account.structureDataAfterLoginAccount(defaultSpace, false);
                         else xAlert("Nova conta", "O armazém associado a este posto não permite efetuar venda!", "error");

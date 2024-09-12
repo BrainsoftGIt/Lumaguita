@@ -183,6 +183,7 @@ export let create = async (instituition, fornecedor, guia, artigos, res, user, c
                         alignment: "right",
                         stack: [
                             {
+                                color: baseColor,
                                 text: `${instituition?.espaco_configuracao?.empresa_nome}`,
                                 bold: true,
                                 fontSize: 9,
@@ -193,7 +194,7 @@ export let create = async (instituition, fornecedor, guia, artigos, res, user, c
                                         margin: [0, 0, 10, 0],
                                         text: `${instituition?.espaco_configuracao?.empresa_nif} `
                                     },
-                                    getImage("nif.png", 12)
+                                    getImage("nif.png", 9, baseColor)
                                 ]
                             },
                             {
@@ -202,7 +203,7 @@ export let create = async (instituition, fornecedor, guia, artigos, res, user, c
                                         margin: [0, 0, 10, 0],
                                         text: `${instituition?.espaco_configuracao?.empresa_endereco}`
                                     },
-                                    getImage("point.png", 12)
+                                    getImage("point.png", 9, baseColor)
                                 ]
                             },
                             {
@@ -211,7 +212,7 @@ export let create = async (instituition, fornecedor, guia, artigos, res, user, c
                                         margin: [0, 0, 10, 0],
                                         text: `${instituition?.espaco_configuracao?.empresa_telef}`
                                     },
-                                    getImage("phone.png", 12)
+                                    getImage("phone.png", 9, baseColor)
                                 ]
                             },
                             {
@@ -220,7 +221,7 @@ export let create = async (instituition, fornecedor, guia, artigos, res, user, c
                                         margin: [0, 0, 10, 0],
                                         text: `${instituition?.espaco_configuracao?.empresa_email}`
                                     },
-                                    getImage("mail.png", 12)
+                                    getImage("mail.png", 9, baseColor)
                                 ]
                             }
                         ]
@@ -294,8 +295,8 @@ export let create = async (instituition, fornecedor, guia, artigos, res, user, c
                                 stack: [
                                     {
                                         bold: true,
-                                        color: '#000000',
-                                        text: "Guia de Entrada"
+                                        color: baseColor,
+                                        text: "Guia de Entrada".toUpperCase()
                                     },
                                     {
                                         margin: [0, 0, 0, 15],

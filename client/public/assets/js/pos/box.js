@@ -28,45 +28,50 @@ var box = {
         }
     },
     loadBox(efetuarPagamento = true){
-        $.ajax({
-            url: "/api/posto/caixa/load",
-            method: "POST",
-            contentType: "application/json",
-            data: JSON.stringify({
-                vermontatefaturado: account.post.posto_vermontatefaturado
-            }),
-            success({ caixas : { 0 : xCaixa }}) {
-                let { data : caixa } = xCaixa || {};
+        spaceConfig.loadConfig().then(value => {
+            let {bloquearCampoValorFechoConta} = value?.config?.[0]?.funct_load_espaco_configuracao?.espaco?.espaco_configuracao;
+            $.ajax({
+                url: "/api/posto/caixa/load",
+                method: "POST",
+                contentType: "application/json",
+                data: JSON.stringify({
+                    vermontatefaturado: account.post.posto_vermontatefaturado
+                }),
+                success({caixas: {0: xCaixa}}) {
+                    let {data: caixa} = xCaixa || {};
 
-                if(efetuarPagamento){
-                    if(!caixa){
-                        showTarget("xModalOpenBox");
-                    }
-                    else{
-                        box.id = caixa.caixa_id;
-                        payment.mostrarDadosModalPagamento();
-                    }
-                }
-                else{
-                    if(!caixa){
-                        xAlert("Fecho de caixa", "Não há caixa aberta!", "error");
-                        $("#MST-PIN").find(".hideTarget").click();
-                    }
-                    else{
-                        box.id = caixa.caixa_id;
-                        box.montante_inicial = caixa.caixa_montanteinicial;
-                        $("#valorTotalCaixaFaturado").val((caixa.caixa_montanteinicial + caixa.deposito_montantefinal).dc().formatter() || "");
-                        if(account.post.posto_vermontatefaturado) {
-                            $("[for='valorTotalCaixaFaturado']").addClass("active");
+                    if (efetuarPagamento) {
+                        if (!caixa) {
+                            showTarget("xModalOpenBox");
+                        } else {
+                            box.id = caixa.caixa_id;
+                            payment.mostrarDadosModalPagamento();
                         }
-                        $("#totalChequesCaixaFaturado, #caixa_fechar_obs").val("");
-                        $("#caixa_montanteinicial").text("STN "+caixa.caixa_montanteinicial.dc().formatter());
-                        $("#MST-PIN").find(".hideTarget").click();
-                        showTarget("xModalCloseBox");
+                    } else {
+                        if (!caixa) {
+                            xAlert("Fecho de caixa", "Não há caixa aberta!", "error");
+                            $("#MST-PIN").find(".hideTarget").click();
+                        } else {
+                            box.id = caixa.caixa_id;
+                            box.montante_inicial = caixa.caixa_montanteinicial;
+                            $("#valorTotalCaixaFaturado").val((caixa.caixa_montanteinicial + caixa.deposito_montantefinal).dc().formatter() || "").prop("readOnly", false);
+                            if (account.post.posto_vermontatefaturado) {
+                                $("[for='valorTotalCaixaFaturado']").addClass("active");
+                            }
+
+                            if(!!bloquearCampoValorFechoConta && account.post.posto_vermontatefaturado){
+                                $(" #valorTotalCaixaFaturado ").prop("readOnly", true);
+                            }
+
+                            $("#totalChequesCaixaFaturado, #caixa_fechar_obs").val("");
+                            $("#caixa_montanteinicial").text("STN " + caixa.caixa_montanteinicial.dc().formatter());
+                            $("#MST-PIN").find(".hideTarget").click();
+                            showTarget("xModalCloseBox");
+                        }
                     }
                 }
-            }
-        });
+            });
+        })
     },
     openBox(){
         $("[openBox]").prop("disabled", true).addClass("loading");
