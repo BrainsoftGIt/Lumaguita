@@ -159,6 +159,7 @@ var settings = {
                         $("#empresa_email").val(emp.empresa_email);
                         $("#empresa_telef").val(emp.empresa_telef);
                         $("#empresa_endereco").val(emp.empresa_endereco);
+                        $("#empresa_nib").val(emp.empresa_nib);
                         $("#empresa_gerente").val(emp.empresa_gerente);
                         $("#empresa_textcolor").val(emp?.empresa_textcolor || "#ffffff");
                         $("#empresa_basecolor").val(emp?.empresa_basecolor || "#000000");
@@ -417,6 +418,7 @@ var settings = {
         dados.empresa_email = $("#empresa_email").val().trim();
         dados.empresa_telef = $("#empresa_telef").val();
         dados.empresa_endereco = $("#empresa_endereco").val().trim();
+        dados.empresa_nib = $("#empresa_nib").val().trim();
         dados.empresa_gerente = $("#empresa_gerente").val().trim() || null;
         dados.empresa_basecolor = $("#empresa_basecolor").val().trim() || null;
         dados.empresa_textcolor = $("#empresa_textcolor").val().trim() || null;

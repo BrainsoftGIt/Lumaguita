@@ -362,6 +362,15 @@ export let create = async (instituition, account_content, res, user, date, num_a
                                     getImage("point.png", 9, baseColor)
                                 ]
                             },
+                            (!!instituition?.espaco_configuracao?.empresa_nib) ? {
+                                columns: [
+                                    {
+                                        margin: [0, 0, 10, 0],
+                                        text: `${instituition?.espaco_configuracao?.empresa_nib}`
+                                    },
+                                    getImage("nib.png", 9, baseColor)
+                                ]
+                            } : {},
                             {
                                 columns: [
                                     {

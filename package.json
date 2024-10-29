@@ -74,7 +74,7 @@
     "recursive-copy": "^2.0.13",
     "regedit": "^5.0.0",
     "session-file-store": "^1.4.0",
-    "sharp": "^0.30.0",
+    "sharp": "0.32.6",
     "simple-encryptor": "^4.0.0",
     "sizeof": "^1.0.0",
     "socket.io": "^4.4.1",

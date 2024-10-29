@@ -206,6 +206,15 @@ export let create = async (instituition, fornecedor, guia, artigos, res, user, c
                                     getImage("point.png", 9, baseColor)
                                 ]
                             },
+                            (!!instituition?.espaco_configuracao?.empresa_nib) ? {
+                                columns: [
+                                    {
+                                        margin: [0, 0, 10, 0],
+                                        text: `${instituition?.espaco_configuracao?.empresa_nib}`
+                                    },
+                                    getImage("nib.png", 9, baseColor)
+                                ]
+                            } : {},
                             {
                                 columns: [
                                     {
@@ -223,7 +232,7 @@ export let create = async (instituition, fornecedor, guia, artigos, res, user, c
                                     },
                                     getImage("mail.png", 9, baseColor)
                                 ]
-                            }
+                            },
                         ]
                     }
                 ]
