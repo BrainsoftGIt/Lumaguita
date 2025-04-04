@@ -8,7 +8,7 @@ $$
     declare
       /**
         args := {
-          arg_espaco_auth:UUID
+          arg_espaco_auth:UUIDl
           arg_colaborado_id:UUID
         }
        */
