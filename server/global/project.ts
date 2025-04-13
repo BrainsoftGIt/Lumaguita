@@ -31,6 +31,9 @@ export const folders = {
     },
 
     get root () {
+        if( process.env["RUNNING_LOCATION"] === "DOCKER_HOST") return "/var/luma/data";
+
+
         if( args.appRoot ) return path.join( DEFAULTS.APP_HOME, args.appMode??"default" );
 
         let _home = DEFAULTS.APP_HOME;
@@ -55,6 +58,16 @@ export const folders = {
 
         return folder( _home,  this.mountPoint  );
 
+    }, get temp(){
+        if( process.env["RUNNING_LOCATION"] === "DOCKER_HOST" ) return "/tmp/luma";
+
+        if( args.appRoot ) return path.join( this.root, `var/temp` )
+
+        if( os.platform() === "win32" && process.env[ "TEMP" ] )
+            return folder( process.env[ "TEMP" ], "luma-tmp" );
+
+        return folder( this.root, "var/temp" );
+
     }, get home():string {
         let home = path.join( this.root, 'var/home' );
         if( !fs.existsSync( home) ) fs.mkdirSync( home, { recursive: true });
@@ -64,18 +77,10 @@ export const folders = {
         //language=file-reference
         return path.normalize( path.join(__dirname, "../../bin" ) )
     }, get pid():string{
-        return  folder( this.volatile, "pid" )
+        return  folder( this.temp, "pid" )
 
-    }, get pidDir():string{
-        return  folder( this.pid, `process-${process.pid}` )
-
-    }, get volatile(){
-        if( args.appRoot ) return path.join( this.root, `var/temp` )
-
-        if( os.platform() === "win32" && process.env[ "TEMP" ] )
-            return process.env[ "TEMP" ];
-
-        return this.root;
+    }, get pidDir():string {
+        return folder(this.pid, `process-${process.pid}`)
     },
 
     //language=file-reference
@@ -115,8 +120,6 @@ export const folders = {
     //Destined for private local resources
     get private () { return folder( path.join( this.home, '/storage/private' ) ); },
 
-    //Destined for temporary and volatile resources
-    get temp () { return folder( path.join( this.volatile, this.mountPoint ) ); },
 
     //Destined for resource mount point [ChunksResources]
     get mnt () { return folder( path.join( this.home, '/storage/mnt' ) ); },

@@ -8,7 +8,7 @@ kconst.declares((exports, override, SELF_NAME, props) => {
         SERVERAPP : {
             PROTOCOL : "http",
             HOST : "localhost",
-            PORT : 49278
+            PORT : 3210
         },
         SOCKET_TYPE: {
             CLIENT_SOCKET: {
@@ -34,7 +34,7 @@ kconst.declares((exports, override, SELF_NAME, props) => {
             SERVERAPP : {
                 PROTOCOL : "http",
                 HOST : "localhost",
-                PORT : 39278
+                PORT : 3210
             },
             SOCKET_TYPE: {
                 CLIENT_SOCKET: {
