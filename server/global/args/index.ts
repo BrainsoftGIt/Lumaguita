@@ -74,3 +74,25 @@ preparatory.forEach( prepare => {
     prepare( args );
 })
 
+if( !!process.env["POSTGRES_HOST"] ) args.dbHost = process.env["POSTGRES_HOST"];
+if( !!process.env["POSTGRES_PORT"] && !Number.isNaN( Number(process.env["POSTGRES_PORT"]) ) )
+    args.dbPort = Number(process.env["POSTGRES_PORT"]);
+
+if( !!process.env["DATABASE_NAME"] ) args.dbName = process.env["DATABASE_NAME"];
+if( !!process.env["DATABASE_USERNAME"] ) args.dbUser = process.env["DATABASE_USERNAME"];
+if( !!process.env["DATABASE_PASSWORD"] ) args.dbPassword = process.env["DATABASE_PASSWORD"];
+if( !!process.env["DATABASE_USER_CLONE"] ) args.dbUserClone = process.env["DATABASE_USER_CLONE"];
+if( !!process.env["DATABASE_PASSWORD_USER_CLONE"] ) args.dbPasswordClone = process.env["DATABASE_PASSWORD_USER_CLONE"];
+if( !!process.env["DATABASE_SUPERUSER"] ) args.dbSupperUser = process.env["DATABASE_SUPERUSER"];
+if( !!process.env["DATABASE_SUPERUSER_PASSWORD"] ) args.dbPasswordSuperUser = process.env["DATABASE_SUPERUSER_PASSWORD"];
+
+
+
+
+if( !!process.env["CLINICA_POSTGRES_HOST"] ) args.dbHostClinic = process.env["CLINICA_POSTGRES_HOST"];
+if( !!process.env["CLINICA_POSTGRES_PORT"] && !Number.isNaN( Number(process.env["CLINICA_POSTGRES_PORT"]) ) )
+    args.dbPortClinic = Number(process.env["CLINICA_POSTGRES_PORT"]);
+if( !!process.env["CLINICA_DATABASE_USERNAME"] ) args.dbNameClinic = process.env["CLINICA_DATABASE_USERNAME"];
+if( !!process.env["CLINICA_DATABASE_USERNAME"] ) args.dbUserClinic = process.env["CLINICA_DATABASE_USERNAME"];
+if( !!process.env["CLINICA_DATABASE_NAME"] ) args.dbNameClinic = process.env["CLINICA_DATABASE_NAME"];
+if( !!process.env["CLINICA_DATABASE_PASSWORD"] ) args.dbPasswordClinic = process.env["CLINICA_DATABASE_PASSWORD"];
