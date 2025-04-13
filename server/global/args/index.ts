@@ -93,6 +93,5 @@ if( !!process.env["CLINICA_POSTGRES_HOST"] ) args.dbHostClinic = process.env["CL
 if( !!process.env["CLINICA_POSTGRES_PORT"] && !Number.isNaN( Number(process.env["CLINICA_POSTGRES_PORT"]) ) )
     args.dbPortClinic = Number(process.env["CLINICA_POSTGRES_PORT"]);
 if( !!process.env["CLINICA_DATABASE_USERNAME"] ) args.dbNameClinic = process.env["CLINICA_DATABASE_USERNAME"];
-if( !!process.env["CLINICA_DATABASE_USERNAME"] ) args.dbUserClinic = process.env["CLINICA_DATABASE_USERNAME"];
 if( !!process.env["CLINICA_DATABASE_NAME"] ) args.dbNameClinic = process.env["CLINICA_DATABASE_NAME"];
 if( !!process.env["CLINICA_DATABASE_PASSWORD"] ) args.dbPasswordClinic = process.env["CLINICA_DATABASE_PASSWORD"];
