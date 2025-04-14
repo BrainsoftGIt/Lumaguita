@@ -4,7 +4,7 @@ POSTGRES_STATUS_D="/status.d/${POSTGRES_SHARE_D}"
 
 # Aguardar até o arquivo de estado ser criado
 until [ -f "${POSTGRES_STATUS_D}/READY" ]; do
-  echo "Banco de dados ainda não está pronto. Aguardando..."
+  echo "Banco de dados ainda não está pronto. Aguardando... Não foi localizad o file ${POSTGRES_STATUS_D}/READY"
   sleep 2
 done
 
