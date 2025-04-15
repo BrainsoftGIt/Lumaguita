@@ -21,7 +21,7 @@ RUN tsc | echo "OK"
 
 FROM node:21-alpine as final
 
-VOLUME ["/var/luma/data"]
+VOLUME ["/var/lib/luma"]
 ENV RUNNING_LOCATION=DOCKER_HOST
 EXPOSE 3210
 
