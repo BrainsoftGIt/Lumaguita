@@ -31,7 +31,7 @@ export const folders = {
     },
 
     get root () {
-        if( process.env["RUNNING_LOCATION"] === "DOCKER_HOST") return "/var/luma/data";
+        if( process.env["RUNNING_LOCATION"] === "DOCKER_HOST") return "/var/lib/luma";
 
 
         if( args.appRoot ) return path.join( DEFAULTS.APP_HOME, args.appMode??"default" );
