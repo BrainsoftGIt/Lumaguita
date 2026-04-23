@@ -6,6 +6,7 @@ import * as fs from "fs";
 import {ClusterEvent} from "./enuns";
 import {Jump, RouterNav} from "./listeners/route.listener";
 import {Cluster, ClusterSource} from "./types";
+import {moveFile} from "../utils/move-file";
 
 
 export type ResourceArgs = {
@@ -231,7 +232,7 @@ export class Resource {
         let chunk = path.join( resolve.resolve, chunkName( res.part ) );
         let stream = fs.createWriteStream( chunk );
         stream.write( res.chunk, error =>{
-            fs.rename(chunk, path.resolve(resolve.resolve, chunkPart( res.part ) ), err => { console.error( err ) });
+            moveFile(chunk, path.resolve(resolve.resolve, chunkPart( res.part ) ), err => { console.error( err ) });
             stream.end();
             this.complete( req, resolve );
         });

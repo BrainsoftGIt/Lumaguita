@@ -4,6 +4,7 @@ import path from "path";
 import {clusterServer} from "../../../service/cluster.service";
 import {folders} from "../../../global/project";
 import {functLoadArticlesExport} from "../db/call-function-article";
+import {moveFile} from "../../../lib/utils/move-file";
 
 app.get("/api/categorias", async (req, res) => {
     const {functLoadCategories} = require("../db/call-function-article");
@@ -67,7 +68,7 @@ app.post("/api/categoria", async (req, res) => {
                         message: "Registao edicção de categoria"
                     });
                 }
-                fs.rename(req.file.path, value.resolve, function (err) {
+                moveFile(req.file.path, value.resolve, function (err) {
                     if (err) console.log(err);
                     else clusterServer.notifyLocalChange({event: "NEW RESOURCE FILES"});
                 });
@@ -111,7 +112,7 @@ app.post("/api/artigo", async (req, res) => {
                         message: "Registo ou alteração de artigo"
                     });
 
-                fs.rename(req.file.path, value.resolve, function (err) {
+                moveFile(req.file.path, value.resolve, function (err) {
                     if (err) console.log(err);
                     else clusterServer.notifyLocalChange({event: "NEW RESOURCE FILES"});
                 });
@@ -535,4 +536,3 @@ app.get("/api/exportar/artigos/:dados", async (req, res) => {
         });
     });
 });
-

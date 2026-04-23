@@ -2,6 +2,7 @@ import {app} from '../../../service/web.service';
 import {clusterServer} from "../../../service/cluster.service";
 import fs from "fs";
 import {functLoadMenuGrants} from "../db/call-function-colaborador";
+import {moveFile} from "../../../lib/utils/move-file";
 
 app.post("/api/users/load", async (req, res) =>{
     const {functLoadUsers} = require("../db/call-function-colaborador");
@@ -35,7 +36,7 @@ app.post("/api/user", async (req, res) =>{
                 if(before.cluster_version < after.cluster_version){
                     clusterServer.notifyLocalChange({event: "ADD:USER", extras: null, message: "Novo colaborador foi registado."});
                 }
-                fs.rename(req.file.path, value.resolve, function (err) {
+                moveFile(req.file.path, value.resolve, function (err) {
                         if (err) console.log(err);
                         else clusterServer.notifyLocalChange({event: "NEW RESOURCE FILES"});
                     });
@@ -72,7 +73,7 @@ app.post("/api/user/change", async (req, res) =>{
                 if(before.cluster_version < after.cluster_version)
                     clusterServer.notifyLocalChange({event: "UPDATE:USER", extras: null, message: "Colaborador foi atualizado."});
 
-                fs.rename(req.file.path, value.resolve, function (err) {
+                moveFile(req.file.path, value.resolve, function (err) {
                         if (err) console.log(err);
                         else clusterServer.notifyLocalChange({event: "NEW RESOURCE FILES"});
                     });

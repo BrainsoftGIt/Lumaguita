@@ -14,6 +14,7 @@ import {pgServer} from "./pg-recoginizer";
 import {postgresToolVersion} from "./tools/version";
 import os from "os";
 import {promiseResolveAny} from "../utils/promise";
+import {moveFileSync} from "../utils/move-file";
 
 let SILENT_COMMAND = os.platform() === "win32"? "silent.exe" : "silent";
 
@@ -394,7 +395,7 @@ export class PostgresCluster {
     private async applyAuthMethodConfig(){
         const defaultAuthConf = path.join( this.dataDir, DEFINES.DEFAULT_AUTH_CONFIG );
         const authConf = path.join( this.dataDir, DEFINES.PG_AUTH_CONFIGS );
-        if( !fs.existsSync( defaultAuthConf ) ) fs.renameSync( authConf, defaultAuthConf );
+        if( !fs.existsSync( defaultAuthConf ) ) moveFileSync( authConf, defaultAuthConf );
 
         if( this._authMethods.length == 0 ){
             fs.copyFileSync( defaultAuthConf, authConf );
@@ -527,7 +528,7 @@ export class PostgresCluster {
 
         const defCfg = path.join( this.dataDir,  DEFINES.DEFAULT_PG_CONFIG );
         const cfg = path.join( this.dataDir, DEFINES.PG_CONFIG );
-        fs.renameSync( cfg , defCfg )
+        moveFileSync( cfg , defCfg )
 
         const rl = readline.createInterface({
             input: fs.createReadStream( defCfg, "latin1"),
@@ -800,6 +801,5 @@ export class PostgresCluster {
 }
 
 export type Connection = { username: string, password?: string, database: string, host: string };
-
 
 

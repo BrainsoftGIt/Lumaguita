@@ -4,6 +4,7 @@ import path from "path";
 import {clusterServer} from "../../../service/cluster.service";
 import {getUserSession, getUserSessionPOS} from "./functions/get-session";
 import {functLoadDataCluster} from "../db/call-function-settings";
+import {moveFile} from "../../../lib/utils/move-file";
 app.post("/api/armazem", async (req, res) => {
     const {functRegArmazem} = require("../db/call-function-settings");
     let before =  await clusterServer.service.loadLocalCluster();
@@ -149,7 +150,7 @@ app.post("/api/empresa/change", async (req, res) =>{
                     extras: null,
                     message: "Dados da instituição atualizados."
                 });
-                fs.rename(req.file.path, value.resolve, function (err) {
+                moveFile(req.file.path, value.resolve, function (err) {
                     if (err) console.error(err);
                     else clusterServer.notifyLocalChange({event: "NEW RESOURCE FILES"});
                 });
@@ -214,7 +215,7 @@ app.post("/api/empresa/cabecalho", async (req, res) =>{
                     extras: null,
                     message: "Cabeçalho da instituição atualizado."
                 });
-                fs.rename(req.file.path, value.resolve, function (err) {
+                moveFile(req.file.path, value.resolve, function (err) {
                     if (err) console.error(err);
                     else clusterServer.notifyLocalChange({event: "NEW RESOURCE FILES"});
                 });
@@ -265,6 +266,5 @@ app.get("/api/cluster/STATUS", async (req, res) => {
     const {functLoadDataCluster} = require("../db/call-function-settings");
     res.json(await functLoadDataCluster())
 });
-
 
 
