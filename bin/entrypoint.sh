@@ -1,8 +1,10 @@
 #!/bin/bash
 cd $(dirname "$0")/..
 
+POSTGRES_STATUS_FILE="/status.d/${POSTGRES_SHARE_D:-${SERVICE:-srv-luma}-postgres}/READY"
+
 # Aguardar até o arquivo de estado ser criado
-until [ -f /postgres-status.d/READY ]; do
+until [ -f "${POSTGRES_STATUS_FILE}" ]; do
   echo "Banco de dados ainda não está pronto. Aguardando..."
   sleep 2
 done
