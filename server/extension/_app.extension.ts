@@ -9,8 +9,6 @@ import {openPorts} from "./open-ports";
 import fs from "fs";
 import {folders} from "../global/project";
 
-import {autoDumpService} from "../service/database.service/dumps";
-
 import {pgRevision} from "../service/database.service/kitres/revison";
 import chalk from "chalk";
 import os from "os";
@@ -45,7 +43,6 @@ let dbPatch = ():Promise<boolean>=>{
                 serverNotify.loadingBlockItem( "Falha ao aplicar atualização criticas de banco de dados [dbPatch|FAILED]." );
                 return resolve( false );
             }
-            autoDumpService().then()
             serverNotify.loadingBlock( "Database upgrade patches... [SUCCESS]" );
             resolve( true );
         });

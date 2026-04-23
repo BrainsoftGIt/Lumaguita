@@ -6,7 +6,6 @@ import chalk from "chalk";
 import {args} from "../../../global/args";
 import {eventsListener} from "../../notify.service/notify";
 import Path from "path";
-import {preventiveBackup, saveBackup} from "../dumps";
 import {serverNotify} from "../../../snotify";
 import {scriptUtil} from "kitres";
 
@@ -76,18 +75,6 @@ pgRevision.on( "revision", (error, blocks) => {
 
 
 pgRevision.on("news", blocks => {
-    return new Promise( (resolve) => {
-        preventiveBackup().then( dumps => {
-            if( !dumps ) return  resolve({ accept: false, message: "Falha ao criar dumps preventivo!" } );
-            saveBackup( {
-                dumps: dumps,
-                clusterSafe: false,
-                cluster: true
-            } ).then( value1 => {
-                resolve( value1 )
-            }).catch( reason => resolve({ error: reason } ))
-        }).catch( reason => resolve({ error: reason } ));
-    });
+    return Promise.resolve({ accept: true, message: "Backup preventivo desativado." });
 });
-
 

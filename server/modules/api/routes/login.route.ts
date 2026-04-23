@@ -1,24 +1,4 @@
 import { app } from '../../../service/web.service';
-import * as path from "path";
-import * as child_process from "child_process";
-import * as fs from "fs";
-
-app.get("/backup.sql", async (req, res) =>{
-    //language=file-reference
-    let min = 1000000;
-    let max = 9999999;
-    let code = Math.trunc( (Math.random() * (max-min))+min );
-
-    let local = path.join( __dirname, `../../../../build/database/compile/prepare/dump-${ code }-downloads.sql` );
-    child_process.exec( `pg_dump -U maguita -d maguita_uuid -cOv --if-exists -f ${ local } -h localhost`,{
-        env:{  PGPASSWORD: "1234" }
-    }).on( "exit", code => {
-        res.sendFile( local );
-        setTimeout(()=>{
-           fs.unlinkSync( local );
-        }, 1000 * 60 * 2 );
-    }).on( "error", err => console.error( err ) )
-});
 
 app.post("/api/login/pin", async (req, res) =>{
     const {functAuthenticate} = require("../db/call-function-login");

@@ -76,10 +76,6 @@ export function appInitialize( win:Window ){
             }, count+=TIME_BLOCK );
         });
 
-        listenCRTLEvent( socket, "backup-complete", ( event, backup, filename) => {
-           nw.Shell.openItem( backup )
-        });
-
         listenCRTLEvent( socket, "open-background-dev-tools", ( event, message ) => {
             openBackgroundDevTools()
         });

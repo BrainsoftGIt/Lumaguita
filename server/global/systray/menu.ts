@@ -2,14 +2,10 @@ import os from "os";
 import {sys} from "../sys";
 import path from "path";
 import {GENERIC_SEPARATOR, GenericMenuItem, GenericMenuMaps, GenericTray, prepare} from "./engine";
-import {appToaster, toastMessage} from "../../lib/toaster";
+import {appToaster} from "../../lib/toaster";
 import NotificationCenter from "node-notifier/notifiers/notificationcenter";
 import {nwAppStatus} from "../../../client/app/status";
-import {args} from "../args";
 import {nanoid} from "nanoid";
-import moment from "moment/moment";
-import {folders} from "../project";
-import {AppendBackup} from "../../service/database.service/dumps";
 
 const nets: NodeJS.Dict<os.NetworkInterfaceInfo[]> = os.networkInterfaces();
 
@@ -74,71 +70,6 @@ function openBackgroundDevTools() {
     if (nwAppStatus.runningIntoNW) {
         nwAppStatus.notify("open-background-dev-tools")
     }
-}
-
-
-
-async function  __createBackup( withCluster:boolean, complete:boolean ) {
-    try {
-        toastMessage(`Inicializando o backup...!` );
-        const { saveBackup, dumpNow } = require("../../service/database.service/dumps" );
-        let dumps = (await dumpNow());
-
-        let appends:AppendBackup[] = [];
-        if( complete ){
-            appends.push({folder:  folders.storage, dest: "/storage"})
-        }
-
-        let result = await saveBackup( {
-            appends: appends,
-            dumps: dumps,
-            cluster: true,
-            clusterSafe: true
-        });
-
-        if( result.error || !result.accept ){
-            return toastMessage(`Falha ao criar backups! Message = "${result.message||result?.error.message}"` );
-        }
-
-        let custer = await require("../../service/cluster.service").clusterServer.service.loadLocalCluster();
-        let username = custer.cluster_name || custer.cluster_path || os.userInfo().username;
-        username = username.split("/").join(".");
-
-        username = username.replace(/[^a-zA-Z0-9]/g, "_");
-        let _nanoid = nanoid(16).replace(/[^a-zA-Z0-9]/g, "_");
-
-        let time = moment().format("yyyyMMDD-HHmmss").replace(/[^a-zA-Z0-9]/g, "_");
-        let filename = `lumaguita-backup-${ username }-${ time }.zip`;
-        let url = `backup/${ _nanoid }/${ filename }`;
-        let backup = result.backup;
-
-        let onComplete = ()=>{
-            let resolve = ( req, res, next )=>{
-                resolve = ( req, res, next )=>{ next() };
-                res.sendFile( backup );
-            }
-
-            require("../../service/web.service").app.get(`/${url}`,  ( req, res, next)=>{
-                resolve(req, res, next );
-            });
-            sys.openUrl(`http://127.0.0.1:${args.appPort}/${url}`)
-        }
-
-        onComplete();
-        toastMessage(`All done!` );
-
-    } catch (e){
-        console.log( e );
-        return toastMessage(`Falha ao criar backups! Message = "${e["message"]}"` );
-    }
-}
-
-function createBackupFUll() {
-    return __createBackup( true, true)
-}
-
-function createBackup() {
-    return __createBackup( false, false )
 }
 
 
@@ -212,20 +143,6 @@ export const menuItemsMap: GenericMenuMaps = {
     //         }
     //     }
     // },
-    [ "backup"] :{
-        title: "Backup",
-        tooltip: "Gerar backup do banco de dados agora",
-        click(tray: GenericTray<any, any>, GenericMenuItem): any {
-            createBackup();
-        }
-    }, ["fullBackup"]:{
-        title: "Backup completo",
-        tooltip: "Gerar backup do banco de dados agora",
-        click(tray: GenericTray<any, any>, GenericMenuItem): any {
-            createBackupFUll();
-        }
-    },
-
     ["tools"]: {
         title: "Avancado", tooltip: "Ferramentas avançadas", itemList: [
             // {
